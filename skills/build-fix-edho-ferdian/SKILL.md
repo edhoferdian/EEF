@@ -80,17 +80,27 @@ Detect before doing anything else. Look for the strongest signal first
 (Next.js/Vite/Rsbuild/CRA/webpack/Parcel/Bun) → JavaScript/TypeScript;
 `manage.py` + `requirements.txt`/`pyproject.toml`/Django in
 `INSTALLED_APPS` → Django/Python; `go.mod` at repo root → Go; `Cargo.toml`
-at repo root → Rust. If the stack doesn't match a shipped reference yet
-(PHP/Laravel, Java/Spring, Quarkus, Kotlin, Swift, mobile cross-platform,
-.NET, C++, PyTorch — see "Stacks planned" at the bottom for the full
-breakdown and per-stack trigger), say so plainly and apply the cross-cutting
-rules on this page generically rather than guessing stack-specific fixes you
-can't verify.
+at repo root → Rust. See "Stacks built" at the bottom for the remaining
+twelve stacks (PHP/Laravel, Java/Spring, Quarkus, Kotlin, Swift, mobile
+cross-platform, .NET, C++, PyTorch) and their detect signals. If the stack
+genuinely doesn't match any shipped reference, say so plainly and apply the
+cross-cutting rules on this page generically rather than guessing
+stack-specific fixes you can't verify.
 
 - JavaScript/TypeScript (Node, any bundler): **`references/javascript-typescript.md`**
 - Django/Python: **`references/django-python.md`**
 - Go (any module with `go.mod`): **`references/go.md`** (FOLD-M — see Provenance above)
 - Rust (any crate with `Cargo.toml`): **`references/rust.md`** (FOLD-M — see Provenance above)
+- PHP/Laravel (`composer.json` has `laravel/framework`): **`references/laravel.md`** (FOLD-M)
+- Java/Spring + Quarkus (`pom.xml`/`build.gradle*` has `spring-boot` or `quarkus`): **`references/java-spring.md`** (FOLD-M, Quarkus as internal sub-section)
+- Kotlin (any `.kt`/`.kts`, or `build.gradle.kts`): **`references/kotlin.md`** (FOLD-M)
+- Swift (`Package.swift`, `.xcodeproj`/`.xcworkspace`): **`references/swift.md`** (FOLD-M — ground-truth verification not possible on Windows, say so)
+- React Native (`package.json` has `react-native`): **`references/react-native.md`** (FOLD-M)
+- Flutter (`pubspec.yaml` has `flutter`): **`references/flutter.md`** (FOLD-M)
+- Android / Compose Multiplatform (`AndroidManifest.xml`, or Gradle Android/Compose plugin): **`references/android.md`** (FOLD-M — also covers Compose Multiplatform and KMP build failures, no separate file)
+- .NET (`.csproj`/`.fsproj`/`.sln`): **`references/dotnet.md`** (FOLD-M, covers C# and F#)
+- C++ (`CMakeLists.txt`, or `.cpp`/`.hpp`): **`references/cpp.md`** (FOLD-M)
+- PyTorch (`torch` import/dependency): **`references/pytorch.md`** (FOLD-M, narrow runtime-mechanics scope only)
 
 ### Phase 1 — Reproduce
 
@@ -230,71 +240,71 @@ tebakan pertama; kegagalan berulang yang sudah "diperbaiki" sebelumnya →
 perlakukan perbaikan sebelumnya sebagai bukti bahwa akar masalahnya belum
 tersentuh, bukan sebagai titik awal.
 
-## Stacks planned (not yet built)
+## Stacks built (FOLD-M, ahead of trigger)
 
-Until a stack below has a shipped `references/<stack>.md`, fall back to the
-generic Phase 0–6 loop and the cross-cutting rules above for it — don't
-invent stack-specific fix tables you haven't verified. This is the
-error-resolution half of the same 34-item DEFER backlog that
-`language-code-review-edho-ferdian`'s "Stacks planned" list tracks for
-review; the two lists cover the same stacks but not the same depth per
-stack, since a build-fix lens only needs a diagnostic-command table + error
-category map, not full idiom/security coverage. Trigger for every group
-below, unless noted otherwise: **a real project in that stack appears.**
+The original 34-item DEFER backlog gated every stack below on "a real
+project in that stack appears." That gate assumed a single-user,
+personally-curated ecosystem; now that this ecosystem is distributed to many
+users, waiting for Edho's own projects to justify porting well-documented,
+industry-standard diagnostic content no longer makes sense — every stack
+below was ported from ECC now instead (fetched 2026-09-07). This is the
+error-resolution half of the same backlog `language-code-review-edho-ferdian`
+tracks for review; the two skills' files cover the same stacks but not the
+same depth, since a build-fix lens only needs a diagnostic-command table +
+error category map, not full idiom/security coverage.
 
-- **PHP/Laravel** — build-fix side of `laravel-verification`/`laravel-tdd`
-  (Composer resolution failures, Artisan migration errors, PHPUnit/Pest
-  bootstrap failures). The security-side content for this stack already
-  lives in `security-review-edho-ferdian/references/language-specific.md`
-  §"PHP / Laravel [DEFERRED]" (D-012) — irrelevant to this skill's job, but
-  noted so a future session doesn't confuse "security deferred" with
-  "nothing about Laravel is ported yet."
-- **Java/Spring** — build-fix side of `springboot-verification`/
-  `springboot-tdd`/`java-coding-standards` (Maven/Gradle dependency
-  resolution, Spring context startup failures, bean wiring errors). Same
-  D-012 note: security content for this family is already ported and out of
-  this skill's scope regardless.
-- **Quarkus** — same trigger as Java/Spring; ~85% of Maven/Gradle diagnostic
-  overlap with Spring Boot means this should land as a sub-section of
-  `references/java-spring.md` when built, not a separate file — same
-  sub-section pattern D-012 already set for Quarkus security.
-- **Kotlin** — build-fix side of `kotlin-patterns`/`kotlin-testing` (Gradle
-  Kotlin DSL errors, coroutine/Flow compile errors, KMP target build
-  failures). Trigger: a real Android, KMP, or Ktor project.
-- **Swift/Apple** — build-fix side of `swiftui-patterns`/
-  `swift-concurrency-6-2` (Xcode build errors, SPM dependency resolution,
-  Swift 6 concurrency-checking failures). Trigger: a real iOS/macOS project
-  — and note this is the least likely to ever trigger, since Edho's
-  environment is Windows 10 and the Swift toolchain doesn't run there at all.
-- **Mobile cross-platform** — build-fix side of `dart-flutter-patterns`
-  (Flutter/Dart build and pub dependency errors), `react-native-patterns`
-  (Metro bundler, native module linking), `android-clean-architecture`
-  (Gradle/AGP errors), `compose-multiplatform-patterns`. Trigger: the first
-  mobile project. Build `react-native-patterns`' build-fix lens first when
-  this fires — same reasoning as the review-lens list: cheapest transfer
-  from Edho's existing React/TypeScript/JS diagnostic knowledge.
-- **.NET** — build-fix side of `dotnet-patterns`/`csharp-testing`/
-  `fsharp-testing` (MSBuild/dotnet CLI errors, NuGet resolution, xUnit/NUnit
-  bootstrap failures). Trigger: a real .NET project.
-- **C++** — build-fix side of `cpp-coding-standards`/`cpp-testing` (CMake
-  configuration errors, linker errors, compiler toolchain mismatches).
-  Trigger: a real C++ project.
-- **PyTorch** — build-fix side of `pytorch-patterns`: tensor shape mismatch,
-  device-placement (CPU/GPU) errors, CUDA OOM, AMP/mixed-precision failures,
-  DataLoader worker crashes. Trigger: real PyTorch training/inference code
-  failing to run. This is narrower than the review-lens gap — pure runtime
-  diagnostic mechanics, since `code-review-edho-ferdian/references/mle-lens.md`
-  already covers the review side (data leakage, lifecycle, ML-01..06) and
-  explicitly hands off exactly this runtime-mechanics gap to this skill in
-  its own "Handoffs" section.
-- **ArkTS/HarmonyOS** — not part of the 34-item DEFER backlog (it already
-  has agent-level coverage via `harmonyos-app-resolver` in ECC's agent
-  roster); kept here only as a placeholder until it's confirmed ported or
-  explicitly out of scope.
-- **Perl — skipped permanently, not deferred.** No `perl-patterns`/
+- **PHP/Laravel** — `references/laravel.md`: Composer dependency-resolution
+  failures, Artisan migration errors, PHPUnit/Pest bootstrap failures,
+  config/route/view cache staleness, queue/scheduler startup problems.
+  Ported from ECC `laravel-verification`/`laravel-tdd`. Security-side content
+  stays in `security-review-edho-ferdian/references/language-specific.md`
+  §"PHP / Laravel" — out of this skill's scope regardless.
+- **Java/Spring + Quarkus** — `references/java-spring.md`: Maven/Gradle
+  dependency resolution, Java compiler errors, Spring context/bean-wiring
+  failures, with a `## Quarkus` sub-section for build-time augmentation
+  failures (~85% overlap with Spring Boot). Ported from ECC
+  `springboot-verification`/`springboot-tdd`/`java-coding-standards` and
+  ECC's unified `java-build-resolver` agent.
+- **Kotlin** — `references/kotlin.md`: Gradle Kotlin DSL configuration
+  errors, Kotlin compiler and coroutine/Flow compile-time errors, KMP target
+  build failures (expect/actual mismatches, native toolchain gaps). Ported
+  from ECC `kotlin-patterns`/`kotlin-testing`.
+- **Swift/Apple** — `references/swift.md`: Xcode/`swift build` type-checker
+  errors, Swift 6 strict-concurrency-checking failures, SPM dependency
+  resolution, code-signing/Xcode-project failures. Ported from ECC
+  `swift-build-resolver` plus the four Swift skills. Ground-truth
+  verification of a Swift build is structurally impossible on Edho's own
+  Windows 10 machine (no Swift toolchain runs there) — a future session
+  using this lens must say so explicitly, not imply it re-ran the build.
+- **Mobile cross-platform** — `references/react-native.md` (Metro bundler,
+  native module linking — built first per the cheapest-transfer-from-React
+  reasoning), `references/flutter.md` (Flutter/Dart build and pub dependency
+  errors), `references/android.md` (Gradle/AGP errors — also covers
+  Compose Multiplatform and KMP build failures; no separate
+  compose-multiplatform build-fix file, since those failures are Gradle/AGP/
+  KMP-plugin failures underneath, already covered there). Ported from ECC
+  `react-native-patterns`, `dart-flutter-patterns`, `android-clean-architecture`.
+- **.NET** — `references/dotnet.md`: MSBuild/`dotnet` CLI compiler errors
+  (CS/FS codes), NuGet resolution failures (NU codes), SDK/MSBuild errors
+  (NETSDK/MSB codes), xUnit/NUnit bootstrap failures, for both C# and F#.
+  Ported from ECC `dotnet-patterns`/`csharp-testing`/`fsharp-testing`.
+- **C++** — `references/cpp.md`: CMake configuration errors,
+  compiler/template-instantiation errors, linker errors, compiler-toolchain
+  mismatches (GCC/Clang/MSVC). Ported from ECC
+  `cpp-coding-standards`/`cpp-testing`.
+- **PyTorch** — `references/pytorch.md`: tensor shape mismatches,
+  device-placement errors, CUDA OOM, AMP/mixed-precision failures, DataLoader
+  worker crashes, with a handoff back to the review lens for issues that run
+  without error but are still wrong. Ported from ECC `pytorch-patterns`.
+- **ArkTS/HarmonyOS** — not part of the backlog above; already has
+  agent-level coverage via `harmonyos-app-resolver` in ECC's agent roster.
+  Kept here only as a placeholder until confirmed ported or explicitly out
+  of scope.
+- **Perl — skipped permanently, not deferred**, the one item that stays out
+  of scope regardless of the trigger-removal above. No `perl-patterns`/
   `perl-testing` build-fix lens is planned. If a Perl build ever needs
   diagnosing, use the generic Phase 0–6 loop; the only Perl content this
   ecosystem keeps is the already-harvested generic security findings
   (SEC-16..19) noted in `security-review-edho-ferdian/references/
-  language-specific.md` §"Perl — intentionally not built" (D-012), which
-  don't apply to build-fix work anyway.
+  language-specific.md` §"Perl — intentionally not built", which don't apply
+  to build-fix work anyway.

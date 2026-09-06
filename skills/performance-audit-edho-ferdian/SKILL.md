@@ -246,17 +246,20 @@ as `code-review-edho-ferdian`'s saved report.
 
 ---
 
-## Stacks planned (not yet built)
+## Additional references
 
 This skill's ported content is JS/React/Next-biased (matches Edho's current
 stack — `references/web-frontend.md`). Backend/API latency and throughput
-(endpoint p50/p95/p99, bulk data movement) is now covered by
-`references/backend-latency-and-throughput.md`; flame-graph profiling for
-non-Node backends specifically is still planned, not yet built. Also planned:
+(endpoint p50/p95/p99, bulk data movement) is covered by
+`references/backend-latency-and-throughput.md`.
 
-- **Database query profiling** as its own reference (this file's Phase 1
-  already covers `EXPLAIN ANALYZE` at a basic level) — cross-reference
-  `database-lens.md` in `code-review-edho-ferdian` for the static half of
-  this (schema/index reasoning without running the query); this skill would
-  supply the dynamic half in more depth (query plan history, slow-query log
-  analysis, connection-pool saturation).
+- `references/database-query-profiling.md` — the dynamic half of database
+  performance work (cross-reference `database-lens.md` in
+  `code-review-edho-ferdian` for the static/schema half): reading
+  `EXPLAIN ANALYZE` output in depth, query-plan regression detection via
+  `pg_stat_statements`/plan-JSON diffing, slow-query-log analysis, connection-
+  pool saturation diagnosis, and runtime N+1 confirmation.
+- `references/non-node-flamegraph-profiling.md` — flame-graph profiling for
+  non-Node backends: on-CPU vs off-CPU (wall-clock) profiling, reading a
+  flame graph (wide plateaus, tall towers), and tool-specific workflows for
+  Python (`py-spy`), Go (`pprof`), and Java (`async-profiler`).

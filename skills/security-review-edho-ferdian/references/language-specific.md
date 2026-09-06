@@ -532,47 +532,272 @@ duplicated here.
 
 ---
 
-## PHP / Laravel [DEFERRED]
+## PHP / Laravel
 
-Deferred — zero use-case in Edho's current stack, content kept ready for when
-a PHP/Laravel project appears (same pattern as other deferred lenses in this
-ecosystem).
+Source: ECC `laravel-security` (fetched 2026-09-06). Activated on a real
+multi-user ecosystem serving Laravel projects — no longer gated on a
+single-project trigger (see SKILL.md provenance note; the D-012/D-013
+single-stack-trigger rationale that deferred this section no longer holds
+once the ecosystem serves many users/projects rather than only Edho's own).
 
-Findings not already covered by the generic SEC-14/15 codes: `APP_DEBUG=true`
-in production (CRITICAL, parallel to Django's `DEBUG=True`); empty or
-hardcoded `APP_KEY`; `$guarded = []` (CRITICAL, instance of SEC-14);
-`{!! $userInput !!}` in Blade without HTMLPurifier (CRITICAL, parallel to
-`mark_safe`); `{{ json_encode($x) }}` inside `<script>` instead of `@js()`
-(wrong JS-context escaping — parallel to Django's `|escapejs`); `$hidden`
-missing `password`/`remember_token`/`two_factor_secret`, leaking them into
-JSON responses (parallel to the FastAPI response-model finding);
-`VerifyCsrfToken::$except` with a blanket `api/*` while Sanctum stateful mode
-is used; `cors.allowed_origins = ['*']` combined with
-`supports_credentials = true` (parallel to the existing CRITICAL FastAPI
-finding); Sanctum `expiration => null` (tokens never expire);
-`trusted_proxies = '*'` (instance of SEC-15). Ground-truth: `composer audit`.
+**Stack detection.** `composer.json` with `laravel/framework` in `require`,
+or an `artisan` file at the project root — same manifest-signal pattern as
+the other stacks in this file.
 
-## Java / Spring Boot [DEFERRED]
+### CRITICAL
 
-Deferred — zero use-case in Edho's current stack, content kept ready for when
-a Java/Spring project appears. Quarkus is a sub-section here, not a separate
-top-level section, since ~85% of the concepts are identical to Spring Boot.
+- **`APP_DEBUG=true` in a production environment** — leaks full stack traces,
+  local variable values, and `.env` contents (via Laravel's Whoops error
+  page) to any error response. Parallel to Django's `DEBUG = True` finding
+  above. (Cross-reference: general **SEC-11** misconfiguration.)
+- **Empty, missing, or hardcoded `APP_KEY`** — `APP_KEY` backs Laravel's
+  encrypter (`Crypt::encrypt`/`decrypt`, encrypted cookies, `encrypted:array`
+  casts, `ShouldBeEncrypted` queue jobs). An empty key at boot means these
+  either fail or, worse, some versions silently no-op the encryption step. A
+  key committed to source control is compromised the moment the repo is
+  cloned, same reasoning as Django's hardcoded `SECRET_KEY` finding.
+- **`$guarded = []` on an Eloquent model** — the inverse of an explicit
+  `$fillable` whitelist; disables Laravel's mass-assignment protection
+  entirely, letting any array key reach the model's attributes via
+  `Model::create()`/`fill()`. This is the Laravel instance of general
+  **SEC-14** (mass assignment) — same finding shape as Django's
+  `fields = '__all__'` and the NestJS `ValidationPipe` whitelist gap above,
+  just triggered from the model layer instead of the serializer/pipe layer.
+- **`Model::create($request->all())` (or `->fill($request->all())`)** — even
+  with a correct `$fillable` whitelist on the model, passing the raw request
+  array instead of `$request->validated()` or `$request->safe()->only([...])`
+  means any field *added* to `$fillable` later inherits an unreviewed,
+  unvalidated write path. Flag alongside a missing/incorrect `$fillable`, not
+  only when `$guarded = []` is present — this is a second, independent way
+  the same SEC-14 defect class shows up in Laravel.
+- **Raw SQL built via string interpolation** — `DB::select("... = '{$x}'")`,
+  `User::whereRaw("email = '{$x}'")`, or `DB::statement()` with concatenated
+  input. This is the Laravel call site for general **SEC-04** (injection) —
+  Eloquent and the query builder parameterize automatically
+  (`->where('email', $x)`, `whereRaw('email = ?', [$x])`); only interpolated
+  raw SQL bypasses that. Also flag **`orderByRaw($userInput)`/
+  `groupByRaw($userInput)`** fed directly from user input — parameter
+  placeholders bind values, not column names or sort direction, so these need
+  an explicit allowlist check before interpolation, not parameterization
+  (same dynamic-SQL-identifier rule general SEC-04 already documents, sourced
+  from this same ECC skill).
+- **`{!! $userInput !!}` in a Blade template on user-controlled input, with
+  no HTMLPurifier (or equivalent allowlist sanitizer) at the same call
+  site** — Blade's default `{{ }}` auto-escapes; `{!! !!}` is the explicit
+  opt-out, structurally identical to Django's `mark_safe()`/`{{ value|safe }}`
+  finding above. Only acceptable when the value has already passed through a
+  whitelist-based sanitizer (`HTMLPurifier` with an explicit `HTML.Allowed`
+  list) in the codebase, verifiable, not assumed.
+- **`{{ json_encode($x) }}` interpolated inside an inline `<script>` block
+  instead of Blade's `@js()`/`@json()` directives** — `json_encode()` alone
+  is not safe for a JavaScript-context sink (a value like `</script>` or
+  ` ` in the data can break out of the script string); `@js()` applies
+  JS-context escaping on top of JSON encoding. The Laravel instance of the
+  same JS-context-escaping gap Django's `|escapejs` finding covers above.
+- **`$hidden` missing `password`, `remember_token`, `two_factor_secret`, or
+  `two_factor_recovery_codes`** — without these on the model's `$hidden`
+  array, they serialize straight into any JSON response built from the model
+  (`return $user;`, `UserResource`, `response()->json($user)`). Same finding
+  shape as the FastAPI "password hash in response model" CRITICAL and the
+  NestJS "ORM entity returned directly" CRITICAL elsewhere in this file — the
+  Laravel instance of that defect class.
 
-Findings: native `@Query` with string concatenation; a controller accepting
-an entity directly instead of a `@Valid` DTO (instance of SEC-14);
-`@EnableMethodSecurity` not enabled / a sensitive endpoint without
-`@PreAuthorize` (deny-by-default not enforced); `PasswordEncoder` not
-BCrypt/Argon2, or a default cost factor too low; plaintext credentials in
-`application.yml` instead of an `${DB_PASSWORD}` placeholder;
-`setAllowedOrigins(List.of("*"))` combined with `setAllowCredentials(true)`;
-CSRF disabled on a session-based application (see the SEC-09 false-positive
-trap in `general-checklist.md`). Ground-truth:
-`mvn org.owasp:dependency-check-maven:check` / `./gradlew dependencyCheckAnalyze`.
+### HIGH
+
+- **`VerifyCsrfToken::$except` with a blanket `api/*` entry while Sanctum's
+  stateful (cookie-based SPA) mode is in use** — Sanctum's stateful mode
+  authenticates `api/*` routes via the session cookie, which means they still
+  need CSRF protection; only genuine webhook receivers that can't send
+  Laravel's CSRF token (Stripe, etc.) should be excluded, scoped to their
+  specific route, not a wildcard. This is the Laravel instance of general
+  **SEC-09**'s CSRF false-positive trap — check *how the route authenticates*
+  (cookie/session vs a manually-set `Authorization: Bearer` header) before
+  accepting or flagging the exclusion.
+- **`cors.allowed_origins = ['*']` combined with `supports_credentials =
+  true`** — the Laravel instance of the same spec-forbidden combination
+  already flagged for FastAPI (`allow_origins=["*"]` + `allow_credentials=
+  True`), Spring Boot, and NestJS elsewhere in this file. Fix: an explicit
+  origin allowlist read from `CORS_ALLOWED_ORIGINS` whenever
+  `supports_credentials` is `true`.
+- **Sanctum `expiration => null`** — API tokens that never expire widen the
+  blast radius of any single leaked token indefinitely. Instance of general
+  **SEC-10** (token handling).
+- **`trusted_proxies` set to `'*'`** — trusts the `X-Forwarded-*` headers from
+  any client, not just a known load balancer/proxy, letting a client spoof
+  its own IP or scheme. Instance of general **SEC-15** (proxy-header
+  spoofing); should be an explicit CIDR range for the actual proxy tier.
+- **Weak password policy** — `Password::min()` below 12, or missing
+  `->uncompromised()` (the `haveibeenpwned` breach check) for a
+  security-sensitive application. Not CRITICAL on its own, but a real
+  hardening gap parallel to Django's `AUTH_PASSWORD_VALIDATORS` finding
+  above.
+- **Missing throttling on an authentication endpoint** (login, registration,
+  password reset) — `RateLimiter::for('auth', ...)` not applied via
+  `throttle:auth` middleware. Instance of general **SEC-08** (rate limiting),
+  same finding shape as the Django auth-endpoint throttling item above.
+- **File upload validated by MIME/extension rule alone (`mimes:`,
+  `extensions:`), with no magic-byte content verification** — Laravel's
+  `mimes`/`image` validation rules check the client-declared/extension-
+  inferred type, which is trivially spoofed by renaming a payload before
+  upload. Same finding shape as the Django file-upload item above — require
+  a magic-byte check (`finfo`/`php-magic-bytes` or equivalent) cross-checked
+  against the declared extension, not extension/MIME rules as the sole
+  control.
+- **Sensitive fields in a queued job's constructor without
+  `ShouldBeEncrypted`** — a job carrying a raw card number, password, or full
+  PHI record in its serialized payload is readable by anyone with access to
+  the queue backend (Redis, a DB table, SQS) and visible in failed-job
+  dashboards. Already documented as general **SEC-06** ("sensitive fields in
+  background-job / queue payloads"), sourced from this same ECC skill —
+  don't re-file it as a new code, this is the concrete Laravel call site
+  (`implements ShouldBeEncrypted`) for that general finding.
+
+### Ground-truth
+
+```bash
+composer audit   # dependency risk (SEC-07)
+```
+
+### False-positive traps
+
+- A route excluded from CSRF in `VerifyCsrfToken::$except` that is a genuine
+  third-party webhook receiver (Stripe, etc.), scoped to that specific route
+  rather than a wildcard, is correctly configured — not a finding.
+- `$guarded` (non-empty, listing sensitive columns) is an equally valid
+  mass-assignment control to an explicit `$fillable` whitelist — flag only
+  when it's empty (`$guarded = []`) or missing sensitive columns that a
+  matching `$fillable` list would have excluded by omission.
+- `{!! !!}` fed by content that has already passed through `HTMLPurifier` (or
+  an equivalent allowlist sanitizer) earlier in the same request/pipeline,
+  verifiable in the codebase, is not a finding — trace the actual
+  sanitization step before assuming it's missing, same discipline as the
+  React `dangerouslySetInnerHTML` and Django `mark_safe()` false-positive
+  traps above.
+
+Non-security Laravel findings (Eloquent N+1, query builder idioms, job/queue
+architecture, service-provider organization) belong in
+`language-code-review-edho-ferdian`'s PHP/Laravel lens, not duplicated here —
+that lens is being built separately; this section only owns the
+security-relevant subset.
+
+## Java / Spring Boot
+
+Source: ECC `springboot-security` (fetched 2026-09-06). Activated on a real
+multi-user ecosystem serving Java/Spring projects — no longer gated on a
+single-project trigger, same reasoning as the PHP/Laravel section above.
+Quarkus is a sub-section here, not a separate top-level section, since ~85%
+of its concepts are identical to Spring Boot.
+
+**Stack detection.** `pom.xml`/`build.gradle` with
+`spring-boot-starter-security` (or `spring-boot-starter-web` plus explicit
+Spring Security config), or `@SpringBootApplication`/`@RestController`/
+`@Service` annotations in scope. Quarkus: `quarkus-security`/
+`quarkus-resteasy` in the build file, or `@Path`/`@RolesAllowed` annotations.
+
+### CRITICAL
+
+- **A native `@Query` (or `createNativeQuery`) built via string
+  concatenation of request-influenced values** — `@Query(value = "SELECT *
+  FROM users WHERE name = '" + name + "'", nativeQuery = true)`. The Spring
+  Data instance of general **SEC-04** (injection) — Spring Data repositories
+  and `:param`/`?1` bindings parameterize automatically; only a
+  concatenated native query bypasses that.
+- **A controller accepting an entity (`@RequestBody User user`) directly
+  instead of a validated DTO/record** — without an explicit DTO carrying only
+  the intended fields, a client can set columns the entity happens to expose
+  (`role`, `isAdmin`, `balance`) that were never meant to be client-settable.
+  Instance of general **SEC-14** (mass assignment) — the Spring Boot version
+  of the same defect class as Django's `fields = '__all__'`, the NestJS
+  `ValidationPipe`-whitelist gap, and Laravel's `$guarded = []` above. Fix:
+  a `record CreateUserDto(...)` (or equivalent) validated with `@Valid`,
+  never the entity type itself as the request body.
+- **`@EnableMethodSecurity` not enabled anywhere, or a sensitive endpoint
+  with no `@PreAuthorize`/`@RolesAllowed`** — without method security
+  enabled and applied, an endpoint's actual access requirement depends
+  entirely on whatever the global `SecurityFilterChain` happens to allow,
+  which is easy to leave more permissive than intended as routes accumulate.
+  Instance of general **SEC-03** (auth check) — deny-by-default should be
+  explicit per sensitive method, not implied by the filter chain.
+- **`PasswordEncoder` not BCrypt/Argon2, or a `BCryptPasswordEncoder`
+  constructed with a default/low cost factor** for a new project — plaintext
+  or a weak/legacy hash (MD5, unsalted SHA) used for password storage is a
+  direct compromise the moment the database leaks; a cost factor left at a
+  library default lower than the current recommended baseline (12+) is a
+  hardening gap. Instance of the same weak-crypto-for-passwords finding as
+  the base Python section's CRITICAL above.
+- **Plaintext credentials committed in `application.yml`/`application.properties`
+  instead of an `${DB_PASSWORD}`-style environment placeholder** — a
+  `spring.datasource.password: mySecretPassword123` literal in a file tracked
+  by version control is a compromised secret from the moment the repo is
+  cloned. Instance of general **SEC-02** (secret exposure).
+- **`setAllowedOrigins(List.of("*"))` combined with
+  `setAllowCredentials(true)`** in a `CorsConfigurationSource` bean — the
+  Spring Boot instance of the same spec-forbidden CORS combination already
+  flagged for FastAPI, Laravel, and NestJS elsewhere in this file.
+
+### HIGH
+
+- **CSRF disabled (`.csrf(csrf -> csrf.disable())`) on a session-based
+  (cookie-authenticated) application** — correct and expected on a stateless
+  API authenticating purely via a `Bearer` token (see the general **SEC-09**
+  false-positive trap), but a finding on anything that authenticates via a
+  session cookie, where disabling CSRF removes Spring Security's only
+  built-in defense against forged cross-site requests. Check
+  `sessionCreationPolicy` (`STATELESS` vs the default) before flagging or
+  clearing this.
+- **Missing rate limiting on an expensive or authentication endpoint** — no
+  `Bucket4j` filter, gateway-level throttle, or equivalent on login,
+  registration, or password-reset routes. Instance of general **SEC-08**.
+- **Missing security headers** — no explicit `.headers(...)` configuration
+  for `Content-Security-Policy`, `X-Frame-Options`, or a referrer policy.
+  Instance of general **SEC-11** (security misconfiguration); note that
+  `.xssProtection(...)` (the `X-XSS-Protection` header) is the same obsolete,
+  browser-ignored header flagged as a false positive to *recommend* in the
+  Django section above — its absence is not itself a finding.
+- **Secrets or PII written to application logs** — a log statement that
+  includes a raw token, password, or full PAN instead of a redacted/masked
+  value. Instance of general **SEC-06** (sensitive data).
+- **File uploads validated by declared content-type/extension only, with no
+  size cap or storage outside the web root** — same finding shape as the
+  Django/Laravel file-upload items above; a client-declared `Content-Type`
+  or filename extension proves nothing about the file's actual bytes.
+
+### Ground-truth
+
+```bash
+mvn org.owasp:dependency-check-maven:check   # or:
+./gradlew dependencyCheckAnalyze             # dependency risk (SEC-07)
+```
+
+### False-positive traps
+
+- `.csrf(csrf -> csrf.disable())` paired with
+  `.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))`
+  and Bearer-token auth is the correct, secure configuration for a pure API —
+  not a finding. Same discipline as the general SEC-09 trap: check how the
+  endpoint actually authenticates before flagging.
+- `setAllowedOrigins(List.of("*"))` **without** `setAllowCredentials(true)`
+  is a much lower-severity finding (an intentionally open public API) — check
+  both settings together before flagging CRITICAL, same trap as the FastAPI,
+  Laravel, and NestJS CORS entries above.
 
 ### Quarkus sub-section
 
-`@RolesAllowed` missing on a resource; `quarkus.http.cors.origins=*`; a rate
-limiter that keys off `X-Forwarded-For` (instance of SEC-15).
+- **`@RolesAllowed` missing on a resource method** — the Quarkus equivalent
+  of a missing `@PreAuthorize`; instance of general **SEC-03**.
+- **`quarkus.http.cors.origins=*`** — same CORS-wildcard concern as the
+  Spring Boot entry above; check whether credentials/cookies are also in
+  play before setting severity.
+- **A rate limiter keyed off `X-Forwarded-For`** without validating the
+  header comes from a trusted proxy — trivially spoofed by any client that
+  sets its own `X-Forwarded-For`, letting an attacker rotate past a
+  per-client limit. Instance of general **SEC-15** (proxy-header spoofing).
+
+Non-security Spring Boot/Quarkus findings (layered architecture, JPA/Panache
+mapping, transaction boundaries, concurrency) belong in
+`language-code-review-edho-ferdian`'s Java/Spring Boot lens, not duplicated
+here — that lens is being built separately; this section only owns the
+security-relevant subset.
 
 ## Perl — intentionally not built
 
@@ -584,3 +809,173 @@ SEC-16 (ReDoS), SEC-17 (path traversal), SEC-18 (open redirect), and SEC-19
 item skipped as a stack while being fully harvested as generic content —
 recorded here so a future session doesn't re-derive Perl content that was
 already extracted.
+
+---
+
+## Smart contracts (Solidity/EVM)
+
+Source: ECC `defi-amm-security` (fetched 2026-09-06) for the reentrancy/CEI,
+donation-attack, oracle-manipulation, slippage, and admin-control patterns —
+that skill is framed around AMM/liquidity-pool contracts specifically, so its
+patterns are generalized below to any Solidity/EVM contract rather than kept
+AMM-only. ECC carries no general-purpose (non-AMM) Solidity security skill,
+so the items **explicitly marked "general Solidity/EVM knowledge"** below
+(integer overflow/underflow, access-control patterns, unchecked low-level
+calls, front-running/MEV) are **not** ported from an ECC source — they are
+written from established, industry-standard smart-contract security
+practice (the class of findings any Solidity auditor checks, corresponding
+to SWC Registry entries and the Consensys/OpenZeppelin secure-development
+patterns), called out here so this distinction is never lost. Activated on
+a real multi-user ecosystem serving Solidity/EVM projects — no longer gated
+on a single-project trigger, same reasoning as the PHP/Laravel and
+Java/Spring Boot sections above.
+
+**Stack detection.** A `.sol` file in scope, a `foundry.toml`/`hardhat.config.
+{js,ts}`/`truffle-config.js` at the project root, or `@openzeppelin/contracts`
+in `package.json`.
+
+**Code placement.** Smart-contract findings do not map cleanly onto the
+general `SEC-01..19` codes — the threat model is structurally different from
+a web-stack language (state changes are irreversible on confirmation, there
+is no privileged rollback, and execution is gas-metered and adversarially
+composable with other contracts in the same transaction). Findings from this
+section use their own **`SC-SEC-01..06`** prefix instead, the same pattern
+`domain-specific.md` already uses for `CLOUD-SEC-01..07` and `AGT-01..04`.
+
+### CRITICAL
+
+- **`SC-SEC-01` Reentrancy / CEI-order violation** — external state
+  (`balances[msg.sender] -= amount;`) mutated *after* an external call
+  (`token.transfer(...)`, a raw `.call{value: x}("")`) instead of before it.
+  A malicious `receive()`/`fallback()` (or a malicious ERC-777/ERC-20 hook)
+  on the recipient can re-enter the function while the contract's own state
+  still reflects the pre-withdrawal balance, draining funds across repeated
+  calls in a single transaction. Fix: enforce Checks-Effects-Interactions —
+  update internal state *before* the external call — and add OpenZeppelin's
+  `ReentrancyGuard`/`nonReentrant` as defense-in-depth, not as the sole
+  control. Source: ECC `defi-amm-security`.
+- **`SC-SEC-02` Share/reserve math derived directly from
+  `token.balanceOf(address(this))`** — a "donation" or inflation attack:
+  anyone can send tokens directly to the contract (bypassing the intended
+  deposit path) to manipulate a denominator computed from the contract's raw
+  balance, skewing share price for every other depositor. Fix: track
+  internal accounting (`_totalAssets`) and measure the actual delta
+  received (`balanceAfter - balanceBefore`) around the transfer, never the
+  raw balance alone. Source: ECC `defi-amm-security`.
+- **`SC-SEC-03` Missing or inverted access control on a privileged function**
+  *(general Solidity/EVM knowledge — not an ECC-sourced item)* — a function
+  that mints tokens, changes an oracle address, pauses/unpauses, sets a fee,
+  or upgrades a proxy implementation with no `onlyOwner`/role-gate modifier
+  (or a modifier checking the wrong role/address entirely). The Solidity
+  instance of the same "auth check missing" defect class as general SEC-03,
+  made CRITICAL here specifically because a compromised privileged function
+  on a deployed, immutable contract typically cannot be patched after the
+  fact — the blast radius is total and irreversible in a way a web
+  endpoint's missing auth check usually isn't. Fix: OpenZeppelin
+  `Ownable`/`Ownable2Step` (prefer two-step transfer over single-step
+  `transferOwnership`) or `AccessControl` role-based gating on every
+  privileged entrypoint.
+- **`SC-SEC-04` Unchecked or unsafe low-level external call**
+  *(general Solidity/EVM knowledge — not an ECC-sourced item)* — a raw
+  `.call(...)`/`.delegatecall(...)`/`.send(...)` whose boolean success value
+  is discarded (`address(x).call(data);` with no `require(success, ...)`
+  check), or an ERC-20 `transfer`/`transferFrom` call whose return value is
+  ignored (some non-standard tokens, e.g. USDT, return no value or `false`
+  on failure without reverting, silently making the call a no-op the caller
+  believes succeeded). Fix: check every low-level call's return value
+  explicitly, and use OpenZeppelin's `SafeERC20` (`safeTransfer`/
+  `safeTransferFrom`) instead of the raw `IERC20` calls. A `delegatecall`
+  additionally executes in the *caller's* storage context — flag any
+  `delegatecall` to an address that isn't a fixed, audited implementation
+  contract as a full storage-corruption/takeover risk, not merely a silent-
+  failure risk.
+
+### HIGH
+
+- **`SC-SEC-05` Integer overflow/underflow on Solidity `< 0.8.0`, or
+  `unchecked { }` arithmetic on `>= 0.8.0` without a justified reason**
+  *(general Solidity/EVM knowledge — not an ECC-sourced item)* — Solidity
+  `< 0.8.0` has no built-in overflow/underflow protection (SafeMath must be
+  used explicitly); Solidity `>= 0.8.0` reverts on overflow by default, but
+  an `unchecked { ... }` block re-opens exactly that hole for whatever
+  arithmetic it wraps. Flag pre-0.8 arithmetic with no `SafeMath` usage as
+  the finding, and any `unchecked` block wrapping user-influenced values
+  (not just a gas-optimized loop counter with a proven bound) as the
+  post-0.8 equivalent.
+- **Oracle price read from a single spot price** (e.g. a single AMM pool's
+  instantaneous reserves ratio, or one on-chain DEX quote) **instead of a
+  manipulation-resistant source** — a spot price is flash-loan manipulable
+  within a single transaction (borrow a large amount, skew the pool, read
+  the now-wrong price, act on it, repay the loan, all atomically). Fix:
+  a TWAP (time-weighted average price, e.g. Uniswap V3's `observe()`) or a
+  reputable external oracle (Chainlink) with staleness/deviation checks,
+  never a single same-block reserve read. Source: ECC `defi-amm-security`.
+- **A swap/trade function with no caller-supplied `amountOutMin`/slippage
+  bound, or no `deadline`** — without a minimum-output guard, a transaction
+  sitting in the mempool can be sandwiched (front-run to move the price
+  unfavorably, then back-run after it executes) for the full difference
+  between the expected and worst-case price; without a deadline, a stale
+  transaction can execute long after submission at a since-moved price.
+  Source: ECC `defi-amm-security`.
+- **Front-running / MEV exposure on an ordering-sensitive operation**
+  *(general Solidity/EVM knowledge — not an ECC-sourced item)* — beyond the
+  swap-specific slippage case above, any function whose outcome depends on
+  transaction ordering within a block (a commit-then-reveal scheme missing
+  the commit phase, an auction accepting bids without a reveal delay, a
+  first-come-first-served claim with a predictable trigger condition) is
+  exploitable by a searcher who observes the pending transaction and pays
+  more gas to land first. Not always fixable outright — flag it and note
+  the mitigation that fits the specific mechanism (commit-reveal, a private
+  mempool/relay, or a batch-auction design) rather than proposing a generic
+  fix.
+- **Reserve/share math using naive `a * b / c` where intermediate
+  multiplication can overflow `uint256`** — even on Solidity `>= 0.8.0`
+  (which reverts rather than silently wrapping), an overflow here is a
+  denial-of-service on legitimate large-value operations, not merely a
+  correctness bug. Fix: a full-precision multiply-divide primitive
+  (`FullMath.mulDiv` or equivalent) for reserve/share calculations with
+  large token amounts. Source: ECC `defi-amm-security`.
+
+### Ground-truth
+
+```bash
+pip install slither-analyzer
+slither . --exclude-dependencies       # static analysis: reentrancy, access control, unchecked calls
+
+echidna-test . --contract YourContract --config echidna.yaml   # property-based fuzzing
+forge test --fuzz-runs 10000                                    # Foundry fuzz tests, if present
+```
+
+Do not label a Slither-detectable finding (reentrancy, unchecked-call,
+suicidal/arbitrary-`delegatecall` detectors, etc.) **[High confidence]**
+without actually running Slither — recognizing the pattern by reading the
+source is reasoning, not verification, same rule as `bandit`/`eslint` for
+the other stacks in this file.
+
+### False-positive traps
+
+- A `nonReentrant`-guarded function that also follows correct CEI ordering
+  is not a finding merely because it makes an external call — the guard plus
+  ordering together are the accepted mitigation; don't flag "makes an
+  external call" as reentrancy risk on its own without one of the two
+  controls missing.
+- An `unchecked { }` block wrapping only a loop counter increment with a
+  compile-time-provable upper bound (e.g. iterating a fixed-size array) is a
+  standard, safe gas optimization — not every `unchecked` block is
+  SC-SEC-05; check what value flows through it before flagging.
+- A `delegatecall` to a fixed, audited implementation address behind a
+  well-known proxy pattern (OpenZeppelin's `TransparentUpgradeableProxy`/
+  `UUPSUpgradeable`) is the intended mechanism, not a finding — the
+  SC-SEC-04 concern is a `delegatecall` target that is itself
+  attacker-influenced or unverified.
+- Ignoring the return value of `.transfer(...)`/`.send(...)` to an EOA
+  (externally-owned account, not a contract) is lower risk than the same
+  pattern against an arbitrary/contract address — but still flag it, since
+  the recipient's status (EOA vs contract, and which contract) can change
+  after deployment in ways the code can't statically guarantee.
+
+Non-security Solidity findings (gas optimization, contract upgrade
+patterns, test coverage, NatSpec documentation) are out of scope for this
+skill entirely — no `-edho-ferdian` non-security Solidity lens exists yet in
+`language-code-review-edho-ferdian`; this section stands alone as the only
+Solidity-specific content in the ecosystem today.

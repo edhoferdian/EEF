@@ -36,11 +36,12 @@ the native replacement.
 - `references/branching-and-commits.md`
 - `references/pr-and-triage.md`
 
-**Note:** `references/release-and-changelog.md` (cutting a release, writing a
-changelog, semantic version bump) is planned but not yet written — the
-analysis this skill was built from didn't produce ready-to-use content for
-it. Ask if you need this filled in now; until then, this skill covers
-branching/commits and PR/issue/CI triage only.
+- `references/release-and-changelog.md` — tagging conventions and tag
+  immutability, trunk-based vs release-branch cutting, Keep a Changelog
+  format with Conventional-Commits-driven generation, and semantic version
+  bump rules split for libraries (the "zero code changes" MAJOR test) versus
+  applications (which may legitimately use date/build versioning instead of
+  strict SemVer).
 
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 

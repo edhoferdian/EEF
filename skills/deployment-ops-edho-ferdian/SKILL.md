@@ -45,7 +45,12 @@ Step 4  Production-readiness verdict     → references/production-readiness.md
 Step 5  Deploy, then watch               → references/post-deploy-watch.md
 Step 6  Make it operable                 → references/observability.md
 
-**Note:** `references/cicd-pipeline.md` (Step 2) is planned but not yet written — CI/CD gate patterns (lint/type/test/security-scan/build gates in order, required-status-checks, branch protection) are common knowledge; ask if you need this filled in now.
+`references/cicd-pipeline.md` (Step 2) covers gate ordering (lint → typecheck
+→ unit test → security scan → build → deploy) with rationale, GitHub
+branch-protection required-status-checks setup, a full concrete GitHub
+Actions workflow with parallel gates and a branch/event-guarded deploy job,
+lockfile-hash-keyed caching, and the fail-fast-vs-fail-informatively
+distinction.
 
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 

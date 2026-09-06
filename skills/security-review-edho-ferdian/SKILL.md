@@ -61,11 +61,18 @@ pattern as `skill-audit-edho-ferdian`'s take on `harness-optimizer`. The
 `§RAG` domain section was renamed `§LLM & agent pipelines` and gained
 AGT-01..04 (agents with side-effectful tool authority) from
 `llm-trading-agent-security`, generalized away from its crypto framing.
-`§PHP/Laravel`, `§Java/Spring Boot`, and `§Smart contracts (Solidity/EVM)`
-are recorded as **[DEFERRED]** — content ready, not built until a real
-project needs that stack (same pattern as `mle-lens`). See
-`project-memory/01-decision-register.md` D-012/D-013 in the planning repo
-for the full triage rationale.
+`§PHP/Laravel` (from ECC `laravel-security`), `§Java/Spring Boot` (from ECC
+`springboot-security`), and `§Smart contracts (Solidity/EVM)` (from ECC
+`defi-amm-security`, generalized beyond its DeFi/AMM framing, plus general
+Solidity/EVM security knowledge for the items ECC doesn't cover — marked
+inline) are now built, using this file's SEC-XX cross-reference convention
+for the first two and a new SC-SEC-01..06 prefix for the third (a
+structurally distinct threat model, following the same precedent as
+CLOUD-SEC and AGT in `domain-specific.md`). These were previously deferred,
+gated on "a real project needs that stack" — that gate no longer applies now
+that this ecosystem serves many users, not one. See
+`project-memory/01-decision-register.md` for the original triage rationale
+that no longer holds.
 
 ## Two invocation modes (state which one you're in)
 

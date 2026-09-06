@@ -46,16 +46,18 @@ Adapted and consolidated from ECC `backend-patterns`, `hexagonal-architecture`,
   jobs/event consumers in their own modules. Not speculative — this is the
   framework behind `ghostfolio`, a real project in Edho's stack.
 
-**Note:** `references/layering-and-boundaries.md` (ports & adapters, repository
-and service layers, composition root, migration playbook for entangled code,
-"adding an integration") is planned but not yet written — the analysis this
-skill was built from didn't produce ready-to-use content for it. Ask if you
-need it filled in now. `references/jobs-and-queues.md` as a separate
-general-purpose background-job/queue-backend reference is still not written;
-`references/scheduled-collection.md` covers idempotency, dead-letter-style
-handling, and scheduling for the scheduled-collection job shape specifically,
-but a generic queue-backend/worker-pool reference remains a gap — ask if you
-need that filled in.
+- `references/layering-and-boundaries.md` — ports & adapters (hexagonal
+  architecture) with a framework-agnostic dependency-direction diagram, the
+  repository-vs-service layer split with a misplaced-concern test, the
+  composition root (NestJS DI and hand-wired bootstrap variants), a six-step
+  migration playbook for entangled/legacy code, and a checklist for adding a
+  new integration cleanly through the same port/adapter seam.
+- `references/jobs-and-queues.md` — generic queue-backend reference, distinct
+  from `references/scheduled-collection.md` (which covers the
+  scheduled-collection job shape specifically): backend choice (BullMQ vs
+  SQS vs Postgres-based pg-boss/graphile-worker), worker-pool concurrency
+  sizing, retry/backoff classification, dead-letter queues generically, job
+  idempotency keys, and queue observability.
 
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 

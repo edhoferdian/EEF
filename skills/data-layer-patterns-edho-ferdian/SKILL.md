@@ -65,6 +65,7 @@ rather than kept as a flat quick-reference dump.
 | Prisma-specific setup, pooling, N+1, migration workflow | `references/prisma.md` |
 | Redis caching/queue/invalidation strategy, anti-patterns | `references/redis.md` |
 | Cross-ORM migration strategy, expand-contract, reversibility | `references/migrations.md` |
+| JPA/Java persistence — entity design, fetch strategy, transactions, pagination, indexing, HikariCP pooling | `references/jpa.md` |
 
 `references/postgres.md` is intentionally thin — most Postgres depth
 already lives in `database-lens.md` as review criteria. Read that file's

@@ -167,89 +167,109 @@ This is stated once here rather than repeated as commentary in each file.
 | `references/go.md` | `go.mod` at repo root, or any `.go` file in scope | — |
 | `references/rust.md` | `Cargo.toml` at repo root, or any `.rs` file in scope | — |
 | `references/vue.md` | `package.json` has `vue` (Nuxt sub-section loads automatically within the same file when `nuxt` is also present) | — |
+| `references/laravel.md` | `composer.json` has `laravel/framework` | — |
+| `references/java-spring.md` | `pom.xml`/`build.gradle*` has a `spring-boot` dependency, or `@SpringBootApplication` present (Quarkus sub-section loads within the same file when `quarkus` dependencies are present instead) | — |
+| `references/kotlin.md` | any `.kt`/`.kts` file in scope, or `build.gradle.kts` | — |
+| `references/swift.md` | `Package.swift`, or any `.xcodeproj`/`.xcworkspace` | — |
+| `references/react-native.md` | `package.json` has `react-native` | `references/react.md` |
+| `references/flutter.md` | `pubspec.yaml` has a `flutter` dependency | — |
+| `references/android.md` | `AndroidManifest.xml` present, or a Gradle module applying the Android plugin | — |
+| `references/compose-multiplatform.md` | `build.gradle.kts` has `org.jetbrains.compose` | `references/android.md` |
+| `references/dotnet.md` | any `.csproj`/`.fsproj`/`.sln` file | — |
+| `references/cpp.md` | `CMakeLists.txt`, or any `.cpp`/`.hpp`/`.cc` file in scope | — |
+| `references/pytorch.md` | `torch` import or dependency in scope | `code-review-edho-ferdian/references/mle-lens.md` |
 
 **Status after the kelompok-1 follow-up analysis: Angular and NestJS are
 active, proven lenses** (verified against Edho's real `ghostfolio` project,
-an Nx monorepo running both), not speculative additions. **Go, Rust, and Vue
-are FOLD-M** (kelompok 1 lanjutan): content is medium-depth and plausible,
-ported straight from ECC's `golang-patterns`/`golang-testing`,
-`rust-patterns`/`rust-testing`, and `vue-patterns`/`nuxt4-patterns`, but
-**there is no evidence of an active Go, Rust, or Vue/Nuxt project in Edho's
+an Nx monorepo running both), not speculative additions. **Go, Rust, Vue,
+and the twelve stacks added below are all FOLD-M**: content is medium-depth
+and plausible, ported straight from ECC's per-stack agents/skills, but
+**there is no evidence of an active project in any of these stacks in Edho's
 workspace yet** — unlike Angular/NestJS (verified against `ghostfolio`) or
-Python/React (already exercised elsewhere in this ecosystem). Treat these
-three as ready-to-use lenses the moment a matching project shows up, not as
-field-validated ones. Every other stack below is still planned, not built.
-More stacks follow the same file shape and slot into the table above as
-they're written — adding one doesn't require touching this SKILL.md beyond
-the detection table. The 34-item DEFER backlog below (from the kelompok-1
-follow-up analysis) is grouped by family with its own activation trigger and
-review-specific notes — build-error handling for the same stacks lives in
-`build-fix-edho-ferdian`'s own "Stacks planned" list, which is not identical
-to this one since the two skills need different depth per stack.
+Python/React (already exercised elsewhere in this ecosystem). Treat these as
+ready-to-use lenses the moment a matching project shows up, not as
+field-validated ones. More stacks follow the same file shape and slot into
+the table above as they're written — adding one doesn't require touching
+this SKILL.md beyond the detection table.
 
-## Stacks planned (not yet built) — review lens
+## Stacks built (FOLD-M, ahead of trigger)
 
-Trigger for every group below is the same default: **a real project in that
-stack appears in Edho's own work.** Until then these stay unbuilt rather than
-speculatively written against no ground truth.
+The original 34-item DEFER backlog (from the kelompok-1 follow-up analysis)
+was gated on "a real project in that stack appears in Edho's own work." That
+gate assumed a single-user, personally-curated ecosystem; now that this
+ecosystem is distributed to many users, waiting for Edho's own projects to
+justify writing industry-standard, well-documented framework content no
+longer makes sense — every stack below was ported from ECC now instead,
+fetched 2026-09-07, following the same content/quality bar as the
+already-active lenses above. Build-error handling for the same stacks lives
+in `build-fix-edho-ferdian`'s own reference files (see that skill's own
+Provenance/reference table), which are not identical in depth to these
+review lenses since the two skills need different depth per stack.
 
-- **PHP/Laravel** (4 lenses: `laravel-patterns`, `laravel-security`,
-  `laravel-tdd`, `laravel-verification`). Security criteria are **already
-  ported** — `security-review-edho-ferdian/references/language-specific.md`
-  §"PHP / Laravel [DEFERRED]" (from D-012). When this activates, write only
-  the review/idiom, build/TDD, and verification sides; do not re-port the
-  security content, just cross-reference it the way `python-django.md`
-  cross-references its own SEC-08 move.
-- **Java/Spring** (6 lenses: `springboot-patterns`, `springboot-security`,
-  `springboot-tdd`, `springboot-verification`, `java-coding-standards`,
-  `jpa-patterns`). Security is **already ported** —
-  `security-review-edho-ferdian/references/language-specific.md` §"Java /
-  Spring Boot [DEFERRED]" (from D-012), same rule: don't re-port security.
-  `jpa-patterns` should land as a sub-section of
-  `data-layer-patterns-edho-ferdian` when activated, not a standalone
-  reference file — it's ORM/query depth, the same category that file already
-  owns for other stacks.
-- **Quarkus** (4 lenses: `quarkus-patterns`, `quarkus-security`,
-  `quarkus-tdd`, `quarkus-verification`). Same trigger as Java/Spring;
-  ~85% of the content is identical to Spring Boot. The D-012 precedent
-  already treats Quarkus security as a sub-section of the Spring Boot
-  section rather than its own top-level entry — keep that pattern for the
-  review lens too when this activates: a Quarkus sub-section inside
-  `references/java-spring.md`, not a separate `references/quarkus.md`.
-- **Kotlin** (5 lenses: `kotlin-patterns`, `kotlin-testing`,
-  `kotlin-coroutines-flows`, `kotlin-exposed-patterns`,
-  `kotlin-ktor-patterns`). Trigger: a real Android, Kotlin Multiplatform, or
-  Ktor project.
-- **Swift/Apple** (4 lenses: `swiftui-patterns`, `swift-concurrency-6-2`,
-  `swift-actor-persistence`, `swift-protocol-di-testing`). Trigger: a real
-  iOS/macOS project. Note: Edho's environment is Windows 10 — the Swift
-  toolchain itself doesn't run there, so this is the lowest-probability
-  activation in the whole backlog, not just an unbuilt lens.
-- **Mobile cross-platform** (5 lenses: `dart-flutter-patterns`,
-  `flutter-dart-code-review`, `react-native-patterns`,
-  `android-clean-architecture`, `compose-multiplatform-patterns`). Trigger:
-  the first mobile project of any kind. When it fires, build
-  `react-native-patterns` first — Edho is already on React/TypeScript, so
-  that lens is the cheapest transfer of the five and should not wait for the
-  others.
-- **.NET** (3 lenses: `dotnet-patterns`, `csharp-testing`, `fsharp-testing`).
-  Trigger: a real .NET project.
-- **C++** (2 lenses: `cpp-coding-standards`, `cpp-testing`). Trigger: a real
-  C++ project.
-- **PyTorch** (1 lens: `pytorch-patterns`). Trigger: real PyTorch training
-  code in scope. Generic ML review and the operational-lifecycle axis are
-  **already covered** by `code-review-edho-ferdian/references/mle-lens.md`
-  (from D-026) — what's
-  actually missing here is narrow: framework mechanics only (tensor shape
-  mismatches, device placement, AMP/mixed-precision correctness, DataLoader
-  worker issues). `mle-lens.md`'s own "Handoffs" section already names this
-  exact gap and defers to this future lens rather than guessing.
-- **Perl** — **skipped permanently, not deferred.** `perl-patterns` and
-  `perl-testing` are not planned at all; extend the existing explicit
-  precedent in `security-review-edho-ferdian/references/language-specific.md`
-  §"Perl — intentionally not built" (from D-012) to the patterns/testing side
-  too if a Perl question ever comes up — don't write new Perl content, point
-  at that section and its already-harvested generic findings (SEC-16..19).
+- **PHP/Laravel** — `references/laravel.md` (idioms, Eloquent N+1/scopes,
+  Form Request validation, migration reversibility, test-shape checks;
+  ported from ECC `laravel-patterns`/`laravel-tdd`/`laravel-verification`).
+  Security criteria stay solely in
+  `security-review-edho-ferdian/references/language-specific.md`
+  §"PHP / Laravel", cross-referenced rather than duplicated.
+- **Java/Spring + Quarkus** — `references/java-spring.md` (idioms,
+  architecture, JPA/Panache correctness, testing conventions for both
+  frameworks, Quarkus as an internal `## Quarkus` sub-section given the ~85%
+  overlap; ported from ECC `springboot-patterns`/`springboot-tdd`/
+  `springboot-verification`/`java-coding-standards`/`quarkus-patterns` and
+  ECC's unified `java-reviewer` agent). Security stays in
+  `security-review-edho-ferdian/references/language-specific.md`
+  §"Java / Spring Boot". `jpa-patterns` landed as
+  `data-layer-patterns-edho-ferdian/references/jpa.md` per the original plan.
+- **Kotlin** — `references/kotlin.md` (idiomatic patterns/null-safety,
+  coroutine & Flow structured-concurrency bugs, Exposed ORM query
+  correctness, Ktor server conventions, finding code CQ-14; ported from ECC
+  `kotlin-patterns`/`kotlin-testing`/`kotlin-coroutines-flows`/
+  `kotlin-exposed-patterns`/`kotlin-ktor-patterns`). The Exposed-ORM section
+  is kept inline here for now with a pointer noting it could later relocate
+  to `data-layer-patterns-edho-ferdian` the way JPA did — not yet moved.
+  Kotlin has no security cross-reference yet (unlike Java/PHP); flag that gap
+  explicitly rather than inventing findings.
+- **Swift/Apple** — `references/swift.md` (SwiftUI `@Observable` state/view
+  composition, Swift 6.2 Approachable Concurrency, actor-based persistence,
+  protocol-oriented DI/testability; ported from ECC `swiftui-patterns`/
+  `swift-concurrency-6-2`/`swift-actor-persistence`/
+  `swift-protocol-di-testing` and `swift-reviewer`). Ground-truth
+  verification of any Swift finding is structurally impossible on Edho's own
+  Windows 10 machine (no Swift toolchain runs there) — a future session using
+  this lens must say so explicitly rather than implying it ran `swift build`.
+- **Mobile cross-platform** — `references/react-native.md` (built first and
+  most thoroughly, per the cheapest-transfer-from-React reasoning),
+  `references/flutter.md`, `references/android.md` (Clean Architecture
+  layering), and `references/compose-multiplatform.md`, ported from ECC
+  `react-native-patterns`, `dart-flutter-patterns` + `flutter-dart-code-review`,
+  `android-clean-architecture`, and `compose-multiplatform-patterns`
+  respectively. None of these four stacks has a security cross-reference in
+  `security-review-edho-ferdian` yet — findings route to the general
+  SEC-01/02/10 codes rather than inventing stack-specific ones.
+- **.NET** — `references/dotnet.md` (async/DI/nullable/EF Core idioms shared
+  by C# and F#, with an `## F#` subsection for functional-idiom findings;
+  ported from ECC `csharp-reviewer`/`fsharp-reviewer`/`dotnet-patterns`/
+  `csharp-testing`/`fsharp-testing`).
+- **C++** — `references/cpp.md` (RAII/ownership, Rule of Five,
+  concurrency-primitive misuse, memory-safety anti-patterns; ported from ECC
+  `cpp-reviewer`/`cpp-coding-standards`/`cpp-testing`).
+- **PyTorch** — `references/pytorch.md` — deliberately narrow: framework
+  mechanics only (undocumented tensor shape assumptions, hardcoded device
+  placement, inconsistent AMP autocast/GradScaler sequencing, mismatched
+  DataLoader worker config), filed under CQ-10. Generic ML review and the
+  operational-lifecycle axis stay in
+  `code-review-edho-ferdian/references/mle-lens.md` — this file
+  cross-references it rather than re-covering it, per that file's own
+  "Handoffs" section.
+- **Perl** — **skipped permanently, not deferred**, the one item in the
+  original backlog that stays out of scope regardless of the trigger change
+  above. `perl-patterns` and `perl-testing` are not planned; extend the
+  existing explicit precedent in
+  `security-review-edho-ferdian/references/language-specific.md`
+  §"Perl — intentionally not built" to the patterns/testing side too if a
+  Perl question ever comes up — don't write new Perl content, point at that
+  section and its already-harvested generic findings (SEC-16..19).
 
 ## Provenance
 

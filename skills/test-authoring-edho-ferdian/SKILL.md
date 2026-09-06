@@ -101,9 +101,18 @@ well once you've decided it belongs.
   rollback), DB-free sandbox-mode testing, and why AI self-review is not
   evidence.
 
-Stacks planned: Python/pytest, Go, Vue.
+- **Python/pytest**: `references/python-pytest.md` — fixtures and scoping,
+  parametrize with `ids`, `unittest.mock`/`pytest-mock` (patch-site rule,
+  `autospec`), `pytest-asyncio` async tests and `AsyncMock`, coverage
+  configuration.
+- **Go**: `references/go.md` — table-driven tests, `t.Run` subtests
+  (including the loop-variable capture trap), interface-based mocking,
+  testify vs stdlib `testing`, benchmark tests.
+- **Vue**: `references/vue.md` — Vue Test Utils mount strategies, testing
+  Composition API composables in isolation, Pinia store testing with
+  `createTestingPinia`, Vitest async-update handling.
 
-When a stack isn't covered yet, apply the core principle and the
+When a stack isn't covered above, apply the core principle and the
 stack-agnostic checklist above by hand, and note in your response that
 stack-specific guidance for that language isn't written yet — don't
 silently fall back to React-flavored advice for a non-React stack.
