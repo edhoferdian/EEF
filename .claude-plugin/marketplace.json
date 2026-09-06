@@ -1,0 +1,31 @@
+{
+  "name": "eef-marketplace",
+  "owner": {
+    "name": "Edho Ferdian",
+    "email": "edhoferdian31@gmail.com",
+    "url": "https://github.com/edhoferdian"
+  },
+  "description": "Marketplace for Ekosistem Edho Ferdian (EEF) — a self-contained Claude Code skill ecosystem.",
+  "version": "1.0.0",
+  "plugins": [
+    {
+      "name": "ekosistem-edho-ferdian",
+      "displayName": "Ekosistem Edho Ferdian",
+      "source": ".",
+      "description": "33 native skills for engineering, operations, and cross-cutting development practices — see README for the full list.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Edho Ferdian",
+        "email": "edhoferdian31@gmail.com"
+      },
+      "homepage": "https://github.com/edhoferdian/EEF",
+      "keywords": [
+        "skills",
+        "code-review",
+        "engineering",
+        "devops",
+        "indonesian"
+      ]
+    }
+  ]
+}

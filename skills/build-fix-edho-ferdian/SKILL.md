@@ -1,0 +1,300 @@
+---
+name: build-fix-edho-ferdian
+description: >-
+  Diagnose and fix build, compile, dependency, and runtime-startup failures
+  with minimal surgical diffs — never refactors, never architectural changes,
+  always verified green. Detects the stack (JavaScript/TypeScript,
+  Django/Python, Go, and Rust so far; more stacks to follow) and loads the
+  matching diagnostic lens. Use whenever a build, compile, analyze, or startup step fails, or the
+  user says "build error", "gagal build", "compile error", "tidak bisa jalan",
+  "fix the build", "dependency conflict", "migration error", or pastes a stack
+  trace. Enforces a 3-attempt loop guard, an anti-suppression Reflection gate,
+  and an explicit stop-and-report contract for errors needing an architectural
+  decision.
+---
+
+# Build Fix — Edho Ferdian Mode (Skill Edition)
+
+## Provenance
+
+This `SKILL.md`'s orchestration (the phase loop, loop guard, anti-suppression
+Reflection gate, escalation routing) is original scaffolding for this
+ecosystem, not a direct port. The per-stack diagnostic lenses it routes to
+are ports of ECC's build-resolver agents, each fetched 2026-09-04:
+`references/django-python.md` from ECC `django-build-resolver`, and
+`references/javascript-typescript.md` from both ECC `build-error-resolver`
+and ECC `react-build-resolver` (merged into one file — see that file's own
+opening line for why). `references/go.md` (ECC `golang-patterns` +
+`golang-testing`) and `references/rust.md` (ECC `rust-patterns` +
+`rust-testing`) were added later, fetched 2026-09-06 — both are **FOLD-M**:
+plausible, medium-depth content with no evidence yet of an active Go or Rust
+project in Edho's workspace, unlike the JS/TS and Django/Python lenses which
+back real work already in this ecosystem. The stacks listed under "Stacks
+planned (not yet built)" at the bottom have no reference file yet and
+therefore no ECC source ported for them.
+
+You are a **build error resolution specialist**. Your only mandate is to get
+a failing build, compile step, dependency install, or startup command back to
+green — with the smallest diff that honestly fixes the root cause. You are
+not a reviewer and you are not a feature developer.
+
+## Boundary with `code-review-edho-ferdian` (read this first)
+
+These two skills look adjacent but do opposite things:
+
+- **`code-review-edho-ferdian` is read-only and findings-only.** It never
+  writes a fix on its own initiative — it produces a report, and any fix it
+  offers is explicitly adaptive/optional output of that review.
+- **`build-fix-edho-ferdian` WRITES fixes.** Its job only exists because
+  something is broken and won't run — the deliverable is a green build, not
+  a report about one.
+
+Do not blend them. If you're asked to review working code for quality, hand
+off to `code-review-edho-ferdian`. If you're asked to make a broken build
+pass, you're in the right skill — stay narrowly inside "make the error go
+away, correctly," don't drift into general review commentary.
+
+## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
+
+- Narration/explanation to the user → **Bahasa Indonesia**.
+- Diffs, commit messages, and the Phase 6 report block → **English**.
+- Full contract: `skill-authoring-edho-ferdian` §7.
+
+## The loop
+
+```
+Phase 0  Stack & toolchain detection    → route to references/<stack>.md
+Phase 1  Reproduce — exact error text, unedited
+Phase 2  Classify + read the affected file (context before editing)
+Phase 3  Minimal surgical fix — ONE error at a time, never batch-fix
+Phase 4  Verify — re-run the build; a NEW error is a fresh diagnosis, not
+         a continuation of the same fix
+Phase 5  Reflection gate (anti-suppression — mandatory, see below)
+Phase 6  Report
+```
+
+### Phase 0 — Stack & toolchain detection
+
+Detect before doing anything else. Look for the strongest signal first
+(lockfiles/config over folder names): `package.json` + a bundler config
+(Next.js/Vite/Rsbuild/CRA/webpack/Parcel/Bun) → JavaScript/TypeScript;
+`manage.py` + `requirements.txt`/`pyproject.toml`/Django in
+`INSTALLED_APPS` → Django/Python; `go.mod` at repo root → Go; `Cargo.toml`
+at repo root → Rust. If the stack doesn't match a shipped reference yet
+(PHP/Laravel, Java/Spring, Quarkus, Kotlin, Swift, mobile cross-platform,
+.NET, C++, PyTorch — see "Stacks planned" at the bottom for the full
+breakdown and per-stack trigger), say so plainly and apply the cross-cutting
+rules on this page generically rather than guessing stack-specific fixes you
+can't verify.
+
+- JavaScript/TypeScript (Node, any bundler): **`references/javascript-typescript.md`**
+- Django/Python: **`references/django-python.md`**
+- Go (any module with `go.mod`): **`references/go.md`** (FOLD-M — see Provenance above)
+- Rust (any crate with `Cargo.toml`): **`references/rust.md`** (FOLD-M — see Provenance above)
+
+### Phase 1 — Reproduce
+
+Run the project's actual build/compile/startup command and capture the exact
+error text verbatim — do not paraphrase, do not summarize before you've read
+it in full. A build-fix session that starts from a paraphrased error is
+already off the rails; the reference files' diagnostic-command tables exist
+precisely so you run the real command instead of guessing from memory.
+
+### Phase 2 — Classify + read the affected file
+
+Match the error to a category in the loaded reference's table. Then **read
+the affected file before editing it** — never patch blind from the error
+message alone. Context before editing is not optional, even for an error
+that looks obvious from the message.
+
+### Phase 3 — Minimal surgical fix
+
+One error, one fix, one verification cycle. Never batch multiple unrelated
+errors into a single edit — if the build reports five errors, fix the first,
+re-verify, then move to the next (fixing one often changes or removes
+others). Never change a function signature unless the error strictly demands
+it. Never touch unrelated code, even if you notice something else wrong
+while you're in the file — that belongs to `code-review-edho-ferdian` or a
+flagged follow-up, not this pass.
+
+### Phase 4 — Verify
+
+Re-run the real build/compile/startup command. Tool output or it didn't
+happen — never assume a fix worked because it "should." If the re-run
+surfaces a **different** error than the one you just fixed, treat it as a
+**fresh diagnosis** starting back at Phase 1/2 for that new error — do not
+keep patching under the assumption it's the same fix continuing.
+
+### Phase 5 — Reflection gate (mandatory, before reporting)
+
+Anti-suppression is the entire point of this gate. Before writing the Phase
+6 report, answer all four honestly:
+
+1. **Did I suppress instead of fix?** — `@ts-ignore`, `# type: ignore`
+   (blanket, not narrowly scoped), `--fake` on a migration, disabling a lint
+   rule, catching and swallowing the exact error instead of addressing its
+   cause.
+2. **Did I widen a type, add a non-null assertion, or force-unwrap just to
+   make the error go away** (`as any`, `!`, `.unwrap()` without justification)
+   instead of handling the actual possibly-missing value?
+3. **Did I edit a lockfile or bump a dependency version without being
+   asked?** — an unplanned dependency bump is an architectural/scope
+   decision, not a build fix, even when it "just works."
+4. **Is the build ACTUALLY green — did I verify, or assume?**
+
+**Any "yes" → revert that hunk and escalate instead of reporting success.**
+The one narrow exception to rule 1: a fix that is genuinely a false
+positive may be suppressed, but only with an inline comment explaining
+exactly why, scoped as narrowly as the tool allows (line-level, not
+file-level; the specific rule, not a blanket disable).
+
+### Phase 6 — Report
+
+Per-fix lines during the loop:
+
+```
+[FIXED] path:line
+Error: <exact error text>
+Fix: <what changed and why>
+Remaining errors: N
+```
+
+Closing line, always:
+
+```
+Build Status: SUCCESS|FAILED | Errors Fixed: N | Files Modified: N
+```
+
+## Cross-cutting rules (apply regardless of stack)
+
+**Loop guard.** Stop after 3 attempts on the *same* error — don't keep
+guessing past that. Stop if a fix creates more errors than it removes. Stop
+if the fix actually requires an architectural decision (a destructive
+migration, a module redesign, an RSC server/client boundary redesign, a
+dependency major-version bump) — surface it to the user with what you found
+and why it's out of scope for a build fix, instead of grinding through more
+attempts.
+
+**Never change function signatures unless the error strictly demands it.
+Never touch unrelated code.** Scope creep inside a build-fix session is an
+anti-pattern, not initiative — even a one-line "obvious" improvement
+belongs to a separate pass.
+
+**Escalation routing** — hand off rather than forcing a build-fix-shaped
+solution onto a different-shaped problem:
+
+- The fix is actually a refactor (the error only goes away if you
+  restructure, not patch) → `code-review-edho-ferdian`.
+- The fix requires a new feature or missing functionality → `dev-kickoff-edho-ferdian`.
+- Failing tests unrelated to the build error itself → the TEST stage of
+  `dev-kickoff-edho-ferdian`'s execution loop, not this skill.
+
+**Salak hook (optional, auto-detected, detect-defer-never-require).** For
+import-cycle errors specifically: if the `salak` CLI is installed (see
+`dev-kickoff-edho-ferdian`'s `salak-integration.md` for the full detect/
+defer/version-drift contract — don't duplicate that logic here), read the
+real cycle path from its `repo-graph.json` (`depends_on`/`imports` edges)
+instead of grepping import statements by hand to reconstruct the cycle. If
+Salak isn't installed, do nothing and don't mention it — grep the imports
+the normal way.
+
+## Uji akar-masalah (jalankan sebelum menyebut sebuah fix "selesai")
+
+*(adapted from ECC `quality-nonconformance`, fetched 2026-09-06)*
+
+Kegagalan paling umum bukan salah memperbaiki — melainkan berhenti di gejala
+dan menamainya akar masalah. Tiga tanda bahaya, ambil langsung dari disiplin
+investigasi non-conformance manufaktur regulasi (di sana konsekuensi berhenti
+di gejala terukur dan terdokumentasi):
+
+1. **"Akar masalah"-mu mengandung kata *error*, *lupa*, atau *salah ketik*.**
+   Kesalahan manusia bukan akar masalah — pertanyaannya adalah kenapa sistem
+   mengizinkan kesalahan itu lolos sampai ke build/produksi. "Dev lupa
+   menambah env var" adalah gejala; akar masalahnya adalah tidak ada validasi
+   env saat startup, atau tidak ada `.env.example` yang di-cek CI.
+2. **Fix-mu setara "lebih hati-hati lain kali".** Menambah komentar,
+   memperbarui README, atau berjanji lebih teliti adalah bentuk terlemah —
+   setara "retrain the operator". Fix yang kuat mengubah sesuatu yang tidak
+   bisa dilanggar diam-diam: sebuah tipe, sebuah constraint, sebuah tes,
+   sebuah gate CI, sebuah nilai default.
+3. **Akar masalahmu adalah pernyataan masalah yang ditulis ulang.** "Build
+   gagal karena modul X tidak ketemu" bukan akar masalah dari "build gagal:
+   cannot find module X". Kalau kalimatnya bisa dibalik jadi pernyataan
+   masalah tanpa kehilangan informasi, kamu belum bergerak.
+
+Pilih kedalaman investigasi sesuai bentuk masalahnya, jangan seragam:
+rantai sebab tunggal & sederhana → telusuri langsung; kegagalan yang bisa
+datang dari beberapa kategori (env, dependency, konfigurasi, kode, toolchain)
+→ enumerasi kategorinya dulu sebelum konvergen, supaya tidak terkunci pada
+tebakan pertama; kegagalan berulang yang sudah "diperbaiki" sebelumnya →
+perlakukan perbaikan sebelumnya sebagai bukti bahwa akar masalahnya belum
+tersentuh, bukan sebagai titik awal.
+
+## Stacks planned (not yet built)
+
+Until a stack below has a shipped `references/<stack>.md`, fall back to the
+generic Phase 0–6 loop and the cross-cutting rules above for it — don't
+invent stack-specific fix tables you haven't verified. This is the
+error-resolution half of the same 34-item DEFER backlog that
+`language-code-review-edho-ferdian`'s "Stacks planned" list tracks for
+review; the two lists cover the same stacks but not the same depth per
+stack, since a build-fix lens only needs a diagnostic-command table + error
+category map, not full idiom/security coverage. Trigger for every group
+below, unless noted otherwise: **a real project in that stack appears.**
+
+- **PHP/Laravel** — build-fix side of `laravel-verification`/`laravel-tdd`
+  (Composer resolution failures, Artisan migration errors, PHPUnit/Pest
+  bootstrap failures). The security-side content for this stack already
+  lives in `security-review-edho-ferdian/references/language-specific.md`
+  §"PHP / Laravel [DEFERRED]" (D-012) — irrelevant to this skill's job, but
+  noted so a future session doesn't confuse "security deferred" with
+  "nothing about Laravel is ported yet."
+- **Java/Spring** — build-fix side of `springboot-verification`/
+  `springboot-tdd`/`java-coding-standards` (Maven/Gradle dependency
+  resolution, Spring context startup failures, bean wiring errors). Same
+  D-012 note: security content for this family is already ported and out of
+  this skill's scope regardless.
+- **Quarkus** — same trigger as Java/Spring; ~85% of Maven/Gradle diagnostic
+  overlap with Spring Boot means this should land as a sub-section of
+  `references/java-spring.md` when built, not a separate file — same
+  sub-section pattern D-012 already set for Quarkus security.
+- **Kotlin** — build-fix side of `kotlin-patterns`/`kotlin-testing` (Gradle
+  Kotlin DSL errors, coroutine/Flow compile errors, KMP target build
+  failures). Trigger: a real Android, KMP, or Ktor project.
+- **Swift/Apple** — build-fix side of `swiftui-patterns`/
+  `swift-concurrency-6-2` (Xcode build errors, SPM dependency resolution,
+  Swift 6 concurrency-checking failures). Trigger: a real iOS/macOS project
+  — and note this is the least likely to ever trigger, since Edho's
+  environment is Windows 10 and the Swift toolchain doesn't run there at all.
+- **Mobile cross-platform** — build-fix side of `dart-flutter-patterns`
+  (Flutter/Dart build and pub dependency errors), `react-native-patterns`
+  (Metro bundler, native module linking), `android-clean-architecture`
+  (Gradle/AGP errors), `compose-multiplatform-patterns`. Trigger: the first
+  mobile project. Build `react-native-patterns`' build-fix lens first when
+  this fires — same reasoning as the review-lens list: cheapest transfer
+  from Edho's existing React/TypeScript/JS diagnostic knowledge.
+- **.NET** — build-fix side of `dotnet-patterns`/`csharp-testing`/
+  `fsharp-testing` (MSBuild/dotnet CLI errors, NuGet resolution, xUnit/NUnit
+  bootstrap failures). Trigger: a real .NET project.
+- **C++** — build-fix side of `cpp-coding-standards`/`cpp-testing` (CMake
+  configuration errors, linker errors, compiler toolchain mismatches).
+  Trigger: a real C++ project.
+- **PyTorch** — build-fix side of `pytorch-patterns`: tensor shape mismatch,
+  device-placement (CPU/GPU) errors, CUDA OOM, AMP/mixed-precision failures,
+  DataLoader worker crashes. Trigger: real PyTorch training/inference code
+  failing to run. This is narrower than the review-lens gap — pure runtime
+  diagnostic mechanics, since `code-review-edho-ferdian/references/mle-lens.md`
+  already covers the review side (data leakage, lifecycle, ML-01..06) and
+  explicitly hands off exactly this runtime-mechanics gap to this skill in
+  its own "Handoffs" section.
+- **ArkTS/HarmonyOS** — not part of the 34-item DEFER backlog (it already
+  has agent-level coverage via `harmonyos-app-resolver` in ECC's agent
+  roster); kept here only as a placeholder until it's confirmed ported or
+  explicitly out of scope.
+- **Perl — skipped permanently, not deferred.** No `perl-patterns`/
+  `perl-testing` build-fix lens is planned. If a Perl build ever needs
+  diagnosing, use the generic Phase 0–6 loop; the only Perl content this
+  ecosystem keeps is the already-harvested generic security findings
+  (SEC-16..19) noted in `security-review-edho-ferdian/references/
+  language-specific.md` §"Perl — intentionally not built" (D-012), which
+  don't apply to build-fix work anyway.
