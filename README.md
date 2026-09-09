@@ -82,3 +82,11 @@ install.ps1          installer (Windows PowerShell)
 EEF is free — sponsoring funds the time to keep porting stacks and closing
 gaps. See [SPONSORS.md](SPONSORS.md) for tiers, or sponsor directly via
 [GitHub Sponsors](https://github.com/sponsors/edhoferdian).
+
+## Enterprise inquiry
+
+Need a custom skill for your team's internal stack, faster response than a
+GitHub issue, or help rolling this out to more than a couple of engineers?
+Open an issue titled "Enterprise inquiry" or email
+edhoferdian31@gmail.com — no fixed package, we figure out what actually
+fits your team.
