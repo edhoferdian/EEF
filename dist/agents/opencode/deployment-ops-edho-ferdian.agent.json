@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "deployment-ops-edho-ferdian": {
+      "description": "Agent form of the deployment-ops-edho-ferdian skill, same triggers \u2014 delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Getting a build to production and keeping it healthy \u2014 release strategy (rolling / blue-green / canary), CI/CD pipeline gates, health checks and Kubernetes probes, environment config and rollback, a production-readiness ship/block verdict, operator dashboards, and post-deploy watching. Starts where container-ops-edho-ferdian stops (image built, compose working). Trigger phrases: \"deploy ini gimana\", \"bikin pipeline CI/CD\", \"rollback\", \"manifest kubernetes\", \"siap rilis belum\", \"pantau setelah deploy\", \"bikin dashboard monitoring\".",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/deployment-ops-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    }
+  }
+}

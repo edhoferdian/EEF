@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "billing-ops-edho-ferdian": {
+      "description": "Agent form of the billing-ops-edho-ferdian skill, same triggers \u2014 delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Diagnosing and handling billing/subscription operations \u2014 classifying customer billing incidents (duplicate subscriptions, multi-seat vs accidental duplicate, failed checkout, missing self-serve controls, broken product), separating customer impact from code-backed product truth, and routing pricing/entitlement claims through verification before they're repeated. Diagnosis-only for financial actions: refunds, credits, and cancellations require the user's explicit go-ahead before execution. Trigger phrases: \"pelanggan minta refund\", \"subscription ganda\", \"checkout gagal\", \"kenapa dia kena tagih dua kali\", \"billing portal rusak\", \"apakah per-seat billing beneran jalan di kode\".",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/billing-ops-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "click-path-audit-edho-ferdian": {
+      "description": "Agent form of the click-path-audit-edho-ferdian skill, same triggers \u2014 delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Trace every user-facing touchpoint (button, toggle, form submit) through its full state-change sequence to find defects that reading code line by line cannot see: handlers whose calls silently undo each other, async races, stale closures, and effects that reset the very state the button just set. Use when a control \"does nothing\" despite the handler existing and not crashing, after refactoring a shared state store (Zustand/Redux/context/ signals), or before release on critical flows. Trigger phrases: \"tombolnya gak jalan\", \"diklik tapi gak ada yang terjadi\", \"the button does nothing\", \"state-nya balik lagi\", \"sudah dicek semua tapi gak ketemu bug-nya\".",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/click-path-audit-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": false,
+        "edit": false,
+        "bash": true
+      }
+    }
+  }
+}

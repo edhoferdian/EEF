@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "seo-audit-edho-ferdian": {
+      "description": "Agent form of the seo-audit-edho-ferdian skill, same triggers \u2014 delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Technical + on-page SEO audit workflow \u2014 crawl/gather site signals, check them against a real technical-SEO checklist (crawlability, indexability, structured data, meta tags, sitemap/robots.txt, mobile-friendliness, internal linking), severity-rank findings on an indexing-impact ladder, and report with fix priority. Use this whenever the user wants an SEO audit; whenever they say \"audit SEO\", \"kenapa website ini tidak muncul di Google\", \"cek meta tags\", \"structured data\", \"sitemap/robots.txt\", \"cek SEO\", \"SEO check\" \u2014 or when reviewing any public-facing web project. Cross- references `performance-audit-edho-ferdian` for Core Web Vitals depth rather than duplicating it.",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/seo-audit-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    }
+  }
+}

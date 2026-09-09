@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "language-code-review-edho-ferdian": {
+      "description": "Agent form of the language-code-review-edho-ferdian skill, same triggers \u2014 delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Language- and framework-specific code review lenses layered on top of the general four-domain review in code-review-edho-ferdian \u2014 idioms, framework security misconfigurations, ORM/query correctness, performance traps, and testing conventions, auto-detected from project files across ~20 stacks (React, Python, FastAPI, Django, Go, Rust, Vue, Angular, NestJS, PHP/Laravel, Java/Spring, Quarkus, Kotlin, Swift, React Native, Flutter, Android, .NET, C++, PyTorch, ArkTS, Perl, Ruby, and more). Use whenever a review touches a specific language/framework and the generic checklist isn't enough \u2014 \"review kode Go/Python/React ini\", \"audit Django models\", \"cek FastAPI endpoint ini\", \"review kode Kotlin/Swift/Ruby ini\", or when the user names a stack while asking for review. Loads only\u2026 (see the skill for the full trigger list)",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/language-code-review-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": false,
+        "edit": false,
+        "bash": true
+      }
+    }
+  }
+}

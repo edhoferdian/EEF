@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "api-design-edho-ferdian": {
+      "description": "Agent form of the api-design-edho-ferdian skill, same triggers \u2014 delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Design and evolve API boundaries and contracts \u2014 REST resource naming, status-code semantics, pagination strategy, versioning policy, and the discipline of treating one contract artifact (OpenAPI/schema) as authoritative so client and server never drift. A design-time activity, distinct from system-design-edho-ferdian (broader architectural trade-offs) and code-review-edho-ferdian (reviewing an already-written endpoint). Trigger phrases: \"desain API untuk fitur ini\", \"bagaimana struktur endpoint yang baik\", \"API contract berubah, bagaimana handle-nya\", \"REST vs apa\", or when starting a new API surface.",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/api-design-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    }
+  }
+}

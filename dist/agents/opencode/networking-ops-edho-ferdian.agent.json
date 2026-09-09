@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "networking-ops-edho-ferdian": {
+      "description": "Agent form of the networking-ops-edho-ferdian skill, same triggers \u2014 delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Networking skill covering five modes \u2014 reviewing a router/switch config for security and correctness, designing a network (homelab or enterprise/multi-site), diagnosing a live symptom via a read-only OSI-layer methodology, running device commands and change windows safely (Cisco IOS-flavoured), and homelab build-out (remote access, local DNS, Netmiko automation with preflight validation). Use whenever the user pastes a config to review (\"cek config Cisco ini\", \"audit ACL ini\"), wants a network designed or segmented (\"rancang jaringan homelab\", \"design VLAN segmentation\"), is troubleshooting connectivity/DNS/routing/BGP symptoms (\"kenapa internet lambat\", \"site can't reach site\"), needs to run or script a device change (\"push this ACL via SSH\", \"automate this across 40\u2026 (see the skill for the full trigger list)",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/networking-ops-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    }
+  }
+}

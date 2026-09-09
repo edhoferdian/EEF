@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "spec-mining-edho-ferdian": {
+      "description": "Agent form of the spec-mining-edho-ferdian skill, same triggers \u2014 delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Extract behavioral specifications from an existing codebase that has no written spec \u2014 mining a brownfield repo into a flat list of Requirements (WHEN/THEN) and Invariants (always-true), each anchored to the exact code location that enforces it, with machine-readable metadata (entities, enforced, depends_on) grounded in Salak's dependency graph when that tool is installed. Groups the codebase into capabilities first, then mines them one at a time using a bounded sample-and-expand read strategy \u2014 never reading a whole module blindly. Use when entering a project with code but no spec, when dev-kickoff-edho-ferdian Phase 0 reports a missing BEHAVIOR_SPEC role, or when the user says \"ekstrak spec\", \"buat spec dari kode\", \"dokumentasikan behavior\", \"reverse-engineer the spec\", or \"repo\u2026 (see the skill for the full trigger list)",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/spec-mining-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    }
+  }
+}

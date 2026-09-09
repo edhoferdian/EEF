@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "container-ops-edho-ferdian": {
+      "description": "Agent form of the container-ops-edho-ferdian skill, same triggers \u2014 delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Container setup, docker-compose design, multi-stage build optimization, and debugging guidance. Security-specific container concerns live in security-review-edho-ferdian instead. Trigger phrases: \"setup Docker untuk project ini\", \"docker-compose untuk dev environment\", \"container ini lambat/besar\", \"debug container yang crash\".",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/container-ops-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    }
+  }
+}

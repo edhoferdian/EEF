@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "dead-code-cleanup-edho-ferdian": {
+      "description": "Agent form of the dead-code-cleanup-edho-ferdian skill, same triggers \u2014 delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Staged dead-code removal workflow \u2014 detect (stack-appropriate tooling: knip/depcheck/ts-prune, vulture/deptry, cargo-udeps, deadcode, ...), classify by removal risk (SAFE/CAREFUL/RISKY), cross-check every \"unused\" hit against Salak's repo-graph.json reverse-dependency data when available, then delete in ordered categories (deps \u2192 exports \u2192 files \u2192 duplicates) running the test suite between each category. Use this whenever the user wants dead code, unused exports, unused dependencies, or duplicate code actually REMOVED \u2014 \"bersihkan kode mati\", \"hapus yang tidak dipakai\", \"cleanup unused code/deps\", \"remove dead code\", \"consolidate duplicates\". Not for finding-only review \u2014 see the scope note below for the boundary with code-review-edho-ferdian's CQ-07.",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/dead-code-cleanup-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    }
+  }
+}

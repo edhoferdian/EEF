@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "desktop-e2e-edho-ferdian": {
+      "description": "Agent form of the desktop-e2e-edho-ferdian skill, same triggers \u2014 delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. End-to-end testing for Windows native desktop applications (WPF, WinForms, Win32/MFC, Qt 5/6) using pywinauto over the Windows UI Automation API. The native-automation driver that e2e-testing-edho-ferdian's Phase 0 detects as option 4 but has no content behind \u2014 journey mapping and the Page Object Model come from there; the pywinauto mechanics live here. Use when the target is a desktop .exe rather than a browser page, when a desktop GUI test suite is being set up or is flaky, or when adding AutomationIds to make an app testable. Trigger phrases: \"test aplikasi desktop\", \"pywinauto\", \"WPF/WinForms/Qt test\", \"UI Automation\", \"test .exe ini\".",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/desktop-e2e-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    }
+  }
+}

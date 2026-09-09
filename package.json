@@ -1,6 +1,6 @@
 {
   "name": "eef-install",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Install Ekosistem Edho Ferdian's 33 Claude Code skills into Claude Code, Cursor, Windsurf, Devin, Cline, GitHub Copilot, Kiro, Hermes Agent, OpenClaw, or ZCode — no git clone required.",
   "license": "MIT",
   "author": {

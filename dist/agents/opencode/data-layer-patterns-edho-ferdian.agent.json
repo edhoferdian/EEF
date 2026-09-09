@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "data-layer-patterns-edho-ferdian": {
+      "description": "Agent form of the data-layer-patterns-edho-ferdian skill, same triggers \u2014 delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Design and setup guidance for the data layer \u2014 Postgres schema design, Prisma ORM patterns, Redis caching/queue patterns, and cross-ORM migration strategy (expand-contract). A design-time companion to code-review-edho-ferdian's database-lens (which reviews existing SQL/ schema/migrations) \u2014 use this when SETTING UP or DESIGNING a data layer, not when reviewing one. Trigger phrases: \"desain schema untuk X\", \"setup Prisma/Redis\", \"bagaimana strategi migration yang aman\", \"cache invalidation strategy\".",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/data-layer-patterns-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    }
+  }
+}

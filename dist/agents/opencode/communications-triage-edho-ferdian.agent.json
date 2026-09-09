@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "communications-triage-edho-ferdian": {
+      "description": "Agent form of the communications-triage-edho-ferdian skill, same triggers \u2014 delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Channel-agnostic framework for triaging incoming messages (email, chat, Slack, LINE, Messenger, or any other channel) into four priority tiers, drafting replies that stay within a strict human-approval gate, and tracking whether a sent reply's promises actually get followed through on. Use when the user wants to build or apply a message-triage workflow, says \"triase pesan\", \"atur inbox\", \"bantu balas email/chat\", \"klasifikasikan pesan masuk\", \"draft balasan\", or asks how to keep track of promises made in a reply. Note: no channel (Gmail, Slack, etc.) is wired up yet in this ecosystem \u2014 this skill defines the triage logic and reply-drafting discipline to apply once a channel is connected, not a working integration.",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/communications-triage-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    }
+  }
+}

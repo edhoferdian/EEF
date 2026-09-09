@@ -228,6 +228,26 @@ npx eef-install --target zcode-agents       # adds to ~/.zcode/agents/, your own
   exists, unlike `.zcode/skills/`). Regenerate:
   `python scripts/export_agents_zcode.py`.
 
+**Every skill has an agent counterpart** (`python
+scripts/generate_agent_stubs.py`, 33/33) — not because every task needs
+delegation, but because *whether* a given task needs it is a runtime call
+(a small task stays in the main thread with the skill; a substantial,
+multi-file, or context-isolation-worthy task delegates to the agent), not
+a fixed split baked into which skills exist in agent form. Most stubs are
+deliberately thin wrappers that delegate straight back to their skill for
+actual criteria — `code-reviewer-edho-ferdian` is the one hand-tuned
+exception, kept as the pilot. A small allowlist of pure review/audit/lens
+agents (`code-reviewer-edho-ferdian`, `security-review-edho-ferdian`,
+`language-code-review-edho-ferdian`, `skill-audit-edho-ferdian`,
+`click-path-audit-edho-ferdian`) gets read-only tools instead of the
+default full set — a delegated reviewer that structurally *can't* write
+anything is a stronger isolation guarantee than one that merely shouldn't.
+Nested delegation (an agent calling another agent, not just a skill) isn't
+wired up yet — it needs an explicit per-harness capability check first
+(does the harness even let a sub-agent re-delegate, and if so, a
+leaf/orchestrator guard against runaway recursion — see Hermes'
+`delegate_task` role system for the pattern this ecosystem would mirror).
+
 Only one pilot agent exists today (`code-reviewer-edho-ferdian`) and one
 pilot workflow (`review-then-verify-edho-ferdian`) — this layer is still
 being validated before more of the roster gets ported.

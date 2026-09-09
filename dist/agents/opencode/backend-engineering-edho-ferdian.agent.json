@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "backend-engineering-edho-ferdian": {
+      "description": "Agent form of the backend-engineering-edho-ferdian skill, same triggers \u2014 delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Authoring server-side code between the API contract and the datastore \u2014 layering and ports/adapters boundaries, error taxonomy and resilience (typed errors, Result style, retry with backoff, circuit breakers), background jobs and queues, structured logging emission, and adding a new integration that matches the repo's existing connector pattern. The backend counterpart to frontend-engineering-edho-ferdian. Trigger phrases: \"struktur service layer\", \"error handling di backend\", \"retry/circuit breaker\", \"background job / queue\", \"tambah integrasi baru\".",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/backend-engineering-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    }
+  }
+}

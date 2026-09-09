@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "frontend-engineering-edho-ferdian": {
+      "description": "Agent form of the frontend-engineering-edho-ferdian skill, same triggers \u2014 delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Authoring and configuration guidance for building React/Next.js frontend applications well from the start \u2014 component composition patterns, UX/ interaction recipes, and Vite build-tool configuration. A companion to language-code-review-edho-ferdian (which reviews code after it's written) \u2014 use this when DESIGNING or WRITING new frontend code, not when reviewing existing code. Trigger phrases: \"bagaimana cara structure component ini\", \"best practice React untuk X\", \"setup Vite untuk Y\", \"bikin animasi/transisi yang smooth\", or when starting a new frontend feature.",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/frontend-engineering-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    }
+  }
+}

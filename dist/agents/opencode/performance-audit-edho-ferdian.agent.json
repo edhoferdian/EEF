@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "performance-audit-edho-ferdian": {
+      "description": "Agent form of the performance-audit-edho-ferdian skill, same triggers \u2014 delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Measure-then-fix performance workflow \u2014 runs real profiling/measurement tooling (Lighthouse, bundle analyzers, heap-snapshot diffing, Node/browser profilers, DB EXPLAIN) to get a baseline, diagnoses against Core Web Vitals budgets and algorithmic-complexity patterns, applies a fix, then re-measures the delta against the budget. Use this whenever the user wants a performance problem actually diagnosed and fixed with real numbers \u2014 \"app terasa lambat\", \"kenapa lemot\", \"optimize performance\", \"reduce bundle size\", \"find memory leak\", \"Lighthouse audit\", \"why is this slow\" \u2014 not for a static read-time performance guess (see the scope note below for the boundary with code-review-edho-ferdian's PERF domain).",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/performance-audit-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    }
+  }
+}
