@@ -1,11 +1,7 @@
 #!/usr/bin/env python3
 """Package every skills/<name>/ folder into dist/<name>.skill.
 
-Used by both CI (.github/workflows/ci.yml) and local development, so the
-output is byte-for-byte identical either way: forward-slash paths (works
-when uploaded from any OS), sorted file order, and a fixed timestamp on
-every zip entry (so re-running on a different day doesn't change the
-archive and make CI's "is dist/ in sync" diff always fail).
+Used by both CI (.github/workflows/ci.yml) and local development.
 
 Usage:
     python scripts/package_skills.py                 # package all skills
@@ -22,10 +18,9 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 SKILLS_DIR = REPO_ROOT / "skills"
 DIST_DIR = REPO_ROOT / "dist"
 
-# Fixed timestamp for every zip entry so output is reproducible regardless
-# of when the script runs. ZIP format's minimum representable date is 1980.
+# Fixed timestamp for every zip entry so the archive doesn't change just
+# because it was rebuilt on a different day.
 FIXED_DATE_TIME = (1980, 1, 1, 0, 0, 0)
-
 
 TEXT_SUFFIXES = {".md", ".txt", ".json", ".yml", ".yaml"}
 
@@ -34,10 +29,9 @@ def read_normalized(f: Path) -> bytes:
     """Read a file's bytes with line endings normalized to LF.
 
     Git checkouts on Windows can produce CRLF line endings for text files
-    (autocrlf) while Linux/CI checkouts keep LF, which would otherwise make
-    the packaged archive non-reproducible across machines even though the
-    committed source is identical. Binary-ish files (anything not in
-    TEXT_SUFFIXES) are read as-is, unmodified.
+    (autocrlf) while Linux/CI checkouts keep LF, even though the committed
+    source is identical. Binary-ish files (anything not in TEXT_SUFFIXES)
+    are read as-is, unmodified.
     """
     if f.suffix.lower() in TEXT_SUFFIXES:
         # newline=None enables universal-newlines mode: \r\n and \r both
@@ -47,29 +41,51 @@ def read_normalized(f: Path) -> bytes:
     return f.read_bytes()
 
 
-def build_archive_bytes(skill_dir: Path) -> bytes:
-    """Return the exact bytes a .skill archive for skill_dir should contain."""
-    import io
+def build_manifest(skill_dir: Path) -> dict[str, bytes]:
+    """Return {relative_posix_path: normalized_content} for a skill folder.
 
-    buf = io.BytesIO()
+    This is the thing that actually needs to match between skills/<name>/
+    and dist/<name>.skill — NOT the raw compressed zip bytes. Two zip
+    libraries (or the same library on different OS/zlib builds) can compress
+    byte-identical input into different DEFLATE output, so comparing raw
+    archive bytes across machines is not just fragile, it observed a real
+    Windows-vs-Ubuntu CI mismatch even after content was confirmed identical.
+    Comparing decompressed content is the correct invariant.
+    """
     files = sorted(p for p in skill_dir.rglob("*") if p.is_file())
-    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
-        for f in files:
-            rel_path = f.relative_to(skill_dir).as_posix()
+    return {f.relative_to(skill_dir).as_posix(): read_normalized(f) for f in files}
+
+
+def write_archive(skill_dir: Path, dest: Path) -> None:
+    manifest = build_manifest(skill_dir)
+    dest.parent.mkdir(exist_ok=True)
+    with zipfile.ZipFile(dest, "w", zipfile.ZIP_DEFLATED) as zf:
+        for rel_path, content in manifest.items():
             info = zipfile.ZipInfo(rel_path, date_time=FIXED_DATE_TIME)
             info.compress_type = zipfile.ZIP_DEFLATED
-            zf.writestr(info, read_normalized(f))
-    return buf.getvalue()
+            zf.writestr(info, content)
+
+
+def read_archive_manifest(dest: Path) -> dict[str, bytes] | None:
+    if not dest.exists():
+        return None
+    try:
+        with zipfile.ZipFile(dest, "r") as zf:
+            return {name: zf.read(name) for name in zf.namelist()}
+    except zipfile.BadZipFile:
+        return None
 
 
 def package_one(skill_dir: Path, check: bool) -> bool:
-    """Return True if the on-disk .skill matches what it should be (or was
-    just written to match, when not in check mode)."""
+    """Return True if dist/<name>.skill's CONTENT matches skills/<name>/
+    (or was just rewritten to match, when not in check mode). Compares
+    decompressed file content, not raw archive bytes — see build_manifest.
+    """
     name = skill_dir.name
     dest = DIST_DIR / f"{name}.skill"
-    wanted = build_archive_bytes(skill_dir)
+    wanted = build_manifest(skill_dir)
+    current = read_archive_manifest(dest)
 
-    current = dest.read_bytes() if dest.exists() else None
     if current == wanted:
         return True
 
@@ -77,8 +93,7 @@ def package_one(skill_dir: Path, check: bool) -> bool:
         print(f"STALE: dist/{name}.skill does not match skills/{name}/")
         return False
 
-    DIST_DIR.mkdir(exist_ok=True)
-    dest.write_bytes(wanted)
+    write_archive(skill_dir, dest)
     print(f"Packaged: {name}")
     return True
 
