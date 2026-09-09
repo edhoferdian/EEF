@@ -1,4 +1,4 @@
-.claude/
+.claude/scheduled_tasks.lock
 *.zip
 *.tgz
 CLAUDE.md
