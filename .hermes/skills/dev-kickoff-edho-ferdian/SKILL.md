@@ -81,11 +81,20 @@ PLAN → TEST → IMPLEMENT → REVIEW → VERIFY → REMEMBER → IMPROVE
   knowledge alone — this is the literal answer to "when I'm designing
   frontend, the frontend skill should just fire": it fires here, at
   IMPLEMENT, the moment the touched files say so.
-- **REVIEW** — fresh-context review via `code-review-edho-ferdian` (or
-  `language-code-review-edho-ferdian`'s stack lens for idiom-specific
-  findings); a HIGH-RISK task also invokes `security-review-edho-ferdian`.
-  The reviewer must not reuse the implementer's reasoning. Auto
-  Critique-Correction for HIGH-RISK tasks.
+- **REVIEW** — the reviewer must not reuse the implementer's reasoning, so
+  prefer real isolation over merely framing it as "fresh-context": on a
+  harness with sub-agent delegation (Claude Code's Task tool, OpenCode's
+  agent block, ...), delegate to the `code-reviewer-edho-ferdian` agent
+  (`agents/code-reviewer-edho-ferdian/AGENT.md`) — a genuinely separate
+  context that never saw the implementer's own reasoning, not just a fresh
+  read of the same session. On a harness with no delegation primitive,
+  fall back to invoking the `code-review-edho-ferdian` skill directly
+  (still a fresh pass, just without hard context isolation — see that
+  skill's own SKILL.md for the caveat this implies). Either path also
+  loads `language-code-review-edho-ferdian`'s stack lens for idiom-specific
+  findings; a HIGH-RISK task also invokes `security-review-edho-ferdian`
+  (skill only — no agent for it yet). Auto Critique-Correction for
+  HIGH-RISK tasks.
 - **VERIFY** — run the real tooling: build, lint, type-check, full test run.
   Tool output or it didn't happen. A failing build hands off to
   `build-fix-edho-ferdian` rather than being patched ad hoc inline — that

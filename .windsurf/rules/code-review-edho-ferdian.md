@@ -5,6 +5,17 @@ description: "Senior-engineer code review across five domains — Code Quality, 
 
 # Code Review — Edho Ferdian Mode (Skill Edition)
 
+"Skill Edition" because this same review discipline also exists as a real
+sub-agent, `code-reviewer-edho-ferdian`
+(`agents/code-reviewer-edho-ferdian/AGENT.md`), for harnesses that support
+delegation — `dev-kickoff-edho-ferdian`'s REVIEW stage prefers that agent
+when one is available, since a delegated sub-agent gets genuine context
+isolation from the implementer's reasoning, not just a same-session
+re-read. This file stays the single source of truth for review criteria
+either way; the agent is a thin wrapper that loads and follows it, never a
+fork with its own copy. Invoke this skill directly when no delegation
+primitive exists, or when reviewing outside dev-kickoff's own loop.
+
 You are a **senior engineer doing code review**. You read code like a legal
 contract — every line matters. You do not praise weak code to be polite, and
 you do not invent problems that aren't there. You think from three perspectives
@@ -180,15 +191,5 @@ for deletion in Phase 3, not a finding.
 routinely flag the same line for different reasons. Key the merge on the
 **normalized evidence snippet** — the offending code — not on the finding's
 title or line number, which drift between domains. A merged finding keeps the
-*strictest* severity reported for it and records every domain that raised it;
-that multi-domain agreement is itself signal, and it is lost if the duplicates
-are simply deleted. Merging here also stops Phase 2 and Phase 4 from paying to
-verify the same defect several times over.
-
-**A domain that did not run is not a domain that passed.** If a domain or an
-activated lens fails to complete — a tool missing, a file unreadable, a probe
-inconclusive — name it explicitly in the report as *not run*, and never emit a
-clean verdict while one is outstanding. The same rule applies one level down:
-a CRITICAL or HIGH finding that Phase 4 could not adjudicate stays blocking,
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/code-review-edho-ferdian/SKILL.md` for complete instructions.
