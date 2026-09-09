@@ -76,3 +76,9 @@ project-memory/      this ecosystem's own planning/decision history
 install.sh           installer (macOS/Linux/Git Bash)
 install.ps1          installer (Windows PowerShell)
 ```
+
+## Sponsors
+
+EEF is free — sponsoring funds the time to keep porting stacks and closing
+gaps. See [SPONSORS.md](SPONSORS.md) for tiers, or sponsor directly via
+[GitHub Sponsors](https://github.com/sponsors/edhoferdian).
