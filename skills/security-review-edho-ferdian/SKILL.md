@@ -302,9 +302,9 @@ This skill keeps `SKILL.md` lean and pushes the checklists into
 - `references/general-checklist.md` — SEC-01..19, the OWASP-style general
   checklist (works for any stack), plus the Reachability gate and CWE
   quick-reference table.
-- `references/language-specific.md` — React, Python, FastAPI, Django, and
-  Node/NestJS security items, plus deferred PHP/Laravel and Java/Spring Boot
-  sections.
+- `references/language-specific.md` — React, Python, FastAPI, Django,
+  Node/NestJS, PHP/Laravel, Java/Spring Boot, Perl, Ruby/Rails,
+  ArkTS/HarmonyOS, and Solidity/EVM smart-contract security items.
 - `references/domain-specific.md` — database (RLS/privilege), healthcare
   (PHI), LLM & agent pipelines, ML, containers (Dockerfile/Compose
   hardening), cloud/IaC/CI-CD, and agent-harness configuration security
