@@ -28,6 +28,7 @@ import sys
 from pathlib import Path
 
 from lib_skills import REPO_ROOT, load_skills
+from export_agents_hermes import SKILL_NAME as AGENT_ROUTER_SKILL_NAME
 
 
 def dir_contents(d: Path) -> dict:
@@ -62,7 +63,13 @@ def main() -> int:
         print(f"Copied: {s.name}")
 
     if dest_root.is_dir():
-        wanted_names = {s.name for s in skills}
+        # AGENT_ROUTER_SKILL_NAME (agent-delegation-edho-ferdian) is written
+        # by export_agents_hermes.py into this same directory, not by this
+        # script — exclude it from the orphan sweep so the two generators
+        # don't fight over the same folder (see agents/README, if present,
+        # for why Hermes needs a separate generated router skill instead of
+        # a per-agent file like Claude Code/OpenCode get).
+        wanted_names = {s.name for s in skills} | {AGENT_ROUTER_SKILL_NAME}
         for existing in dest_root.iterdir():
             if existing.is_dir() and existing.name not in wanted_names:
                 if args.check:

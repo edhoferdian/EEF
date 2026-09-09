@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "code-reviewer-edho-ferdian": {
+      "description": "Senior-engineer code review specialist \u2014 Code Quality, Security, Performance, Blueprint/Spec Consistency, and Test Quality. Delegate to this agent whenever code was just written or modified and needs review before merge, or when the user explicitly asks for a review/audit.",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/code-reviewer-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": false,
+        "edit": false,
+        "bash": true
+      }
+    }
+  }
+}

@@ -57,6 +57,16 @@ jobs:
         run: python scripts/export_hermes.py --check
       - name: Check .agents/skills/ is up to date
         run: python scripts/export_openclaw.py --check
+      - name: Check .zcode/skills/ is up to date
+        run: python scripts/export_zcode.py --check
+      - name: Check .claude/agents/ is up to date
+        run: python scripts/export_agents_claude.py --check
+      - name: Check dist/agents/opencode/ is up to date
+        run: python scripts/export_agents_opencode.py --check
+      - name: Check .hermes agent-delegation skill is up to date
+        run: python scripts/export_agents_hermes.py --check
+      - name: Check dist/agents/zcode/ is up to date
+        run: python scripts/export_agents_zcode.py --check
 
   npm-cli-smoke-test:
     name: eef-install CLI smoke test
@@ -81,6 +91,32 @@ jobs:
           node "$GITHUB_WORKSPACE/bin/eef.js" --target cursor
           test -d .cursor/rules
           test "$(ls .cursor/rules | wc -l)" -eq 33
+      - name: install target=zcode into a throwaway directory
+        run: |
+          mkdir -p /tmp/eef-cli-test-zcode
+          cd /tmp/eef-cli-test-zcode
+          node "$GITHUB_WORKSPACE/bin/eef.js" --target zcode
+          test -d .zcode/skills
+          test "$(ls .zcode/skills | wc -l)" -eq 33
+      - name: install target=claude-agents into a throwaway directory
+        run: |
+          mkdir -p /tmp/eef-cli-test-claude-agents
+          CLAUDE_AGENTS_DIR=/tmp/eef-cli-test-claude-agents node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents
+          test -f /tmp/eef-cli-test-claude-agents/code-reviewer-edho-ferdian.md
+      - name: install target=opencode-agents merges without clobbering existing config
+        run: |
+          mkdir -p /tmp/eef-cli-test-opencode-agents
+          cd /tmp/eef-cli-test-opencode-agents
+          echo '{"$schema":"https://opencode.ai/config.json","mcp":{"my-own-server":{"type":"http","url":"https://example.com"}},"agent":{"my-own-agent":{"mode":"subagent"}}}' > opencode.json
+          node "$GITHUB_WORKSPACE/bin/eef.js" --target opencode-agents
+          node -e "const c=require('./opencode.json'); if(!c.mcp['my-own-server']) throw new Error('clobbered mcp'); if(!c.agent['my-own-agent']) throw new Error('clobbered existing agent'); if(!c.agent['code-reviewer-edho-ferdian']) throw new Error('missing merged agent');"
+          test -f prompts/agents/code-reviewer-edho-ferdian.txt
+      - name: install target=zcode-agents twice is idempotent and additive-only
+        run: |
+          mkdir -p /tmp/eef-cli-test-zcode-agents
+          node "$GITHUB_WORKSPACE/bin/eef.js" --target zcode-agents
+          node "$GITHUB_WORKSPACE/bin/eef.js" --target zcode-agents
+          test -f "$HOME/.zcode/agents/code-reviewer-edho-ferdian.md"
 
   plugin-validate:
     name: Claude Code plugin manifest

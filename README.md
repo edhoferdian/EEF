@@ -24,6 +24,7 @@ npx eef-install --target copilot            # GitHub Copilot
 npx eef-install --target kiro                # Kiro (add --global for ~/.kiro)
 npx eef-install --target hermes              # Hermes Agent (add --global for ~/.hermes)
 npx eef-install --target openclaw            # OpenClaw (add --global for ~/.agents)
+npx eef-install --target zcode                # ZCode (add --global for ~/.zcode)
 npx eef-install --target agents-md          # AGENTS.md into the current project
 npx eef-install --target gemini-md          # GEMINI.md into the current project
 npx eef-install --list                      # list all skill names
@@ -138,8 +139,16 @@ checked in CI (`export-targets-sync` job):
 - **[.agents/skills/](.agents/skills/)** — a generated copy for
   [OpenClaw](https://openclaw.ai). Regenerate:
   `python scripts/export_openclaw.py` (`--global` for `~/.agents/skills/`).
+- **[.zcode/skills/](.zcode/skills/)** — a generated copy for
+  [ZCode](https://z.ai) (Z.ai's desktop coding agent, GLM Coding Plan).
+  Confirmed directly against the installed app's own resources, not
+  assumed: its packed source checks for a `/.zcode/skills/` path when
+  classifying skill sources, and its onboarding flow migrates an existing
+  `CLAUDE.md` into `AGENTS.md` — so this ecosystem's own `AGENTS.md` export
+  already covers ZCode's project-instructions half too. Regenerate:
+  `python scripts/export_zcode.py` (`--global` for `~/.zcode/skills/`).
 
-Hermes and Kiro's copy-based adapters, and OpenClaw's, all work the same
+Hermes, Kiro, OpenClaw, and ZCode's copy-based adapters all work the same
 way for the same reason: their skill format is
 [agentskills.io](https://agentskills.io)'s open standard — the same
 `SKILL.md` + `name`/`description` frontmatter format this ecosystem
@@ -150,10 +159,78 @@ list; only a correctly-shaped copy in the right directory.
 Every adapter above is generated, never hand-maintained, and CI fails if
 any of them drifts from `skills/`. Several harnesses need no adapter at
 all — confirmed via each tool's own docs, not assumed: `AGENTS.md` alone
-already covers Codex, OpenCode, Muse Code (Meta), Cline, Zed, and Google
-Antigravity, and [Pi](https://github.com/earendil-works/pi-coding-agent)
+already covers Codex, OpenCode, Muse Code (Meta), Cline, Zed, Google
+Antigravity, and ZCode, and [Pi](https://github.com/earendil-works/pi-coding-agent)
 resolves a standard `skills/` folder directly
 (`pi install git:edhoferdian/EEF`) with no generated files at all.
+
+## Agent orchestration (experimental)
+
+A second, newer layer alongside `skills/` — for the harnesses that support
+*sub-agent delegation* (a scoped-down persona with its own tool access,
+callable mid-task) rather than only single-agent instructions:
+
+- **[`agents/`](agents/)** — canonical agent definitions (`AGENT.md`:
+  `name`/`description`/`tools`/`model` frontmatter + a system-prompt body).
+  Each agent stays thin on purpose — it delegates to the matching
+  `-edho-ferdian` skill for actual review/task criteria rather than
+  duplicating them, so the two layers can't drift apart.
+- **[`workflows/`](workflows/)** — named multi-agent recipes (pipeline /
+  parallel shape) referencing agents by name, generalized from patterns
+  already used inline in skills like `gan-harness-edho-ferdian` and
+  `code-review-edho-ferdian`'s Critique-Correction Loop.
+
+**`model:` is Claude Code-only.** Its value ("sonnet", "opus", ...) is a
+Claude Code-specific alias — every other harness's generator deliberately
+omits the field so the agent inherits that harness's own default model,
+instead of failing to resolve an alias it doesn't recognize (reproduced by
+hand against ZCode before this policy existed: setting `model: "sonnet"`
+there made the agent fail to load).
+
+Sub-agent delegation is **not** a cross-tool standard the way `SKILL.md` is
+— every harness that has it defines the format itself, so this layer is
+generated per harness like `skills/` is, not copied verbatim. Install with
+`eef-install` the same way as the skills layer:
+
+```bash
+npx eef-install --target claude-agents      # ~/.claude/agents/ (or $CLAUDE_AGENTS_DIR)
+npx eef-install --target opencode-agents    # merges into ./opencode.json ($schema/mcp/etc untouched, --global for ~/.config/opencode)
+npx eef-install --target zcode-agents       # adds to ~/.zcode/agents/, your own agents there untouched
+```
+
+- **[.claude/agents/](.claude/agents/)** — Claude Code's own native
+  subagent format; a straight 1:1 mapping since `AGENT.md` already *is*
+  that format. Regenerate: `python scripts/export_agents_claude.py`.
+- **dist/agents/opencode/** — a `{name}.agent.json` fragment + prompt file
+  per agent, for OpenCode's `agent.<name>` block in `opencode.json`.
+  `eef-install --target opencode-agents` merges the `"agent"` key in
+  without touching any other key in that file (a consumer's own MCP
+  servers and other config live in the same file) — verified against a
+  live `opencode.json` that already had its own `mcp` block and an
+  unrelated agent before the merge, both intact after. Regenerate:
+  `python scripts/export_agents_opencode.py`.
+- **[.hermes/skills/agent-delegation-edho-ferdian/](.hermes/skills/agent-delegation-edho-ferdian/)**
+  — Hermes has no static per-agent file format at all (confirmed against
+  its own `tools/delegate_tool.py` source: `delegate_task` is dynamic and
+  goal-based, and its only persistent named-agent primitive, Bot Mode
+  profiles, is a full provisioned directory this script has no business
+  generating). Instead this is a generated **skill** — a delegate_task()
+  call template per canonical agent, so Hermes' primary agent has a ready
+  roster instead of improvising a persona each time. Regenerate:
+  `python scripts/export_agents_hermes.py` (`--global` for
+  `~/.hermes/skills/`).
+- **dist/agents/zcode/** — one `.md` per agent in ZCode's own native
+  Subagent format (`name`/`description`/`injectAgentsMd` frontmatter +
+  system-prompt body), confirmed against a real file ZCode itself wrote
+  through its "New Agent" dialog, not guessed. `eef-install --target
+  zcode-agents` copies these into `~/.zcode/agents/` alongside — never
+  over — anything already there (no confirmed project-local equivalent
+  exists, unlike `.zcode/skills/`). Regenerate:
+  `python scripts/export_agents_zcode.py`.
+
+Only one pilot agent exists today (`code-reviewer-edho-ferdian`) and one
+pilot workflow (`review-then-verify-edho-ferdian`) — this layer is still
+being validated before more of the roster gets ported.
 
 ## Skills
 
@@ -167,11 +244,12 @@ similarly-scoped skill from any other package you have installed.
 ```
 .claude-plugin/     plugin.json + marketplace.json (Option D)
 .github/            CI workflow + FUNDING.yml
-.cursor/, .windsurf/, .devin/, .clinerules/, .kiro/
+.cursor/, .windsurf/, .devin/, .clinerules/, .kiro/, .zcode/
                      generated per-harness adapters, see scripts/export_*.py
 AGENTS.md, GEMINI.md generated cross-vendor router files
 skills/              source of truth — 33 skill folders
-dist/                packaged .skill archives (Option B), one per skill
+agents/, workflows/  canonical sub-agent + multi-agent-workflow definitions (experimental)
+dist/                packaged .skill archives (Option B), one per skill; also dist/agents/opencode/
 bin/eef.js           npm CLI entry point (Option A)
 scripts/             packaging + validation + cross-harness export scripts
 install.sh           installer (macOS/Linux/Git Bash, Option C)

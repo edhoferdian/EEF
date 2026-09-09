@@ -1,0 +1,177 @@
+---
+name: billing-ops-edho-ferdian
+description: >-
+  Diagnosing and handling billing/subscription operations — classifying
+  customer billing incidents (duplicate subscriptions, multi-seat vs
+  accidental duplicate, failed checkout, missing self-serve controls,
+  broken product), separating customer impact from code-backed product
+  truth, and routing pricing/entitlement claims through verification
+  before they're repeated. Diagnosis-only for financial actions: refunds,
+  credits, and cancellations require the user's explicit go-ahead before
+  execution. Trigger phrases: "pelanggan minta refund", "subscription
+  ganda", "checkout gagal", "kenapa dia kena tagih dua kali", "billing
+  portal rusak", "apakah per-seat billing beneran jalan di kode".
+---
+
+# Billing Ops — Edho Ferdian Mode
+
+Customer billing operations and finance billing operations are consolidated
+into one skill per D-029 recommendation. Built ahead of its original trigger (Edho actually charging money for a
+shipped product) per explicit user request, D-035 — treat vendor-specific
+integration details (e.g. calls into a payments API) as needing
+re-verification once a real billing system exists, since none of this has
+been exercised against a live one yet.
+
+## Where this sits
+
+- This skill covers **billing operations**: reading a billing incident,
+  classifying it, and deciding what to do about it — customer-facing and
+  operator-facing.
+- It does not own code-quality or spec-consistency review. When the question
+  is "does the code actually enforce what we're claiming," that check is an
+  instance of the Blueprint/Spec Consistency domain in
+  `code-review-edho-ferdian` — cross-reference that skill for the review
+  methodology rather than redefining it here.
+- It does not own the underlying payment/checkout/webhook implementation.
+  `backend-engineering-edho-ferdian` and `data-layer-patterns-edho-ferdian`
+  own how that code is structured; this skill only asks whether it matches
+  what's being claimed.
+
+## Two layers of the same problem
+
+Billing questions arrive at two altitudes, and mixing them produces bad
+answers:
+
+1. **Customer-specific remediation** — one customer, one incident. What
+   happened to them, and what's the safest fix.
+2. **Operator/product truth** — is the underlying billing behavior actually
+   what the pricing page, sales copy, or a support answer implies. This is
+   broader than any single ticket.
+
+Always classify which layer a question is at before answering. A duplicate
+charge complaint (layer 1) can reveal a broken self-serve cancel flow
+(layer 2) — surface both, but don't let the specific incident stand in for
+the general claim, and don't let a general policy answer skip the specific
+customer's actual situation.
+
+## Step 1 — Classify the incident (customer layer)
+
+Five categories:
+
+1. **Duplicate subscription** — same customer billed by more than one active
+   subscription. Confirm it's actually duplicate (same product, same
+   customer identity) before treating it as one.
+2. **Multi-seat intent vs. accidental duplicate** — what looks like a
+   duplicate may be a deliberate second seat/license. Check stated intent
+   and usage pattern before assuming error. Do not collapse the two.
+3. **Failed or incomplete checkout** — payment attempted but never
+   completed, or completed without provisioning the product. Distinguish
+   "customer was never charged" from "customer was charged but not
+   provisioned" — they need different fixes.
+4. **Missing or broken self-serve control** — the customer could not do
+   something (cancel, downgrade, update a seat count) that the product
+   claims they can do. This is a product gap, not just a support ticket;
+   log it as one (see Step 4).
+5. **Product defect / unmet value** — the customer is billed correctly but
+   the product itself is broken or not delivering what was paid for. This
+   is a product-quality question wearing a billing complaint's clothes;
+   route the underlying defect to the owning engineering skill once the
+   billing side is resolved.
+
+Identify the customer cleanly first (matching identity, not guessing from a
+name or email fragment), and never expose secrets, full payment card data,
+or another customer's billing details while doing so.
+
+## Step 2 — Verify the claim against the code, not the copy
+
+Never assert a billing/entitlement behavior — "it's per-seat," "quota resets
+monthly," "cancel takes effect immediately" — on the strength of the
+pricing page, onboarding copy, or a past support answer alone. If the answer
+matters (refund decision, policy answer, escalation), trace it to the code
+path that is supposed to enforce it:
+
+- checkout / plan-selection logic
+- entitlement or quota calculation
+- seat counting (does adding a checkout quantity actually change what the
+  account can do, or does it stop at "quantity purchased")
+- self-serve billing-portal actions (cancel, downgrade, seat change)
+
+Do not say a behavior is "per-seat" (or any other specific billing model)
+unless the entitlement path in the code actually enforces it — a checkout
+line item is not proof of enforcement. This is the billing-domain instance
+of ground-truth-over-narrative: verify against what the code does, not what
+the page says it does. Where this check turns into a full review of the
+enforcement code itself, hand it to `code-review-edho-ferdian`'s
+Blueprint/Spec Consistency domain rather than re-deriving that methodology
+here.
+
+Also don't assume a duplicate subscription implies duplicate value received
+— a duplicate charge and a duplicate benefit are different claims, and a
+refund decision should be based on which one actually happened.
+
+## Step 3 — Diagnosis is not execution
+
+This skill produces a diagnosis and a recommended action. It does not
+execute financial changes on its own authority.
+
+**Hard rule, consistent with the global "Explicit permission required"
+action category for purchase/payment operations:** refunds, credits,
+subscription cancellations, and any other financial adjustment are
+EXPLICIT-PERMISSION-REQUIRED actions. State the diagnosis, state the
+recommended action and its revenue impact, and get the user's explicit
+go-ahead before anything gets executed — a support-style script drafted for
+the user, not a payment sent on their behalf. Never treat "the customer is
+clearly right" or "this is obviously a duplicate" as authorization to skip
+that confirmation.
+
+Prefer the safest reversible action when a fix is warranted, and prefer
+whatever billing platform the ecosystem already has connected over building
+a custom workaround.
+
+## Step 4 — Close with a structured handoff
+
+Every billing incident response ends with:
+
+```text
+SNAPSHOT
+- data source and its timestamp (live vs. last-known/saved — always say
+  which; never present a stale snapshot as current)
+- relevant subscription/charge/refund state
+
+CUSTOMER IMPACT
+- who is affected, what happened to them specifically
+
+PRODUCT TRUTH
+- what the code actually enforces (from Step 2)
+- what the pricing page / sales copy / prior support answer claims
+- flag any gap between the two explicitly
+
+RECOMMENDED ACTION
+- refund / credit / preserve / convert / no-op
+- marked EXPLICIT PERMISSION REQUIRED if it involves money moving or a
+  subscription being changed — not yet executed
+
+PRODUCT GAP
+- the exact follow-up item to build or fix, if Step 1 or Step 2 surfaced one
+  (e.g. a broken self-serve control, an unenforced pricing claim)
+```
+
+## Pitfalls
+
+- Treating a stale/cached billing snapshot as live data without saying so.
+- Answering a pricing/entitlement question from memory or from marketing
+  copy instead of tracing the enforcing code path.
+- Letting "this looks like an obvious refund" skip the explicit-permission
+  step — obviousness is not authorization.
+- Conflating failed/incomplete checkout attempts with actual net revenue.
+- Jumping straight from diagnosis to a financial action without separating
+  customer impact from the broader product-truth question.
+
+## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
+
+Communication to the user in Bahasa Indonesia; the structured handoff report
+(Snapshot/Customer Impact/Product Truth/Recommended Action/Product Gap) in
+English, since it gets pasted into an issue tracker or handed to another
+skill. Full contract: `skill-authoring-edho-ferdian` §7.
+- Comparing competitor pricing from memory when the ecosystem has research
+  tooling available to check current evidence instead.

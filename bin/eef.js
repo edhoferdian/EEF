@@ -116,6 +116,55 @@ const TARGETS = {
     },
   },
 
+  zcode: {
+    label: "ZCode (Z.ai)",
+    scope: "project by default, --global for ~/.zcode",
+    install(_skillNames, opts) {
+      const destRoot = opts.global
+        ? path.join(os.homedir(), ".zcode", "skills")
+        : path.join(process.cwd(), ".zcode", "skills");
+      copyDirInto(path.join(PKG_ROOT, ".zcode", "skills"), destRoot);
+    },
+  },
+
+  "claude-agents": {
+    label: "Claude Code sub-agents (agents/*/AGENT.md roster)",
+    scope: "global (or $CLAUDE_AGENTS_DIR)",
+    install() {
+      const destRoot = process.env.CLAUDE_AGENTS_DIR || path.join(os.homedir(), ".claude", "agents");
+      copyDirInto(path.join(PKG_ROOT, ".claude", "agents"), destRoot);
+    },
+  },
+
+  "opencode-agents": {
+    label: "OpenCode sub-agents (merged into opencode.json, never overwritten)",
+    scope: "project by default, --global for ~/.config/opencode",
+    install(_skillNames, opts) {
+      const destRoot = opts.global
+        ? path.join(os.homedir(), ".config", "opencode")
+        : process.cwd();
+      mergeOpencodeAgents(destRoot);
+    },
+  },
+
+  "zcode-agents": {
+    label: "ZCode sub-agents (added to ~/.zcode/agents/, existing files never touched)",
+    scope: "global only (no confirmed project-local Subagent directory)",
+    install() {
+      const destRoot = path.join(os.homedir(), ".zcode", "agents");
+      const srcDir = path.join(PKG_ROOT, "dist", "agents", "zcode");
+      fs.mkdirSync(destRoot, { recursive: true });
+      let count = 0;
+      for (const file of fs.readdirSync(srcDir)) {
+        if (!file.endsWith(".md")) continue;
+        fs.copyFileSync(path.join(srcDir, file), path.join(destRoot, file));
+        console.log(`Installed: ${file} -> ${destRoot}`);
+        count++;
+      }
+      console.log(`\nDone. ${count} agent(s) installed to ${destRoot} (other files there untouched).`);
+    },
+  },
+
   "agents-md": {
     label: "AGENTS.md (Codex, OpenCode, Muse Code, Zed, Antigravity, Cline fallback, ...)",
     scope: "project (current directory)",
@@ -165,6 +214,69 @@ function copyDirInto(src, dest) {
 function copyFileInto(src, dest) {
   fs.copyFileSync(src, dest);
   console.log(`Installed: ${dest}`);
+}
+
+/**
+ * Merge every dist/agents/opencode/*.agent.json fragment's "agent" block
+ * into destRoot/opencode.json, without touching any other key in that
+ * file — a consumer's own mcp/plugin/command config lives in the same
+ * file and must survive this untouched (this is exactly the mistake this
+ * ecosystem's own ECC-decommissioning pass had to route around: never
+ * write a whole config file wholesale when it might carry a user's own
+ * settings). Existing agents not in this package's roster are preserved;
+ * an agent with the same name as one already in the file is overwritten
+ * (this package is the source of truth for its own -edho-ferdian agents).
+ *
+ * Also copies each referenced prompts/agents/<name>.txt alongside the
+ * config, since opencode.json's prompt field is a {file:...} reference
+ * relative to opencode.json's own directory.
+ */
+function mergeOpencodeAgents(destRoot) {
+  const srcDir = path.join(PKG_ROOT, "dist", "agents", "opencode");
+  if (!fs.existsSync(srcDir)) {
+    console.error(`Error: ${srcDir} not found in this package — reinstall eef-install.`);
+    process.exitCode = 1;
+    return;
+  }
+
+  const configPath = path.join(destRoot, "opencode.json");
+  let config = { $schema: "https://opencode.ai/config.json" };
+  if (fs.existsSync(configPath)) {
+    try {
+      config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+    } catch (err) {
+      console.error(`Error: ${configPath} exists but is not valid JSON — refusing to touch it.`);
+      console.error(`Fix or remove it, then re-run this install. (${err.message})`);
+      process.exitCode = 1;
+      return;
+    }
+  }
+  config.agent = config.agent || {};
+
+  const promptsDestDir = path.join(destRoot, "prompts", "agents");
+  fs.mkdirSync(promptsDestDir, { recursive: true });
+
+  let count = 0;
+  for (const file of fs.readdirSync(srcDir)) {
+    if (!file.endsWith(".agent.json")) continue;
+    const fragment = JSON.parse(fs.readFileSync(path.join(srcDir, file), "utf8"));
+    for (const [name, def] of Object.entries(fragment.agent || {})) {
+      config.agent[name] = def;
+      console.log(`Merged agent: ${name}`);
+      count++;
+    }
+  }
+
+  const promptsSrcDir = path.join(srcDir, "prompts", "agents");
+  if (fs.existsSync(promptsSrcDir)) {
+    for (const file of fs.readdirSync(promptsSrcDir)) {
+      fs.copyFileSync(path.join(promptsSrcDir, file), path.join(promptsDestDir, file));
+    }
+  }
+
+  fs.mkdirSync(destRoot, { recursive: true });
+  fs.writeFileSync(configPath, JSON.stringify(config, null, 2) + "\n", "utf8");
+  console.log(`\nDone. ${count} agent(s) merged into ${configPath} (other keys in that file untouched).`);
 }
 
 function printHelp() {

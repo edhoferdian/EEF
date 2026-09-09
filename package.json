@@ -1,7 +1,7 @@
 {
   "name": "eef-install",
-  "version": "1.1.0",
-  "description": "Install Ekosistem Edho Ferdian's 33 Claude Code skills into Claude Code, Cursor, Windsurf, Devin, Cline, GitHub Copilot, Kiro, Hermes Agent, or OpenClaw — no git clone required.",
+  "version": "1.3.0",
+  "description": "Install Ekosistem Edho Ferdian's 33 Claude Code skills into Claude Code, Cursor, Windsurf, Devin, Cline, GitHub Copilot, Kiro, Hermes Agent, OpenClaw, or ZCode — no git clone required.",
   "license": "MIT",
   "author": {
     "name": "Edho Ferdian",
@@ -28,7 +28,10 @@
     ".github/copilot-instructions.md",
     ".kiro/",
     ".hermes/",
-    ".agents/"
+    ".agents/",
+    ".zcode/",
+    ".claude/agents/",
+    "dist/agents/"
   ],
   "engines": {
     "node": ">=18"
@@ -45,6 +48,7 @@
     "kiro",
     "hermes",
     "openclaw",
+    "zcode",
     "agent-skills",
     "ai-coding-agent"
   ],
