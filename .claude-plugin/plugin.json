@@ -8,5 +8,6 @@
     "url": "https://github.com/edhoferdian"
   },
   "homepage": "https://github.com/edhoferdian/EEF#readme",
-  "repository": "https://github.com/edhoferdian/EEF"
+  "repository": "https://github.com/edhoferdian/EEF",
+  "license": "MIT"
 }

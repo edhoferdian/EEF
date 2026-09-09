@@ -143,49 +143,54 @@ skill folders for distribution.
 
 ### When to package
 
-Package a skill into `dist/*.skill` only on explicit request — packaging is
-not a step that runs automatically after every edit. A stale `.skill`
-archive that silently diverges from `skills/<name>/` is worse than no
-archive, because it looks authoritative.
+Package a skill into `dist/*.skill` whenever `skills/<name>/` changes and
+the change is going to be committed — CI (`.github/workflows/ci.yml`,
+`dist-sync` job) fails the build if `dist/` drifts from `skills/`, so
+"stale and unpublished" is no longer just a convention to remember, it's an
+enforced gate. Packaging is not automatic on every keystroke — run it as
+the last step before committing, same as running a formatter.
 
 ### Pre-package validation
 
-Before zipping, verify:
+`scripts/validate_skills.py` runs this automatically (also enforced in CI
+as the `validate` job) — run it yourself before packaging rather than
+waiting for CI to catch it:
 
-1. `SKILL.md` has valid YAML frontmatter with `name` and `description` —
-   a malformed frontmatter fails silently on upload with no useful error.
-2. Every `references/*.md` path mentioned inside `SKILL.md` actually exists
-   — this is the same broken-cross-reference check
-   `skill-audit-edho-ferdian` already runs; reuse its result rather than
-   re-deriving it.
-3. No absolute local paths (`C:\Users\...`, `/home/...`) leaked into any
-   file — a path from the author's machine is useless to anyone else and a
-   sign a template or example wasn't generalized.
-4. No secrets, tokens, or credentials in any reference file (same check as
-   `security-review-edho-ferdian` SEC-02, applied to the skill's own
-   content rather than a reviewed codebase).
+```bash
+python scripts/validate_skills.py
+```
+
+It checks: valid frontmatter with non-empty `name`/`description`,
+description length ≤1024 chars (the harness display limit this ecosystem
+was bitten by twice), no "ECC" mentions outside the one deliberate
+exception (`config-hygiene-edho-ferdian`), and no reference to a
+`references/*.md` file that doesn't exist anywhere in the repo. It does
+**not** check absolute local paths (`C:\Users\...`, `/home/...`) or leaked
+secrets — those need human judgment to avoid false positives in CI, so
+they stay part of a manual `skill-audit-edho-ferdian` pass, not this
+automated gate.
 
 ### Packaging
 
 ```bash
-cd skills/<skill-name>
-zip -r "../../dist/<skill-name>.skill" . -x "*.DS_Store"
+python scripts/package_skills.py            # all 33 skills
+python scripts/package_skills.py <name>      # just one
+python scripts/package_skills.py --check     # dry run — exit 1 if stale, same check CI runs
 ```
 
-The archive root must be the skill's own files (`SKILL.md` at the archive
-root, `references/` as a sibling) — not the parent `skills/` directory and
-not an extra wrapping folder. A `.skill` with the wrong root structure
-installs as an empty or broken skill with no error message explaining why.
+This is the only way `dist/*.skill` should be produced now — it writes
+forward-slash paths (a `.skill` zipped with Windows-style backslash paths
+can fail to install correctly on non-Windows systems) and a fixed internal
+timestamp, so re-running it produces byte-identical output and CI's
+`--check` diff is meaningful. Don't hand-zip a skill folder; the archive
+root must be the skill's own files with no wrapping folder, which the
+script already guarantees.
 
 ### Drift check
 
-After packaging, the archive is a snapshot. `skills/<name>/` keeps
-evolving; `dist/<name>.skill` does not, until repackaged. There is currently
-no automated check that a `.skill` file in `dist/` matches the current state
-of its source folder — treat any `dist/*.skill` older than its source
-folder's last edit as **stale and unpublished**, not as the current version.
-Repackage before pointing anyone at a `dist/*.skill` file if the source has
-changed since.
+CI enforces this now (`dist-sync` job runs `package_skills.py --check` on
+every push/PR) — a PR that changes `skills/` without repackaging `dist/`
+fails CI rather than silently shipping a stale archive.
 
 ### What this section does not cover
 

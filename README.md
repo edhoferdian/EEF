@@ -69,8 +69,10 @@ similarly-scoped skill from any other package you have installed.
 
 ```
 .claude-plugin/     plugin.json + marketplace.json (Option C)
+.github/            CI workflow + FUNDING.yml
 skills/              source of truth — 33 skill folders
 dist/                packaged .skill archives (Option A), one per skill
+scripts/             packaging script CI and local dev both use
 install.sh           installer (macOS/Linux/Git Bash)
 install.ps1          installer (Windows PowerShell)
 ```
@@ -88,3 +90,7 @@ GitHub issue, or help rolling this out to more than a couple of engineers?
 Open an issue titled "Enterprise inquiry" or email
 edhoferdian31@gmail.com — no fixed package, we figure out what actually
 fits your team.
+
+## License
+
+[MIT](LICENSE).

@@ -107,9 +107,9 @@ becomes more common.
    grep -rn '`skills/[a-zA-Z0-9_-]*' skills/*/SKILL.md skills/*/references/*.md
    ```
 2. For every `references/*.md` mention, resolve it relative to the file
-   that mentions it (a reference file's own `references/foo.md` mention
-   means a sibling in the same skill's `references/` directory) and confirm
-   the target file actually exists on disk.
+   that mentions it (a reference file's own bare `references/<name>.md`
+   mention means a sibling in the same skill's `references/` directory) and
+   confirm the target file actually exists on disk.
 3. For every skill-name mention (e.g. "escalate to
    `performance-audit-edho-ferdian`"), confirm a directory of that name
    exists under `skills/`.

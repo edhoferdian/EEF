@@ -211,7 +211,7 @@ skill's Phase 2 rule.
 Read the base section above first — everything not restated here applies
 identically to Quarkus. This sub-section covers only what's *different*, per
 this ecosystem's design (a Quarkus sub-section inside this file, not a
-separate `references/quarkus.md`), and mirrors the sub-section pattern
+separate standalone reference file), and mirrors the sub-section pattern
 already set for Quarkus security in `security-review-edho-ferdian/
 references/language-specific.md`.
 
