@@ -5,9 +5,9 @@ A native Claude Code skill ecosystem — 33 skills covering engineering
 operations (deployment, containers, networking, git/release), and
 cross-cutting practices (code review, spec mining, marketing, research).
 
-Originally curated and ported from [ECC](https://github.com/affaan-m/ECC),
-this ecosystem is standalone: it does not require an ECC install and does
-not depend on any ECC-specific paths or infrastructure.
+Standalone by design — no external harness install, no dependency on
+another project's paths or infrastructure. See [NOTICE.md](NOTICE.md) for
+source attribution.
 
 ## Install
 
@@ -63,8 +63,8 @@ This tracks the repo directly — updates land when the plugin/marketplace
 
 See [`skills/`](skills/) — one folder per skill, each a `SKILL.md` plus a
 `references/` directory. Skill names ending in `-edho-ferdian` are this
-ecosystem's own naming convention, distinguishing them from any
-identically-scoped skill in an installed ECC package.
+ecosystem's own naming convention, so they don't collide with a
+similarly-scoped skill from any other package you have installed.
 
 ## Repo layout
 

@@ -13,9 +13,9 @@ description: >-
   ("kenapa internet lambat", "site can't reach site"), needs to run or
   script a device change ("push this ACL via SSH", "automate this across 40
   switches"), or is building a homelab (WireGuard remote access,
-  Pi-hole/local DNS, VLAN segmentation planning). Consolidates four ECC
-  network agents plus device-automation and homelab-build reference
-  material into one skill.
+  Pi-hole/local DNS, VLAN segmentation planning). Consolidates config
+  review, design, troubleshooting, device automation, and homelab build-out
+  into one skill.
 ---
 
 # Networking Ops — Edho Ferdian Mode

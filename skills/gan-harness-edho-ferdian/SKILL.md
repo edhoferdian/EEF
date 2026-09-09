@@ -5,8 +5,8 @@ description: >-
   → Evaluate/iterate cycle where a generator builds a live app and an
   evaluator drives it in a real browser, scores it against a weighted design
   rubric, and feeds concrete fixes back until a quality threshold is crossed
-  or a max-iteration cap is hit. Unlike ECC's original, the Plan phase never
-  invents scope from a one-line prompt — it pulls features from a real
+  or a max-iteration cap is hit. The Plan phase never invents scope from a
+  one-line prompt — it pulls features from a real
   source (dev-kickoff-edho-ferdian's Project Decision Register or
   spec-mining-edho-ferdian's mined specs), or proposes a small, explicitly
   unapproved exploratory scope when no spec exists at all. Use when the user
