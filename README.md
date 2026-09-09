@@ -58,6 +58,26 @@ This tracks the repo directly — updates land when the plugin/marketplace
 > or C needs read access to it; Option A's packaged `.skill` files can be
 > shared independently of repo access.
 
+## Other harnesses (not just Claude Code)
+
+These skills are plain Markdown with no Claude-specific syntax, so they
+port to other coding agents with light, generated adapters — no manual
+duplication, no drift, since every adapter is generated from `skills/` and
+checked in CI (`export-targets-sync` job):
+
+- **[AGENTS.md](AGENTS.md)** — the cross-vendor project-instructions file
+  read automatically by Codex, OpenCode, Meta's Muse Code, and others that
+  have converged on this convention. A compact router table, not a full
+  copy — each row points at the matching `SKILL.md` to read on demand.
+  Regenerate: `python scripts/export_agents_md.py`.
+- **[.cursor/rules/](.cursor/rules/)** — one `.mdc` file per skill, Cursor's
+  own multi-file rules format. Each carries the skill's `description` for
+  Cursor's "Apply Intelligently" auto-matching, the same trigger semantics
+  Claude Code uses. Regenerate: `python scripts/export_cursor.py`.
+
+More targets (Windsurf, Cline, GitHub Copilot) are in progress — see the
+repo's issues/roadmap for status.
+
 ## Skills
 
 See [`skills/`](skills/) — one folder per skill, each a `SKILL.md` plus a
@@ -70,9 +90,11 @@ similarly-scoped skill from any other package you have installed.
 ```
 .claude-plugin/     plugin.json + marketplace.json (Option C)
 .github/            CI workflow + FUNDING.yml
+.cursor/rules/      generated — Cursor adapter, see export_cursor.py
+AGENTS.md            generated — cross-vendor router, see export_agents_md.py
 skills/              source of truth — 33 skill folders
 dist/                packaged .skill archives (Option A), one per skill
-scripts/             packaging script CI and local dev both use
+scripts/             packaging + validation + cross-harness export scripts
 install.sh           installer (macOS/Linux/Git Bash)
 install.ps1          installer (Windows PowerShell)
 ```

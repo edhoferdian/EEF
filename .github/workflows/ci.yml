@@ -29,6 +29,19 @@ jobs:
       - name: Check dist/ is up to date
         run: python scripts/package_skills.py --check
 
+  export-targets-sync:
+    name: AGENTS.md and .cursor/rules/ match skills/
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Check AGENTS.md is up to date
+        run: python scripts/export_agents_md.py --check
+      - name: Check .cursor/rules/ is up to date
+        run: python scripts/export_cursor.py --check
+
   plugin-validate:
     name: Claude Code plugin manifest
     runs-on: ubuntu-latest
