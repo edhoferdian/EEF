@@ -27,6 +27,26 @@ DIST_DIR = REPO_ROOT / "dist"
 FIXED_DATE_TIME = (1980, 1, 1, 0, 0, 0)
 
 
+TEXT_SUFFIXES = {".md", ".txt", ".json", ".yml", ".yaml"}
+
+
+def read_normalized(f: Path) -> bytes:
+    """Read a file's bytes with line endings normalized to LF.
+
+    Git checkouts on Windows can produce CRLF line endings for text files
+    (autocrlf) while Linux/CI checkouts keep LF, which would otherwise make
+    the packaged archive non-reproducible across machines even though the
+    committed source is identical. Binary-ish files (anything not in
+    TEXT_SUFFIXES) are read as-is, unmodified.
+    """
+    if f.suffix.lower() in TEXT_SUFFIXES:
+        # newline=None enables universal-newlines mode: \r\n and \r both
+        # become \n on read, regardless of platform or git checkout config.
+        text = f.read_text(encoding="utf-8", newline=None)
+        return text.encode("utf-8")
+    return f.read_bytes()
+
+
 def build_archive_bytes(skill_dir: Path) -> bytes:
     """Return the exact bytes a .skill archive for skill_dir should contain."""
     import io
@@ -38,7 +58,7 @@ def build_archive_bytes(skill_dir: Path) -> bytes:
             rel_path = f.relative_to(skill_dir).as_posix()
             info = zipfile.ZipInfo(rel_path, date_time=FIXED_DATE_TIME)
             info.compress_type = zipfile.ZIP_DEFLATED
-            zf.writestr(info, f.read_bytes())
+            zf.writestr(info, read_normalized(f))
     return buf.getvalue()
 
 
