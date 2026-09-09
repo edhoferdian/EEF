@@ -159,6 +159,7 @@ scripts/             packaging + validation + cross-harness export scripts
 install.sh           installer (macOS/Linux/Git Bash, Option C)
 install.ps1          installer (Windows PowerShell, Option C)
 package.json         npm package manifest (Option A)
+CODE_OF_CONDUCT.md, CONTRIBUTING.md, SECURITY.md
 ```
 
 ## Sponsors
@@ -174,6 +175,13 @@ GitHub issue, or help rolling this out to more than a couple of engineers?
 Open an issue titled "Enterprise inquiry" or email
 edhoferdian31@gmail.com — no fixed package, we figure out what actually
 fits your team.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow and required
+checks. Everyone participating is expected to follow the
+[Code of Conduct](CODE_OF_CONDUCT.md). Found a security issue? See
+[SECURITY.md](SECURITY.md) instead of opening a public issue.
 
 ## License
 
