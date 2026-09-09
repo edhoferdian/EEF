@@ -1,10 +1,9 @@
 # Authoring Guide — Motion System (React / Next.js)
 
-Adapted from ECC `motion-foundations`, `motion-patterns`, and `motion-advanced`,
-fetched 2026-09-04. ECC's fourth motion skill, `motion-ui`, was ~85% duplicate of
-those three and is not ported separately — its three genuinely additive pieces
-(the `AnimatePresence` mode table, the `deviceMemory` low-end heuristic, and the
-QA checklist) are folded in below.
+A fourth, largely duplicate source covering the same ground is not kept as a
+separate section — its three genuinely additive pieces (the `AnimatePresence`
+mode table, the `deviceMemory` low-end heuristic, and the QA checklist) are
+folded in below.
 
 **Scope.** This file replaces the short animation section that used to live in
 `composition-and-ux.md`. That file now covers focus and interaction craft only.
@@ -92,8 +91,8 @@ motion" means *less movement*, not *element disappears instantly*.
 // lib/motion-config.ts
 // deviceMemory only exists on Chrome/Android; undefined elsewhere is treated as
 // capable, with a core-count fallback so Safari/Firefox on weak hardware still
-// gets caught. (This is the corrected heuristic from ECC motion-ui; the
-// core-count-only version in motion-foundations misclassifies modern Macs.)
+// gets caught. (This is the corrected heuristic; a core-count-only version
+// misclassifies modern Macs.)
 export const isLowEnd = () =>
   typeof navigator !== "undefined" &&
   ((navigator as any).deviceMemory !== undefined

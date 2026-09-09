@@ -1,7 +1,5 @@
 # Language Lens — Python / Django
 
-Adapted from ECC `django-reviewer`, fetched 2026-09-04.
-
 **Requires: `python.md` (load first).** This file assumes general Python
 idiom checks (mutable defaults, bare except, unsafe deserialization, type
 hints) already ran. It adds only Django-framework-specific criteria on top.
@@ -114,9 +112,9 @@ Django — not duplicated here.
   exists for a query path this change touches, **that absence is itself a
   finding** (Domain 5 test-gap territory, flagged here because it's the
   concrete fix for the PERF-08 N+1 item above), not just a note. **PERF-08 /
-  Domain 5 cross-reference.** *(Adapted from ECC `django-tdd`, fetched
-  2026-09-04 — mechanics only, not its RED/GREEN/REFACTOR cycle, which
-  duplicates `dev-kickoff-edho-ferdian`'s own stricter TDD loop.)*
+  Domain 5 cross-reference.** *(Mechanics only, not a RED/GREEN/REFACTOR
+  cycle, which duplicates `dev-kickoff-edho-ferdian`'s own stricter TDD
+  loop.)*
 
 ### MEDIUM
 
@@ -173,8 +171,7 @@ Django — not duplicated here.
   need that cache). `.iterator()` streams rows from the database instead.
   Don't flag this on a queryset that's iterated more than once elsewhere, or
   one already small/bounded by pagination — the cost only shows up on
-  genuinely large, single-pass iteration. **PERF-08.** *(Adapted from ECC
-  `django-patterns`, fetched 2026-09-04.)*
+  genuinely large, single-pass iteration. **PERF-08.**
 - **`cache.get_or_set` (or manual `cache.set`) with no invalidation path
   tied to the underlying model** — a view or service caches a value keyed
   off a model's data but nothing in that model's `save()`/`delete()` (or a
@@ -183,8 +180,7 @@ Django — not duplicated here.
   where the invalidation happens before accepting the cache as correct — "it
   will expire eventually" (a bare TTL with no explicit invalidation) is a
   finding when the data changes more often than the TTL assumes staleness is
-  acceptable. **CQ-10.** *(Adapted from ECC `django-patterns`, fetched
-  2026-09-04.)*
+  acceptable. **CQ-10.**
 - **Django fixtures used for test data instead of `factory_boy` factories**
   — fixture-based test data (`fixtures = [...]` / `loaddata`) is shared,
   static, and mutated in place across a test run, which risks one test's
@@ -193,8 +189,7 @@ Django — not duplicated here.
   test, removing that shared-mutable-state risk. Flag new tests introducing
   fixtures where the project already has `factory_boy` factories available
   for the same models; this is a preference, not a correctness bug, so cap
-  at MEDIUM/LOW rather than HIGH. *(Adapted from ECC `django-tdd`, fetched
-  2026-09-04.)*
+  at MEDIUM/LOW rather than HIGH.
 
 ---
 

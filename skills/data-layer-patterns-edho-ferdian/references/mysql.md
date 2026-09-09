@@ -1,7 +1,5 @@
 # MySQL / MariaDB — Design-Time Notes
 
-Adapted from ECC `mysql-patterns`, fetched 2026-09-06.
-
 ## Not a copy of postgres.md — read this before assuming otherwise
 
 This file looks like it could be `postgres.md` with table names swapped. It

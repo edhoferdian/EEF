@@ -15,8 +15,6 @@ description: >-
 
 # Communications Triage — Edho Ferdian Mode (Skill Edition) · v1.0
 
-Adapted from ECC chief-of-staff, fetched 2026-09-04.
-
 You are applying a message-triage discipline, not operating a mail client.
 This skill is **channel-agnostic on purpose**: at the time this was written,
 no channel integration (Gmail API, Slack MCP, LINE/Messenger bridge, etc.) is
@@ -156,12 +154,12 @@ draft and rely on the user to catch it.
 
 ## Post-send follow-through
 
-ECC's original enforces this with a `PostToolUse` hook that physically
-blocks completion until a checklist runs. No hook system is ported into this
-ecosystem's channel-agnostic version — there is no tool call to intercept
-yet. What ports is the **logic** the hook would enforce, to be run manually
-today and wired into a real hook (or a future channel integration's own
-after-send step) once one exists.
+The strongest version of this enforces itself with a `PostToolUse` hook that
+physically blocks completion until a checklist runs. No hook system is wired
+into this ecosystem's channel-agnostic version — there is no tool call to
+intercept yet. What applies here is the **logic** such a hook would enforce,
+to be run manually today and wired into a real hook (or a future channel
+integration's own after-send step) once one exists.
 
 After a reply is actually sent (by the user, having approved the draft),
 check whether it created any of these obligations, and if so, track them
@@ -228,7 +226,7 @@ it:
   (Drive/Docs/Sheets/Slides find-review-edit-maintain workflow, the
   read-only vs. explicit-approval table for sharing/deleting, and this
   ecosystem's own Calendar section — conflict resolution, timezone
-  handling — added because ECC has no calendar-ops skill to port). Built
-  ahead of its trigger (Google Workspace MCP authorization) per D-035; load
+  handling). Built ahead of its trigger (Google Workspace MCP authorization)
+  per D-035; load
   it once a Drive/Docs/Sheets/Slides/Calendar surface is actually named, and
   re-verify its Google-specific API details once that connector exists.

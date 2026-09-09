@@ -1,12 +1,11 @@
 # Baseline Testing Standards — Edho Ferdian Ecosystem
 
-## Provenance & why this file exists
+## Why this file exists
 
-Adapted from ECC `rules/common/testing.md` plus the ECC `test-coverage`
-command, fetched 2026-09-06. Same pattern as `baseline-conventions.md`
+Same pattern as `baseline-conventions.md`
 (D-032), `git-and-release-ops-edho-ferdian` (D-020), and
 `networking-ops-edho-ferdian/references/design-principles.md` (D-024): the
-ecosystem's baseline testing standards were still coming from an ECC rule
+ecosystem's baseline testing standards were still coming from a rule
 file loaded as a global instruction every session. This file is the native
 home for them, rewritten rather than copied.
 
@@ -110,7 +109,7 @@ most common way to destroy a real signal:
 
 ## 6. Closing a coverage gap deliberately
 
-Adapted from the ECC `test-coverage` command. When asked to raise coverage,
+When asked to raise coverage,
 do not generate tests file-by-file down the report — that produces the
 highest possible number for the lowest possible value.
 

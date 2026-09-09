@@ -1,7 +1,5 @@
 # Branching, commits, and history
 
-Adapted from ECC `git-workflow`, fetched 2026-09-04.
-
 ## Choosing a strategy
 
 | Strategy | Fits | Cost |

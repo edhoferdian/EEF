@@ -1,9 +1,8 @@
 # Detection tooling & risk classification
 
-Adapted from ECC `refactor-cleaner`, fetched 2026-09-04 (original was JS/TS-only
-— the tooling table below is extended per-stack using the same
+The tooling table below covers multiple stacks, using the same
 manifest-detection idea used elsewhere in this ecosystem, e.g.
-`build-fix-edho-ferdian`'s stack routing).
+`build-fix-edho-ferdian`'s stack routing.
 
 ## 1. Detection commands by stack
 

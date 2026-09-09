@@ -1,7 +1,5 @@
 # Domain 5 — Test Quality (TQ)
 
-Adapted from ECC `pr-test-analyzer`, fetched 2026-09-04.
-
 This domain reviews whether the tests that exist (or should exist) for the
 change set actually cover the behavior that changed — not just whether a test
 file was touched. It runs alongside Domains 1–4 in Phase 1, using the same

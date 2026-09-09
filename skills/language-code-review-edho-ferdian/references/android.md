@@ -1,8 +1,7 @@
 # Language Lens — Android / Kotlin Clean Architecture
 
-Adapted from ECC `android-clean-architecture`, fetched 2026-09-07, with
-`rules/kotlin/patterns.md` and `rules/kotlin/security.md` folded in for the
-DI/coroutine/ProGuard specifics that skill doesn't cover on its own.
+DI/coroutine/ProGuard specifics are folded in alongside the core
+Clean Architecture layering guidance below.
 
 **Detect.** A `build.gradle`/`build.gradle.kts` at the project root with an
 `com.android.application`/`com.android.library` or
@@ -186,5 +185,4 @@ can confirm or refute it directly.
   or coroutine-lifecycle angle (e.g. `var` where `val` would do, a missing
   data-class `copy()` usage) — general Domain 1 (CQ), not this lens; this
   lens is scoped to Clean Architecture layering specifically, not general
-  Kotlin style (no ECC `kotlin-patterns` review-lens skill has been ported
-  yet — see the general skill's "Stacks planned" list).
+  Kotlin style.

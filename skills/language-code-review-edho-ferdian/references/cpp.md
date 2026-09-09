@@ -1,11 +1,8 @@
 # Language Lens — C++
 
-Adapted from ECC `cpp-reviewer`, `cpp-coding-standards`, and `cpp-testing`,
-fetched 2026-09-07.
-
-**FOLD-M.** Content is medium-depth and plausible, ported straight from
-ECC's C++ reviewer agent and the C++ Core Guidelines-derived coding-standards
-skill, but **there is no evidence of an active C++ project in Edho's
+**FOLD-M.** Content is medium-depth and plausible, drawing on the
+C++ Core Guidelines-derived coding-standards
+material, but **there is no evidence of an active C++ project in Edho's
 workspace yet** — unlike Angular/NestJS (verified against `ghostfolio`) or
 Python/React (already exercised elsewhere in this ecosystem). Treat this
 file as a ready-to-use lens the moment a matching C++ project shows up, not
@@ -22,7 +19,7 @@ in the general skill. This lens adds only what is specific to **C++'s manual
 memory model, RAII/ownership discipline, and concurrency primitives** —
 patterns that compile cleanly (there is no borrow checker to reject them)
 but are still memory-unsafe or design-unsound, per the C++ Core Guidelines
-(isocpp.github.io/CppCoreGuidelines) that ECC's `cpp-coding-standards` skill
+(isocpp.github.io/CppCoreGuidelines) this lens's coding-standards material
 is itself derived from.
 
 **Code placement.** Findings land as **CQ-14 (C++ memory-safety/RAII/
@@ -162,7 +159,7 @@ that verification wasn't run, per the general skill's confidence-floor rule.
 
 ## Testing lens (from `cpp-testing`)
 
-- **GoogleTest/GoogleMock (`gtest`/`gmock`) with CMake/CTest** is ECC's and
+- **GoogleTest/GoogleMock (`gtest`/`gmock`) with CMake/CTest** is
   this ecosystem's default C++ stack — flag a project missing
   `gtest_discover_tests()` in favor of manually listing test names in
   `CMakeLists.txt`, which silently drops newly-added tests from CTest's
@@ -228,6 +225,5 @@ that verification wasn't run, per the general skill's confidence-floor rule.
 
 ## Provenance
 
-Adapted from ECC `cpp-reviewer` (agent), `cpp-coding-standards` (skill,
-derived from the C++ Core Guidelines at isocpp.github.io/CppCoreGuidelines),
-and `cpp-testing` (skill), fetched 2026-09-07.
+The coding-standards material in this lens is derived from the C++ Core
+Guidelines at isocpp.github.io/CppCoreGuidelines.

@@ -1,7 +1,5 @@
 # Language Lens — Python
 
-Adapted from ECC `python-reviewer`, fetched 2026-09-04.
-
 **Detect.** Any `.py` file in the review scope. If `manage.py`/`settings.py`
 is also present, load `python-django.md` alongside this file; if a FastAPI
 import is found in `main.py`/`app/main.py`, load `python-fastapi.md`
@@ -86,8 +84,7 @@ references/language-specific.md` §Python (base) — not duplicated here.
   when suppression is genuinely intended). Without `from e`, the original
   traceback is dropped from the exception chain (`__cause__`), so whoever
   debugs the `NewError` later has no path back to what actually failed.
-  Fix: `raise NewError("...") from e`. **CQ-10.** *(Adapted from ECC
-  `python-patterns`, fetched 2026-09-04.)*
+  Fix: `raise NewError("...") from e`. **CQ-10.**
 
 ### MEDIUM
 
@@ -123,23 +120,20 @@ references/language-specific.md` §Python (base) — not duplicated here.
   concurrent/threaded context (the key can be removed between the check and
   the access), which the try/except form doesn't have. Flag the idiom gap
   and, when the code is reachable from multiple threads/async tasks, note
-  the race explicitly. **CQ-10.** *(Adapted from ECC `python-patterns`,
-  fetched 2026-09-04.)*
+  the race explicitly. **CQ-10.**
 - **Inheritance used only for structural typing** — a class inherits from an
   abstract base purely so a type checker accepts it somewhere, with no
   shared implementation actually reused from the base. A `typing.Protocol`
   (structural, duck-typed) expresses "has this shape" without forcing an
   inheritance relationship the runtime doesn't need. Suggest `Protocol` when
   the only reason for the base class is the type checker, not shared code.
-  *(Adapted from ECC `python-patterns`, fetched 2026-09-04.)*
 - **Missing `__slots__` on a memory-sensitive, fixed-attribute class** — a
   class instantiated in bulk (thousands+ instances: rows, events, graph
   nodes) with a fixed, known-at-class-definition set of attributes and no
   dynamic attribute assignment, left with the default per-instance `__dict__`
   instead of `__slots__ = (...)`. Only flag where instance count is actually
   large enough for the per-instance dict overhead to matter — not a blanket
-  suggestion for every class. *(Adapted from ECC `python-patterns`, fetched
-  2026-09-04.)*
+  suggestion for every class.
 
 ---
 
@@ -166,8 +160,7 @@ references/language-specific.md` §Python (base) — not duplicated here.
   presence check and the value use are genuinely separate decisions (not
   "check then immediately use"), is not automatically an EAFP violation —
   the finding is about the check-then-use pattern specifically, not every
-  membership test. *(Adapted from ECC `python-patterns`, fetched
-  2026-09-04.)*
+  membership test.
 
 ## Escalate to general domain when…
 

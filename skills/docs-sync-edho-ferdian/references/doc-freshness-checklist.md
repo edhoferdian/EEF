@@ -2,8 +2,6 @@
 
 ## Four non-overlapping document roles
 
-Adapted from ECC `living-docs-governance`, fetched 2026-09-04.
-
 A documentation set stays healthy when every document has exactly one job.
 This ecosystem's own `project-memory/` already maps onto four
 non-overlapping roles without anyone having named them explicitly:

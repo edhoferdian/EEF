@@ -1,7 +1,5 @@
 # Authoring Guide — React Component Composition
 
-Adapted from ECC `react-patterns`, fetched 2026-09-04.
-
 **This is authoring guidance, not a review checklist.** It tells you how to
 shape a new component, where to put a new piece of state, and how to wire up
 data fetching *before* you write the code — not how to spot these problems

@@ -1,10 +1,9 @@
 # Language Lens — Perl
 
-Adapted from ECC `perl-patterns` and `perl-testing`, fetched 2026-09-09.
 Supersedes the earlier "skipped permanently, not deferred" decision recorded
-in `SKILL.md` — that decision assumed ECC carried no dedicated Perl content;
-`perl-patterns`, `perl-security`, and `perl-testing` (plus `rules/perl/*`)
-were actually present upstream and simply never fetched.
+in `SKILL.md` — that decision assumed no dedicated Perl content was
+available; dedicated Perl patterns, security, and testing content was
+actually present upstream and simply never incorporated.
 
 **Detect.** Any `.pl`/`.pm`/`.t` file in review scope, or a `cpanfile`/
 `Makefile.PL`/`.perlcriticrc` at repo root.
@@ -206,6 +205,5 @@ command.
 
 ## Provenance
 
-Adapted from ECC `perl-patterns`/`perl-testing`, fetched 2026-09-09.
-Supersedes the earlier "skipped permanently" decision — Perl content was
-assumed absent from ECC but was actually present and unfetched.
+Supersedes the earlier "skipped permanently" decision — dedicated Perl
+content was assumed absent but was actually present and unincorporated.

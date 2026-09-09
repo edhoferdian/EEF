@@ -1,7 +1,5 @@
 # Conditional Lens — ML Engineering (Training/Serving/Eval)
 
-Adapted from ECC `mle-reviewer`, fetched 2026-09-04.
-
 **Activation.** This lens runs only when Phase 0 detects the review scope
 touches a training pipeline, a feature store or feature-generation code, a
 model-serving/inference path, or an offline/online evaluation harness
@@ -148,7 +146,7 @@ the feature table's timestamp columns to verify point-in-time correctness").
 
 ## Operational lifecycle checklist (complements, does not replace, the review above)
 
-Adapted from ECC `mle-workflow`, fetched 2026-09-05. Everything above this
+Everything above this
 point is the **review** lens — finding problems in ML code that already
 exists. This section adds a different axis: the **operational lifecycle**
 around that code, from data contract through post-deploy monitoring and
@@ -190,8 +188,7 @@ missing latency/cost tracking) unless it overlaps an ML-## code above.
   directly re-deployable artifact and config — see ML-06 above. A rollback
   "plan" that requires retraining is a gap to flag, not a completed item.
 
-**Baseline-first principle.** Adapted from ECC `ml-adoption-playbook`,
-fetched 2026-09-05. Before approving or helping build a complex model,
+**Baseline-first principle.** Before approving or helping build a complex model,
 confirm a simple baseline (a rule-based heuristic or a plain linear/logistic
 model) was tried and measured first — added complexity should be justified
 by a measured gain over that baseline, not assumed to be worth it.

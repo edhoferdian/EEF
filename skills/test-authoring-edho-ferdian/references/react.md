@@ -1,7 +1,5 @@
 # React / Testing Library — Authoring Guide
 
-Adapted from ECC react-testing, fetched 2026-09-04.
-
 This is stack-specific detail for `test-authoring-edho-ferdian`'s SKILL.md.
 Read the SKILL.md first for the three-way boundary against
 `code-review-edho-ferdian`'s test-quality-lens, `dev-kickoff-edho-ferdian`'s

@@ -1,9 +1,6 @@
 # Language Lens — Kotlin
 
-Adapted from ECC `kotlin-patterns`, `kotlin-testing`, `kotlin-coroutines-flows`,
-`kotlin-exposed-patterns`, and `kotlin-ktor-patterns`, fetched 2026-09-07.
-
-**FOLD-M.** Kelompok DEFER-backlog: konten padat, plausibel dari sumber ECC,
+**FOLD-M.** Kelompok DEFER-backlog: konten padat dan plausibel,
 tapi **belum ada bukti proyek Kotlin/Android/KMP/Ktor aktif** di workspace
 Edho saat ini — beda dari lens Python/React (FOLD-P) yang sudah dipakai pada
 proyek nyata di ekosistem ini. File ini ditulis proaktif (gate "tunggu
@@ -25,9 +22,9 @@ conventions**.
 
 **Code placement.** Findings land as **CQ-14 (Kotlin idiom / coroutine /
 ORM / Ktor anti-patterns)** in the general report. **Security is out of
-scope for this lens and not yet ported anywhere in this ecosystem** — ECC's
-`rules/kotlin/security.md` (secrets management, network security, WebView/
-JavaScript-interface hardening, ProGuard/R8 keep-rules) has no counterpart
+scope for this lens and not yet covered anywhere in this ecosystem** —
+Kotlin security concerns (secrets management, network security, WebView/
+JavaScript-interface hardening, ProGuard/R8 keep-rules) have no counterpart
 in `security-review-edho-ferdian/references/language-specific.md` today,
 unlike the Java/Spring precedent (D-012) where security was already ported
 separately. If a Kotlin security lens is ever built, it belongs there, not
@@ -249,13 +246,13 @@ should eventually be a `data-layer-patterns-edho-ferdian` sub-section.
   single join query via the DSL when iterating a collection and reading a
   related entity for each item.
 - **`resultedValues!!.first()`** used to read back an insert's generated
-  values — the `!!` here is idiomatic in the ECC source examples but still
+  values — the `!!` here is idiomatic in common examples but still
   a real crash risk if the insert silently returns no rows (a trigger
   intercepting the insert, a `RETURNING`-incompatible driver); prefer
   `resultedValues?.firstOrNull() ?: error("insert did not return a row")`
   with an explicit message over a bare `!!`.
-- **LIKE-pattern search built by naive string concatenation** — the ECC
-  source's own `escapeLikePattern` helper (`replace("\\", "\\\\").replace
+- **LIKE-pattern search built by naive string concatenation** — an
+  `escapeLikePattern` helper (`replace("\\", "\\\\").replace
   ("%", "\\%").replace("_", "\\_")`) exists specifically to prevent
   wildcard injection when user input flows into a `like` clause; flag any
   `like "%$rawUserInput%"` that skips this escaping step.
@@ -270,8 +267,8 @@ should eventually be a `data-layer-patterns-edho-ferdian` sub-section.
   handling** on `valueFromDB` — a `PGobject` with a null inner value or an
   unexpected DB type reaching a custom `ColumnType` should fail with a
   clear `IllegalArgumentException` naming the column, not an obscure
-  `ClassCastException` further down the stack (the ECC source example
-  already does this correctly — flag any custom column type that doesn't).
+  `ClassCastException` further down the stack (a correctly written custom
+  column type already does this — flag any that doesn't).
 
 ---
 
@@ -289,8 +286,8 @@ should eventually be a `data-layer-patterns-edho-ferdian` sub-section.
   iterated for broadcast without a synchronized snapshot** — iterating a
   synchronized collection directly while another coroutine mutates it
   still risks `ConcurrentModificationException`; snapshot to an immutable
-  list under the lock first (the ECC source's own `chatRoutes` example
-  does this correctly — flag any broadcast loop that doesn't).
+  list under the lock first (a correctly written broadcast loop
+  does this — flag any that doesn't).
 - **Route-level `require()` used for request validation** instead of a
   `StatusPages`-mapped exception or a dedicated validation result type —
   `require()` throws `IllegalArgumentException`, which only produces a
@@ -334,15 +331,3 @@ should eventually be a `data-layer-patterns-edho-ferdian` sub-section.
   `performance-audit-edho-ferdian` rather than asserting from code reading
   alone.
 
----
-
-## Provenance
-
-Adapted from ECC agents/skills `kotlin-patterns`, `kotlin-testing`,
-`kotlin-coroutines-flows`, `kotlin-exposed-patterns`, and
-`kotlin-ktor-patterns` (github.com/affaan-m/ECC, paths
-`skills/kotlin-patterns/SKILL.md`, `skills/kotlin-testing/SKILL.md`,
-`skills/kotlin-coroutines-flows/SKILL.md`,
-`skills/kotlin-exposed-patterns/SKILL.md`,
-`skills/kotlin-ktor-patterns/SKILL.md`, plus supporting rule file
-`rules/kotlin/patterns.md`), fetched 2026-09-07.

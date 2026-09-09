@@ -1,8 +1,5 @@
 # Go — Authoring Guide
 
-Adapted from ECC `golang-testing`, fetched 2026-09-07 (skill), cross-checked
-against ECC `rules/golang/testing.md`.
-
 This is stack-specific detail for `test-authoring-edho-ferdian`'s SKILL.md.
 Read the SKILL.md first for the three-way boundary against
 `code-review-edho-ferdian`'s test-quality-lens, `dev-kickoff-edho-ferdian`'s
@@ -313,11 +310,3 @@ whose assertion is trivial.
   that then panic (nil dereference) instead of failing cleanly — use
   `require` for anything the rest of the test body dereferences or depends
   on structurally.
-
-## Provenance
-
-Adapted from ECC `skills/golang-testing/SKILL.md` and
-`rules/golang/testing.md`, fetched 2026-09-07. The Go 1.22 loop-variable
-semantics note, the `t.Fatalf` vs `t.Errorf` decision rule, and the
-testify-vs-stdlib tradeoff framing extend that source content for this
-ecosystem's authoring-craft framing.

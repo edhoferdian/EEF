@@ -1,11 +1,10 @@
 # Networking Lens — Homelab And Small-Network Planning
 
-Adapted from ECC `homelab-network-setup`, `homelab-network-readiness`, and
-the vendor-neutral half of `homelab-vlan-segmentation`, all fetched
-2026-09-04. The three vendor configuration walkthroughs in that last source
-(UniFi Controller, pfSense/OPNsense, MikroTik) were ported separately,
-conceptually rather than as literal click-paths — see the "Vendor GUI
-concepts" section at the end.
+This reference covers homelab and small-network setup/readiness together
+with the vendor-neutral half of VLAN segmentation planning. The vendor
+configuration walkthroughs (UniFi Controller, pfSense/OPNsense, MikroTik)
+are covered separately, conceptually rather than as literal click-paths —
+see the "Vendor GUI concepts" section at the end.
 
 **Mode.** Use this reference alongside `design-principles.md` when the
 target is a home, small-lab, or single-operator network — consumer or

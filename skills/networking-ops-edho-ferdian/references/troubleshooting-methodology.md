@@ -1,7 +1,5 @@
 # Networking Lens — Troubleshooting Methodology
 
-Adapted from ECC `network-troubleshooter`, fetched 2026-09-04.
-
 **Mode.** Use this reference when the user is diagnosing a live network
 symptom — "kenapa internet lambat", "site X can't reach site Y", "DNS
 resolution fails but ping works", "BGP neighbor is flapping", "this VLAN

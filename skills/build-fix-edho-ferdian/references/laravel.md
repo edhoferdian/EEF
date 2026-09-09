@@ -1,8 +1,5 @@
 # PHP / Laravel — build, migration & startup lens
 
-Adapted from ECC `laravel-patterns`, `laravel-tdd`, `laravel-verification`,
-fetched 2026-09-07.
-
 Scope: Composer dependency resolution failures, Artisan migration errors,
 PHPUnit/Pest bootstrap failures, config/cache staleness, and queue/scheduler
 startup problems. You fix the error only — you do not refactor controllers,

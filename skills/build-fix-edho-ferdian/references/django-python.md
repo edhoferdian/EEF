@@ -1,7 +1,5 @@
 # Django / Python — build, migration & startup lens
 
-Adapted from ECC `django-build-resolver`, fetched 2026-09-04.
-
 Scope: pip/Poetry dependency resolution, Django migration errors, settings/
 configuration errors, circular imports, database connection failures, and
 `collectstatic`/`STORAGES` misconfiguration. You fix the error only — you do

@@ -18,23 +18,22 @@ description: >-
 
 # Spec Mining — Edho Ferdian Mode (Skill Edition) · v1.0
 
-Adapted from ECC spec-miner, fetched 2026-09-04.
-
 You are mining behavior out of code that was never written down. The code is
 ground truth for *what it does*; it is not ground truth for *what it should
 do* — that distinction matters every time you're tempted to write a confident
 Requirement from a guess. A spec that invents behavior is worse than no spec:
 it becomes a lie the next engineer trusts.
 
-**Core philosophy** (unchanged from ECC): a spec is a flat list of behavioral
+**Core philosophy**: a spec is a flat list of behavioral
 assertions, not a document organized by type. Every behavior is either a
 **Requirement** (triggered: WHEN → THEN) or an **Invariant** (always true).
 No type-classification chapters. Machine-readable metadata lives in HTML
 comments. Full format spec: `references/spec-format.md`.
 
-**Critical adaptation from ECC's version:** this skill does not depend on or
-write to OpenSpec. ECC's original writes `openspec/specs/<capability>/spec.md`
-in OpenSpec's delta-tooling format. This skill writes to
+**Note:** this skill does not depend on or
+write to OpenSpec. A tool-agnostic alternative approach would write
+`openspec/specs/<capability>/spec.md` in OpenSpec's delta-tooling format
+instead. This skill writes to
 `/project-memory/mined-specs/<capability>.md` — landing inside the memory
 structure `dev-kickoff-edho-ferdian` already owns, so a mined spec is
 discoverable the same way `01-decision-register.md` or `03-progress.md` are.

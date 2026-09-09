@@ -1,7 +1,5 @@
 # pywinauto Harness — Page Objects, Waits, Artifacts
 
-Adapted from ECC `windows-desktop-e2e`, fetched 2026-09-04.
-
 ## Layout
 
 ```

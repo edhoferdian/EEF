@@ -1,7 +1,7 @@
 # Networking Lens — Remote Access And Local DNS
 
-Adapted from ECC `homelab-wireguard-vpn` and `homelab-pihole-dns`, fetched
-2026-09-04. The Pi-hole source was ported by concept only — its product-
+This reference covers WireGuard remote access and local DNS/Pi-hole
+together. The Pi-hole material is covered by concept only — its product-
 specific surface (adlist URLs, `pihole -g`, admin-UI click paths) is
 tool-locked and was deliberately not carried over. What survived is the
 part that is true of any local resolver.

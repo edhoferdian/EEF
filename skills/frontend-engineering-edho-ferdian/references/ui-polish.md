@@ -1,7 +1,5 @@
 # Authoring Guide — Interface Polish (design-engineering details)
 
-Adapted from ECC `make-interfaces-feel-better`, fetched 2026-09-04.
-
 The small details that compound into an interface feeling finished. Use this
 when the UI "works" but reads as flat, cramped, jumpy, or generic — and when
 building controls, cards, lists, navigation, forms, or toolbars for the first

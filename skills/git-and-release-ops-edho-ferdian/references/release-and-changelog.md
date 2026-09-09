@@ -212,11 +212,9 @@ comparable.
 | Mixing date-based and SemVer versioning in the same project's history | Version numbers become incomparable; nobody can tell what's newer | Pick one scheme at project start, keep it for the project's life |
 | Changelog with no `[Unreleased]` section | PRs merge with no agreed place to record their entry; changelog falls behind releases | Keep `[Unreleased]` at the top, move it to a version on cut |
 
-## Provenance
+## Basis
 
-Adapted from general industry practice — Keep a Changelog, Semantic
-Versioning 2.0.0, and Conventional Commits' changelog-generation convention
-— see `skills/git-and-release-ops-edho-ferdian/SKILL.md` provenance note for
-comparison of house style. No single ECC agent covers release/changelog
-practice; this file extends `references/branching-and-commits.md`'s commit
+Based on general industry practice — Keep a Changelog, Semantic
+Versioning 2.0.0, and Conventional Commits' changelog-generation convention.
+This file extends `references/branching-and-commits.md`'s commit
 format into what those commits enable at release time.

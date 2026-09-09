@@ -1,7 +1,7 @@
 # Debugging & Image-Size Reduction
 
-Adapted from ECC `docker-patterns`, fetched 2026-09-04. This file covers
-debugging technique and size reduction **for build speed and image size**,
+This file covers debugging technique and size reduction **for build speed
+and image size**,
 not the security angle — a pinned digest, a non-root user, or
 `.dockerignore` as a secret-exposure control live in
 `security-review-edho-ferdian/references/domain-specific.md` §Container

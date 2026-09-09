@@ -1,7 +1,5 @@
 # PyTorch — training/inference runtime diagnostic lens
 
-Adapted from ECC `pytorch-patterns`, fetched 2026-09-07.
-
 Scope: PyTorch training or inference code that fails to run — tensor shape
 mismatches, device-placement (CPU/GPU) errors, CUDA out-of-memory, AMP/
 mixed-precision failures, and `DataLoader` worker crashes. You fix the
@@ -186,6 +184,3 @@ df -h /dev/shm
   `references/django-python.md`'s dependency-resolution table covers the
   same `pip`/`ImportError` failure modes and applies here unchanged.
 
-## Provenance
-
-Adapted from ECC `pytorch-patterns`, fetched 2026-09-07.

@@ -2,11 +2,10 @@
 
 Reference for Phase 0 of `e2e-testing-edho-ferdian`.
 
-ECC's `e2e-runner` hardcodes `agent-browser` (its own CLI) as the primary
-driver and treats Playwright as a fallback. This ecosystem does not depend
-on ECC's tooling (D-005/D-009), so this skill does the opposite: **detect
-what's actually available, every run, and pick from that** — never assume
-one tool is installed just because it was last time.
+Some CLI-based E2E runners hardcode a single browser CLI as the primary
+driver and treat Playwright as a fallback. This skill does the opposite:
+**detect what's actually available, every run, and pick from that** —
+never assume one tool is installed just because it was last time.
 
 ## Detection order
 

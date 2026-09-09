@@ -1,10 +1,5 @@
 # Language Lens — React Native / Expo
 
-Adapted from ECC `react-native-patterns` (SKILL.md) and `rules/react-native/*`
-(`patterns.md`, `performance.md`, `security.md`, `coding-style.md`,
-`accessibility.md`, `production-readiness.md`, `testing.md`, `hooks.md`),
-fetched 2026-09-07.
-
 **Detect.** `package.json` present with `react-native` or `expo` in
 `dependencies`/`devDependencies` (Expo managed workflow assumed unless a bare
 `android/`/`ios/` folder with no `expo` dependency signals a bare RN app —

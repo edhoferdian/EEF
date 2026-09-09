@@ -1,7 +1,5 @@
 # Language Lens — NestJS
 
-Adapted from ECC `nestjs-patterns`, fetched 2026-09-06.
-
 **Why this matters for Edho's stack:** NestJS is not a speculative stack in
 this ecosystem — it is the framework behind `ghostfolio`, a real project
 Edho runs, in an Nx monorepo alongside an Angular frontend. Treat findings

@@ -22,25 +22,22 @@ description: >-
 
 ## Provenance
 
-Adapted from ECC `homelab-architect`, `network-architect`,
-`network-config-reviewer`, and `network-troubleshooter`, all fetched
-2026-09-04. These four ECC agents form one cluster — three of them
-(`homelab-architect`, `network-architect`, `network-troubleshooter`) are
-themselves thin routers in ECC that mostly defer to other ECC skills. This
-skill consolidates them into one skill (the same consolidation pattern used
-by `language-code-review-edho-ferdian` for the language-reviewer family)
-and builds real substance where real substance existed in the source
-material.
+This skill consolidates what used to be several separate, narrower
+capabilities — config review, network design (homelab and
+enterprise/multi-site), read-only troubleshooting, and device
+operations/automation — into one skill (the same consolidation pattern used
+by `language-code-review-edho-ferdian` for the language-reviewer family),
+building real substance where real substance existed in the source material
+rather than leaving thin pass-through routing between pieces.
 
-That deferred-to material has since been ported. Also fetched 2026-09-04,
-from ECC: `cisco-ios-patterns`, `netmiko-ssh-automation`,
-`network-config-validation`, `network-interface-health`,
-`network-bgp-diagnostics`, `homelab-network-setup`,
-`homelab-network-readiness`, `homelab-vlan-segmentation`,
-`homelab-wireguard-vpn`, and `homelab-pihole-dns`. Most of these ported in
-full. Two were folded partially: `homelab-vlan-segmentation` and
-`homelab-pihole-dns` each had a vendor-UI / product-specific walkthrough
-section (UniFi controller screens, Pi-hole's web admin clickpath) that was
+The device-operations and homelab-build-out material folds in coverage for
+Cisco IOS command patterns, Netmiko-based SSH automation, config
+validation, interface/BGP diagnostics, homelab network setup and
+readiness, VLAN segmentation, WireGuard remote access, and Pi-hole/local
+DNS. Most of that material carried over in full. Two areas were folded only
+partially: the VLAN-segmentation and Pi-hole/local-DNS material each
+originally included a vendor-UI / product-specific walkthrough section
+(UniFi controller screens, Pi-hole's web admin clickpath) that was
 dropped — this skill can't verify a specific product's current UI and
 shouldn't fake having tested it. The underlying concepts (segmentation
 boundaries, DNS-sinkhole architecture, upstream/conditional-forwarding
@@ -98,12 +95,12 @@ plainly rather than forcing a best-effort fit into the closest one.
 
 ## Shared safety rules (all five modes)
 
-These are consistent across all ECC sources this skill draws from and
+These are consistent across all modes of this skill and
 apply regardless of which reference file is active:
 
 - **Never recommend removing an ACL, firewall rule, or auth control as a
-  troubleshooting or testing shortcut.** Every source agent independently
-  states this — it's not mode-specific, it's a hard rule.
+  troubleshooting or testing shortcut.** This isn't mode-specific — it's a
+  hard rule.
 - **Never present a config change as a diagnostic step.** If a command
   changes device state, label it a proposed fix requiring a maintenance
   window, backup, and rollback plan — not something to run "just to see."

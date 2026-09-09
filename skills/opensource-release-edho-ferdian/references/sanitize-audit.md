@@ -1,7 +1,6 @@
 # Phase 2 — Sanitize / Audit
 
-Reference for Phase 2 of `opensource-release-edho-ferdian`. Adapted from
-ECC `opensource-sanitizer`, fetched 2026-09-04.
+Reference for Phase 2 of `opensource-release-edho-ferdian`.
 
 ## Framing — this IS a Critique-Correction Loop instance
 
@@ -40,9 +39,8 @@ automatic overall FAIL, full stop.
 
 ## Step 2 — PII scan (CRITICAL — this ecosystem's addition)
 
-ECC's sanitizer did not treat PII as its own tier with this weight; this
-adaptation makes it explicit CRITICAL, per `secret-patterns.md`'s PII
-section: personal email addresses (not generic role addresses), phone
+This ecosystem treats PII as its own tier with explicit CRITICAL weight,
+per `secret-patterns.md`'s PII section: personal email addresses (not generic role addresses), phone
 numbers (confirm by context — high false-positive regex), private IPs (CRITICAL
 unless documented as a placeholder in `.env.example`), SSH connection
 strings, and absolute paths naming a real person or machine.

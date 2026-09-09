@@ -1,7 +1,5 @@
 # NestJS — structure, bootstrap, and layering
 
-Adapted from ECC `nestjs-patterns`, fetched 2026-09-06.
-
 **Why this matters for Edho's stack:** unlike most other framework lenses in
 this ecosystem, NestJS is not speculative coverage — it is the framework
 behind `ghostfolio`, a real project Edho runs, in a monorepo that also hosts
@@ -156,11 +154,10 @@ ConfigModule.forRoot({
 **Cross-reference — do not re-derive this here.** Fail-fast environment
 validation at process boot (terminate on invalid/missing config instead of
 booting partially and failing lazily on first use) is already the exact
-principle harvested from ECC's `mailtrap-email-integration` into
-`references/error-and-resilience.md` in this same skill. `ConfigModule.forRoot({ validate })`
-is simply Nest's mechanism for that principle — read
-`error-and-resilience.md` for the "why," and treat `validate` here as the
-"how" in this framework.
+principle covered in `references/error-and-resilience.md` in this same
+skill. `ConfigModule.forRoot({ validate })` is simply Nest's mechanism for
+that principle — read `error-and-resilience.md` for the "why," and treat
+`validate` here as the "how" in this framework.
 
 ## Repository/ORM behind domain-speaking providers
 

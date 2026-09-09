@@ -11,13 +11,10 @@ description: >-
 
 # Git & Release Ops — Edho Ferdian Mode
 
-Adapted and consolidated from ECC `git-workflow`, `github-ops`, and
-`project-flow-ops`, fetched 2026-09-04.
-
 ## Why this skill exists (D-005)
 
-Until now this ecosystem's git conventions came from ECC's installed global
-rules (`~/.claude/rules/ecc/common/git-workflow.md`). That is a live
+Until now this ecosystem's git conventions came from the installed global
+harness rules (`~/.claude/rules/ecc/common/git-workflow.md`). That is a live
 dependency on the harness this ecosystem is decommissioning. This skill is
 the native replacement.
 

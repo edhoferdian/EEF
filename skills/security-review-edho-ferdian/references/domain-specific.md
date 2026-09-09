@@ -12,17 +12,17 @@ ferdian` — this file doesn't redefine them: database (`*.sql`,
 `migrations/`, ORM schema, `supabase/`), healthcare (clinical/EMR/HL7-FHIR
 data), RAG (vector store/embedding/retrieval code), ML (training/serving/
 eval pipeline), containers (`Dockerfile`, `docker-compose.yml` — this last
-one is new in this file, sourced directly from ECC `docker-patterns` rather
-than migrated from an existing `code-review-edho-ferdian` lens).
+one is a new, original addition in this file, not migrated from an existing
+`code-review-edho-ferdian` lens).
 
 ---
 
 ## Database — SEC-04a..d (RLS, privilege, concurrency)
 
 Migrated verbatim from `code-review-edho-ferdian/references/database-lens.md`
-(itself adapted from ECC `database-reviewer`, MIT-licensed content credited
-to Supabase). `database-lens.md` keeps its non-security content
-(PERF-07a..f query/schema findings) — this section is the security half.
+(content credited to Supabase). `database-lens.md` keeps its non-security
+content (PERF-07a..f query/schema findings) — this section is the security
+half.
 
 **Ground-truth requirement.** Do not label an RLS/privilege finding [High
 confidence] without actually inspecting the policy definition or running a
@@ -166,8 +166,8 @@ rather than letting `rag-lens.md` grow its own parallel copy.
 
 ### Agents with side-effectful tool authority — AGT-01..04
 
-Source: ECC `llm-trading-agent-security`, generalized away from its
-crypto-specific framing. **Activation.** The scope includes an LLM agent that
+Generalized away from any single crypto-specific framing.
+**Activation.** The scope includes an LLM agent that
 can take actions with real-world consequences — sending email or messages,
 writing to a database, calling a paid API, executing shell commands, moving
 money, or modifying infrastructure. The retrieval-side concerns above still
@@ -233,7 +233,7 @@ apply; these are about the *action* side.
 
 ## Containers — Dockerfile / Compose hardening
 
-Source: ECC `docker-patterns`. **Activation.** Reviewing a `Dockerfile`,
+**Activation.** Reviewing a `Dockerfile`,
 `docker-compose.yml`/`docker-compose.*.yml`, or an equivalent container
 build/orchestration file.
 
@@ -314,7 +314,7 @@ this security skill.
 
 ## Cloud, IaC & CI/CD
 
-Source: ECC `security-review/cloud-infrastructure-security.md`. **Activation.**
+**Activation.**
 Scope touches Terraform/CloudFormation/CDK/Pulumi, `serverless.yml`, a CI
 workflow file (`.github/workflows/*.yml`, `.gitlab-ci.yml`), an IAM policy
 document, or platform config for AWS / Vercel / Railway / Cloudflare /
@@ -420,10 +420,9 @@ to `system-design-edho-ferdian`, not this skill.
 
 ## Agent & AI-harness configuration
 
-Source: ECC `security-scan`, **re-framed** — the original wraps a specific
-third-party CLI (`ecc-agentshield`); only its checklist is portable, and it
-is retargeted here at this ecosystem's own surface rather than at an ECC
-install. Same reframing rule as `skill-audit-edho-ferdian`.
+This checklist is framed at this ecosystem's own surface rather than at any
+particular third-party CLI or install. Same framing approach as
+`skill-audit-edho-ferdian`.
 
 **Activation.** Scope includes `CLAUDE.md`/`AGENTS.md`, `.claude/settings.json`
 or `settings.local.json`, an MCP server config, a hook script, or a

@@ -1,12 +1,10 @@
 # Networking Lens — Config Review
 
-Adapted from ECC `network-config-reviewer`, fetched 2026-09-04.
-
 **Mode.** Use this reference when the user pastes or points at an existing
 router/switch configuration (or a proposed change snippet for a maintenance
 window) and wants it reviewed — "review konfigurasi Cisco ini", "cek ACL
 ini aman nggak", "audit switch config", "is this config safe to push". This
-is the most self-contained of the four ECC sources this skill consolidates:
+is the most self-contained of the modes this skill consolidates:
 it ships a real, evidence-based severity ladder rather than deferring to
 skills this ecosystem doesn't have, so it gets the most depth here.
 

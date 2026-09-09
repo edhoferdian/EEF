@@ -234,14 +234,11 @@ good pipeline does both:
 | Renaming a CI job without updating branch protection | Required-check silently stops matching anything; passes by omission | Re-verify required checks after any job rename |
 | Exit code only, no annotated failure detail | Fails fast but pushes debugging time back onto the author | Emit CI-annotated failure output (file/line/assertion) |
 
-## Provenance
+## Notes
 
-Adapted from general industry practice around GitHub Actions and CI/CD gate
+Drawn from general industry practice around GitHub Actions and CI/CD gate
 design (GitHub's own branch-protection and required-status-checks
-documentation, common multi-stage pipeline conventions) — see
-`skills/deployment-ops-edho-ferdian/SKILL.md` provenance note for comparison
-of house style. No single ECC agent covers generic CI/CD pipeline
-construction; this file complements `references/production-readiness.md`
-(which hard-caps a launch score when CI is not green) and
-`references/release-strategies.md` (which this pipeline's `deploy` stage
-feeds into) in this same skill.
+documentation, common multi-stage pipeline conventions). This file
+complements `references/production-readiness.md` (which hard-caps a launch
+score when CI is not green) and `references/release-strategies.md` (which
+this pipeline's `deploy` stage feeds into) in this same skill.

@@ -1,9 +1,8 @@
 # Web/frontend performance reference (JS/React/Next)
 
-Adapted from ECC `performance-optimizer`, fetched 2026-09-04. This is the
-JS/React/Next-biased content ECC's original agent led with — kept as-is in
-substance since it matches Edho's actual stack, restructured into the
-measure-then-fix phases of `SKILL.md`.
+This is JS/React/Next-biased content, kept as-is in substance since it
+matches Edho's actual stack, restructured into the measure-then-fix phases
+of `SKILL.md`.
 
 ---
 

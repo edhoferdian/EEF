@@ -1,6 +1,6 @@
 # Regression Testing — Writing the Test a Bug Earned
 
-Adapted from ECC `ai-regression-testing`, fetched 2026-09-04. The source is
+This reference draws on patterns originally
 written around one stack (Next.js + Vitest + Supabase); the generalizable
 core is below, with the stack-specific parts kept only as illustration.
 

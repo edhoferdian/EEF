@@ -1,7 +1,5 @@
 # JPA / Java persistence — design-time patterns
 
-Adapted from ECC `jpa-patterns`, fetched 2026-09-07.
-
 **Boundary — same rule as every other file in this directory.** This is
 **design-time** guidance: entity design, relationship shape, and pooling
 decisions made *before* code exists. It is not a review lens — an existing
@@ -240,9 +238,9 @@ those review findings later — if it does, that's a signal this file's
 guidance and the review lens's checklist have drifted and need
 reconciling, not that the review lens is wrong.
 
-## Provenance
+## Notes
 
-Adapted from ECC `jpa-patterns`, fetched 2026-09-07, reorganized around the
-design-time/authoring use case this skill's other reference files already
-follow (see `references/postgres.md`, `references/prisma.md` for the same
-pattern applied to other engines/ORMs).
+Organized around the design-time/authoring use case this skill's other
+reference files already follow (see `references/postgres.md`,
+`references/prisma.md` for the same pattern applied to other
+engines/ORMs).

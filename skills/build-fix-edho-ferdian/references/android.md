@@ -1,13 +1,12 @@
 # Android / Kotlin / KMP — Gradle & AGP build lens
 
-Adapted from ECC `android-clean-architecture` and `rules/kotlin/patterns.md`,
-fetched 2026-09-07. Neither source is itself a build-error-resolver agent —
-this file's diagnostic-command tables are derived from the module-structure
-and DI conventions those files document (a Gradle multi-module Clean
-Architecture layout has a predictable set of failure shapes: module
-dependency-graph errors, DI-graph wiring errors, and the AGP/Kotlin version
-matrix), not ported line-for-line from an ECC build-fix skill, since ECC
-doesn't ship one specifically for Android/Gradle.
+This file's diagnostic-command tables are derived from Gradle multi-module
+Clean Architecture module-structure and DI conventions (a Gradle
+multi-module Clean Architecture layout has a predictable set of failure
+shapes: module dependency-graph errors, DI-graph wiring errors, and the
+AGP/Kotlin version matrix), not ported line-for-line from a dedicated
+Android/Gradle build-fix source, since no such source specific to
+Android/Gradle exists.
 
 Scope: Gradle build/sync failures, Android Gradle Plugin (AGP) version
 issues, Kotlin/AGP/Gradle version-matrix mismatches, dependency-resolution

@@ -49,7 +49,7 @@ stream the report domain-by-domain — do the work, then present once.
 Domain 1 (Code Quality) checks findings against this ecosystem's own
 baseline conventions — immutability, KISS/DRY/YAGNI, size limits, naming,
 comment discipline — in **`references/baseline-conventions.md`**. That file
-is this ecosystem's native replacement for the previously-inherited ECC
+is this ecosystem's native replacement for the previously-inherited
 global rule (`~/.claude/rules/ecc/common/coding-style.md`); read it once per
 Domain 1 pass rather than relying on that external file.
 

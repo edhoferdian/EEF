@@ -23,8 +23,6 @@ ferdian`'s Domain 2 in Mode B, or this skill's own report in Mode A.
 
 ## React / JSX / TSX
 
-Source: ECC `react-reviewer`.
-
 ### CRITICAL
 
 - **`dangerouslySetInnerHTML` with unsanitized/user-controlled input** — no
@@ -52,7 +50,7 @@ Source: ECC `react-reviewer`.
   **every** env var in scope, including server-only secrets (database URLs,
   API keys) sitting in the same `.env` file. Those then become eligible for
   inlining into the client bundle via `define`, even though they were never
-  meant to be public. Source: ECC `vite-patterns`. Fix: pass an explicit
+  meant to be public. Fix: pass an explicit
   prefix list, e.g. `loadEnv(mode, cwd, ['VITE_', 'APP_'])`. The same class
   of risk applies to `envPrefix: ''` in the Vite config itself — an empty
   custom `envPrefix` removes the `VITE_` gate entirely, exposing all env vars
@@ -92,19 +90,16 @@ not duplicated here.
   the shared prototype for every object in the process. Validate against a
   schema (zod/yup/valibot) first and only spread the validated, known-shape
   result — never spread a raw request body straight into a config/options
-  object. *(adapted from ECC rules/react/security.md, fetched 2026-09-06)*
+  object.
 - **Source maps served in production** — generating and deploying `.map`
   files to the public origin exposes original source, file paths, and
   internal comments to anyone who requests them. Generate source maps for
   the error tracker's own ingestion (Sentry, etc.) but do not deploy them to
-  the publicly reachable origin. *(adapted from ECC rules/react/security.md,
-  fetched 2026-09-06)*
+  the publicly reachable origin.
 
 ---
 
 ## Python (base)
-
-Source: ECC `python-reviewer`.
 
 ### CRITICAL
 
@@ -148,7 +143,7 @@ idiom) stay in `language-code-review-edho-ferdian/references/python.md`.
 
 ## Python / FastAPI
 
-Source: ECC `fastapi-reviewer`. Requires the base Python section above.
+Requires the base Python section above.
 
 ### CRITICAL
 
@@ -180,7 +175,7 @@ references/python-fastapi.md`.
 
 ## Python / Django
 
-Source: ECC `django-reviewer`. Requires the base Python section above.
+Requires the base Python section above.
 
 ### CRITICAL
 
@@ -355,7 +350,7 @@ safety, `bulk_create`, business logic placement) stay in
 
 ## Node / NestJS
 
-Source: ECC `nestjs-patterns`, fetched 2026-09-06. **Not deferred** — unlike
+**Not deferred** — unlike
 PHP/Laravel and Java/Spring Boot below, this is an active section: NestJS is
 the framework behind `ghostfolio`, a real project Edho runs (an Nx monorepo
 alongside an Angular frontend). Detect the same way as
@@ -453,8 +448,7 @@ ferdian/references/nestjs.md` — not duplicated here.
 
 ## Angular / TypeScript
 
-Source: ECC `angular-developer` (SKILL.md + payload references), fetched
-2026-09-06. **Not deferred** — Angular is a proven stack in Edho's actual
+**Not deferred** — Angular is a proven stack in Edho's actual
 project (`ghostfolio`).
 
 **Stack detection.** `package.json` with `@angular/core` in `dependencies`/
@@ -463,14 +457,13 @@ references/angular.md`, which owns the non-security Angular lens (signals,
 DI, Signal Forms, routing idioms). This section is that file's SEC-08
 counterpart, same relationship as the React/Python sections above.
 
-The ECC `angular-developer` payload reviewed for this port (SKILL.md plus
-`signals-overview.md`, `effects.md`, `signal-forms.md`, `di-fundamentals.md`,
-`injection-context.md`, `hierarchical-injectors.md`, `route-guards.md`,
-`testing-fundamentals.md`, `component-harnesses.md`) is a **code-generation
-and architectural-guidance skill, not a security-review skill** — unlike
-`react-reviewer`/`django-reviewer`/`fastapi-reviewer`, it carries no
+The Angular reference material reviewed for this section (covering signals,
+effects, Signal Forms, DI fundamentals, injection context, hierarchical
+injectors, route guards, testing fundamentals, component harnesses) is
+**code-generation and architectural guidance, not security-review
+material** — unlike the React/Django/FastAPI sections above, it carries no
 dedicated security checklist of its own. The items below are what a careful
-read of that payload surfaces as security-relevant by extension, not a
+read of that material surfaces as security-relevant by extension, not a
 ported checklist:
 
 ### HIGH
@@ -534,7 +527,7 @@ duplicated here.
 
 ## PHP / Laravel
 
-Source: ECC `laravel-security` (fetched 2026-09-06). Activated on a real
+Activated on a real
 multi-user ecosystem serving Laravel projects — no longer gated on a
 single-project trigger (see SKILL.md provenance note; the D-012/D-013
 single-stack-trigger rationale that deferred this section no longer holds
@@ -579,8 +572,7 @@ the other stacks in this file.
   `groupByRaw($userInput)`** fed directly from user input — parameter
   placeholders bind values, not column names or sort direction, so these need
   an explicit allowlist check before interpolation, not parameterization
-  (same dynamic-SQL-identifier rule general SEC-04 already documents, sourced
-  from this same ECC skill).
+  (same dynamic-SQL-identifier rule general SEC-04 already documents).
 - **`{!! $userInput !!}` in a Blade template on user-controlled input, with
   no HTMLPurifier (or equivalent allowlist sanitizer) at the same call
   site** — Blade's default `{{ }}` auto-escapes; `{!! !!}` is the explicit
@@ -648,7 +640,7 @@ the other stacks in this file.
   PHI record in its serialized payload is readable by anyone with access to
   the queue backend (Redis, a DB table, SQS) and visible in failed-job
   dashboards. Already documented as general **SEC-06** ("sensitive fields in
-  background-job / queue payloads"), sourced from this same ECC skill —
+  background-job / queue payloads") —
   don't re-file it as a new code, this is the concrete Laravel call site
   (`implements ShouldBeEncrypted`) for that general finding.
 
@@ -682,7 +674,7 @@ security-relevant subset.
 
 ## Java / Spring Boot
 
-Source: ECC `springboot-security` (fetched 2026-09-06). Activated on a real
+Activated on a real
 multi-user ecosystem serving Java/Spring projects — no longer gated on a
 single-project trigger, same reasoning as the PHP/Laravel section above.
 Quarkus is a sub-section here, not a separate top-level section, since ~85%
@@ -803,17 +795,12 @@ security-relevant subset.
 
 ## Provenance
 
-Source: ECC `rules/ruby/security.md` (fetched 2026-09-09), with ground-truth
-commands cross-referenced against `rules/ruby/hooks.md`. **Rules-only ECC
-content** — ECC carries **no dedicated `ruby-reviewer`/Rails-security skill
-or agent** to port from, unlike the PHP/Laravel and Java/Spring Boot
-sections above, which both came from a dedicated ECC security skill
-(`laravel-security`, `springboot-security`). The checklist below is
-therefore thinner and closer to a project-wide coding-convention list than
-those two sections — it reads as "here is the Rails-idiomatic default," not
-an enumerated, prioritized vulnerability catalogue. Re-derive this section
-from a live `gh api` fetch if ECC ever ships a dedicated Ruby/Rails security
-skill.
+The checklist below is thinner and closer to a project-wide
+coding-convention list than the PHP/Laravel and Java/Spring Boot sections
+above, which are each built around a dedicated security checklist of their
+own — it reads as "here is the Rails-idiomatic default," not an enumerated,
+prioritized vulnerability catalogue. Expand this section if a more thorough
+dedicated Ruby/Rails security reference becomes available.
 
 **Stack detection.** A `Gemfile` at the project root requiring `rails`, or
 `config/routes.rb` present — same manifest-signal pattern as the other
@@ -923,16 +910,12 @@ here.
 
 ## Perl
 
-Source: ECC `perl-security` (fetched 2026-09-09). Supersedes the earlier
-"intentionally not built" decision on this section — that decision was based
-on a wrong assumption that ECC carried no dedicated Perl security content;
-`perl-security` (plus `perl-patterns`/`perl-testing` and `rules/perl/
-security.md`) was actually present upstream and simply never fetched. The
-four generic findings previously harvested from this skill — SEC-16 (ReDoS),
-SEC-17 (path traversal), SEC-18 (open redirect), and SEC-19 (TOCTOU/temp-file)
-in `general-checklist.md` — stay exactly as they are; this section adds the
-Perl-specific criteria and call sites around them rather than duplicating
-them.
+Supersedes the earlier "intentionally not built" decision on this section.
+The four generic findings previously harvested for this stack — SEC-16
+(ReDoS), SEC-17 (path traversal), SEC-18 (open redirect), and SEC-19
+(TOCTOU/temp-file) in `general-checklist.md` — stay exactly as they are;
+this section adds the Perl-specific criteria and call sites around them
+rather than duplicating them.
 
 **Stack detection.** Any `.pl`/`.pm`/`.t` file in review scope, or a
 `cpanfile`/`Makefile.PL`/`.perlcriticrc` at repo root.
@@ -1085,26 +1068,23 @@ security-relevant subset.
 
 ## Provenance
 
-Adapted from ECC `perl-security`, fetched 2026-09-09. Supersedes the earlier
-"skipped permanently" decision — Perl content was assumed absent from ECC
-but was actually present and unfetched.
+Supersedes the earlier "skipped permanently" decision on Perl coverage.
 
 ---
 
 ## Smart contracts (Solidity/EVM)
 
-Source: ECC `defi-amm-security` (fetched 2026-09-06) for the reentrancy/CEI,
-donation-attack, oracle-manipulation, slippage, and admin-control patterns —
-that skill is framed around AMM/liquidity-pool contracts specifically, so its
-patterns are generalized below to any Solidity/EVM contract rather than kept
-AMM-only. ECC carries no general-purpose (non-AMM) Solidity security skill,
-so the items **explicitly marked "general Solidity/EVM knowledge"** below
-(integer overflow/underflow, access-control patterns, unchecked low-level
-calls, front-running/MEV) are **not** ported from an ECC source — they are
-written from established, industry-standard smart-contract security
-practice (the class of findings any Solidity auditor checks, corresponding
-to SWC Registry entries and the Consensys/OpenZeppelin secure-development
-patterns), called out here so this distinction is never lost. Activated on
+This section's reentrancy/CEI, donation-attack, oracle-manipulation,
+slippage, and admin-control patterns were originally framed around
+AMM/liquidity-pool contracts specifically, and have been generalized below
+to any Solidity/EVM contract rather than kept AMM-only. The items
+**explicitly marked "general Solidity/EVM knowledge"** below (integer
+overflow/underflow, access-control patterns, unchecked low-level calls,
+front-running/MEV) are written from established, industry-standard
+smart-contract security practice (the class of findings any Solidity
+auditor checks, corresponding to SWC Registry entries and the
+Consensys/OpenZeppelin secure-development patterns), called out here so
+this distinction is never lost. Activated on
 a real multi-user ecosystem serving Solidity/EVM projects — no longer gated
 on a single-project trigger, same reasoning as the PHP/Laravel and
 Java/Spring Boot sections above.
@@ -1132,7 +1112,7 @@ section use their own **`SC-SEC-01..06`** prefix instead, the same pattern
   calls in a single transaction. Fix: enforce Checks-Effects-Interactions —
   update internal state *before* the external call — and add OpenZeppelin's
   `ReentrancyGuard`/`nonReentrant` as defense-in-depth, not as the sole
-  control. Source: ECC `defi-amm-security`.
+  control.
 - **`SC-SEC-02` Share/reserve math derived directly from
   `token.balanceOf(address(this))`** — a "donation" or inflation attack:
   anyone can send tokens directly to the contract (bypassing the intended
@@ -1140,9 +1120,9 @@ section use their own **`SC-SEC-01..06`** prefix instead, the same pattern
   balance, skewing share price for every other depositor. Fix: track
   internal accounting (`_totalAssets`) and measure the actual delta
   received (`balanceAfter - balanceBefore`) around the transfer, never the
-  raw balance alone. Source: ECC `defi-amm-security`.
+  raw balance alone.
 - **`SC-SEC-03` Missing or inverted access control on a privileged function**
-  *(general Solidity/EVM knowledge — not an ECC-sourced item)* — a function
+  *(general Solidity/EVM knowledge)* — a function
   that mints tokens, changes an oracle address, pauses/unpauses, sets a fee,
   or upgrades a proxy implementation with no `onlyOwner`/role-gate modifier
   (or a modifier checking the wrong role/address entirely). The Solidity
@@ -1155,7 +1135,7 @@ section use their own **`SC-SEC-01..06`** prefix instead, the same pattern
   `transferOwnership`) or `AccessControl` role-based gating on every
   privileged entrypoint.
 - **`SC-SEC-04` Unchecked or unsafe low-level external call**
-  *(general Solidity/EVM knowledge — not an ECC-sourced item)* — a raw
+  *(general Solidity/EVM knowledge)* — a raw
   `.call(...)`/`.delegatecall(...)`/`.send(...)` whose boolean success value
   is discarded (`address(x).call(data);` with no `require(success, ...)`
   check), or an ERC-20 `transfer`/`transferFrom` call whose return value is
@@ -1173,7 +1153,7 @@ section use their own **`SC-SEC-01..06`** prefix instead, the same pattern
 
 - **`SC-SEC-05` Integer overflow/underflow on Solidity `< 0.8.0`, or
   `unchecked { }` arithmetic on `>= 0.8.0` without a justified reason**
-  *(general Solidity/EVM knowledge — not an ECC-sourced item)* — Solidity
+  *(general Solidity/EVM knowledge)* — Solidity
   `< 0.8.0` has no built-in overflow/underflow protection (SafeMath must be
   used explicitly); Solidity `>= 0.8.0` reverts on overflow by default, but
   an `unchecked { ... }` block re-opens exactly that hole for whatever
@@ -1188,16 +1168,15 @@ section use their own **`SC-SEC-01..06`** prefix instead, the same pattern
   the now-wrong price, act on it, repay the loan, all atomically). Fix:
   a TWAP (time-weighted average price, e.g. Uniswap V3's `observe()`) or a
   reputable external oracle (Chainlink) with staleness/deviation checks,
-  never a single same-block reserve read. Source: ECC `defi-amm-security`.
+  never a single same-block reserve read.
 - **A swap/trade function with no caller-supplied `amountOutMin`/slippage
   bound, or no `deadline`** — without a minimum-output guard, a transaction
   sitting in the mempool can be sandwiched (front-run to move the price
   unfavorably, then back-run after it executes) for the full difference
   between the expected and worst-case price; without a deadline, a stale
   transaction can execute long after submission at a since-moved price.
-  Source: ECC `defi-amm-security`.
 - **Front-running / MEV exposure on an ordering-sensitive operation**
-  *(general Solidity/EVM knowledge — not an ECC-sourced item)* — beyond the
+  *(general Solidity/EVM knowledge)* — beyond the
   swap-specific slippage case above, any function whose outcome depends on
   transaction ordering within a block (a commit-then-reveal scheme missing
   the commit phase, an auction accepting bids without a reveal delay, a
@@ -1213,7 +1192,7 @@ section use their own **`SC-SEC-01..06`** prefix instead, the same pattern
   denial-of-service on legitimate large-value operations, not merely a
   correctness bug. Fix: a full-precision multiply-divide primitive
   (`FullMath.mulDiv` or equivalent) for reserve/share calculations with
-  large token amounts. Source: ECC `defi-amm-security`.
+  large token amounts.
 
 ### Ground-truth
 
@@ -1263,7 +1242,7 @@ Solidity-specific content in the ecosystem today.
 
 ## ArkTS / HarmonyOS
 
-Source: ECC `rules/arkts/security.md`, fetched 2026-09-09. Written proactively
+Written proactively
 closing the ArkTS/HarmonyOS placeholder note (the "wait for a real project"
 gate has been removed per the ecosystem owner's decision) — treat as a
 ready-to-use lens once a HarmonyOS project actually appears, not as
@@ -1288,7 +1267,7 @@ lens.
 - **Hardcoded API key, token, or password literal in `.ets`/`.ts` source**
   (`const API_KEY: string = 'sk-xxxxxxxxxxxx'`) — same class of finding as
   general secret-handling checks elsewhere in this ecosystem, called out
-  here because it is explicitly named in the ECC source as a HarmonyOS
+  here because it is a well-known HarmonyOS
   anti-pattern; the fix is HUKS (`@kit.UniversalKeystoreKit`) for genuinely
   sensitive credentials, or a non-sensitive build-profile config value for
   anything that isn't actually a secret.

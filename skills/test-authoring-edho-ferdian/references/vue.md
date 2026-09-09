@@ -308,9 +308,7 @@ same caveat as every other stack file in this skill.
 ## Provenance
 
 Written for this ecosystem to close the Vue test-authoring gap, 2026-09-07.
-No corresponding ECC source (`golang-testing` and `python-testing` exist in
-ECC; no `vue-testing` skill or rule was found in the upstream tree as of
-this date). Structured to parallel `react.md`'s existing coverage where the
+Structured to parallel `react.md`'s existing coverage where the
 underlying concepts transfer (query priority, async waiting, network
 mocking, coverage-per-layer), with Vue-specific sections (Composition API
 composables, Vue Test Utils mount strategies, Pinia) written directly for

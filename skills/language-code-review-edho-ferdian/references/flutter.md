@@ -1,8 +1,8 @@
 # Language Lens — Dart / Flutter
 
-Adapted from ECC `dart-flutter-patterns` and `flutter-dart-code-review`,
-fetched 2026-09-07 — merged into one file because both cover the same
-Dart/Flutter surface (idiom + widget/state-management review) with heavily
+Idiom and widget/state-management review are merged into one file because
+both cover the same
+Dart/Flutter surface with heavily
 overlapping scope; keeping them separate would duplicate the null-safety,
 widget-architecture, and state-shape material. `rules/dart/patterns.md` and
 `rules/dart/security.md` are folded in as supporting detail where they add

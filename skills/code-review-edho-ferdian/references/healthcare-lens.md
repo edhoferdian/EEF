@@ -1,7 +1,5 @@
 # Conditional Lens — Healthcare / Clinical / EMR
 
-Adapted from ECC `healthcare-reviewer`, fetched 2026-09-04.
-
 **Caution — this lens requires domain expertise to fully validate.** Clinical
 scoring formulas, drug-interaction logic, and coding-standard mappings are
 safety-critical and this skill is a code reviewer, not a clinician. When this

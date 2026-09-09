@@ -1,7 +1,6 @@
 # MCP tool surface design
 
-Adapted from ECC `mcp-server-patterns`, fetched 2026-09-04. **Deliberately
-free of SDK signatures** — the MCP SDK's registration API has changed shape
+**Deliberately free of SDK signatures** — the MCP SDK's registration API has changed shape
 more than once, and the source skill itself defers to live docs. Resolve
 current signatures via Context7 (`resolve-library-id` → `query-docs`) at
 authoring time; the rules below are what stays true across versions.

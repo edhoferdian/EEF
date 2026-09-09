@@ -1,16 +1,14 @@
 # Language Lens — Vue / Nuxt
 
-Adapted from ECC `vue-patterns` and `nuxt4-patterns`, fetched 2026-09-06.
-
-**FOLD-M.** Kelompok 1 lanjutan: konten sedang, plausibel dari sumber ECC,
+**FOLD-M.** Kelompok 1 lanjutan: konten sedang, plausibel dari sumbernya,
 tapi **belum ada bukti proyek Vue/Nuxt aktif** di workspace Edho saat ini —
 beda dari lens React (FOLD-P) yang sudah dipakai pada proyek nyata di
 ekosistem ini. Perlakukan file ini sebagai lens siap-pakai begitu proyek
 Vue/Nuxt muncul, bukan sebagai sesuatu yang sudah tervalidasi lapangan.
 
 **One file, not two.** Nuxt 4 is folded into this same file as a
-sub-section, not a separate `nuxt.md`, because ECC's own `vue-patterns`
-skill already treats Nuxt as "vanilla Vue plus SSR specifics" (~85%
+sub-section, not a separate `nuxt.md`, because the source Vue patterns
+content already treats Nuxt as "vanilla Vue plus SSR specifics" (~85%
 conceptual overlap: Composition API, reactivity, Pinia, component
 architecture all apply unchanged) — splitting it would duplicate most of
 §1–8 below for a thin SSR-only delta. This mirrors how `python-django.md`

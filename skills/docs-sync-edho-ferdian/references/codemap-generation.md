@@ -1,8 +1,7 @@
 # Codemap generation
 
-Adapted from ECC `doc-updater`, fetched 2026-09-04. Dependency-graph
-generation (ECC's `madge`/AST step) intentionally removed — see SKILL.md
-Step 4 for why and what replaces it.
+Dependency-graph generation (a `madge`/AST step) is intentionally removed —
+see SKILL.md Step 4 for why and what replaces it.
 
 ## What a codemap is for
 

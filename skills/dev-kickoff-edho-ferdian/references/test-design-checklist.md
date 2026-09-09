@@ -1,13 +1,13 @@
 # Test Design Checklist — Edge Cases & Anti-Patterns
 
-Adapted from ECC `tdd-guide`, fetched 2026-09-04. Harvested selectively: this
+Harvested selectively: this
 skill's own TEST → IMPLEMENT → VERIFY stages (`execution-loop.md`) already
-enforce a stricter test-first discipline than `tdd-guide`'s own workflow —
-that part is not re-ported. What's genuinely missing and worth reusing is the
-concrete edge-case checklist and the anti-pattern list below. `tdd-guide`'s
-"Eval-Driven TDD Addendum" (pass@1/pass@3 scoring) is deliberately **not**
-ported — it's coupled to an ECC-internal eval harness this ecosystem has no
-equivalent of.
+enforce a stricter test-first discipline than the source `tdd-guide`
+workflow — that part is not re-ported. What's genuinely missing and worth
+reusing is the concrete edge-case checklist and the anti-pattern list below.
+The source's "Eval-Driven TDD Addendum" (pass@1/pass@3 scoring) is
+deliberately **not** ported — it's coupled to an external eval harness this
+ecosystem has no equivalent of.
 
 Referenced from Stage 2 (TEST) of `execution-loop.md` and from Gate 5 of the
 per-task Reflection block.
@@ -43,7 +43,7 @@ absence of one should be a conscious call, not an oversight.
 
 ## pytest-specific
 
-Adapted from ECC `python-testing`, fetched 2026-09-04. When the project's test
+When the project's test
 runner is pytest, tie the categories and anti-patterns above to these
 concrete mechanisms rather than leaving them abstract:
 
@@ -82,7 +82,7 @@ concrete mechanisms rather than leaving them abstract:
 
 ## Shared test-data generation
 
-One item from ECC `django-tdd`, fetched 2026-09-04 — applies to Django/DRF
+One item drawn from Django/DRF testing practice — applies to Django/DRF
 projects, but the underlying call generalizes to any ORM-backed test suite:
 
 - **Prefer `factory_boy` factories over a shared fixture file for test data.**

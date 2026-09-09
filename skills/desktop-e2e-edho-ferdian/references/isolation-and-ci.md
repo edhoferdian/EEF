@@ -1,7 +1,6 @@
 # Isolation Tiers & CI
 
-Adapted from ECC `windows-desktop-e2e`, fetched 2026-09-04. Use the lightest
-tier that satisfies the need.
+Use the lightest tier that satisfies the need.
 
 | Tier | Isolates | Cost | CI | Use when |
 |---|---|---|---|---|

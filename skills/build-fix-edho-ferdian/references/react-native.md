@@ -1,8 +1,7 @@
 # React Native / Expo — build & compile lens
 
-Adapted from ECC `react-native-patterns` (SKILL.md) and `rules/react-native/
-hooks.md` (the pre-release check list feeds the diagnostic-command table
-below), fetched 2026-09-07.
+`rules/react-native/hooks.md`'s pre-release check list feeds the
+diagnostic-command table below.
 
 Scope: Metro bundler failures, native module linking failures, TypeScript
 errors in `.ts`/`.tsx` RN/Expo code, Expo/EAS build and config errors, and

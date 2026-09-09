@@ -1,6 +1,6 @@
 # Playwright Configuration, Layout & CI (driver-specific reference)
 
-Adapted from ECC `e2e-testing`, fetched 2026-09-04. Read this **only** when
+Read this **only** when
 Phase 0 detected the project's own `@playwright/test` as the driver. The
 process in Phases 1–4 is driver-agnostic; this file is the concrete Playwright
 wiring behind it.

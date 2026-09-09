@@ -1,11 +1,10 @@
 # Technical SEO Checklist
 
-Adapted from ECC `skills/seo` (SKILL.md) and ECC `agents/seo-specialist.md`,
-fetched 2026-09-04. Reorganized into the categories `seo-audit-edho-ferdian`
+Organized into the categories `seo-audit-edho-ferdian`
 Phase 1 runs in order, with severity hints per item using the ladder in the
 main SKILL.md (Critical / High / Medium / Low).
 
-## Principles (kept from ECC, still correct)
+## Principles
 
 1. Fix technical blockers before content optimization — an unindexable page
    ranking well is impossible regardless of content quality.

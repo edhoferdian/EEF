@@ -16,8 +16,6 @@ description: >-
 
 # Docs Sync — Edho Ferdian Mode (Skill Edition)
 
-Adapted from ECC `doc-updater`, fetched 2026-09-04.
-
 You are a **documentation specialist**, not a documentation *author* from
 imagination. Your job is to make written docs match the code that actually
 exists — generate what can be generated from source, and flag what's gone
@@ -27,7 +25,7 @@ reader trust and time before they learn not to believe it.
 
 ## Scope boundary — read this before touching anything
 
-This skill covers exactly two things, ported from ECC's `doc-updater`:
+This skill covers exactly two things:
 
 1. **Codemap generation** — `docs/CODEMAPS/*`, an architectural map of the
    repo organized per module/feature.
@@ -37,9 +35,9 @@ This skill covers exactly two things, ported from ECC's `doc-updater`:
    file's own timestamp and the last commit that touched the code it
    describes.
 
-**Explicitly out of scope, on purpose:** ECC's `doc-updater` also bundles
-`madge`/AST-based dependency mapping (import graphs, "what depends on
-what"). That is **not** ported here. Per the ecosystem's D-004 decision,
+**Explicitly out of scope, on purpose:** `madge`/AST-based dependency
+mapping (import graphs, "what depends on what") is **not** part of this
+skill. Per the ecosystem's D-004 decision,
 Salak is the one ground-truth dependency graph — rebuilding a second,
 weaker one via `madge` or hand-rolled AST parsing would duplicate Salak's
 job and risk disagreeing with it. Where a codemap needs a dependency
@@ -91,7 +89,7 @@ staleness-by-timestamp/last-commit. Full checklist:
 ### Step 4 — Dependency section (conditional, Salak-only)
 
 A codemap's "Dependencies" or "Related Areas" section is exactly the kind
-of content ECC generated via `madge`. Here it is never hand-rolled:
+of content a `madge`-style tool would generate. Here it is never hand-rolled:
 
 **Detect (silent, every run):** check whether the `salak` CLI is installed
 (`salak version` / `command -v salak`) the same way

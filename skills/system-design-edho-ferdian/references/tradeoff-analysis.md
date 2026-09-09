@@ -1,7 +1,5 @@
 # Trade-off analysis format
 
-Adapted from ECC `architect`, fetched 2026-09-04.
-
 ## Format
 
 For every option under real consideration:

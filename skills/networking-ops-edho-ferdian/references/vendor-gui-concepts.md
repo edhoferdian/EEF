@@ -172,7 +172,7 @@ for LAN clients at all. To integrate Pi-hole:
   DHCP) rather than at Pi-hole directly.
 
 **General Pi-hole integration pattern that holds regardless of platform**
-(from ECC `homelab-pihole-dns`, generalized per `remote-access-and-local-dns.md`):
+(generalized per `remote-access-and-local-dns.md`):
 Pi-hole sits as an upstream/conditional-forward target, not as a DHCP
 server, on any network where the platform's own DHCP is already trusted —
 running Pi-hole's own DHCP is a separate decision that requires disabling
@@ -220,36 +220,35 @@ for expressing and reordering rules differs.
 
 ## Provenance
 
-- **ECC `homelab-vlan-segmentation`** (fetched 2026-09-09, from
-  `github.com/affaan-m/ECC`): source for the UniFi Networks/WiFi/Traffic
-  Rules conceptual shape, the pfSense/OPNsense VLAN-creation-then-interface-
-  assignment two-step, the pfSense/OPNsense per-interface top-to-bottom rule
-  ordering example, and the MikroTik VLAN-filtering-bridge object model
-  (bridge → bridge port → VLAN interface → firewall filter chain) including
-  the illustrative `/interface bridge`, `/interface bridge port`,
-  `/interface bridge vlan`, `/interface vlan`, and `/ip firewall filter`
-  command shapes. The concrete menu-path strings in that source (e.g.
-  "Settings → Networks → Create New Network") are reproduced here only as
-  illustrative examples of current convention, per the accuracy caveat at
-  the top of this file — they are not re-verified against a live install.
-- **ECC `homelab-pihole-dns`** (fetched 2026-09-09, from the same
-  repository): source for the Pi-hole-as-upstream integration pattern (DHCP
-  DNS option pointed at Pi-hole vs. router-forwards-to-Pi-hole), the
-  static-IP-before-install requirement, the "don't run two DHCP servers on
-  one L2 domain" rule, and the public-secondary-resolver-bypasses-filtering
-  tradeoff. Pi-hole's own product-specific admin-UI click paths (Adlists,
-  Query Log, `pihole -g`) were not re-ported here — they were already
-  generalized in `remote-access-and-local-dns.md` and restating them
-  per-vendor would not add anything, since Pi-hole is a single product, not
-  three.
-- **General platform knowledge beyond the ECC sources**: the UniFi
+- **VLAN segmentation material** (last verified 2026-09-09): covers the
+  UniFi Networks/WiFi/Traffic Rules conceptual shape, the pfSense/OPNsense
+  VLAN-creation-then-interface-assignment two-step, the pfSense/OPNsense
+  per-interface top-to-bottom rule ordering example, and the MikroTik
+  VLAN-filtering-bridge object model (bridge → bridge port → VLAN interface
+  → firewall filter chain) including the illustrative `/interface bridge`,
+  `/interface bridge port`, `/interface bridge vlan`, `/interface vlan`,
+  and `/ip firewall filter` command shapes. The concrete menu-path strings
+  here (e.g. "Settings → Networks → Create New Network") are reproduced
+  only as illustrative examples of current convention, per the accuracy
+  caveat at the top of this file — they are not re-verified against a live
+  install.
+- **Pi-hole integration material** (last verified 2026-09-09): covers the
+  Pi-hole-as-upstream integration pattern (DHCP DNS option pointed at
+  Pi-hole vs. router-forwards-to-Pi-hole), the static-IP-before-install
+  requirement, the "don't run two DHCP servers on one L2 domain" rule, and
+  the public-secondary-resolver-bypasses-filtering tradeoff. Pi-hole's own
+  product-specific admin-UI click paths (Adlists, Query Log, `pihole -g`)
+  were not carried over here — they were already generalized in
+  `remote-access-and-local-dns.md` and restating them per-vendor would not
+  add anything, since Pi-hole is a single product, not three.
+- **General platform knowledge beyond the material above**: the UniFi
   Networks-vs-legacy-firewall-rules distinction, the pfSense/OPNsense
   Unbound-based DNS Resolver and its conditional-forwarding capability, the
   MikroTik global (non-per-VLAN) DNS object and its
   `allow-remote-requests` toggle, the WinBox-vs-WebFig relationship
   (same RouterOS object model, different UI shell), and the MikroTik
   `place-before` rule-reordering mechanism came from general knowledge of
-  these platforms rather than the two ECC sources above — flagged here
+  these platforms rather than the sourced material above — flagged here
   because, per the accuracy caveat, UI specifics on any platform drift
   over time and general knowledge is no more immune to staleness than the
-  ECC source material is.
+  sourced material is.

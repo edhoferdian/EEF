@@ -1,11 +1,11 @@
 # Swift/Apple — Xcode build, SPM & Swift 6 concurrency-checking lens
 
-Adapted from ECC `agents/swift-build-resolver.md`, plus the
+This lens draws on the Swift build-resolver material, plus
 `swiftui-patterns`, `swift-concurrency-6-2`, `swift-actor-persistence`, and
-`swift-protocol-di-testing` skills for the concurrency/actor-isolation error
-categories, and `rules/swift/*.md`, fetched 2026-09-07.
+`swift-protocol-di-testing` reference material for the concurrency/actor-isolation error
+categories, and `rules/swift/*.md`.
 
-**FOLD-M.** Konten sedang, plausibel dari sumber ECC, tapi **belum ada bukti
+**FOLD-M.** Konten sedang, plausibel, tapi **belum ada bukti
 proyek Swift/iOS/macOS aktif** di workspace Edho saat ini — beda dari lens
 JavaScript/TypeScript dan Django/Python (FOLD-P) yang sudah dipakai pada
 proyek nyata di ekosistem ini. Swift juga punya penghalang tambahan yang

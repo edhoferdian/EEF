@@ -1,7 +1,5 @@
 # Output Scorecard (optional REVIEW-stage scoring pass)
 
-Adapted from ECC `agent-evaluator`, fetched 2026-09-04.
-
 Reference for Stage 4 (REVIEW) of `execution-loop.md`. This is an optional,
 available scoring pass — not a mandatory replacement for the REVIEW targets
 already listed there (acceptance criteria, PDR conformance, abuse cases,

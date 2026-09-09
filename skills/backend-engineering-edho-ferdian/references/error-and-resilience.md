@@ -1,7 +1,5 @@
 # Error taxonomy and resilience
 
-Adapted from ECC `error-handling` and `backend-patterns`, fetched 2026-09-04.
-
 ## Principles
 
 1. **Fail loudly at the boundary, gracefully at the edge.** Internal code
@@ -45,10 +43,8 @@ Adapted from ECC `error-handling` and `backend-patterns`, fetched 2026-09-04.
 
 ## Third-party email/webhook delivery
 
-Adapted from ECC `mailtrap-email-integration`, fetched 2026-09-06 (vendor-
-specific detail dropped, principle kept). Treat every send to a third-party
-email or webhook provider as a fallible network call, not a fire-and-forget
-side effect:
+Treat every send to a third-party email or webhook provider as a fallible
+network call, not a fire-and-forget side effect:
 
 - **Wrap it like any other fallible network call** — it gets the same
   retry/backoff and circuit-breaker treatment as above, not a bare call with

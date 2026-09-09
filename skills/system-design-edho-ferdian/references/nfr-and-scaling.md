@@ -1,7 +1,5 @@
 # Non-functional requirements checklist + scaling-tier framework
 
-Adapted from ECC `architect`, fetched 2026-09-04.
-
 ## Non-functional requirements checklist
 
 Run through every category below for a decision that touches architecture.

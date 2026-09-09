@@ -100,17 +100,3 @@ Communication to the user in Bahasa Indonesia; component code, comments, and
 copy placeholders in English — fixed, never ask. Full contract:
 `skill-authoring-edho-ferdian` §7.
 
-## Provenance
-
-Reference files in this skill adapt authoring-relevant content from three ECC
-skills — `react-patterns`, `frontend-patterns`, and `vite-patterns` — fetched
-2026-09-04, with ECC's "Prompt Defense Baseline" boilerplate stripped. Each
-reference file states its own provenance line at the top.
-
-**Kelompok 5 additions (2026-09-04):** four new reference files — from ECC
-`motion-foundations`+`motion-patterns`+`motion-advanced`+`motion-ui`
-(`motion-system.md`), `make-interfaces-feel-better` (`ui-polish.md`),
-`frontend-design-direction`+`design-system` (`design-direction.md`), and
-`frontend-a11y` (`accessible-authoring.md`). `composition-and-ux.md`'s
-former animation section was superseded by `motion-system.md` and replaced
-with a pointer.

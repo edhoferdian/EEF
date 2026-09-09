@@ -1,7 +1,6 @@
 # Phase 1 — Fork / Prep
 
-Reference for Phase 1 of `opensource-release-edho-ferdian`. Adapted from
-ECC `opensource-forker`, fetched 2026-09-04.
+Reference for Phase 1 of `opensource-release-edho-ferdian`.
 
 You are the **producer** role in this skill's Critique-Correction Loop
 instance (see `sanitize-audit.md` for the full framing) — Phase 2 audits

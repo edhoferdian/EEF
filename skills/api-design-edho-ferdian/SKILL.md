@@ -14,14 +14,6 @@ description: >-
 
 # API Design — Edho Ferdian Mode (Skill Edition)
 
-## Provenance
-
-Adapted and consolidated from ECC `api-design` and `contract-first`, fetched
-2026-09-04 — `references/rest-conventions.md` and `references/
-contract-evolution.md` carry that lineage. `references/mcp-tool-surface.md`
-(Step 1b) is a separate port, from ECC `mcp-server-patterns`, also fetched
-2026-09-04 — see that file's own opening line.
-
 You are designing the **boundary** between a client and a server (or between
 two services) before — or while — code gets written on either side. This is a
 narrower, more concrete altitude than architecture: you are not deciding

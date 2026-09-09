@@ -1,8 +1,5 @@
 # Python / pytest — Authoring Guide
 
-Adapted from ECC `python-testing`, fetched 2026-09-07 (skill), cross-checked
-against ECC `rules/python/testing.md`.
-
 This is stack-specific detail for `test-authoring-edho-ferdian`'s SKILL.md.
 Read the SKILL.md first for the three-way boundary against
 `code-review-edho-ferdian`'s test-quality-lens, `dev-kickoff-edho-ferdian`'s
@@ -393,11 +390,3 @@ and the test just never gets excluded by `-m "not slow"`.
   source.
 - `time.sleep()`/fixed-delay waits standing in for a real async
   synchronization point.
-
-## Provenance
-
-Adapted from ECC `skills/python-testing/SKILL.md` and
-`rules/python/testing.md`, fetched 2026-09-07. Async, autospec, and
-patch-site guidance, plus the fixture-scope and parametrize-id discipline
-above, extend that source content for this ecosystem's authoring-craft
-framing.

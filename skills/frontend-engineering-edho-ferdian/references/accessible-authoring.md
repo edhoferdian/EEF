@@ -1,7 +1,5 @@
 # Authoring Guide — Building Accessible React UI
 
-Adapted from ECC `frontend-a11y`, fetched 2026-09-04.
-
 **Pairing.** `code-review-edho-ferdian/references/accessibility-lens.md` is the
 *compliance* side — WCAG 2.2 AA criteria, A11Y-01..15 findings, severities. This
 file is the *authoring* side: the concrete React patterns that make code pass

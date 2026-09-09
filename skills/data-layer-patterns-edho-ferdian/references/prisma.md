@@ -1,7 +1,5 @@
 # Prisma — Design-Time Setup & Patterns
 
-Adapted from ECC `prisma-patterns`, fetched 2026-09-04.
-
 **Check the installed version before applying anything here** — the Prisma
 API surface has moved across major releases (adapter-based `PrismaClient`
 construction, `relationJoins`, `omit`, `prisma.config.ts` replacing

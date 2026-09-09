@@ -1,10 +1,6 @@
 # C++ — CMake, linker & toolchain-mismatch lens
 
-Adapted from ECC `cpp-build-resolver`, `cpp-coding-standards`, and
-`cpp-testing`, fetched 2026-09-07.
-
-**FOLD-M.** Content is medium-depth and plausible, ported straight from
-ECC's C++ build-resolver agent and the coding-standards/testing skills, but
+**FOLD-M.** Content is medium-depth and plausible, but
 **there is no evidence of an active C++ project in Edho's workspace yet** —
 unlike JavaScript/TypeScript and Django/Python (FOLD-P) which back real work
 already in this ecosystem. Treat this file as a diagnostic lens ready to use

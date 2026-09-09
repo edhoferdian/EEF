@@ -1,8 +1,5 @@
 # Channel Operations — Mail and Message Surfaces
 
-Consolidated from ECC `skills/email-ops` and ECC `skills/messages-ops`,
-fetched 2026-09-06.
-
 `SKILL.md` defines the **triage brain** — the four tiers, the drafting
 discipline, the approval gate, the follow-through contract — and is
 deliberately channel-agnostic. This file defines what changes once a

@@ -6,9 +6,8 @@ moved here as the single source of truth so every other file in the
 ecosystem cross-references this one instead of holding its own copy. The
 code IDs are unchanged so existing cross-references (`SEC-04`, `SEC-06`,
 `SEC-04a..d`, `SEC-08`, etc.) elsewhere in the ecosystem keep working.
-SEC-11..13 are new additions, folded in from ECC's original
-`security-reviewer` definition (OWASP categories not yet represented in the
-ported content) — see the Provenance note in `SKILL.md`.
+SEC-11..13 are new additions (OWASP categories not yet represented in the
+existing content) — see the Provenance note in `SKILL.md`.
 
 This checklist works for **any stack**. Stack-specific security items (React,
 Python, FastAPI, Django) live in `references/language-specific.md`.
@@ -39,9 +38,8 @@ Domain-specific security items (database, healthcare, RAG, ML) live in
   a TS union type), plus a separate allowlist for `ASC`/`DESC`. Flag any
   sort/filter/column parameter that reaches the query string without one —
   this is a distinct finding from ordinary value injection and is frequently
-  missed because the surrounding code looks parameterized. Source: ECC
-  `perl-security`, `laravel-security` (`orderByRaw($userInput)`,
-  `groupByRaw($userInput)`).
+  missed because the surrounding code looks parameterized (e.g.
+  `orderByRaw($userInput)`, `groupByRaw($userInput)`).
 - **SEC-05 IDOR** — can a user reach another user's resource by changing an ID?
 - **SEC-06 Sensitive data** — passwords/PII not sent to client or logged?
   Never place sensitive identifiers — session tokens, PHI, PII — in URL
@@ -61,7 +59,7 @@ Domain-specific security items (database, healthcare, RAG, ML) live in
   Pass an identifier and re-fetch inside the job, or encrypt the payload
   (Laravel `ShouldBeEncrypted`, or explicit encryption elsewhere) — never put
   a raw card number, password, full PHI record, or API token in a job
-  constructor. Source: ECC `laravel-security`.
+  constructor.
 - **SEC-07 Dependency risk** — known-vulnerable libraries imported? (verify
   with `npm audit` / `pip-audit` / equivalent in Phase 2.)
 - **SEC-08 Rate limiting** — abusable endpoints rate-limited? Stack-specific
@@ -75,10 +73,9 @@ Domain-specific security items (database, healthcare, RAG, ML) live in
   anything that authenticates via cookie or session, including
   "API-looking" routes under `/api/*` that use cookie-based SPA auth (Laravel
   Sanctum stateful mode, Django session auth on DRF). Check *how the route
-  authenticates* before flagging, not what it is named. Source: ECC
-  `springboot-security` ("CSRF posture correct for app type"),
-  `laravel-security` ("avoid blanket `api/*` exclusion — stateful Sanctum
-  routes need CSRF").
+  authenticates* before flagging, not what it is named — CSRF posture must
+  match the app type, and a blanket `api/*` exclusion is wrong when stateful
+  Sanctum routes are in scope.
 - **SEC-10 Token handling** — tokens stored safely with correct expiry?
   Also covers **session fixation**: the session identifier must be
   regenerated at every privilege transition — successful login, step-up
@@ -91,9 +88,9 @@ Domain-specific security items (database, healthcare, RAG, ML) live in
   `sessionFixation().migrateSession()` default) — a hand-rolled login flow
   that sets a user id into an existing session and returns is the finding
   shape. Logout must call both invalidate and token regeneration, not just
-  clear the user id. Source: ECC `laravel-security`.
+  clear the user id.
 
-### New — folded in from ECC's original OWASP-style categories
+### New — original OWASP-style categories
 
 - **SEC-11 Security misconfiguration** — default credentials left unchanged;
   debug mode enabled in production (`DEBUG=True`, verbose stack traces
@@ -115,8 +112,7 @@ Domain-specific security items (database, healthcare, RAG, ML) live in
   is a MEDIUM gap even when `default-src` is set, because neither falls back
   to `default-src` in every browser. Note that `X-XSS-Protection` is a
   deprecated header that modern browsers ignore — its **absence is not a
-  finding**, and recommending it is itself a false positive. Source: ECC
-  `security-review`, `quarkus-security`, `django-security`.
+  finding**, and recommending it is itself a false positive.
 - **SEC-12 XXE / insecure deserialization (general)** — an XML parser
   configured to resolve external entities (XXE); any deserialization of
   untrusted data using a format/library capable of executing code during
@@ -133,7 +129,7 @@ Domain-specific security items (database, healthcare, RAG, ML) live in
   is about making sure the *right* events *are* logged, without leaking
   secrets while doing it.
 
-### New — folded in from ECC's per-stack security skills
+### New — per-stack security additions
 
 - **SEC-14 Mass assignment / over-posting** — a create/update path that binds
   a whole request body straight onto a model or entity, letting a client set
@@ -144,8 +140,7 @@ Domain-specific security items (database, healthcare, RAG, ML) live in
   `params.permit!`; Spring `@ModelAttribute` on an entity instead of a DTO;
   Express/Prisma `prisma.user.update({ data: req.body })`. Require an explicit
   allowlist of writable fields (a validated DTO, `$fillable`, explicit
-  `fields = [...]`) and never a denylist. Source: ECC `laravel-security`,
-  `springboot-security`.
+  `fields = [...]`) and never a denylist.
   Cross-reference: the Django-specific instance is already recorded under
   `language-specific.md` §Django (`fields = '__all__'`) — file it once, under
   whichever code the host report is using, not both.
@@ -161,9 +156,9 @@ Domain-specific security items (database, healthcare, RAG, ML) live in
   a real proxy sits in front, configure an explicit trusted-proxy CIDR list
   (never `*`) so the framework strips and rewrites the header itself. The
   same rule applies to `X-Forwarded-Proto` used to decide "is this request
-  HTTPS" — a spoofed value can defeat an HTTPS redirect. Source: ECC
-  `quarkus-security` ("Never use X-Forwarded-For directly — clients can spoof
-  it"), `laravel-security` (`trusted_proxies` must be specific CIDRs).
+  HTTPS" — a spoofed value can defeat an HTTPS redirect. Never trust
+  `X-Forwarded-For` directly since clients can spoof it, and keep
+  `trusted_proxies` scoped to specific CIDRs, never a wildcard.
 
 - **SEC-16 ReDoS (catastrophic regex backtracking)** — a regular expression
   with nested quantifiers over overlapping character sets, evaluated against
@@ -175,7 +170,7 @@ Domain-specific security items (database, healthcare, RAG, ML) live in
   (`^[a-zA-Z]++$`, `^(?>a+)$`) where the language supports it, anchor the
   pattern, cap input length before matching, or run the match under a timeout.
   Severity depends on reachability: HIGH on a public unauthenticated endpoint,
-  MEDIUM behind auth, LOW in a build script. Source: ECC `perl-security`.
+  MEDIUM behind auth, LOW in a build script.
 
 - **SEC-17 Path traversal** — a filesystem path built from user-controlled
   input (upload filename, download `?file=`, template/plugin name, archive
@@ -187,8 +182,7 @@ Domain-specific security items (database, healthcare, RAG, ML) live in
   canonicalized base directory plus a separator — a string check for `".."`
   before resolution is not sufficient and is itself a finding. Also covers
   **zip-slip**: extracting an archive entry whose name escapes the extraction
-  root. Source: ECC `perl-security`, `security-bounty-hunter` (CWE-22, listed
-  as reliably in-scope for bounty programs).
+  root (CWE-22, reliably in-scope for most bug-bounty programs).
 
 - **SEC-18 Open redirect** — a redirect target taken from a request parameter
   (`?next=`, `?return_to=`, `?redirect_uri=`) and followed without validation.
@@ -197,8 +191,8 @@ Domain-specific security items (database, healthcare, RAG, ML) live in
   authorization code or token. Fix: allowlist the permitted destinations, or
   accept only same-origin relative paths (reject anything containing a scheme
   or starting with `//`, which is protocol-relative and leaves the origin).
-  Source: ECC `perl-security` (listed as an anti-pattern:
-  `print $cgi->redirect($user_url)`).
+  Unvalidated redirect construction such as `print $cgi->redirect($user_url)`
+  is the anti-pattern to flag.
 
 - **SEC-19 TOCTOU & insecure temporary/predictable file creation** — a
   check-then-act sequence on the filesystem (`if not exists → create`,
@@ -212,11 +206,11 @@ Domain-specific security items (database, healthcare, RAG, ML) live in
   lock (`flock(LOCK_EX)`) rather than an existence check where mutual
   exclusion is the actual requirement. Lower priority for pure web apps,
   real for CLI tools, build scripts, and anything running as a privileged
-  service. Source: ECC `perl-security`.
+  service.
 
 ---
 
-## Pattern quick-reference (from ECC `security-reviewer`)
+## Pattern quick-reference
 
 Treat a hit on any of these as a strong prior, but still confirm before
 labeling High confidence per the ground-truth rule in `SKILL.md` Phase 2:
@@ -242,7 +236,7 @@ Mode B finding slots directly into the host report without translation.
 
 ## Reachability gate (before assigning HIGH/CRITICAL)
 
-Adapted from ECC `security-bounty-hunter` (fetched 2026-09-04). Severity is a function of the
+Severity is a function of the
 *path*, not the pattern. Before promoting a finding to HIGH or CRITICAL,
 answer all four — if any is "no", cap the finding at MEDIUM and say why:
 

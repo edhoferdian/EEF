@@ -1,7 +1,5 @@
 # Conditional Lens — Accessibility
 
-Adapted from ECC `a11y-architect` (2026-09-04), extended from ECC skill accessibility (2026-09-04).
-
 **Activation.** This lens runs only when Phase 0 detects the review scope
 touches UI/component/frontend code — JSX/TSX, Vue/Svelte components, HTML
 templates, or a native UI layer (SwiftUI, Jetpack Compose, etc.). If the

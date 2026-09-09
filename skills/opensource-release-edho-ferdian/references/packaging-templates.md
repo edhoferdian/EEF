@@ -1,7 +1,6 @@
 # Phase 3 — Packaging Templates
 
-Reference for Phase 3 of `opensource-release-edho-ferdian`. Adapted from
-ECC `opensource-packager`, fetched 2026-09-04.
+Reference for Phase 3 of `opensource-release-edho-ferdian`.
 
 ## Preconditions — do not skip
 
@@ -37,9 +36,9 @@ source:
 not invent a separate template. A packaged open-source repo is itself a
 project someone will pick up with an AI coding tool, which is exactly what
 the Context Pack format is for. Two constraints apply on top of that shared
-format, both inherited from ECC's original packager and worth keeping:
+format, both worth keeping:
 
-- **Under 100 lines.** ECC's packager enforces this and the reasoning still
+- **Under 100 lines.** This is enforced deliberately and the reasoning still
   holds — `CLAUDE.md` is read on every session start; verbosity there is a
   standing token cost, not a one-time one.
 - Every command listed must be copy-pasteable and verified against the
@@ -112,7 +111,7 @@ All configuration is via environment variables — see \`.env.example\`:
 See [CONTRIBUTING.md](CONTRIBUTING.md).
 ```
 
-Rules carried over from ECC (still correct, keep them):
+Rules worth keeping:
 
 - Every command must be copy-pasteable and correct — verify each one
   against the actual project before writing it down; a wrong command in

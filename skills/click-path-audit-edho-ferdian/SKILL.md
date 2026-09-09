@@ -14,8 +14,6 @@ description: >-
 
 # Click-Path Audit — Edho Ferdian Mode
 
-Adapted from ECC `click-path-audit` (community origin), fetched 2026-09-04.
-
 Ordinary debugging asks: does the handler exist, does it crash, are the types
 right. All three can be YES while the button is still broken. This skill asks
 the question those three miss:

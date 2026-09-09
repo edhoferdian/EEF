@@ -1,6 +1,6 @@
 # Plan phase — sourcing scope for real (the adapted phase)
 
-This is the phase ECC's `gan-planner` handled by inventing 12-16 features
+An earlier version of this phase handled scoping by inventing 12-16 features
 from a one-line prompt with the explicit instruction to "be deliberately
 ambitious." That instruction is dropped entirely. What follows replaces it.
 
@@ -74,7 +74,8 @@ happen to be inconvenient to read.
 
 1. Propose a **small** scope: 3-5 features, sized so a single Generate→
    Evaluate loop can meaningfully build and score all of them within the
-   iteration cap. This is deliberately smaller than ECC's 12-16 — a large
+   iteration cap. This is deliberately smaller than the 12-16 used
+   previously — a large
    invented scope compounds the ground-truth problem instead of just being
    "ambitious."
 2. Label the entire spec document, at the top, in bold, unmissably:
@@ -104,8 +105,8 @@ happen to be inconvenient to read.
 ## Output format (all three sources)
 
 Write to `gan-harness/spec.md` and `gan-harness/eval-rubric.md` in the
-project root (same paths ECC used, so Generate/Evaluate don't need path
-changes). Structure of `spec.md`:
+project root (paths Generate/Evaluate already expect, so no path
+changes are needed). Structure of `spec.md`:
 
 ```markdown
 # Product Specification: [App/feature name]

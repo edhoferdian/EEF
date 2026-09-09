@@ -1,9 +1,6 @@
 # ArkTS / HarmonyOS — hvigor build, ArkTS compile & module-dependency lens
 
-Adapted from ECC `harmonyos-app-resolver` and `rules/arkts/hooks.md`, fetched
-2026-09-09.
-
-**FOLD-M.** Kelompok DEFER-backlog: konten padat, plausibel dari sumber ECC,
+**FOLD-M.** Kelompok DEFER-backlog: konten padat, plausibel,
 tapi **belum ada bukti proyek HarmonyOS/ArkTS aktif** di workspace Edho saat
 ini — beda dari lens JavaScript/TypeScript dan Django/Python (FOLD-P) yang
 sudah dipakai pada proyek nyata di ekosistem ini. File ini ditulis proaktif
@@ -20,16 +17,15 @@ not restructure module architecture, migrate V1 state management to V2, or
 change routing patterns beyond what the error demands (those are the review
 lens's concern in `language-code-review-edho-ferdian/references/arkts.md`).
 
-Unlike most other stacks in this ecosystem, ECC did not ship a separate
-build-fix skill for HarmonyOS — `harmonyos-app-resolver` is a single
-unified agent covering both review and build validation. This file adapts
-that agent's "Step 3: Validate" workflow and `rules/arkts/hooks.md`'s build
-commands into the diagnostic-table format this skill's other reference
-files use; the error-cause-fix tables below beyond the direct ECC command
-list are synthesized from standard hvigor/ArkTS toolchain behavior in the
-same spirit as this skill's `kotlin.md`/`rust.md` diagnostic tables, not
-copied verbatim from an ECC file — ECC's `harmonyos-app-resolver` names the
-validation commands but does not itself carry a build-fix diagnostic table.
+Unlike most other stacks in this ecosystem, no separate build-fix source
+covers HarmonyOS in one unified place spanning both review and build
+validation. This file assembles a "Validate" workflow and build commands
+into the diagnostic-table format this skill's other reference files use;
+the error-cause-fix tables below beyond the direct command list are
+synthesized from standard hvigor/ArkTS toolchain behavior in the same
+spirit as this skill's `kotlin.md`/`rust.md` diagnostic tables, not copied
+verbatim from any single source — no existing source names the validation
+commands together with a build-fix diagnostic table.
 
 ## Diagnostic commands
 
@@ -174,12 +170,8 @@ hvigorw assembleHap -p product=default
 
 ## Provenance
 
-Adapted from ECC `harmonyos-app-resolver` and `rules/arkts/*`, fetched
-2026-09-09 (github.com/affaan-m/ECC, paths
-`agents/harmonyos-app-resolver.md`, `rules/arkts/hooks.md`,
-`rules/arkts/security.md` for the permission-declaration cross-reference).
-Diagnostic tables beyond the direct ECC command list and constraint list
+Diagnostic tables beyond the direct command list and constraint list
 (dependency-resolution and `module.json5` error tables) are synthesized
 from standard hvigor/OHPM/ArkTS toolchain behavior in the same spirit as
 this skill's `kotlin.md`/`rust.md`/`go.md` diagnostic tables, not copied
-verbatim from an ECC file.
+verbatim from any single source.

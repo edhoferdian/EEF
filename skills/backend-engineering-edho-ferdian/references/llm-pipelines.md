@@ -1,8 +1,5 @@
 # LLM pipelines: regex-first parsing and cost-aware routing
 
-Adapted from ECC `regex-vs-llm-structured-text` and `cost-aware-llm-pipeline`,
-fetched 2026-09-05.
-
 ## Principles
 
 1. **Regex first, LLM for what's left over.** For structured, repeating text
@@ -88,7 +85,7 @@ correction task — never the same model tier used for the primary workload.
 
 ### Real-world numbers (verify against your own pipeline before quoting)
 
-From the ECC source's production quiz-parsing pipeline (410 items):
+From a production quiz-parsing pipeline (410 items):
 
 | Metric | Value |
 |--------|-------|

@@ -1,9 +1,9 @@
 # Networking Lens — Automation And Config Preflight
 
-Adapted from ECC `netmiko-ssh-automation` and `network-config-validation`,
-both fetched 2026-09-04. The two are merged because they are the same
-thing at two stages: validate the candidate config in code, then move it to
-the device in code — with the same fail-closed posture on both sides.
+SSH automation and config preflight validation are merged here because they
+are the same thing at two stages: validate the candidate config in code,
+then move it to the device in code — with the same fail-closed posture on
+both sides.
 
 **Mode.** Use this reference when code — not a human at a terminal — is
 going to read from or write to network devices: an audit script, a

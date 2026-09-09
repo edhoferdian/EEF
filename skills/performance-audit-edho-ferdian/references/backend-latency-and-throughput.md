@@ -1,8 +1,7 @@
 # Backend latency and throughput
 
-Adapted from ECC `latency-critical-systems` and `data-throughput-accelerator`,
-fetched 2026-09-04. Companion to `web-frontend.md` and `react-nextjs.md`:
-same measure-then-fix workflow, server-side surface.
+Companion to `web-frontend.md` and `react-nextjs.md`: same measure-then-fix
+workflow, server-side surface.
 
 ## Split the metric before optimising
 
@@ -33,8 +32,6 @@ Measure per segment. Optimising a segment you have not isolated is guessing.
 8. Add canaries for stale data, degraded providers, and bad cache state.
 
 ## Verifikasi constraint — antrean bukan bukti constraint
-
-*(adapted from ECC `production-scheduling`, fetched 2026-09-06)*
 
 Mengukur sudah memisahkanmu dari menebak. Ia belum memisahkanmu dari
 mengoptimalkan hal yang salah. Tempat penumpukan bukan otomatis tempat
@@ -119,9 +116,8 @@ explicit correctness gate (manifest counts and table max timestamps agree).
 
 ## Content-hash caching for expensive file processing
 
-Adapted from ECC `content-hash-cache-pattern`, fetched 2026-09-05. Applies
-when the hot path includes repeated file processing (PDF parsing, text
-extraction, image analysis) rather than pure network/DB latency.
+Applies when the hot path includes repeated file processing (PDF parsing,
+text extraction, image analysis) rather than pure network/DB latency.
 
 When the same files get reprocessed across runs, use the **SHA-256 hash of
 the file's content** — not its path — as the cache key:

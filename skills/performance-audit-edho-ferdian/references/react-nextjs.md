@@ -1,7 +1,6 @@
 # React / Next.js performance reference — measurement-requiring patterns
 
-Portions adapted from Vercel Labs react-best-practices (MIT), via ECC
-react-performance, fetched 2026-09-04.
+Portions adapted from Vercel Labs react-best-practices (MIT).
 
 Sibling to `references/web-frontend.md` — that file already covers Core Web
 Vitals budgets, general algorithmic complexity, the base React re-render

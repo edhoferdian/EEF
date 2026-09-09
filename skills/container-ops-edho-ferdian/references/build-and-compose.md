@@ -1,9 +1,9 @@
 # Multi-Stage Builds & Compose Design
 
-Adapted from ECC `docker-patterns`, fetched 2026-09-04. Security-specific
-Dockerfile/compose hardening (non-root user, `cap_drop`, `read_only`,
-pinned digests, secret management) is out of scope for this file — see
-`security-review-edho-ferdian/references/domain-specific.md` §Container.
+Security-specific Dockerfile/compose hardening (non-root user, `cap_drop`,
+`read_only`, pinned digests, secret management) is out of scope for this
+file — see `security-review-edho-ferdian/references/domain-specific.md`
+§Container.
 
 ## Multi-stage build design
 

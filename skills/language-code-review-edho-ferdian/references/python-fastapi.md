@@ -1,7 +1,5 @@
 # Language Lens — Python / FastAPI
 
-Adapted from ECC `fastapi-reviewer`, fetched 2026-09-04.
-
 **Requires: `python.md` (load first).** This file assumes general Python
 idiom checks (mutable defaults, bare except, unsafe deserialization, type
 hints) already ran. It adds only FastAPI-framework-specific criteria on top.
@@ -100,8 +98,7 @@ FastAPI — not duplicated here.
   again" from "you don't have permission" programmatically. Fix: keep
   authentication as its own dependency (401 on failure) and layer
   authorization as a separate dependency/check on top (403 on failure).
-  **CQ-10, HIGH.** *(Adapted from ECC `fastapi-patterns`, fetched
-  2026-09-04.)*
+  **CQ-10, HIGH.**
 - **Paginated endpoint missing a deterministic `.order_by()`** — distinct
   from the missing-pagination item above: an endpoint *does* have
   `limit`/`offset`, but the underlying query has no explicit, unique
@@ -114,7 +111,7 @@ FastAPI — not duplicated here.
   on a column (or tuple of columns) unique enough to make the ordering
   total, not just "recently used" columns like `created_at` alone if
   duplicates are possible (add the primary key as a tiebreaker). **PERF-08,
-  HIGH.** *(Adapted from ECC `fastapi-patterns`, fetched 2026-09-04.)*
+  HIGH.**
 
 ### MEDIUM
 
@@ -137,16 +134,14 @@ FastAPI — not duplicated here.
   consistency finding, not a correctness bug — flag it when a codebase mixes
   both styles or has enough repetition of the same raw `Depends(...)` call
   that a shared alias would remove real duplication; don't flag a single
-  bare `Depends()` in an otherwise small route file. *(Adapted from ECC
-  `fastapi-patterns`, fetched 2026-09-04.)*
+  bare `Depends()` in an otherwise small route file.
 - **`@app.on_event("startup"/"shutdown")` instead of a `lifespan` context
   manager** — `on_event` is deprecated in current FastAPI/Starlette; the
   required pattern is an `@asynccontextmanager` function passed as
   `FastAPI(lifespan=...)`, which also composes correctly when multiple
   startup/shutdown concerns need to share state (e.g. a DB pool created on
   startup and closed on shutdown) in a way `on_event` handlers, being
-  separate functions, cannot. *(Adapted from ECC `fastapi-patterns`, fetched
-  2026-09-04.)*
+  separate functions, cannot.
 
 ---
 

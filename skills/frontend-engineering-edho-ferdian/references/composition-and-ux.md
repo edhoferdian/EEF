@@ -1,11 +1,8 @@
 # Authoring Guide — Focus & Interaction Craft
 
-Adapted from ECC `frontend-patterns`, fetched 2026-09-04.
-
-**Scope note.** `frontend-patterns` overlaps heavily (roughly 80%) with
-`react-patterns` — composition, hooks, state management, and data fetching
-are already covered by `references/react.md` in this skill and are not
-repeated here. This file now covers focus management and keyboard
+**Scope note.** This content overlaps heavily (roughly 80%) with
+`references/react.md` in this skill — composition, hooks, state management,
+and data fetching are already covered there and are not repeated here. This file now covers focus management and keyboard
 interaction craft only — its former animation/transition content moved to
 `references/motion-system.md` (kelompok 5, 2026-09-04), which supersedes it
 with a full `motion/react` treatment (tokens, accessibility/device gating,

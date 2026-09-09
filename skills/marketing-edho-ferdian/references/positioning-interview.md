@@ -1,8 +1,5 @@
 # Positioning Interview
 
-Adapted from ECC `brand-discovery` (SKILL.md + 8 reference modules), fetched
-2026-09-06.
-
 ## When this file actually gets used
 
 **Trigger: only when `brand-voice-framework.md` hits its "No-source default"
@@ -18,16 +15,16 @@ positioning, and not something to run because a request merely mentions
 "branding." Run it only when there is nothing to derive from and Edho needs
 to articulate the brand identity from scratch, through conversation.
 
-## What ECC's version does differently (and why this file drops it)
+## Why this file is scoped the way it is
 
-ECC's `brand-discovery` is written for an agency running a multi-week,
+A full agency-style brand-discovery process is written for a multi-week,
 multi-founder client engagement: it persists interview state to
 `modules/{file}.md` + `state.json` on disk, supports several founders being
 interviewed separately before a "reconciliation pass," and frames the output
 as a brandbook used to **brief external designers, writers, and
 collaborators**. None of that fits here:
 
-- **No multi-founder reconciliation.** Edho is the only participant. ECC's
+- **No multi-founder reconciliation.** Edho is the only participant, so any
   divergence/convergence mechanism across `founders/{name}.md` files is
   dropped entirely.
 - **No `state.json` + path-validation machinery.** `dev-kickoff-edho-ferdian`
@@ -36,16 +33,17 @@ collaborators**. None of that fits here:
   two places. If this interview spans multiple sessions, resume it the same
   way any other in-progress deliverable resumes in this ecosystem: pick the
   conversation back up and re-read what was written so far.
-- **One file, six modules, not eight files.** ECC ships each module as its
-  own file under `references/` (`10_purpose-why.md` … `90_SYNTHESIS.md`).
-  For a single-person interview that's unnecessary ceremony — this file
-  holds all six modules plus the closing synthesis section.
+- **One file, six modules, not eight files.** Some sources ship each module
+  as its own file under `references/` (`10_purpose-why.md` … `90_
+  SYNTHESIS.md`). For a single-person interview that's unnecessary
+  ceremony — this file holds all six modules plus the closing synthesis
+  section.
 - **No "brief an external agency" framing.** The audience for this interview
   is Edho himself, being interviewed by the assistant. The output feeds
   `brand-voice-framework.md`'s `VOICE PROFILE` and `SKILL.md` Step 1's
   positioning statement — not a document handed to a hired designer.
-- **Module 70 (Founder Brand vs Organisation Brand) is dropped.** ECC's
-  Module 70 exists to manage the tension between a founder's personal
+- **A Founder Brand vs Organisation Brand module is dropped.** That kind of
+  module exists to manage the tension between a founder's personal
   reputation and an institution that might one day operate independently of
   them — a scaling question for a firm with staff. For a solo developer
   whose projects *are* an extension of his own name, that tension mostly
@@ -55,8 +53,8 @@ collaborators**. None of that fits here:
 
 What's kept because it's genuinely load-bearing: one-question-at-a-time
 discipline, laddering, 5 Whys, thin-answer detection, the three projective
-techniques (verified against ECC's actual wording below — they hold up),
-the saturation signal, and the Raw/Synthesis split per module.
+techniques below (they hold up), the saturation signal, and the
+Raw/Synthesis split per module.
 
 ## Language
 

@@ -1,7 +1,5 @@
 # Language Lens — React / JSX / TSX
 
-Adapted from ECC `react-reviewer`, fetched 2026-09-04.
-
 **Detect.** `package.json` present with `react` or `react-dom` in
 `dependencies` or `devDependencies`. Applies to `.jsx`/`.tsx` files and React
 component logic in the review scope.
@@ -112,8 +110,7 @@ references/language-specific.md` §React — not duplicated here.
   cross that boundary pre-rendered, passed down via `children`/props
   composition from a Server Component parent. Direct import either fails to
   compile or silently forces the "server" component to be treated as client
-  code, losing its server-only guarantees entirely. **CQ-10.** *(Adapted from
-  ECC `react-patterns`, fetched 2026-09-04.)*
+  code, losing its server-only guarantees entirely. **CQ-10.**
 - **Error Boundary relied on to catch event-handler or async errors** —
   `componentDidCatch`/`getDerivedStateFromError` (or a library boundary built
   on them) only catches errors thrown during rendering, lifecycle methods,
@@ -123,8 +120,7 @@ references/language-specific.md` §React — not duplicated here.
   the process instead. Flag this as a **false-safety claim** when a component
   visibly depends on a boundary for these cases (e.g. an async submit handler
   with no local `try`/`catch`, "the ErrorBoundary will catch it" in a comment)
-  — the boundary provides no protection there. **CQ-10, MEDIUM.** *(Adapted
-  from ECC `react-patterns`, fetched 2026-09-04.)*
+  — the boundary provides no protection there. **CQ-10, MEDIUM.**
 - **`useEffect` + `fetch` for application data fetching** — manually wiring
   `useEffect(() => { fetch(...).then(setData) }, [dep])` for data the app
   depends on to render. This has no cache, no request de-duplication, no
@@ -133,8 +129,7 @@ references/language-specific.md` §React — not duplicated here.
   later one and overwrite fresher state, since nothing cancels or sequences
   them). Recommend a proper data-fetching library (React Query/TanStack
   Query, SWR, RTK Query) or, on React 19+, the `use()` hook with a Suspense
-  boundary instead. **CQ-10, HIGH.** *(Adapted from ECC `react-patterns`,
-  fetched 2026-09-04.)*
+  boundary instead. **CQ-10, HIGH.**
 
 **React-specific security HIGHs** (client-bundle secret leaks via
 `NEXT_PUBLIC_*`/`VITE_*`/`REACT_APP_*`, tokens in `localStorage`/
@@ -175,15 +170,13 @@ ferdian/references/language-specific.md` §React — not duplicated here.
   `useOptimistic` (optimistic value with automatic revert on failure) covers
   the same need with less state-machine surface to get wrong. Only applies
   where the project has already adopted React 19 — don't flag it as missing
-  on an React 18 codebase. *(Adapted from ECC `react-patterns`, fetched
-  2026-09-04.)*
+  on an React 18 codebase.
 
 ---
 
 ### PERF-08 — React-specific performance
 
-*Portions adapted from Vercel Labs `react-best-practices` (MIT) via ECC
-`react-performance`, fetched 2026-09-04.*
+*Portions adapted from Vercel Labs `react-best-practices` (MIT).*
 
 - **Barrel-import first-load cost** — `import { Button } from
   '@/components'` where `components/index.ts` re-exports the entire module
@@ -225,8 +218,7 @@ ferdian/references/language-specific.md` §React — not duplicated here.
   [])` can "tear": under concurrent rendering React may show inconsistent
   values for the same store across different parts of the tree during a
   single render. `useSyncExternalStore` is the correct primitive for
-  subscribing to external state and avoids this class of bug. *(adapted
-  from ECC rules/react/hooks.md, fetched 2026-09-06)*
+  subscribing to external state and avoids this class of bug.
 
 ---
 
@@ -264,8 +256,7 @@ ferdian/references/language-specific.md` §React — not duplicated here.
      the anti-pattern (unnecessary indirection, re-render fan-out).
   Flag a violation of this ladder in either direction — prop-drilling past
   3+ levels with no Context, *or* Context/store reached for at a lower rung
-  than the ladder justifies. *(Adapted from ECC `react-patterns`, fetched
-  2026-09-04.)*
+  than the ladder justifies.
 
 **React-specific security false-positive traps** (`dangerouslySetInnerHTML`
 sanitized upstream, Server Action auth via `cookies()`/`headers()` without a

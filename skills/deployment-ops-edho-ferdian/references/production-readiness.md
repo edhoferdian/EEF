@@ -1,7 +1,5 @@
 # Production readiness — ship / block verdict
 
-Adapted from ECC `production-audit`, fetched 2026-09-04.
-
 Answers exactly one question: **should this ship?** It does not re-run the
 other skills' analyses — it consumes them and converts them into a decision.
 
@@ -37,8 +35,7 @@ notes, and E2E coverage of the launch-critical path.
   end to end.
 - Verify SPF/DKIM/DMARC on the sender domain **before** launching anything
   that sends email — skipping this produces silent delivery failure or spam
-  placement, not a visible error (adapted from ECC `mailtrap-email-integration`,
-  fetched 2026-09-06).
+  placement, not a visible error.
 
 A score is a prioritisation device, not a measurement. Always name the
 evidence checked *and the evidence missing* — the second list is what would

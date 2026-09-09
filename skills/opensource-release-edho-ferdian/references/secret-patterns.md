@@ -1,18 +1,13 @@
 # Secret & Sensitive-Data Patterns — Single Source of Truth
 
-Adapted from ECC `opensource-forker` + `opensource-sanitizer`, fetched
-2026-09-04.
-
-**Why this file exists as its own file.** ECC ships this same regex family
-twice — once inline in `opensource-forker.md` (Phase 1, extraction) and
-again inline in `opensource-sanitizer.md` (Phase 2, verification) — as two
-independently-maintained copies. `02-gap-analysis.md` flagged this as a
-drift bug: the two lists were already slightly different (the sanitizer's
-API-key pattern is broader than the forker's, the sanitizer added a
-DB-credential-in-URL pattern the forker's DB pattern doesn't require). If
-one list gets a pattern added later and the other doesn't, Phase 1 stops
-extracting something Phase 2 still flags, or worse, Phase 2 stops catching
-something Phase 1 never stripped.
+**Why this file exists as its own file.** Keeping the same regex family
+duplicated inline — once for Phase 1 (extraction) and again for Phase 2
+(verification) — as two independently-maintained copies invites drift: the
+two lists can quietly diverge (a broader API-key pattern in one, a
+DB-credential-in-URL pattern the other doesn't require). If one list gets a
+pattern added later and the other doesn't, Phase 1 stops extracting
+something Phase 2 still flags, or worse, Phase 2 stops catching something
+Phase 1 never stripped. A single shared source of truth avoids that.
 
 **Rule for this skill:** both Phase 1 (`fork-prep.md`) and Phase 2
 (`sanitize-audit.md`) read patterns from *this file only*. Neither phase
@@ -99,8 +94,7 @@ automatic strip — false positives here are cheap, false negatives are not.
 
 ---
 
-## CRITICAL — PII (added in this ecosystem's adaptation; ECC's list did not
-## treat these as CRITICAL)
+## CRITICAL — PII (treated as CRITICAL in this ecosystem)
 
 ### Personal email addresses
 

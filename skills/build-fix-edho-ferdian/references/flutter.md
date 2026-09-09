@@ -1,7 +1,6 @@
 # Dart / Flutter — build & compile lens
 
-Adapted from ECC `dart-flutter-patterns` and `rules/dart/hooks.md`, fetched
-2026-09-07. `rules/dart/hooks.md`'s suggested PostToolUse checks feed the
+`rules/dart/hooks.md`'s suggested PostToolUse checks feed the
 diagnostic-command table below; nothing else from that file is build-fix
 relevant (it's mostly formatter/analyzer automation already reflected here).
 

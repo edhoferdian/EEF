@@ -55,8 +55,7 @@ the existing stage-skip rule below and is not a separate, softer standard.
 4. Big-task check: if this clearly needs more than one session, split it now
    and say so.
 
-**Blueprint escalation (feature-level tasks only).** Adapted from ECC
-`code-architect`, fetched 2026-09-04. If this task creates a new
+**Blueprint escalation (feature-level tasks only).** If this task creates a new
 module/component, or touches more than a handful of files, produce a
 lightweight blueprint before writing any test:
 
@@ -94,9 +93,8 @@ State the result of this search in the plan, even when it is negative
 back-pressure requirement, writing it"). An unstated search is
 indistinguishable from a skipped one.
 
-**Verify library/API behavior from live docs, not memory.** Adapted from
-ECC `documentation-lookup`, fetched 2026-09-04. Resolve the library id
-first, then query with the user's actual question. Cap it at three lookup
+**Verify library/API behavior from live docs, not memory.** Resolve the
+library id first, then query with the user's actual question. Cap it at three lookup
 calls per question — after that, state the uncertainty rather than
 guessing. Redact keys, tokens, and personal data from the query before
 sending it.
@@ -112,8 +110,7 @@ cannot.
 Write the test that encodes the acceptance criteria, run it, and **show the
 RED output**. A test that has never failed proves nothing.
 
-**What counts as a valid RED.** Adapted from ECC `tdd-workflow`, fetched
-2026-09-04. "The test failed" is not automatically RED. A RED gate is valid
+**What counts as a valid RED.** "The test failed" is not automatically RED. A RED gate is valid
 only when one of these two paths holds:
 
 - **Runtime RED** — the test target compiles, the new or changed test is
@@ -209,8 +206,7 @@ optional, not mandatory, but its result feeds the CCL trigger below when run.
 Run the real tooling: build, linter, type-checker, and the full relevant test
 suite — not just the new test. Paste the outcome.
 
-**Gate order — run sequentially, stop at first failure.** Adapted from ECC
-`commands/prp-implement.md` Phase 4, fetched 2026-09-06. Run the gates in
+**Gate order — run sequentially, stop at first failure.** Run the gates in
 this order and stop as soon as one fails; fix it, then restart from that
 same gate rather than pushing ahead:
 
@@ -276,8 +272,7 @@ engineering advice — "write clean code" is not an instinct. Three or more
 related instincts pointing the same way → propose promoting them into PDR §3
 conventions, where they become binding.
 
-**Instinct confidence.** Adapted from ECC `continuous-learning-v2`, fetched
-2026-09-04. A new instinct starts at **Low** confidence on first
+**Instinct confidence.** A new instinct starts at **Low** confidence on first
 observation. It rises to **Medium** once it holds again on a different
 task, and to **High** after a third occurrence or an explicit user
 confirmation. It **drops** when a later event contradicts it — record the
@@ -298,8 +293,7 @@ candidate, tied to the turn/interaction rather than to a completed task id,
 and should be proposed for `04-instincts.md` even mid-task, without waiting
 for REMEMBER to close out a task.
 
-**Instinct quality bar.** Adapted from ECC `growth-log`, fetched 2026-09-06.
-An instinct is a *pattern*, not an event. Four checks before an entry is
+**Instinct quality bar.** An instinct is a *pattern*, not an event. Four checks before an entry is
 allowed into `04-instincts.md`:
 
 1. **Name the pattern, not the event.** "Fixed the auth bug" is a diary
@@ -324,8 +318,7 @@ allowed into `04-instincts.md`:
 more transferable signal than three features that worked first try. When
 deciding what to record, prefer the thing that went wrong.
 
-**One canonical home per fact set.** Adapted from ECC `knowledge-ops`,
-fetched 2026-09-06. Before creating any new memory artifact, search whether
+**One canonical home per fact set.** Before creating any new memory artifact, search whether
 the fact already lives in the decision register, the progress ledger, or
 the instincts file, and update that instead. Parallel copies of the same
 fact across files are the failure mode this ecosystem is most exposed to,

@@ -1,7 +1,5 @@
 # CQ-05 detail — Silent Failures
 
-Adapted from ECC `silent-failure-hunter`, fetched 2026-09-04.
-
 `review-checklist.md`'s CQ-05 is the short pointer to this file. This lens
 takes zero tolerance for silent failures: errors that are swallowed, masked,
 or lose their propagation path make production incidents harder to diagnose

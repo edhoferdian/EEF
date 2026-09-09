@@ -1,11 +1,7 @@
 # Language Lens — Swift / Apple
 
-Adapted from ECC `swiftui-patterns`, `swift-concurrency-6-2`,
-`swift-actor-persistence`, and `swift-protocol-di-testing` (skills), plus
-`agents/swift-reviewer.md` and `rules/swift/*.md`, fetched 2026-09-07.
-
 **FOLD-M.** Kelompok lanjutan (34-item DEFER backlog): konten sedang,
-plausibel dari sumber ECC, tapi **belum ada bukti proyek Swift/iOS/macOS
+plausibel dari sumbernya, tapi **belum ada bukti proyek Swift/iOS/macOS
 aktif** di workspace Edho saat ini — beda dari lens Python/React (FOLD-P)
 yang sudah dipakai pada proyek nyata di ekosistem ini. Ini juga satu-satunya
 lens dengan penghalang lingkungan tambahan: Edho berjalan di Windows 10, dan
@@ -148,8 +144,7 @@ unreachable as unnecessary.
   single-threaded/stays-on-calling-actor specifically so that concurrency
   is an intentional, profiled decision; scattering `@concurrent` across
   routine async functions reintroduces the implicit-offload data-race class
-  Swift 6.2 was designed to eliminate. **CQ-13.** (adapted from ECC
-  `swift-concurrency-6-2`, fetched 2026-09-07)
+  Swift 6.2 was designed to eliminate. **CQ-13.**
 - **Actor reentrancy assumed away** — code inside an actor method that
   assumes its own state is unchanged across an `await` suspension point,
   when another call to the same actor could have run and mutated that
@@ -196,7 +191,6 @@ unreachable as unnecessary.
   defect, unless the project is pinned to an OS deployment target below
   iOS 17/macOS 14 where `@Observable` isn't available (check the deployment
   target before flagging — this is a real false-positive trap). **CQ-13.**
-  (adapted from ECC `swiftui-patterns`, fetched 2026-09-07)
 - **`AnyView` type erasure used for a conditional view** where
   `@ViewBuilder` or `Group` would preserve the concrete view type — `AnyView`
   defeats SwiftUI's diffing and forces a full re-render of the erased
@@ -218,8 +212,7 @@ unreachable as unnecessary.
   persistence code instead of an `actor`** — actors give compiler-enforced
   serialized access; a hand-rolled lock around a cache dictionary is strictly
   more error-prone for the same guarantee Swift now provides for free.
-  **CQ-13.** (adapted from ECC `swift-actor-persistence`, fetched
-  2026-09-07)
+  **CQ-13.**
 - **An actor-based repository exposing its internal cache/dictionary to
   external callers** instead of a minimal domain-operation API (`save`,
   `find`, `loadAll`) — leaks the storage implementation and lets callers
@@ -235,8 +228,7 @@ unreachable as unnecessary.
   with no `...Providing` protocol behind it, cannot be tested against
   failure paths (disk full, network error, corrupt data) without hitting
   the real dependency. Flag when the surrounding code clearly needs error-
-  path test coverage and has none. **CQ-13.** (adapted from ECC
-  `swift-protocol-di-testing`, fetched 2026-09-07)
+  path test coverage and has none. **CQ-13.**
 - **A single "god protocol" covering multiple unrelated external
   concerns** (file access + network + bookmark storage all in one
   protocol) instead of small, single-responsibility protocols — makes
@@ -340,11 +332,6 @@ unreachable as unnecessary.
 
 ## Provenance
 
-Adapted from ECC `swiftui-patterns`, `swift-concurrency-6-2`,
-`swift-actor-persistence`, and `swift-protocol-di-testing` (all four are
-`skills/*/SKILL.md` in the ECC tree), plus `agents/swift-reviewer.md`,
-`rules/swift/security.md`, `rules/swift/patterns.md`, `rules/swift/
-coding-style.md`, and `rules/swift/testing.md` — all fetched 2026-09-07 from
-github.com/affaan-m/ECC. **FOLD-M** — see the status note at the top of this
-file for what that means here, including the Windows-toolchain caveat that
-is unique to this lens.
+**FOLD-M** — see the status note at the top of this file for what that
+means here, including the Windows-toolchain caveat that is unique to this
+lens.

@@ -1,10 +1,9 @@
 # Scheduled Data Collection Pipelines
 
-Adapted from ECC `skills/data-scraper-agent`, fetched 2026-09-06. ECC's
-version is a build guide hard-wired to one stack (Gemini free tier + Notion
-+ GitHub Actions). This version keeps the architecture and the failure modes
-and states the vendor pieces as replaceable contracts. **This file also
-supplies the content for the LLM-enrichment layer that D-021 deferred out of
+This file keeps the architecture and the failure modes generic and states
+the vendor pieces (LLM enrichment, storage, scheduler) as replaceable
+contracts rather than one hard-wired stack. **This file also supplies the
+content for the LLM-enrichment layer that D-021 deferred out of
 `llm-pipeline-engineering-edho-ferdian`** — the batching, fallback, and
 prompt-injection rules below are that material, in the home D-021 itself
 named as the fallback.

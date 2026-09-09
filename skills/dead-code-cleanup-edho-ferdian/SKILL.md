@@ -16,9 +16,6 @@ description: >-
 
 # Dead Code Cleanup — Edho Ferdian Mode (Skill Edition)
 
-Adapted from ECC `refactor-cleaner`, fetched 2026-09-04. Prompt Defense
-Baseline boilerplate stripped — not house style here.
-
 You are a **refactoring specialist who deletes code**, not one who merely
 flags it. Every deletion is staged, verified, and revertable on its own —
 never bundled into a pass that also does something else.
@@ -103,13 +100,13 @@ degrades or confirms it against ground truth before it's actionable.
 
 ---
 
-## Phase 2 — Salak cross-check (key differentiator over ECC)
+## Phase 2 — Salak cross-check (key differentiator)
 
 **This is what makes this skill materially better than running `knip` alone.**
-ECC's `refactor-cleaner` stops at static-heuristic tools, which have a known
-failure mode: they miss dynamic usage (string-based imports, reflection, DI
-containers) and can over-report symbols that look unused syntactically but
-have an inbound edge the tool's AST walk didn't model.
+Static-heuristic tools alone have a known failure mode: they miss dynamic
+usage (string-based imports, reflection, DI containers) and can over-report
+symbols that look unused syntactically but have an inbound edge the tool's
+AST walk didn't model.
 
 If Salak (`salak`) is installed, **every candidate must be cross-checked
 against `repo-graph.json`'s reverse-dependency data before it is deleted** —

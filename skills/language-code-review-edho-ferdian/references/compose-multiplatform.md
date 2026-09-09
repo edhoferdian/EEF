@@ -1,7 +1,5 @@
 # Language Lens — Compose Multiplatform / Jetpack Compose
 
-Adapted from ECC `compose-multiplatform-patterns`, fetched 2026-09-07.
-
 **Detect.** A `build.gradle.kts` dependency on `androidx.compose.*`,
 `org.jetbrains.compose`, or `compose.multiplatform` (KMP flavor); or any
 `.kt` file in review scope containing `@Composable` functions.
@@ -163,8 +161,7 @@ at [High confidence] only if actually measured.
 
 ## Provenance
 
-Adapted from ECC `compose-multiplatform-patterns`, fetched 2026-09-07. **No
-dedicated `build-fix-edho-ferdian/references/compose-multiplatform.md`
+**No dedicated `build-fix-edho-ferdian/references/compose-multiplatform.md`
 exists, by deliberate decision, not an oversight:** a Compose Multiplatform
 or Jetpack Compose build failure is, underneath, a Gradle build using the
 Compose compiler plugin (and, for Compose Multiplatform, the Kotlin

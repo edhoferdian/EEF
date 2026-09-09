@@ -1,10 +1,8 @@
 # Market & Competitor Research
 
-Consolidated from ECC `skills/market-research`, `competitive-platform-analysis`,
-`benchmark-methodology`, and `competitive-report-structure`, fetched
-2026-09-06. ECC ships these as a four-skill pipeline written for an agency
-serving a paying client; this file keeps the method and drops the client-
-deliverable theater.
+This consolidates what would otherwise be a multi-part pipeline written for
+an agency serving a paying client; this file keeps the method and drops the
+client-deliverable theater.
 
 This file is the **deep** path. `SKILL.md` Step 1 item 4 is the shallow one
 (2-3 alternatives, one line each) and is correct for most requests. Escalate
@@ -130,9 +128,9 @@ point: the same evidence must earn the same number for anyone.
 | 8 | Owned POV / content presence | 7% | Writing, talks, frameworks — depth over volume |
 | 9 | **Your strategic tension** | flag | **Score BOTH poles, report separately, never average** |
 
-Dimensions 4 and 5 replace ECC's agency-oriented "visual craft" and
-"enterprise-readiness" — for a developer tool, docs quality and maintenance
-health are what actually decide adoption.
+Dimensions 4 and 5 replace the agency-oriented "visual craft" and
+"enterprise-readiness" dimensions found elsewhere — for a developer tool,
+docs quality and maintenance health are what actually decide adoption.
 
 ### Rubric (1-5, dimensions 1-8)
 

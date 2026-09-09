@@ -1,9 +1,9 @@
 # Spec Format — Blocks, Metadata Fields, Requirement vs Invariant
 
-Reference for Phase 3 of spec-mining-edho-ferdian v1.0. Ported from ECC
-spec-miner's block format, which is tool-agnostic and kept as-is — only the
-output location and the OpenSpec coupling changed. Read `mining-protocol.md`
-for how the content in these blocks gets mined.
+Reference for Phase 3 of spec-mining-edho-ferdian v1.0. The block format is
+tool-agnostic and kept as-is — only the output location and the OpenSpec
+coupling changed. Read `mining-protocol.md` for how the content in these
+blocks gets mined.
 
 ---
 
@@ -15,7 +15,7 @@ One file per mined capability:
 /project-memory/mined-specs/<capability>.md
 ```
 
-This differs from ECC's original, which writes
+This differs from an OpenSpec-coupled approach, which writes
 `openspec/specs/<capability>/spec.md` and assumes OpenSpec's delta-tooling
 folder layout. This skill has no OpenSpec dependency — `mined-specs/` is a
 flat directory inside the memory structure `dev-kickoff-edho-ferdian` already
@@ -131,7 +131,7 @@ heading, it's actually a Requirement.
 | `deferred` | document-level | when applicable | `file, reason` pairs | Files the sample-and-expand budget didn't reach. Never silently drop instead. |
 | `uncertainty` | document-level | when applicable | free text | Genuine ambiguity the code doesn't resolve. Prefer this over a confident-sounding wrong Requirement. |
 
-Format rules (unchanged from ECC's original, still load-bearing):
+Format rules (still load-bearing):
 
 1. `<!-- -->` comments are machine-parseable metadata: one `key: value` per
    line.
@@ -148,8 +148,8 @@ Format rules (unchanged from ECC's original, still load-bearing):
 This skill's flat `### Requirement:`/`### Invariant:` block format happens
 to be compatible with OpenSpec's delta-tooling conventions (the same
 4-hashtag `#### Scenario:` depth, the same flat non-chaptered structure) —
-that compatibility is inherited from ECC's original design, not something
-this skill builds toward. If a project later adopts OpenSpec, a mined spec
+that compatibility is a byproduct of the shared block-format design, not
+something this skill builds toward. If a project later adopts OpenSpec, a mined spec
 file under `/project-memory/mined-specs/<capability>.md` can be copied or
 symlinked into `openspec/specs/<capability>/spec.md` largely as-is, and
 `## ADDED Requirements` / `## MODIFIED Requirements` / `## REMOVED

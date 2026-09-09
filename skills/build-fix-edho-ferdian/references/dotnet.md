@@ -1,10 +1,6 @@
 # .NET — MSBuild, dotnet CLI, NuGet & test-bootstrap lens
 
-Adapted from ECC `csharp-reviewer`, `fsharp-reviewer`, `dotnet-patterns`,
-`csharp-testing`, and `fsharp-testing`, fetched 2026-09-07.
-
-**FOLD-M.** Content is medium-depth and plausible, ported straight from
-ECC's .NET reviewer agents and pattern/testing skills, but **there is no
+**FOLD-M.** Content is medium-depth and plausible, but **there is no
 evidence of an active .NET project in Edho's workspace yet** — unlike
 JavaScript/TypeScript and Django/Python (FOLD-P) which back real work
 already in this ecosystem. Treat this file as a diagnostic lens ready to use

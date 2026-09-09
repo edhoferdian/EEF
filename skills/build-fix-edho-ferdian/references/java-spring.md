@@ -1,9 +1,7 @@
 # Java / Spring Boot (+ Quarkus) — build, compile & startup lens
 
-Adapted from ECC's `java-build-resolver` agent (`agents/java-build-resolver.md`,
-which already covers both Spring Boot and Quarkus in one file), plus
-`springboot-verification`'s Phase 1/4 build and security-scan commands,
-fetched 2026-09-07.
+This lens covers both Spring Boot and Quarkus in one file, combining build
+diagnostics with Phase 1/4-style build and security-scan commands.
 
 Scope: Maven/Gradle dependency resolution failures, Java compiler errors,
 annotation-processor errors (Lombok, MapStruct), Spring application-context
@@ -219,8 +217,6 @@ In addition to the general skill's 3-attempt guard, stop and escalate when:
 
 ## Provenance
 
-Adapted from ECC's `java-build-resolver` agent (`agents/
-java-build-resolver.md`, which already combines Spring Boot and Quarkus
-diagnostics in one file) and `springboot-verification`'s build/static-
-analysis phase commands, fetched 2026-09-07, consolidated for this
+This file combines Spring Boot and Quarkus diagnostics in one place,
+consolidating build and static-analysis phase commands for this
 ecosystem's Java/Spring + Quarkus build-fix lens.

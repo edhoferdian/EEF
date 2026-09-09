@@ -1,7 +1,5 @@
 # Postgres — Design-Time Notes
 
-Adapted from ECC `postgres-patterns`, fetched 2026-09-04.
-
 **This file is deliberately thin.** Most Postgres content that matters —
 data type choices, index cheat sheets, composite index ordering, RLS policy
 form, anti-pattern detection queries — already lives as **review criteria**

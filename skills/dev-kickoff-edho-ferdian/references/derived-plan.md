@@ -1,7 +1,5 @@
 # Deriving a Provisional Task Plan `[DERIVED — NOT APPROVED]`
 
-Adapted from ECC `planner`, fetched 2026-09-04.
-
 Reference for Phase 0 of `dev-kickoff-edho-ferdian` v2.0. SKILL.md's Phase 0
 says that when `WORK_PLAN` is missing, you "may offer to derive a Provisional
 Task Plan `[DERIVED — NOT APPROVED]`" from the other documents — this file is
@@ -35,8 +33,7 @@ are covered) in full before drafting anything. Extract:
   one and mark it `[PROPOSED]`.
 - Assumptions and constraints you're making because the docs are silent.
 
-**Ground the plan in the codebase before writing it.** Adapted from ECC
-`commands/prp-plan.md` Phase 2, fetched 2026-09-06. For each requirement,
+**Ground the plan in the codebase before writing it.** For each requirement,
 find the nearest existing implementation of the same shape in the codebase
 and name it in the plan as the pattern to imitate — a file, module, or
 component the task should follow, not reinvent. A plan that names zero
@@ -142,8 +139,6 @@ binding decision with a source (this conversation), not something to
 re-litigate next session.
 
 ## Self-contained context briefs (multi-session plans)
-
-Adapted from ECC `blueprint`, fetched 2026-09-04.
 
 For a plan spanning multiple sessions or multiple agents, each step should
 carry a **self-contained context brief** — enough that a fresh agent with

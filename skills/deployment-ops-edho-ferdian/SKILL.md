@@ -13,10 +13,6 @@ description: >-
 
 # Deployment Ops — Edho Ferdian Mode
 
-Adapted and consolidated from ECC `deployment-patterns`, `kubernetes-patterns`,
-`production-audit`, `canary-watch`, and `dashboard-builder`, fetched
-2026-09-04.
-
 ## Boundary — read before doing anything else
 
 This skill owns the interval between "the image builds" and "the release is

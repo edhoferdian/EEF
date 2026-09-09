@@ -1,9 +1,5 @@
 # Language Lens — Java / Spring Boot (+ Quarkus)
 
-Adapted from ECC `springboot-patterns`, `java-coding-standards`,
-`springboot-tdd`, `springboot-verification`, and the Spring/Quarkus review
-rules embedded in ECC's `java-reviewer` agent, fetched 2026-09-07.
-
 **Detect.** A `pom.xml`, `build.gradle`, or `build.gradle.kts` at the project
 root, or any `.java` file in scope. Determine the framework from the build
 file **before** applying any criterion below:
@@ -322,11 +318,6 @@ re-author them here.
 
 ## Provenance
 
-Adapted from ECC `springboot-patterns`, `java-coding-standards`,
-`springboot-tdd`, `springboot-verification`, `quarkus-patterns`, and the
-Spring/Quarkus review criteria embedded in ECC's `java-reviewer` agent
-(`agents/java-reviewer.md`), fetched 2026-09-07, consolidated for this
-ecosystem's Java/Spring + Quarkus review lens. Security content
-(`springboot-security`/`quarkus-security`) was deliberately **not**
-re-ported here — it already lives in `security-review-edho-ferdian/
+Security content was deliberately **not**
+included here — it already lives in `security-review-edho-ferdian/
 references/language-specific.md` §"Java / Spring Boot" per D-012.

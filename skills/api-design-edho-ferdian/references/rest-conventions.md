@@ -1,7 +1,5 @@
 # REST Conventions — Resource Shape, Status Codes, Pagination, Rate Limiting, Versioning
 
-Adapted from ECC `api-design`, fetched 2026-09-04.
-
 This is the detailed reference for Step 1 (REST shape). Read it when
 designing or reviewing a new endpoint or a set of related endpoints.
 

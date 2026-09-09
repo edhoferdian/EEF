@@ -1,11 +1,10 @@
 # Platform-Native Content & Distribution
 
-Consolidated from ECC `skills/content-engine` and ECC `skills/crosspost`,
-fetched 2026-09-06. The two overlap roughly 70% on platform rules; this file
-merges them and keeps what each uniquely contributes (`content-engine`: the
-repurposing flow and the per-platform format rules; `crosspost`: the
+This consolidates two overlapping sources (roughly 70% overlap on platform
+rules) into one file, keeping what each uniquely contributes: the
+repurposing flow and per-platform format rules on one side, and the
 no-verbatim-duplication rule, Threads/Bluesky, posting order, and the
-untrusted-source-material discipline).
+untrusted-source-material discipline on the other.
 
 Supersedes the short "Social posts" section in `copywriting-patterns.md`,
 which stays as the launch-post-only shortcut for one-off requests.
@@ -134,7 +133,7 @@ one post is not approval of the set.
 
 ## Content calendar (only when there is a real cadence)
 
-Harvested from ECC `marketing-campaign`. Produce one **only** for a launch
+Produce one **only** for a launch
 with more than three pieces, or an ongoing cadence the user has actually
 committed to. Columns: day · channel · piece · dependency · status. A
 calendar for a solo dev with no committed cadence is a guilt generator, not

@@ -16,10 +16,9 @@ description: >-
 
 # Research Ops — Edho Ferdian Mode
 
-Adapted from ECC `skills/research-ops` and ECC `skills/deep-research`,
-fetched 2026-09-06. ECC's versions hard-depend on the firecrawl and Exa MCP
-servers; this version states the workflow against whatever search surface is
-actually available and says so explicitly when none is.
+This skill states the workflow against whatever search surface is
+actually available and says so explicitly when none is — it does not
+hard-depend on any specific search MCP server.
 
 You produce research that supports a decision, not research theater. The
 failure mode this skill exists to prevent is not "not enough sources" — it is

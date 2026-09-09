@@ -15,7 +15,7 @@ Check the repo and the user's environment for:
 | Signal | Means |
 |--------|-------|
 | `.claude/agents/`, `~/.claude/agents/`, `CLAUDE.md` | Claude Code |
-| `.claude-plugin/`, plugin `ecc@ecc`, `.ecc/`, `RULES.md` + `skills/` at root | ECC installed **for this project** |
+| `.claude-plugin/`, a project-installed agent-harness plugin, `RULES.md` + `skills/` at root | An agent harness installed **for this project** |
 | `.cursor/rules/`, `.cursorrules`, `.cursor/agents/` | Cursor |
 | `AGENTS.md`, `.codex/` | Codex / OpenCode / generic |
 | `.github/copilot-instructions.md`, `.github/prompts/` | Copilot |
@@ -23,26 +23,27 @@ Check the repo and the user's environment for:
 
 These are all **repo-local, file-based** signals — they answer "has this
 project adopted a harness," not "is one available at all." That distinction
-matters because ECC is commonly installed **globally** (as a Claude Code
-plugin, in `~/.claude/`) rather than per-project, and a fresh repo with none
-of the files above can still have ECC one command away.
+matters because an agent harness is commonly installed **globally** (as a
+Claude Code plugin, in `~/.claude/`) rather than per-project, and a fresh
+repo with none of the files above can still have one available one command
+away.
 
 **Second signal — session-level availability, not repo files.** Separately
-from the table above, check whether ECC is loaded in *this* session: its own
-skills (`ecc-guide`, `configure-ecc`, `ecc-recipes`, `harness-audit`, …),
-commands (`epic-*`, `orch-*`), or roster agents (the per-language `*-reviewer`
-/ `*-build-resolver` set) showing up in what's available to you right now.
-This tells you ECC is *installed on the machine*, not that it's wired into
-the project you're kicking off — treat the two signals independently:
+from the table above, check whether such a harness is loaded in *this*
+session: its own skills, commands, or roster agents (the per-language
+`*-reviewer` / `*-build-resolver` set) showing up in what's available to you
+right now. This tells you a harness is *installed on the machine*, not that
+it's wired into the project you're kicking off — treat the two signals
+independently:
 
 | Repo-file signal | Session signal | Read it as |
 |---|---|---|
-| present | present | ECC owns this project already — defer, don't ask |
-| absent | present | ECC is available but not yet adopted here — **ask the user** whether to wire this project into it (Step 5) before deciding whether this skill supplies its own roster; don't assume either way |
-| present | absent | Unusual (project has ECC files, but this session can't see it loaded) — note the discrepancy, trust the repo files, proceed as if installed |
+| present | present | The harness owns this project already — defer, don't ask |
+| absent | present | A harness is available but not yet adopted here — **ask the user** whether to wire this project into it (Step 5) before deciding whether this skill supplies its own roster; don't assume either way |
+| present | absent | Unusual (project has harness files, but this session can't see it loaded) — note the discrepancy, trust the repo files, proceed as if installed |
 | absent | absent | No harness anywhere — this skill supplies the roster (Step 2) |
 
-**Rule: an installed harness wins.** If ECC (or any comparable system) is
+**Rule: an installed harness wins.** If a comparable system is
 present, do **not** write a competing planner/reviewer/TDD instruction set.
 Two systems giving the agent different definitions of "review" is worse than
 having one. Instead:
@@ -131,23 +132,24 @@ project-memory/01-decision-register.md · 03-progress.md · <task id>
 - Any new binding decision → stop and ask the user; never decide silently.
 ```
 
-## Step 5 — If the user wants ECC itself
+## Step 5 — If the user wants an external agent harness installed
 
-ECC (`github.com/affaan-m/ECC`, MIT) is an external agent-harness system with
-its own agents, skills, hooks, and memory vault. This skill does **not**
-bundle, vendor, or reimplement it, and it never installs or configures ECC on
-its own initiative — even when the session-level signal from Step 1 shows
-ECC is already on the machine.
+A third-party agent-harness system (its own agents, skills, hooks, and
+memory vault) may already be installed globally, or the user may want one.
+This skill does **not** bundle, vendor, or reimplement such a system, and it
+never installs or configures one on its own initiative — even when the
+session-level signal from Step 1 shows it is already on the machine.
 
-**ECC not installed anywhere (both signals absent), user wants it:** point
-them at the official install path and let them run it themselves —
-installation touches their global config, and stacking install methods is
-the documented way to break it. After it is installed, re-run Phase 2.
+**No harness installed anywhere (both signals absent), user wants one:**
+point them at the official install path for the harness they name and let
+them run it themselves — installation touches their global config, and
+stacking install methods is the documented way to break it. After it is
+installed, re-run Phase 2.
 
-**ECC installed globally but not wired into this project (session signal
+**Harness installed globally but not wired into this project (session signal
 present, repo-file signal absent):** don't install anything — there's
-nothing to install. Tell the user ECC is available on this machine and ask
-whether they want this project wired into it (some harnesses need a
+nothing to install. Tell the user the harness is available on this machine and
+ask whether they want this project wired into it (some harnesses need a
 per-project init/link step, some just start working once their commands are
 invoked in the repo — verify which, don't assume). If yes, that's still the
 user's action to take or approve; once done, re-run Phase 2: detect it,
@@ -155,12 +157,12 @@ defer to it, and write only the project-specific layer. If no, proceed with
 this skill's own roster (Step 2) and record the choice in
 `01-decision-register.md` so a later session doesn't re-ask.
 
-Either way, treat ECC's counts, command names, and install commands as
-**verify-before-quoting**. The project moves fast; do not state a command
-from memory. Check the repo docs at the time of use.
+Either way, treat the harness's counts, command names, and install commands
+as **verify-before-quoting**. Fast-moving projects change quickly; do not
+state a command from memory. Check the repo docs at the time of use.
 
-Attribution: if you adopt ECC's loop or file layout in project docs, credit it
-by name and link. It is MIT-licensed — attribution is cheap and correct.
+Attribution: if you adopt an external harness's loop or file layout in
+project docs, credit it by name and link where its license requires it.
 
 ## Reflection add-on for the roster
 
@@ -176,11 +178,11 @@ Gate R5: Every agent file merged, not overwritten?                  [.]
 
 ## Scoping parallel agents (lesson from kelompok 2/3 execution)
 
-Adapted from ECC `parallel-execution-optimizer` and `iterative-retrieval`,
-fetched 2026-09-04, sharpened by this ecosystem's own experience.
+Sharpened by this ecosystem's own experience running large parallel-agent
+batches.
 
-**Keep each parallel agent's scope small.** During the ECC-porting work
-itself, a kelompok-2 batch of large, broadly-scoped parallel Sonnet agents
+**Keep each parallel agent's scope small.** During a prior large porting
+effort, a kelompok-2 batch of large, broadly-scoped parallel Sonnet agents
 hit a session rate limit mid-task; the kelompok-3 batch used more, smaller,
 narrowly-scoped agents (one file or one tightly-related file group each)
 and completed without incident. Prefer more agents with less each over
@@ -196,9 +198,9 @@ A freeze turns that into a refusal at the moment it would happen instead of
 a manual cleanup pass later.
 
 **Give agents a way to look, not just what you guessed they need.**
-Adapted from ECC `iterative-retrieval`: a subagent often cannot know what
-context it actually needs until it starts working. Rather than trying to
-front-load every fact it might want, give it the tools and permission to
+A subagent often cannot know what context it actually needs until it starts
+working. Rather than trying to front-load every fact it might want, give it
+the tools and permission to
 look things up itself (Grep/Glob/Read over the relevant subtree, or a
 pointer to the specific memory files to check) and let it refine its own
 understanding across a couple of passes, rather than treating the initial

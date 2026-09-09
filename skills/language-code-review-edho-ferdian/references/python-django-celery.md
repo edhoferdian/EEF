@@ -1,7 +1,5 @@
 # Language Lens — Python / Django / Celery
 
-Adapted from ECC `django-celery`, fetched 2026-09-04.
-
 **Requires: `python.md` + `python-django.md` (load first).** This file is an
 add-on conditional lens layered on top of the Django lens — it assumes
 general Python idiom checks and Django ORM/migration/DRF checks already ran.

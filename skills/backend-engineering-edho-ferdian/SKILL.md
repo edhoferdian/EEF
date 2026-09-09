@@ -13,9 +13,6 @@ description: >-
 
 # Backend Engineering — Edho Ferdian Mode
 
-Adapted and consolidated from ECC `backend-patterns`, `hexagonal-architecture`,
-`error-handling`, and `api-connector-builder`, fetched 2026-09-04.
-
 ## Where this sits
 
 - `api-design-edho-ferdian` decides the **contract** at the boundary.

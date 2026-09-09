@@ -1,7 +1,5 @@
 # Migration Strategy — Cross-ORM Depth
 
-Adapted from ECC `database-migrations`, fetched 2026-09-04.
-
 This file covers migration strategy **generally**, across any ORM or raw
 SQL. It goes deeper than the Django-specific migration-safety bullets in
 `language-code-review-edho-ferdian/references/python-django.md` (which is a

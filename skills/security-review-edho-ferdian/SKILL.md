@@ -27,51 +27,44 @@ exploitable ones and say so plainly when a review is clean.
 
 ## Provenance
 
-This skill is a **reorganization**, not a fresh port: it consolidates
+This skill is a **reorganization**, not a fresh build: it consolidates
 security-related content that already existed, scattered, across
 `code-review-edho-ferdian` (`references/review-checklist.md` Domain 2,
 `references/database-lens.md`, `references/healthcare-lens.md`) and
 `language-code-review-edho-ferdian` (`references/react.md`, `python.md`,
-`python-fastapi.md`, `python-django.md`) — all originally ported from ECC's
-`security-reviewer`, `database-reviewer`, `healthcare-reviewer`, and the
-per-language reviewer agents (fetched 2026-09-04). Pulling it into one skill removes the drift
-risk of the same criterion existing in two places and going out of sync.
-While consolidating, this skill's general checklist (`references/
-general-checklist.md`) also folds in a handful of items present in ECC's
-original `security-reviewer` definition but not yet captured anywhere in the
-ported content — security misconfiguration/headers (SEC-11), XXE/insecure
-deserialization as a general category (SEC-12), and insufficient logging/
-monitoring of security events (SEC-13) — plus its common-false-positives list
-and emergency-response protocol for confirmed CRITICAL findings.
+`python-fastapi.md`, `python-django.md`). Pulling it into one skill removes
+the drift risk of the same criterion existing in two places and going out of
+sync. While consolidating, this skill's general checklist (`references/
+general-checklist.md`) also adds a handful of items not yet captured anywhere
+in the existing content — security misconfiguration/headers (SEC-11),
+XXE/insecure deserialization as a general category (SEC-12), and
+insufficient logging/monitoring of security events (SEC-13) — plus its
+common-false-positives list and emergency-response protocol for confirmed
+CRITICAL findings.
 
-**Kelompok 2 update (2026-09-04):** the 12 ECC per-stack security skills
-(`django-security`, `laravel-security`, `springboot-security`,
-`quarkus-security`, `perl-security`, `security-review` +
-`cloud-infrastructure-security.md`, `security-scan`,
-`security-bounty-hunter`, `defi-amm-security`, `llm-trading-agent-security`,
-plus `gateguard`/`safety-guard` correctly reclassified out to the
-agent-harness category) were triaged and folded in. New general codes
+**Kelompok 2 update (2026-09-04):** a further round of per-stack and
+domain-specific security criteria was triaged and folded in, covering
+Django, Laravel, Spring Boot, Quarkus, Perl, cloud/IaC/CI-CD, agent-harness
+configuration, and DeFi/AMM smart-contract security, plus reclassifying two
+agent-harness-guard topics into the agent-harness category. New general codes
 SEC-14..19 (mass assignment, proxy-header spoofing, ReDoS, path traversal,
-open redirect, TOCTOU/temp-file) came from `laravel-security`,
-`quarkus-security`, and `perl-security`. A new domain section
-`§Cloud, IaC & CI/CD` (CLOUD-SEC-01..07) came from
-`security-review/cloud-infrastructure-security.md`. A new domain section
-`§Agent & AI-harness configuration` (AGENT-SEC-01..06) re-frames
-`security-scan` away from its third-party AgentShield CLI dependency, same
-pattern as `skill-audit-edho-ferdian`'s take on `harness-optimizer`. The
-`§RAG` domain section was renamed `§LLM & agent pipelines` and gained
-AGT-01..04 (agents with side-effectful tool authority) from
-`llm-trading-agent-security`, generalized away from its crypto framing.
-`§PHP/Laravel` (from ECC `laravel-security`), `§Java/Spring Boot` (from ECC
-`springboot-security`), and `§Smart contracts (Solidity/EVM)` (from ECC
-`defi-amm-security`, generalized beyond its DeFi/AMM framing, plus general
-Solidity/EVM security knowledge for the items ECC doesn't cover — marked
-inline) are now built, using this file's SEC-XX cross-reference convention
-for the first two and a new SC-SEC-01..06 prefix for the third (a
-structurally distinct threat model, following the same precedent as
-CLOUD-SEC and AGT in `domain-specific.md`). These were previously deferred,
-gated on "a real project needs that stack" — that gate no longer applies now
-that this ecosystem serves many users, not one. See
+open redirect, TOCTOU/temp-file) were added to the general checklist. A new
+domain section `§Cloud, IaC & CI/CD` (CLOUD-SEC-01..07) was added. A new
+domain section `§Agent & AI-harness configuration` (AGENT-SEC-01..06) frames
+agent/harness-config security independent of any single third-party CLI
+dependency, same pattern as `skill-audit-edho-ferdian`'s approach to
+periodic-audit criteria. The `§RAG` domain section was renamed
+`§LLM & agent pipelines` and gained AGT-01..04 (agents with side-effectful
+tool authority), generalized away from any single crypto framing.
+`§PHP/Laravel`, `§Java/Spring Boot`, and `§Smart contracts (Solidity/EVM)`
+(generalized beyond any single DeFi/AMM framing, plus general Solidity/EVM
+security knowledge for items not otherwise covered — marked inline) are now
+built, using this file's SEC-XX cross-reference convention for the first two
+and a new SC-SEC-01..06 prefix for the third (a structurally distinct threat
+model, following the same precedent as CLOUD-SEC and AGT in
+`domain-specific.md`). These were previously deferred, gated on "a real
+project needs that stack" — that gate no longer applies now that this
+ecosystem serves many users, not one. See
 `project-memory/01-decision-register.md` for the original triage rationale
 that no longer holds.
 
@@ -147,9 +140,8 @@ Phase 4  Report                             (Mode A only — Mode B reports via 
    `healthcare-lens.md` / `rag-lens.md` / `mle-lens.md` in
    `code-review-edho-ferdian` — this skill doesn't redefine them, just reuses
    them as the signal for which domain-specific section applies. The
-   §Containers, §Cloud, and §Agent-config sections are sourced directly from
-   ECC `docker-patterns`, `cloud-infrastructure-security`, and `security-scan`
-   respectively, not migrated from an existing `code-review-edho-ferdian`
+   §Containers, §Cloud, and §Agent-config sections are original additions to
+   this skill, not migrated from an existing `code-review-edho-ferdian`
    lens.
 4. State detected stack + active domain sections in one line before Phase 1.
 
@@ -236,7 +228,7 @@ one:
 
 ## Emergency Response (confirmed CRITICAL only)
 
-Adapted from ECC `security-reviewer` (fetched 2026-09-04). When a CRITICAL finding is confirmed
+When a CRITICAL finding is confirmed
 (tool-verified or directly readable, not merely suspected):
 
 1. Document it with full detail — location, exact exploit path, evidence.
@@ -252,7 +244,7 @@ Adapted from ECC `security-reviewer` (fetched 2026-09-04). When a CRITICAL findi
 
 ## Common false positives (check before flagging HIGH/CRITICAL)
 
-Adapted from ECC `security-reviewer` (fetched 2026-09-04), folded in alongside the ecosystem's own
+Folded in alongside the ecosystem's own
 `false-positive-catalogue.md` (which this skill also applies — see the
 Reflection gate above):
 

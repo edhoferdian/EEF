@@ -2,19 +2,17 @@
 
 ## Provenance
 
-Source: ECC `rules/ruby/coding-style.md`, `rules/ruby/patterns.md`, and the
-review-relevant portions of `rules/ruby/testing.md`, fetched 2026-09-09.
-**Rules-only ECC content.** ECC carries **no dedicated `ruby-reviewer`
-skill or agent** — unlike Go, Python, PHP/Laravel, or Java/Spring Boot,
-which each have a purpose-built ECC review skill this ecosystem ported
-from elsewhere in this directory. Ruby/Rails coverage in ECC is five
-convention/checklist rule files under `rules/ruby/`, not an enumerated,
-severity-tiered reviewer skill. This lens is built by translating those
-conventions into the CQ-11 criteria format the rest of this skill uses,
-rather than adapting an existing reviewer's own priority list — treat it
-as thinner and more general than the Go/Laravel/Java lenses in this same
-directory, and re-derive it from a live `gh api` fetch if ECC ever ships a
-dedicated Ruby review skill.
+**Rules-only content.** No dedicated Ruby reviewer skill or agent was
+available — unlike Go, Python, PHP/Laravel, or Java/Spring Boot, which each
+have a purpose-built review skill this ecosystem ported from elsewhere in
+this directory. Ruby/Rails coverage here is built from five
+convention/checklist rule sources covering coding style, patterns, and
+testing, not an enumerated, severity-tiered reviewer skill. This lens is
+built by translating those conventions into the CQ-11 criteria format the
+rest of this skill uses, rather than adapting an existing reviewer's own
+priority list — treat it as thinner and more general than the Go/Laravel/
+Java lenses in this same directory, and re-derive it if a dedicated Ruby
+review skill becomes available.
 
 **Detect.** A `Gemfile` at repo root, `config/routes.rb` present, or any
 `.rb`/`.rake`/`.erb` file in review scope. The Rails-specific criteria

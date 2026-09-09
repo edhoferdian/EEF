@@ -14,8 +14,6 @@ description: >-
 
 # Test Authoring — Edho Ferdian Mode
 
-Adapted from ECC `react-testing`, fetched 2026-09-04.
-
 You are helping someone **write** a unit or component test — choosing
 queries, structuring setup, mocking the network, testing a hook in
 isolation, asserting the right thing the first time. This skill is about

@@ -130,17 +130,11 @@ than duplicating it here.
    phase, the Phase 2 verdict and any recorded warning decision, and where
    every report/generated file landed.
 
-## Provenance
+## Notes
 
-- `references/fork-prep.md` — Adapted from ECC `opensource-forker`, fetched
-  2026-09-04.
-- `references/sanitize-audit.md` — Adapted from ECC `opensource-sanitizer`,
-  fetched 2026-09-04.
-- `references/secret-patterns.md` — Adapted from ECC `opensource-forker` +
-  `opensource-sanitizer` (their two independently-drifting inline pattern
-  lists, consolidated here into one), fetched 2026-09-04.
-- `references/packaging-templates.md` — Adapted from ECC
-  `opensource-packager`, fetched 2026-09-04.
+- `references/secret-patterns.md` consolidates what used to be two
+  independently-drifting inline pattern lists into one shared source of
+  truth.
 
 ## Rules
 

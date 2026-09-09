@@ -7,10 +7,10 @@ this ecosystem's code-quality reviews stood on — immutability, KISS/DRY/
 YAGNI, size limits, naming, comment discipline — was not owned by this
 ecosystem at all. It was inherited silently from a file that lives outside
 this repo: `~/.claude/rules/ecc/common/coding-style.md`, installed globally
-by ECC. That file in turn is a compressed pointer to ECC's own
-`skills/coding-standards/SKILL.md`.
+at the user level. That file in turn is a compressed pointer to further
+upstream coding-standards material.
 
-The practical risk: if the ECC install is ever removed, updated in an
+The practical risk: if that global install is ever removed, updated in an
 incompatible way, or simply not present on a machine this ecosystem runs on
 (a fresh clone, a CI runner, a teammate's setup), every review this skill
 produces silently loses its baseline code-quality vocabulary — CQ-01
@@ -19,15 +19,15 @@ naming conventions, size limits) that were never actually *defined* inside
 this repo. Nothing would error; the reviews would just quietly get shallower.
 
 This file is the fix: a **native, in-repo restatement** of that baseline,
-written for this ecosystem rather than copied from ECC's. It draws on both
-ECC sources (the local `coding-style.md` rule file and the upstream
-`coding-standards` SKILL.md, fetched 2026-09-06) but is not a literal port —
+written for this ecosystem rather than copied from an external source. It
+draws on both the local `coding-style.md` rule file and further upstream
+coding-standards material, but is not a literal port —
 wording, examples, and emphasis are rewritten, and every section that
 already has a canonical home elsewhere in this ecosystem is a pointer, not a
 restatement (see §10). Going forward, `review-checklist.md`'s CQ codes cite
-*this* file as their baseline, not the ECC rule.
+*this* file as their baseline, not the external rule.
 
-If the ECC common rules are ever uninstalled, this file — not
+If that global rules install is ever uninstalled, this file — not
 `~/.claude/rules/ecc/common/coding-style.md` — is the ground truth for what
 "clean code" means in this ecosystem's reviews.
 

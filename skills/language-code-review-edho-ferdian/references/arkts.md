@@ -1,9 +1,6 @@
 # Language Lens — ArkTS / HarmonyOS
 
-Adapted from ECC `harmonyos-app-resolver` and `rules/arkts/patterns.md` /
-`rules/arkts/coding-style.md`, fetched 2026-09-09.
-
-**FOLD-M.** Kelompok DEFER-backlog: konten padat, plausibel dari sumber ECC,
+**FOLD-M.** Kelompok DEFER-backlog: konten padat dan plausibel,
 tapi **belum ada bukti proyek HarmonyOS/ArkTS aktif** di workspace Edho saat
 ini — beda dari lens Python/React (FOLD-P) yang sudah dipakai pada proyek
 nyata di ekosistem ini. File ini ditulis proaktif (gate "tunggu proyek
@@ -22,12 +19,12 @@ generic N+1 detection are **already owned by `references/review-checklist.md`**
 in the general skill. This lens adds only what is specific to **ArkUI State
 Management V2 compliance, Navigation-only routing, ArkTS's stricter-than-
 TypeScript type-system constraints, and HarmonyOS API/architecture
-conventions**. Unlike most other stacks in this ecosystem, ECC did not split
-HarmonyOS coverage into separate resolver/reviewer agents — a single unified
-`harmonyos-app-resolver` agent covers both review and implementation, so this
+conventions**. Unlike most other stacks in this ecosystem, HarmonyOS review
+and implementation guidance is not split into separate resolver/reviewer
+material — coverage of both review and implementation lives together, so this
 review lens and the sibling build-fix lens
-(`build-fix-edho-ferdian/references/arkts.md`) are both adapted from that one
-source plus the `rules/arkts/*` rule files.
+(`build-fix-edho-ferdian/references/arkts.md`) draw from that same
+combined source.
 
 **Code placement.** Findings land as **CQ-16 (ArkTS/HarmonyOS state-
 management, routing, and API-usage anti-patterns)** in the general report.
@@ -65,8 +62,8 @@ ArkTS (not lint warnings), so the build is the fastest way to confirm.
 
 - **V1 state-management decorator used anywhere in a new or modified
   `.ets` file** — `@Component`, `@State`, `@Prop`, `@Link`, `@ObjectLink`,
-  `@Observed`, `@Provide`, `@Consume`, or `@Watch`. ECC's
-  `harmonyos-app-resolver` treats V2 as a hard, non-negotiable constraint
+  `@Observed`, `@Provide`, `@Consume`, or `@Watch`. V2 is treated as a hard,
+  non-negotiable constraint
   ("MUST use ArkUI State Management V2 ... MUST NOT use V1 decorators") —
   not a style preference. The V2 equivalents: `@ComponentV2` (replaces
   `@Component`), `@Local` (replaces `@State`), `@Param` (replaces `@Prop`),
@@ -107,7 +104,7 @@ ArkTS (not lint warnings), so the build is the fastest way to confirm.
   re-render. **CQ-16.**
 - **Business logic (network calls, validation, data transformation) placed
   directly inside a component's `build()` method or an inline `.onClick()`
-  handler**, instead of delegated to a ViewModel — `harmonyos-app-resolver`'s
+  handler**, instead of delegated to a ViewModel — the
   recommended architecture is layered MVVM (`model/` `@ObservedV2` classes,
   `viewmodel/` business logic, `view/` `@ComponentV2` structs rendering
   only, `service/` for network/DB/file I/O); `build()` should contain only
@@ -119,16 +116,16 @@ ArkTS (not lint warnings), so the build is the fastest way to confirm.
   i18n (the literal string can't be localized) and dark-theme support (the
   literal color can't respond to a theme-specific resource override).
   Flag any literal that a `$r()` resource would normally back — this is an
-  explicit review-workflow check in the ECC source ("Verify resource
+  explicit review-workflow check ("Verify resource
   references use `$r()` instead of hardcoded literals"). **CQ-16.**
 - **`LazyForEach` missing on a `List`/`Grid` rendering a data source that
   can grow large**, with a plain `ForEach` used instead — `ForEach`
   eagerly renders every item; `LazyForEach` (with a stable per-item key via
-  its third argument) renders only visible items and is the ECC source's
+  its third argument) renders only visible items and is the
   explicit performance guidance for large lists. **CQ-16.**
 - **An animation driven by repeatedly changing `width`/`height`/`padding`/
   `margin`** instead of `transform` (translate/scale/rotate) and `opacity`
-  — `harmonyos-app-resolver` calls this out explicitly as a "severe
+  — this is called out explicitly as a "severe
   performance impact" anti-pattern, since layout-affecting properties force
   a full re-layout pass on every animation frame while `transform`/
   `opacity` can be composited without re-layout. **CQ-16.**
@@ -136,12 +133,12 @@ ArkTS (not lint warnings), so the build is the fastest way to confirm.
 ### MEDIUM
 
 - **New or modified i18n string resource added to only one language
-  directory** — the ECC review workflow explicitly checks "i18n
+  directory** — the review workflow explicitly checks "i18n
   completeness across all language directories"; a string added to
   `en_US` but not the project's other supported locales silently falls
   back (or breaks) for those users. **CQ-16.**
 - **New color resource with no corresponding dark-theme value** — flagged
-  as a recommended check in the ECC source ("Check if new color resources
+  as a recommended check ("Check if new color resources
   need dark theme support"); not a hard requirement on every project, but
   worth surfacing when the project otherwise has dark-theme resource
   coverage elsewhere.
@@ -151,7 +148,7 @@ ArkTS (not lint warnings), so the build is the fastest way to confirm.
   out specifically for `.ets` component files where a single
   `@ComponentV2` struct tends to accumulate inline `build()` complexity.
 - **`renderGroup(true)` missing on a complex sub-component tree that is
-  itself being animated** — the ECC source recommends this to batch
+  itself being animated** — this is recommended to batch
   renders and reduce animation overhead for non-trivial nested component
   animations; flag only when the sub-tree is genuinely complex (multiple
   nested containers), not every animated leaf component.
@@ -160,7 +157,7 @@ ArkTS (not lint warnings), so the build is the fastest way to confirm.
 
 ## Architecture lens (MVVM layering)
 
-`harmonyos-app-resolver`'s recommended module layout:
+Recommended module layout:
 
 ```
 feature/
@@ -228,9 +225,3 @@ stacks — this is not a new finding category, just the ArkTS instance of it.
 
 ---
 
-## Provenance
-
-Adapted from ECC `harmonyos-app-resolver` and `rules/arkts/*`, fetched
-2026-09-09 (github.com/affaan-m/ECC, paths
-`agents/harmonyos-app-resolver.md`, `rules/arkts/coding-style.md`,
-`rules/arkts/patterns.md`).

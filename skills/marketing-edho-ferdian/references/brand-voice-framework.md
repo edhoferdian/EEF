@@ -1,11 +1,8 @@
 # Brand Voice Framework
 
-Adapted from ECC `skills/brand-voice/SKILL.md`, fetched 2026-09-04. ECC's
-version defines *what* to extract but leaves the output mostly abstract
-("produce a VOICE PROFILE per a schema file"); this version makes the
-profile schema and the do/don't + rewrite mechanics concrete and directly
-usable, since `marketing-edho-ferdian` doesn't carry ECC's separate schema
-file.
+This file defines *what* to extract and makes the output concrete rather
+than abstract: the profile schema and the do/don't + rewrite mechanics are
+spelled out directly and usable inline, without a separate schema file.
 
 ## Source priority
 
@@ -115,7 +112,7 @@ Before (generic AI tone): "We're excited to announce our revolutionary new depen
 After (this voice): "Salak builds a real dependency graph from your codebase's AST — so 'what breaks if I delete this file' has an actual answer."
 ```
 
-## Hard bans (kept from ECC — still correct for almost any voice)
+## Hard bans (still correct for almost any voice)
 
 Delete and rewrite any of these regardless of the extracted voice, unless a
 source sample genuinely and repeatedly uses one on purpose:

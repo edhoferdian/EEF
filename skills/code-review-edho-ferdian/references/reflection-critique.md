@@ -10,7 +10,7 @@ that survives both passes is one a maintainer can trust without redoing it.
 
 ## Pre-Report Gate — runs BEFORE a finding is written, not after
 
-Adapted from ECC `code-reviewer`, fetched 2026-09-04. This gate is distinct
+This gate is distinct
 from Phase 3 below: Phase 3 audits a *draft that already exists*; this gate
 decides **whether a finding gets drafted at all**, during Phase 1 as you work
 through the checklist. Apply it the instant you notice something that looks
@@ -125,7 +125,7 @@ An **adversarial** pass. Reflection is you checking yourself; this is a second
 role trying to *break* your work. The independence is the value — a critic whose
 job is to disagree finds things a self-review rationalizes away.
 
-Adapted from ECC `santa-method`, fetched 2026-09-04. A single agent reviewing
+A single agent reviewing
 its own output shares the biases, knowledge gaps, and systematic errors that
 produced it; two reviewers with no shared context break that failure mode.
 This is the written justification for why Stage 4 requires a reviewer who did
@@ -200,7 +200,7 @@ rather than burning tokens by default on low-stakes code.
 
 ## Ambiguous decisions — when to convene instead of critique
 
-Adapted from ECC `council`, fetched 2026-09-04. CCL attacks a finished
+CCL attacks a finished
 output; this is for a different moment — a genuinely ambiguous go/no-go
 decision during Stage 3, before there is an output to critique yet (the
 same moment that already triggers "STOP — this is a binding decision, ask
@@ -210,7 +210,7 @@ Convene 3-4 distinct voices rather than one continued train of thought:
 the in-context reasoning so far, a dedicated Skeptic voice arguing the
 opposite case, and 1-2 domain lenses relevant to the decision (e.g. a
 PM-style "does this serve the actual goal" voice and a QA-style "what
-breaks" voice — the same two-persona split ECC's `dev-team` uses, without
+breaks" voice — the same two-persona split used elsewhere, without
 needing a full persona roster).
 
 Synthesize by naming the disagreement explicitly rather than forcing
@@ -218,8 +218,7 @@ convergence — if the voices genuinely disagree, that disagreement is the
 finding to bring to the user, not something to average away. Cap at 2
 rounds, same as CCL.
 
-**Optional external cross-check (adapted from ECC `council-multi-model`,
-fetched 2026-09-06):** if a second, differently-trained model is available
+**Optional external cross-check:** if a second, differently-trained model is available
 and the decision is high-stakes enough to warrant it, one voice above may be
 an external model's critique instead of another in-context persona — a
 model with different training is a stronger adversary than a same-model

@@ -1,8 +1,6 @@
 # Kotlin — Gradle Kotlin DSL, coroutine/Flow compile & KMP target build lens
 
-Adapted from ECC `kotlin-patterns` and `kotlin-testing`, fetched 2026-09-07.
-
-**FOLD-M.** Kelompok DEFER-backlog: konten padat, plausibel dari sumber ECC,
+**FOLD-M.** Kelompok DEFER-backlog: konten padat, plausibel,
 tapi **belum ada bukti proyek Android/Kotlin Multiplatform/Ktor aktif** di
 workspace Edho saat ini — beda dari lens JavaScript/TypeScript dan Django/
 Python (FOLD-P) yang sudah dipakai pada proyek nyata di ekosistem ini. File
@@ -183,13 +181,10 @@ before applying it verbatim (see Anti-suppression reminders below).
 
 ## Provenance
 
-Adapted from ECC agents/skills `kotlin-patterns` and `kotlin-testing`
-(github.com/affaan-m/ECC, paths `skills/kotlin-patterns/SKILL.md` and
-`skills/kotlin-testing/SKILL.md`, plus supporting rule file
-`rules/kotlin/patterns.md`), fetched 2026-09-07. Gradle/KMP diagnostic
-tables beyond the direct source examples (plugin resolution, `expect`/
-`actual` mismatch errors, version-catalog troubleshooting) are synthesized
-from standard Gradle/Kotlin toolchain behavior in the same spirit as this
-skill's `rust.md`/`go.md` diagnostic tables, not copied verbatim from an
-ECC file — ECC's `kotlin-patterns`/`kotlin-testing` skills are review/TDD-
-oriented and do not carry a build-fix diagnostic table of their own.
+Gradle/KMP diagnostic tables beyond the direct source examples (plugin
+resolution, `expect`/`actual` mismatch errors, version-catalog
+troubleshooting) are synthesized from standard Gradle/Kotlin toolchain
+behavior in the same spirit as this skill's `rust.md`/`go.md` diagnostic
+tables, not copied verbatim from any single source — the review/TDD-
+oriented Kotlin reference material this draws context from does not carry
+a build-fix diagnostic table of its own.

@@ -1,9 +1,9 @@
 # Product Validation — Should This Be Built At All?
 
-Adapted from ECC `skills/product-lens`, fetched 2026-09-06. ECC's Mode 2
-(founder review / PMF scoring) and Mode 3 (user-journey audit) are dropped:
-Mode 2 assumes a company with growth and revenue signals, and Mode 3
-duplicates `e2e-testing-edho-ferdian/references/qa-sweep.md`.
+This originally had three modes; two are dropped here: a founder-review /
+PMF-scoring mode (assumes a company with growth and revenue signals) and a
+user-journey-audit mode (duplicates
+`e2e-testing-edho-ferdian/references/qa-sweep.md`).
 
 This runs **before** Phase 1 planning, not inside it. `dev-kickoff` answers
 "how do we build this correctly"; `system-design-edho-ferdian` answers "what

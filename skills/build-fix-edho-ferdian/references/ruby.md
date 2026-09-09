@@ -2,18 +2,19 @@
 
 ## Provenance
 
-Source: ECC `rules/ruby/hooks.md` and the command-relevant portions of
-`rules/ruby/testing.md`, fetched 2026-09-09, for the ground-truth commands
-and CI gate list. **Rules-only ECC content, and thinner than this
-directory's other lenses.** ECC has **no dedicated `ruby-build-resolver`
-skill or agent** — unlike the Go/Django/Java build-fix lenses elsewhere in
-this directory, each adapted from a purpose-built ECC build-resolver
-skill. The diagnostic error tables below are **not ECC-sourced** — they
+Source: `rules/ruby/hooks.md` and the command-relevant portions of
+`rules/ruby/testing.md` for the ground-truth commands
+and CI gate list. **Rules-only content, and thinner than this
+directory's other lenses.** There is **no dedicated Ruby build-resolver
+reference** to draw on — unlike the Go/Django/Java build-fix lenses elsewhere
+in this directory, each adapted from a purpose-built build-resolver
+source. The diagnostic error tables below are **not sourced from a
+dedicated reference** — they
 are written from well-known Bundler/RubyGems/`ruby -c`/RSpec/Minitest/
 Rails error messages and general Ruby-ecosystem knowledge, and are called
-out per-section below so this file is never mistaken for a ported ECC
-skill. Re-derive this file from a live `gh api` fetch if ECC ever ships a
-dedicated Ruby build-resolver skill.
+out per-section below so this file is never mistaken for a ported
+skill. Re-derive this file if a dedicated Ruby build-resolver
+reference ever becomes available.
 
 **Detect.** A `Gemfile` at repo root, or any `.rb`/`.rake` file in scope
 whose build/test bootstrap has failed.
@@ -56,7 +57,7 @@ bundle install
 
 ## Bundler / RubyGems dependency resolution
 
-*(general Bundler/RubyGems knowledge — not ECC-sourced)*
+*(general Bundler/RubyGems knowledge)*
 
 | Error | Cause | Fix |
 |---|---|---|
@@ -83,7 +84,7 @@ bundle install
 
 ## `ruby -c` syntax errors
 
-*(general Ruby knowledge — not ECC-sourced)*
+*(general Ruby knowledge)*
 
 | Error | Cause | Fix |
 |---|---|---|
@@ -99,7 +100,7 @@ find . -name "*.rb" -exec ruby -c {} \; 2>&1 | grep -v "Syntax OK"
 
 ## RSpec / Minitest bootstrap failures
 
-*(general RSpec/Minitest knowledge; commands cross-referenced against ECC
+*(general RSpec/Minitest knowledge; commands cross-referenced against
 `rules/ruby/testing.md`)*
 
 | Error | Cause | Fix |
@@ -124,7 +125,7 @@ error-table diagnosis is general RSpec/Minitest knowledge.)
 
 ## Rails-specific startup failures
 
-*(general Rails knowledge — not ECC-sourced)*
+*(general Rails knowledge)*
 
 | Error | Cause | Fix |
 |---|---|---|

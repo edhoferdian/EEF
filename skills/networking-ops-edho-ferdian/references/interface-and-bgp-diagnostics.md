@@ -1,9 +1,8 @@
 # Networking Lens — Interface And BGP Diagnostics
 
-Adapted from ECC `network-interface-health` and `network-bgp-diagnostics`,
-both fetched 2026-09-04. Merged because they are the same discipline at two
-layers: read state, interpret it against a reference table, and never reset
-or reconfigure as a diagnostic step.
+Interface health and BGP diagnostics are merged here because they are the
+same discipline at two layers: read state, interpret it against a
+reference table, and never reset or reconfigure as a diagnostic step.
 
 **Mode.** Depth for `troubleshooting-methodology.md` — that file decides
 which layer to start at, this file is what you do once you are there. Part

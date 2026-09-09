@@ -1,7 +1,5 @@
 # Redis — Design-Time Setup & Patterns
 
-Adapted from ECC `redis-patterns`, fetched 2026-09-04.
-
 Redis is an in-memory data structure store. Individual commands are atomic
 on a single instance; multi-step workflows need a Lua script, a
 `MULTI`/`EXEC` transaction, or a pipeline to stay atomic. Design the access

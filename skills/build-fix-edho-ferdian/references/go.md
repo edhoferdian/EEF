@@ -1,8 +1,6 @@
 # Go — build, vet & module resolution lens
 
-Adapted from ECC `golang-patterns` and `golang-testing`, fetched 2026-09-06.
-
-**FOLD-M.** Kelompok 1 lanjutan: konten sedang, plausibel dari sumber ECC,
+**FOLD-M.** Kelompok 1 lanjutan: konten sedang, plausibel,
 tapi **belum ada bukti proyek Go aktif** di workspace Edho saat ini — beda
 dari lens JavaScript/TypeScript dan Django/Python (FOLD-P) yang sudah
 dipakai pada proyek nyata di ekosistem ini. Perlakukan file ini sebagai

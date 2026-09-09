@@ -1,10 +1,9 @@
 # Performance audit output format
 
-Adapted from ECC `performance-optimizer`'s report template, fetched
-2026-09-04, reframed around the baseline → change → measured delta →
-pass/fail structure this skill's measure-then-fix contract requires (ECC's
-original had baseline/target columns but no explicit re-measured-delta
-section — that's the gap this restructure closes).
+This report template is built around the baseline → change → measured
+delta → pass/fail structure this skill's measure-then-fix contract
+requires — baseline/target columns alone are not enough; an explicit
+re-measured-delta section closes that gap.
 
 Save the filled-in output as `./<target>-performance-audit.md` and tell the
 user the path.

@@ -1,15 +1,13 @@
 # Authoring Guide — Vite Configuration
 
-Adapted from ECC `vite-patterns`, fetched 2026-09-04. A short Turbopack
-configuration note at the end is adapted from ECC `nextjs-turbopack`, fetched
-2026-09-04.
+A short Turbopack configuration note appears at the end.
 
-**Scope note.** Two items from `vite-patterns` are deliberately **not**
-repeated here because a parallel session folded them into other skills as
-review-checkable/security items: the `VITE_` env-var leakage boundary and the
-`loadEnv('')` trap (→ `security-review-edho-ferdian`), and the "`vite build`
-does not type-check" gap (→ `build-fix-edho-ferdian`). This file covers the
-rest of `vite-patterns` — the configuration and authoring material.
+**Scope note.** Two items are deliberately **not** repeated here because a
+parallel session folded them into other skills as review-checkable/security
+items: the `VITE_` env-var leakage boundary and the `loadEnv('')` trap
+(→ `security-review-edho-ferdian`), and the "`vite build` does not
+type-check" gap (→ `build-fix-edho-ferdian`). This file covers the rest of
+the configuration and authoring material.
 
 ---
 
@@ -297,8 +295,6 @@ file only covers the loading/authoring mechanics, not the security rule.
 ---
 
 ## Turbopack (Next.js) — a different bundler, brief configuration note
-
-*Adapted from ECC `nextjs-turbopack`, fetched 2026-09-04.*
 
 Turbopack is Next.js's own Rust-based bundler, not Vite — it's included here
 because Next.js projects often ask the same "how do I configure my dev

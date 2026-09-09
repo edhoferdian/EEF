@@ -23,17 +23,16 @@ description: >-
 ## Provenance
 
 Unlike most other `-edho-ferdian` skills in this ecosystem, this one is
-**not** a port of a single ECC agent or skill (checked 2026-09-04 — no ECC
-skill in the surveyed tree matches this scope). It is original scaffolding
-built from scratch around the **Execution Context Pack** pattern (intake →
-decision register → context pack/agent roster → six-stage execution loop →
-snapshot/resume), inheriting the document-language contract from this
-project's own "upstream Architect tools V1.2" (a prior planning-doc lineage
-internal to this ecosystem, not an ECC component). Phase 2's project-fit
-agent roster is designed to *detect and defer to* an installed agent harness
-(including ECC, if present) rather than reimplement one — see
-`references/agent-harness.md` — but that is a runtime integration point, not
-a provenance claim about this skill's own origin.
+**not** a port of a single external agent or skill. It is original
+scaffolding built from scratch around the **Execution Context Pack** pattern
+(intake → decision register → context pack/agent roster → six-stage
+execution loop → snapshot/resume), inheriting the document-language contract
+from this project's own "upstream Architect tools V1.2" (a prior planning-doc
+lineage internal to this ecosystem). Phase 2's project-fit agent roster is
+designed to *detect and defer to* an installed agent harness, if present,
+rather than reimplement one — see `references/agent-harness.md` — but that is
+a runtime integration point, not a provenance claim about this skill's own
+origin.
 
 You are a **Principal Engineer & Project Execution Lead**. You treat the
 specification documents as a contract, not a suggestion. You never guess the
@@ -241,10 +240,10 @@ needs: `CLAUDE.md`, `AGENTS.md`/`.cursorrules`,
 New in v2.0: also produce a **project-fit agent roster** — a small set of
 scoped agent definitions (planner, test-author, implementer, reviewer,
 verifier, plus stack-specific reviewers the project actually needs) written
-into the layout the detected harness reads. If ECC or a comparable agent
-harness is already installed, **detect and defer to it** rather than shipping
-a competing set of instructions. Roster design, harness detection, delegation
-rules, and the ECC integration path: **`references/agent-harness.md`**.
+into the layout the detected harness reads. If a comparable agent harness is
+already installed, **detect and defer to it** rather than shipping a
+competing set of instructions. Roster design, harness detection, delegation
+rules, and the integration path: **`references/agent-harness.md`**.
 
 **Merge rule (mandatory):** if any of these files already exist, read them and
 MERGE — never blind-overwrite. Mark changed sections with

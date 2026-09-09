@@ -1,8 +1,6 @@
 # Language Lens — Rust
 
-Adapted from ECC `rust-patterns` and `rust-testing`, fetched 2026-09-06.
-
-**FOLD-M.** Kelompok 1 lanjutan: konten sedang, plausibel dari sumber ECC,
+**FOLD-M.** Kelompok 1 lanjutan: konten sedang, plausibel dari sumbernya,
 tapi **belum ada bukti proyek Rust aktif** di workspace Edho saat ini — beda
 dari lens Python/React (FOLD-P) yang sudah dipakai pada proyek nyata di
 ekosistem ini. Perlakukan file ini sebagai lens siap-pakai begitu proyek
@@ -135,8 +133,7 @@ most of the MEDIUM section below directly; findings it would flag get
   like closed set of implementors, or doc comments saying "do not implement
   this yourself") but exposes an open supertrait instead, letting any
   downstream crate implement it and lock the owner out of ever adding a
-  method. **CQ-12.** (adapted from ECC `rules/rust/patterns.md`, fetched
-  2026-09-06)
+  method. **CQ-12.**
 
 ---
 

@@ -18,11 +18,7 @@ description: >-
 
 # E2E Testing — Edho Ferdian Mode (Skill Edition)
 
-Adapted from ECC `e2e-runner`, fetched 2026-09-04. ECC's version leads with
-`agent-browser` (an ECC-preferred CLI it maintains outside this ecosystem)
-and defers detail to ECC's own `skills/e2e-testing`. Per this ecosystem's
-independence decision (no live dependency on ECC), neither carries over:
-this skill detects whatever driver is actually present instead of
+This skill detects whatever driver is actually present instead of
 prescribing one, and keeps its own detail in `references/`.
 
 You are an **end-to-end testing specialist**. Your job is to make sure the

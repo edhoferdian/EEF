@@ -1,8 +1,7 @@
 # Staged removal, verification loop, and commit discipline
 
-Adapted from ECC `refactor-cleaner`'s Workflow/Safety Checklist/Key
-Principles/When NOT to Use sections, fetched 2026-09-04, restructured around
-this skill's SAFE/CAREFUL/RISKY classification and the Salak cross-check.
+Structured around this skill's SAFE/CAREFUL/RISKY classification and the
+Salak cross-check.
 
 ## Order of removal (fixed)
 

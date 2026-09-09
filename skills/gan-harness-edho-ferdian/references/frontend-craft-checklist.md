@@ -1,5 +1,3 @@
-Adapted from ECC gan-evaluator, fetched 2026-09-04.
-
 # Frontend craft checklist — catching AI-slop
 
 This is the shared reference the Evaluate phase applies during **Step 3C

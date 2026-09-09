@@ -16,7 +16,7 @@ silently papered over.
 
 ## Django
 
-Adapted from ECC `django-verification`, fetched 2026-09-04. Run in order;
+Run in order;
 stop and fix before continuing if an earlier phase is broken enough to make
 a later phase's output meaningless (e.g. don't chase coverage numbers if
 migrations are unapplied).
@@ -122,8 +122,6 @@ an ASCII checklist block. Example:
 
 ## Node / JavaScript — resolve the test runner before the RED gate
 
-Adapted from ECC `tdd-workflow`, fetched 2026-09-04.
-
 Do not assume `npm test`. Resolve the runner once, at the start of the task,
 and reuse it for the RED gate (Stage 2), GREEN (Stage 3) and full verification
 (Stage 5).
@@ -164,8 +162,7 @@ failure real evidence.
 
 Bun: `bun.lock` (current) or `bun.lockb` (older) → runner is `bun run` /
 `bun test` with a Jest-like API. Do not assume npm scripts run under Node
-just because `package.json` exists. (Adapted from ECC `bun-runtime`, fetched
-2026-09-04.)
+just because `package.json` exists.
 
 ---
 
@@ -178,8 +175,6 @@ don't block on having all of them before this file is useful.
 ---
 
 ## Hygiene sweep — run it, do not recall it
-
-Adapted from ECC `verification-loop`, fetched 2026-09-04.
 
 Reflection Gate 6 asks "No hardcoded secrets/credentials?" and Gate 7 asks
 for real tool output. Gate 6 is currently answered from memory; these two

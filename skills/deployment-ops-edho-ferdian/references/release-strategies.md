@@ -1,7 +1,5 @@
 # Release strategies, health checks, and rollback
 
-Adapted from ECC `deployment-patterns`, fetched 2026-09-04.
-
 ## Choosing a strategy
 
 | Strategy | Use when | Cost | Rollback speed |

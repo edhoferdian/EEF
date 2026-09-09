@@ -48,14 +48,6 @@ skill's content against it — hand off to `code-review-edho-ferdian`
 to build something that doesn't exist yet, this skill is the right one, even
 if the conversation started from a review.
 
-## Provenance
-
-Adapted from ECC `postgres-patterns`, `prisma-patterns`, `redis-patterns`,
-and `database-migrations`, fetched 2026-09-04. Each source skill's "Prompt
-Defense Baseline" boilerplate and ECC-specific agent cross-references were
-stripped; content was reorganized around the authoring/design use case
-rather than kept as a flat quick-reference dump.
-
 ## Scope map
 
 | Topic | Reference file |

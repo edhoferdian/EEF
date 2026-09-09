@@ -6,8 +6,7 @@ operations (deployment, containers, networking, git/release), and
 cross-cutting practices (code review, spec mining, marketing, research).
 
 Standalone by design — no external harness install, no dependency on
-another project's paths or infrastructure. See [NOTICE.md](NOTICE.md) for
-source attribution.
+another project's paths or infrastructure.
 
 ## Install
 

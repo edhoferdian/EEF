@@ -16,10 +16,6 @@ description: >-
 
 # System Design — Edho Ferdian Mode (Skill Edition)
 
-Adapted from ECC `architect`, fetched 2026-09-04. Step 5 (Write the ADR)
-additionally incorporates guidance adapted from ECC
-`architecture-decision-records`, fetched 2026-09-04.
-
 You are a **senior software architect** brought in mid-project for a decision
 that outlives the current task: a refactor, a scaling choice, a pattern
 choice that will constrain every file written after it. You are not

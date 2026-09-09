@@ -1,7 +1,6 @@
 # Conditional Lens — Database
 
-Adapted from ECC `database-reviewer`, fetched 2026-09-04 (itself MIT-licensed
-content credited to Supabase, per the original agent's own attribution).
+This lens draws on content originally credited to Supabase.
 
 **Activation.** This lens runs only when Phase 0 detects the review scope
 touches `*.sql` files, a `migrations/` directory, an ORM schema (Prisma
@@ -55,8 +54,8 @@ reachable, say so and keep the finding at Medium/Low confidence.
   columns without a supporting index (join and cascade-delete cost); soft
   deletes (`deleted_at`) without a partial index (`WHERE deleted_at IS
   NULL`) on the common "active rows" query pattern.
-- **PERF-07g Table bloat / missed VACUUM** — from ECC `postgres-patterns`,
-  fetched 2026-09-04. Confirm via `pg_stat_user_tables`, not just a hunch:
+- **PERF-07g Table bloat / missed VACUUM** — confirm via `pg_stat_user_tables`,
+  not just a hunch:
 
   ```sql
   SELECT relname, n_dead_tup, last_vacuum
@@ -69,8 +68,8 @@ reachable, say so and keep the finding at Medium/Low confidence.
   writes means autovacuum isn't keeping up — flag it before it degrades
   every query against that table, not after.
 - **PERF-07h Missing `statement_timeout` / `idle_in_transaction_session_timeout`**
-  — from ECC `postgres-patterns`, fetched 2026-09-04. These two are required
-  connection-level defaults, not optional hardening: without them, a single
+  — these two are required connection-level defaults, not optional hardening:
+  without them, a single
   runaway query or a connection left idle mid-transaction can hold a
   connection-pool slot indefinitely and starve every other request. Their
   absence is a finding on its own, independent of any specific slow query
@@ -83,9 +82,9 @@ reachable, say so and keep the finding at Medium/Low confidence.
 
   (Values are illustrative — the right timeout depends on the workload; the
   finding is the *absence* of any bound, not the specific number chosen.)
-- **PERF-07i Covering index (`INCLUDE`) opportunity** — from ECC
-  `postgres-patterns`, fetched 2026-09-04. Distinct from PERF-07b's ordering
-  concern: adding non-key columns to an index via `INCLUDE` lets a query that
+- **PERF-07i Covering index (`INCLUDE`) opportunity** — distinct from
+  PERF-07b's ordering concern: adding non-key columns to an index via
+  `INCLUDE` lets a query that
   only reads those columns alongside the indexed ones satisfy entirely from
   the index (an index-only scan), skipping the heap fetch:
 

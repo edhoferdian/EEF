@@ -1,8 +1,8 @@
 # Flake Quarantine Protocol (Phase 3)
 
-Reference for Phase 3 of `e2e-testing-edho-ferdian`. Adapted from ECC
-`e2e-runner`, fetched 2026-09-04, with the quarantine mechanics made
-explicit — the source material named the practice but not the procedure.
+Reference for Phase 3 of `e2e-testing-edho-ferdian`, with the quarantine
+mechanics made explicit — the general practice is well known, but not
+always paired with a concrete procedure.
 
 ## The problem this solves
 

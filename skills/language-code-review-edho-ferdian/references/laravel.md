@@ -1,8 +1,5 @@
 # Language Lens — PHP / Laravel
 
-Adapted from ECC `laravel-patterns`, `laravel-tdd`, `laravel-verification`,
-fetched 2026-09-07.
-
 **Detect.** `composer.json` requiring `laravel/framework`, an `artisan` file
 at repo root, or `app/Http/Kernel.php` / `bootstrap/app.php` present. This
 file is the only Laravel review lens — unlike Python/Django/FastAPI there is
@@ -204,10 +201,10 @@ skill's Phase 2 rule.
 
 ## Vanilla PHP (no framework)
 
-Source: ECC `agents/php-reviewer.md` (fetched 2026-09-09). Added after
-comparing this general PHP reviewer agent against the Laravel-specific
-content above: most of `php-reviewer.md` is either generic (already owned
-by the general skill's `review-checklist.md`) or Eloquent/Laravel-specific
+Added after comparing a general PHP reviewer agent against the
+Laravel-specific content above: most of that reviewer's content is either
+generic (already owned by the general skill's `review-checklist.md`) or
+Eloquent/Laravel-specific
 content this file's HIGH/MEDIUM sections above already cover in more depth
 than the agent does. The genuine gap is the subset below, which applies to
 PHP with **no framework present** — a standalone script, a Composer

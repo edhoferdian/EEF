@@ -5,8 +5,6 @@ existing, unwritten conventions — so generated code reads as if the same
 person wrote it, instead of drifting toward the model's pretrained mainstream
 idioms.
 
-Adapted from ECC `inherit-legacy-style`, fetched 2026-09-06.
-
 ## Scope boundary — read this before the trace
 
 This file answers **"how is this code written"** — form and convention:
@@ -151,7 +149,7 @@ and how the original scan was scoped.
 
 ### 6. Wire the soft hook — never the hard hook, never `settings.json`
 
-The upstream ECC skill offers the user a choice of soft hook, hard hook, or
+The source concept offers the user a choice of soft hook, hard hook, or
 no hook, with a hard `PreToolUse[Write|Edit|MultiEdit]` entry in
 `settings.json`. **That choice does not exist here.** In this ecosystem,
 writing to `settings.json` is `config-hygiene-edho-ferdian`'s domain and any

@@ -1,7 +1,5 @@
 # Loop Design & Review
 
-Adapted from ECC `loop-design-check`, fetched 2026-09-04.
-
 The GAN loop in this skill is a feedback wrapper around a feed-forward
 system: an LLM has no built-in "steer toward the goal" across turns, so the
 loop *is* the goal-seeking behaviour. That means the loop's design carries

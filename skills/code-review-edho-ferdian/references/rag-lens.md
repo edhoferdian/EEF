@@ -1,7 +1,5 @@
 # Conditional Lens — RAG Pipelines
 
-Adapted from ECC `rag-pipeline-reviewer`, fetched 2026-09-04.
-
 **Activation.** This lens runs only when Phase 0 detects the review scope
 touches a vector store client, an embedding call, or a retrieval/RAG chain
 (imports of a vector DB SDK, `embed(...)`/embedding-model calls, retriever

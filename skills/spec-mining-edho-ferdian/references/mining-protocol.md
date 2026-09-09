@@ -173,13 +173,13 @@ determined, **omit it — never guess**:
 most upstream enforcement point. If `enforced` is unknown, leave `id` empty
 too — an anchor with no enforcement is not an anchor.
 
-### Salak integration — the upgrade over ECC's version
+### Salak integration — going beyond call-chain-only inference
 
-ECC's original `spec-miner` infers `depends_on`/`triggers` purely by reading
-call chains, and its own guardrails admit this is unreliable for
-cross-module or async relationships ("do NOT record dependencies you can't
-trace synchronously"). This skill does the same call-chain inference as a
-**fallback only**, and prefers a real dependency graph when one exists.
+Inferring `depends_on`/`triggers` purely by reading call chains is
+unreliable for cross-module or async relationships — dependencies that
+can't be traced synchronously should not be recorded. This skill does that
+same call-chain inference as a **fallback only**, and prefers a real
+dependency graph when one exists.
 
 **Detection (same pattern as Step 1.3 and `salak-integration.md` verbatim):**
 run `salak version`; absent → proceed with call-chain inference only, say

@@ -1,8 +1,5 @@
 # Agent Stack Lens
 
-Adapted from ECC `agent-architecture-audit` and `agent-introspection-debugging`,
-fetched 2026-09-04.
-
 Applies when the code under review **is** an agent or LLM feature —
 a tool-calling loop, a wrapper over a model API, an autonomous worker, an
 MCP server, or any feature whose behaviour is produced by a model rather

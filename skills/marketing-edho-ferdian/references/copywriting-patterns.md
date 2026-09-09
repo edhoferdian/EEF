@@ -1,9 +1,9 @@
 # Copywriting Patterns — Landing Pages & Email Sequences
 
-Adapted from ECC `agents/marketing-agent.md`, fetched 2026-09-04. Scoped down
-from ECC's full campaign-agency version (which assumes a content-engine,
-paid ad budget, and multi-platform distribution pipeline) to what a solo
-developer marketing their own tool actually produces and maintains.
+Scoped down from a full campaign-agency version (which assumes a
+content-engine, paid ad budget, and multi-platform distribution pipeline)
+to what a solo developer marketing their own tool actually produces and
+maintains.
 
 Apply the `VOICE PROFILE` from `brand-voice-framework.md` and the locked
 positioning statement from SKILL.md Step 1 to every template below — these
@@ -131,8 +131,7 @@ cross-posted undercuts the launch.
 
 ## Cold outreach anti-patterns
 
-Adapted from ECC `lead-intelligence` + `marketing-campaign`, fetched
-2026-09-06. Watch for these when drafting any cold outreach message:
+Watch for these when drafting any cold outreach message:
 
 - Generic template with no personalization — nothing that shows the sender
   actually looked at the recipient.

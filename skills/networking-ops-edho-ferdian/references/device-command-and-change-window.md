@@ -1,6 +1,6 @@
 # Networking Lens — Device Commands And Change Windows
 
-Adapted from ECC `cisco-ios-patterns`, fetched 2026-09-04. Cisco IOS /
+Cisco IOS /
 IOS-XE flavoured; the *discipline* generalises to any vendor, the exact
 syntax does not.
 

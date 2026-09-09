@@ -1,4 +1,4 @@
-# Generate phase — rapid iteration (ported largely as-is from ECC gan-generator)
+# Generate phase — rapid iteration
 
 This phase is the "build it" half of the loop. Unlike
 `dev-kickoff-edho-ferdian`'s IMPLEMENT stage, there is no test-first
@@ -7,7 +7,7 @@ prototyping variant, by design. Do not import dev-kickoff's heavier
 discipline into this phase; if the work turns out to need that discipline,
 that's a signal to switch skills, not to slow this one down piecemeal.
 
-## Principles (unchanged from ECC)
+## Principles
 
 1. **Read the spec first** — always start from `gan-harness/spec.md`
    produced by the Plan phase (`references/spec-and-plan.md`). Check its

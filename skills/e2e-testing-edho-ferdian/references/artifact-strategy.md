@@ -1,7 +1,6 @@
 # Artifact Strategy (Phase 4)
 
-Reference for Phase 4 of `e2e-testing-edho-ferdian`. Adapted from ECC
-`e2e-runner`, fetched 2026-09-04.
+Reference for Phase 4 of `e2e-testing-edho-ferdian`.
 
 ## What to capture, and when
 

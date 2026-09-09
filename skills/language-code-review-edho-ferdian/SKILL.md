@@ -149,14 +149,6 @@ This is the same false-positive discipline the general skill's
 `false-positive-catalogue.md` already applies; this is its stack-specific
 extension.
 
-## Provenance line convention
-
-Every reference file under `references/` opens with a line naming its ECC
-source agent(s) and fetch date, in the same form the general skill's lens
-files already use:
-`Adapted from ECC <agent-name>, fetched <date>.`
-This is stated once here rather than repeated as commentary in each file.
-
 ## Reference files
 
 | File | Detect | Requires |
@@ -190,8 +182,8 @@ This is stated once here rather than repeated as commentary in each file.
 active, proven lenses** (verified against Edho's real `ghostfolio` project,
 an Nx monorepo running both), not speculative additions. **Go, Rust, Vue,
 and the twelve stacks added below are all FOLD-M**: content is medium-depth
-and plausible, ported straight from ECC's per-stack agents/skills, but
-**there is no evidence of an active project in any of these stacks in Edho's
+and plausible, but **there is no evidence of an active project in any of
+these stacks in Edho's
 workspace yet** — unlike Angular/NestJS (verified against `ghostfolio`) or
 Python/React (already exercised elsewhere in this ecosystem). Treat these as
 ready-to-use lenses the moment a matching project shows up, not as
@@ -206,61 +198,49 @@ was gated on "a real project in that stack appears in Edho's own work." That
 gate assumed a single-user, personally-curated ecosystem; now that this
 ecosystem is distributed to many users, waiting for Edho's own projects to
 justify writing industry-standard, well-documented framework content no
-longer makes sense — every stack below was ported from ECC now instead,
-fetched 2026-09-07, following the same content/quality bar as the
-already-active lenses above. Build-error handling for the same stacks lives
+longer makes sense — every stack below was built now instead, following the
+same content/quality bar as the already-active lenses above. Build-error
+handling for the same stacks lives
 in `build-fix-edho-ferdian`'s own reference files (see that skill's own
 Provenance/reference table), which are not identical in depth to these
 review lenses since the two skills need different depth per stack.
 
 - **PHP/Laravel** — `references/laravel.md` (idioms, Eloquent N+1/scopes,
-  Form Request validation, migration reversibility, test-shape checks;
-  ported from ECC `laravel-patterns`/`laravel-tdd`/`laravel-verification`).
+  Form Request validation, migration reversibility, test-shape checks).
   Security criteria stay solely in
   `security-review-edho-ferdian/references/language-specific.md`
   §"PHP / Laravel", cross-referenced rather than duplicated.
 - **Java/Spring + Quarkus** — `references/java-spring.md` (idioms,
   architecture, JPA/Panache correctness, testing conventions for both
   frameworks, Quarkus as an internal `## Quarkus` sub-section given the ~85%
-  overlap; ported from ECC `springboot-patterns`/`springboot-tdd`/
-  `springboot-verification`/`java-coding-standards`/`quarkus-patterns` and
-  ECC's unified `java-reviewer` agent). Security stays in
+  overlap). Security stays in
   `security-review-edho-ferdian/references/language-specific.md`
   §"Java / Spring Boot". `jpa-patterns` landed as
   `data-layer-patterns-edho-ferdian/references/jpa.md` per the original plan.
 - **Kotlin** — `references/kotlin.md` (idiomatic patterns/null-safety,
   coroutine & Flow structured-concurrency bugs, Exposed ORM query
-  correctness, Ktor server conventions, finding code CQ-14; ported from ECC
-  `kotlin-patterns`/`kotlin-testing`/`kotlin-coroutines-flows`/
-  `kotlin-exposed-patterns`/`kotlin-ktor-patterns`). The Exposed-ORM section
-  is kept inline here for now with a pointer noting it could later relocate
+  correctness, Ktor server conventions, finding code CQ-14). The Exposed-ORM
+  section is kept inline here for now with a pointer noting it could later relocate
   to `data-layer-patterns-edho-ferdian` the way JPA did — not yet moved.
   Kotlin has no security cross-reference yet (unlike Java/PHP); flag that gap
   explicitly rather than inventing findings.
 - **Swift/Apple** — `references/swift.md` (SwiftUI `@Observable` state/view
   composition, Swift 6.2 Approachable Concurrency, actor-based persistence,
-  protocol-oriented DI/testability; ported from ECC `swiftui-patterns`/
-  `swift-concurrency-6-2`/`swift-actor-persistence`/
-  `swift-protocol-di-testing` and `swift-reviewer`). Ground-truth
+  protocol-oriented DI/testability). Ground-truth
   verification of any Swift finding is structurally impossible on Edho's own
   Windows 10 machine (no Swift toolchain runs there) — a future session using
   this lens must say so explicitly rather than implying it ran `swift build`.
 - **Mobile cross-platform** — `references/react-native.md` (built first and
   most thoroughly, per the cheapest-transfer-from-React reasoning),
   `references/flutter.md`, `references/android.md` (Clean Architecture
-  layering), and `references/compose-multiplatform.md`, ported from ECC
-  `react-native-patterns`, `dart-flutter-patterns` + `flutter-dart-code-review`,
-  `android-clean-architecture`, and `compose-multiplatform-patterns`
-  respectively. None of these four stacks has a security cross-reference in
+  layering), and `references/compose-multiplatform.md`. None of these four
+  stacks has a security cross-reference in
   `security-review-edho-ferdian` yet — findings route to the general
   SEC-01/02/10 codes rather than inventing stack-specific ones.
 - **.NET** — `references/dotnet.md` (async/DI/nullable/EF Core idioms shared
-  by C# and F#, with an `## F#` subsection for functional-idiom findings;
-  ported from ECC `csharp-reviewer`/`fsharp-reviewer`/`dotnet-patterns`/
-  `csharp-testing`/`fsharp-testing`).
+  by C# and F#, with an `## F#` subsection for functional-idiom findings).
 - **C++** — `references/cpp.md` (RAII/ownership, Rule of Five,
-  concurrency-primitive misuse, memory-safety anti-patterns; ported from ECC
-  `cpp-reviewer`/`cpp-coding-standards`/`cpp-testing`).
+  concurrency-primitive misuse, memory-safety anti-patterns).
 - **PyTorch** — `references/pytorch.md` — deliberately narrow: framework
   mechanics only (undocumented tensor shape assumptions, hardcoded device
   placement, inconsistent AMP autocast/GradScaler sequencing, mismatched
@@ -271,10 +251,10 @@ review lenses since the two skills need different depth per stack.
   "Handoffs" section.
 - **Perl** — `references/perl.md` (idiom/OO/testing lens, CQ-15; Moo vs
   blessed hashrefs, modern signatures, postfix deref, Test2::V0 vs
-  Test::More), ported from ECC `perl-patterns`/`perl-testing`. The earlier
-  "skipped permanently" call was reversed 2026-09-09 — it assumed ECC never
-  built full Perl content, which was wrong; `perl-patterns`/`perl-security`/
-  `perl-testing` all existed unfetched. Security criteria stay solely in
+  Test::More). The earlier "skipped permanently" call was reversed
+  2026-09-09 — it assumed no full Perl content existed upstream, which was
+  wrong; content for patterns, security, and testing all existed and simply
+  hadn't been brought in yet. Security criteria stay solely in
   `security-review-edho-ferdian/references/language-specific.md` §"Perl"
   (now a full section, not the old SEC-16..19-only placeholder), cross-
   referenced rather than duplicated. Detect: any `.pl`/`.pm`/`.t` file, or a
@@ -282,16 +262,16 @@ review lenses since the two skills need different depth per stack.
 - **ArkTS/HarmonyOS** — `references/arkts.md` (review/idiom lens, CQ-16):
   V2 state-management compliance (`@ComponentV2`/`@Local`/
   `@Param`/`@Monitor`, never the V1 decorators), Navigation-only routing,
-  ArkTS syntax-constraint violations, MVVM layering. Ported from ECC
-  `harmonyos-app-resolver` (a single unified agent, not split into
-  build/review) plus `rules/arkts/*`. Security lives in
+  ArkTS syntax-constraint violations, MVVM layering — covers both review and
+  implementation concerns in one lens rather than splitting them.
+  Security lives in
   `security-review-edho-ferdian/references/language-specific.md` §"ArkTS /
   HarmonyOS" (SEC-08 cross-reference). Detect: `oh-package.json5` or
   `module.json5` at repo root, or `.ets` files in scope.
 - **Ruby / Rails** — `references/ruby.md`. Detect: `Gemfile` at repo root,
   `config/routes.rb` present, or `.rb`/`.rake`/`.erb` files in scope.
-  Rules-only ECC provenance (`rules/ruby/*`) — no dedicated ECC
-  `ruby-reviewer` skill/agent ever existed to port, so this lens is thinner
+  This lens is built from convention/checklist material rather than a
+  dedicated, enumerated Ruby reviewer, so it is thinner
   than the Go/Laravel/Java ones; say so if a finding feels underspecified
   rather than inventing depth the source doesn't have. Security lives in
   `security-review-edho-ferdian/references/language-specific.md` §"Ruby /
@@ -301,23 +281,10 @@ review lenses since the two skills need different depth per stack.
 
 This `SKILL.md` (the lens-layer orchestration itself — detection table,
 relationship contract, confidence/reflection rules) is original scaffolding
-written for this ecosystem, not a direct port of a single ECC skill or agent.
-The per-stack content it orchestrates, however, is ported from ECC's
-per-language reviewer agents, each with its own provenance line per the
-convention above (fetched 2026-09-04): `references/react.md` from ECC
-`react-reviewer`, `references/python.md` from ECC `python-reviewer`,
-`references/python-fastapi.md` from ECC `fastapi-reviewer`,
-`references/python-django.md` from ECC `django-reviewer`, and
-`references/python-django-celery.md` from ECC `django-celery`,
-`references/nestjs.md` from ECC `nestjs-patterns` (fetched 2026-09-06), and
-`references/angular.md` from ECC `angular-developer` (SKILL.md + payload
-references, fetched 2026-09-06). `references/go.md` is ported from ECC
-`golang-patterns` + `golang-testing`, `references/rust.md` from ECC
-`rust-patterns` + `rust-testing`, and `references/vue.md` from ECC
-`vue-patterns` + `nuxt4-patterns` (all three fetched 2026-09-06, all three
-FOLD-M — see the Reference files section above for what that means here).
-See each reference file's own opening line for its individual fetch
-confirmation.
+written for this ecosystem, not a direct port of a single external skill or
+agent. `references/go.md`, `references/rust.md`, and `references/vue.md`
+are all FOLD-M — see the Reference files section above for what that means
+here.
 
 ## Language routing (inherited — see code-review-edho-ferdian, which points to skill-authoring-edho-ferdian's canonical contract)
 

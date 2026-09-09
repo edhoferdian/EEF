@@ -20,8 +20,6 @@ misnamed files are common and one mislabel corrupts the whole intake.
 
 ## Mode C — brownfield trace before you touch existing code
 
-Adapted from ECC `code-explorer`, fetched 2026-09-04.
-
 Before Phase 3 touches any pre-existing code in a Mode C (Resume/brownfield)
 entry, trace the actual execution path for the relevant feature — this is a
 **semantic trace**, distinct from a dependency graph (which module imports
@@ -174,8 +172,7 @@ CONSISTENCY FINDINGS
 Register content is **English** (it is machine-facing). Every claim needs a
 source: document + section.
 
-**Constraint labeling is tri-state, not binary.** (Adapted from ECC
-`product-capability`, fetched 2026-09-06.) A decided/open split is not
+**Constraint labeling is tri-state, not binary.** A decided/open split is not
 enough — every extracted constraint also gets one of three labels:
 `[FIXED POLICY]` (non-negotiable — law, contract, or an explicit user
 decision), `[PREFERENCE]` (an architectural choice that can be revisited
@@ -237,8 +234,6 @@ Which outputs follow which, and any user override recorded as a decision.
 user confirms the register.
 
 ## When there is no spec document at all
-
-Adapted from ECC `intent-driven-development`, fetched 2026-09-04.
 
 This section's validation above assumes a document exists to validate.
 Many real requests arrive as a single ambiguous sentence with nothing to

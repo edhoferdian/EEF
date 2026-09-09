@@ -219,13 +219,10 @@ on every message.
 | SQS visibility timeout shorter than worst-case processing time | Two consumers process the same message concurrently | Set timeout with headroom; extend programmatically for long jobs |
 | Alerting only on "queue count > N" | Misses a slow-drain queue that never crosses the static threshold | Alert on growth trend and on oldest-pending-job age |
 
-## Provenance
+## Notes
 
-Adapted from general industry practice around message-queue architecture
+Drawn from general industry practice around message-queue architecture
 (BullMQ/BullMQ Pro, AWS SQS, pg-boss/graphile-worker documentation and
-common operational patterns) — see
-`skills/backend-engineering-edho-ferdian/SKILL.md` provenance note for
-comparison of house style. No single ECC agent covers generic queue
-architecture; `references/scheduled-collection.md` in this same skill
-covers the adjacent scraper-specific job shape and should be read alongside
-this file rather than duplicated from it.
+common operational patterns). `references/scheduled-collection.md` in this
+same skill covers the adjacent scraper-specific job shape and should be
+read alongside this file rather than duplicated from it.

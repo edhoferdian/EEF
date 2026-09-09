@@ -43,7 +43,7 @@ exists. Search in cost order, cheapest first:
 1. **This ecosystem** — `skills/*/SKILL.md` in this repo. A near-match here
    is usually a FOLD (a new `references/*.md` under an existing skill), not
    a new top-level skill. This is the same consolidation rule D-009 set for
-   the ECC port, applied to original work.
+   this ecosystem's earlier porting work, applied to original work.
 2. **Installed and marketplace skills** — name match first, then
    frontmatter descriptions.
 3. **GitHub** — `gh search repos`, `gh search code --filename SKILL.md`.
@@ -67,8 +67,6 @@ write surface. Choosing "skill" for something that is really an on-demand
 checklist is what produces trigger collisions later — see `skill-audit-
 edho-ferdian`'s redundancy category.
 
-(adapted from ECC commands/evolve.md, fetched 2026-09-06)
-
 ## §2 — The quality bar
 
 A skill in this ecosystem is not done until:
@@ -89,9 +87,8 @@ A skill in this ecosystem is not done until:
 
 ## §3 — Compliance: does anyone actually obey it?
 
-Adapted from ECC `skill-comply` (fetched 2026-09-04). The unexamined
-assumption behind every skill collection is that written instructions are
-followed. They frequently are not, and nobody notices because nobody looks.
+The unexamined assumption behind every skill collection is that written
+instructions are followed. They frequently are not, and nobody notices because nobody looks.
 
 Test one skill by running the same task at three prompt strictness levels
 and classifying what the agent actually did:
@@ -124,7 +121,7 @@ the now-duplicated passages with a cross-reference rather than leaving both.
 
 ## §5 — Incremental audit handoff
 
-Adapted from ECC `skill-stocktake`. A full pass over every skill is
+A full pass over every skill is
 expensive and mostly re-reads unchanged files. Prefer a **quick scan**:
 compare each `SKILL.md` and `references/*.md` mtime against the last audit
 run, re-evaluate only what changed, and carry forward previous findings for
@@ -280,11 +277,9 @@ knowledge. This is what makes the ecosystem behave as one system instead of
 
 ## Provenance
 
-Adapted from ECC `skill-scout`, `skill-stocktake`, `skill-comply`, and
-`rules-distill`, fetched 2026-09-04, consolidated into one skill per D-009.
-Every ECC-install-specific path (`~/.claude/skills/skill-stocktake/
-scripts/*.sh`, marketplace assumptions, the `results.json` cache location)
-was replaced with this repo's own `skills/` tree.
+Consolidated into one skill per D-009. Every install-specific path
+(a global scripts directory, marketplace assumptions, the `results.json`
+cache location) was replaced with this repo's own `skills/` tree.
 
 §6 (packaging) added 2026-09-06 per D-023 (R8 audit finding: no skill in
 this ecosystem covered `dist/*.skill` packaging). Native to this ecosystem,

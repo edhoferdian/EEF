@@ -14,8 +14,6 @@ description: >-
 
 # Desktop E2E (Windows) — Edho Ferdian Mode
 
-Adapted from ECC `windows-desktop-e2e`, fetched 2026-09-04.
-
 ## Where this sits
 
 `e2e-testing-edho-ferdian` owns the *process*: Phase 1 journey mapping,

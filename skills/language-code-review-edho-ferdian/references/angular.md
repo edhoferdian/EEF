@@ -1,8 +1,5 @@
 # Language Lens — Angular / TypeScript
 
-Adapted from ECC `angular-developer` (SKILL.md + payload references), fetched
-2026-09-06.
-
 **Detect.** `package.json` present with `@angular/core` in `dependencies` or
 `devDependencies`. Applies to `.ts` component/service/directive/pipe files and
 `.html` Angular templates in the review scope. `nx.json` at repo root
@@ -27,7 +24,7 @@ API surface, routing/guards, and Angular-specific testing patterns.
 activates automatically for any UI/component scope, Angular included. Do
 **not** duplicate its checklist here — labels, `alt` text, contrast, keyboard
 reachability, ARIA, heading order are all covered there. Angular Aria
-component-building guidance (`angular-aria.md` in the ECC source) is a
+component-building guidance is a
 code-generation reference, not a review checklist item, and is out of scope
 for this lens.
 

@@ -1,7 +1,5 @@
 # QA Sweep — Post-Deploy Verification Mode
 
-Adapted from ECC `browser-qa`, fetched 2026-09-04.
-
 A **different mode** from Phases 1–4 of this skill. Journey tests answer "does
 this specific flow still work, repeatably, in CI?" A QA sweep answers "is this
 deployed build broadly OK, right now?" — broad and shallow, run once against a

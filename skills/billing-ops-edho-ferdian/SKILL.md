@@ -15,9 +15,8 @@ description: >-
 
 # Billing Ops — Edho Ferdian Mode
 
-Adapted from ECC `customer-billing-ops` and `finance-billing-ops`
-(consolidated into one skill per D-029 recommendation), fetched 2026-09-06.
-Built ahead of its original trigger (Edho actually charging money for a
+Customer billing operations and finance billing operations are consolidated
+into one skill per D-029 recommendation. Built ahead of its original trigger (Edho actually charging money for a
 shipped product) per explicit user request, D-035 — treat vendor-specific
 integration details (e.g. calls into a payments API) as needing
 re-verification once a real billing system exists, since none of this has
@@ -57,7 +56,7 @@ customer's actual situation.
 
 ## Step 1 — Classify the incident (customer layer)
 
-Five categories, adapted from the ECC case taxonomy:
+Five categories:
 
 1. **Duplicate subscription** — same customer billed by more than one active
    subscription. Confirm it's actually duplicate (same product, same

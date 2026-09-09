@@ -1,10 +1,9 @@
 # JavaScript / TypeScript — build & compile lens
 
-Adapted from ECC `build-error-resolver`, fetched 2026-09-04, and ECC
-`react-build-resolver`, fetched 2026-09-04 — merged into one file because
-both are JS/TS/Node/bundler resolvers covering the same runtime with
-overlapping scope; keeping them separate would just duplicate the tsconfig
-and dependency-duplication material.
+This file merges general JS/TS build-error diagnostics with React-specific
+build diagnostics into one file because both cover the same JS/TS/Node/
+bundler runtime with overlapping scope; keeping them separate would just
+duplicate the tsconfig and dependency-duplication material.
 
 Scope: TypeScript type errors, JavaScript/JSX/TSX compile errors, bundler
 configuration failures (Vite/Next.js/Rsbuild/CRA/webpack/Parcel/Bun),
@@ -119,7 +118,7 @@ Don't guess which one applies — check in this order, cheapest first:
 - `define: { 'process.env.NODE_ENV': '"production"' }` needed for libraries
   written assuming a Node-style `process.env`
 
-**`vite build` does not type-check (ECC `vite-patterns`, fetched 2026-09-04).**
+**`vite build` does not type-check.**
 Vite transpiles TypeScript but never runs the type checker — a build can
 succeed and ship type errors silently. If the project has neither
 `vite-plugin-checker` configured nor a separate `tsc --noEmit` step in CI,
@@ -138,8 +137,7 @@ as a runtime bug.
 | `Error: Functions cannot be passed directly to Client Components` | A plain function prop crossed the server→client boundary | Wrap it as a Server Action (`"use server"`) and pass that instead |
 | Build succeeds but a `server-only` import error appears at runtime | `server-only` package correctly caught a leak | Same fix as the `fs` row — move the import server-side |
 
-**Middleware file rename (Next.js 16+).** Adapted from ECC `nextjs-turbopack`,
-fetched 2026-09-04. Next.js 16 renamed the root middleware file from
+**Middleware file rename (Next.js 16+).** Next.js 16 renamed the root middleware file from
 `middleware.ts` to `proxy.ts`. On a Next.js 16+ project, a `proxy.ts` at the
 project root is correct and intentional — **do not flag it as a misnamed or
 missing middleware file**, and do not "fix" it by renaming it back to
@@ -245,8 +243,7 @@ rm -rf node_modules package-lock.json && npm install
 
 ## Angular / Nx
 
-Adapted from ECC `angular-developer` + `build-error-resolver`, fetched
-2026-09-06. Scope: Angular compiler/build failures and Nx monorepo build
+Scope: Angular compiler/build failures and Nx monorepo build
 issues, layered on top of the general TypeScript diagnostics above (an
 Angular build failure is still a `tsc`-shaped failure underneath — check the
 generic TypeScript table first, then this section for what's Angular- or

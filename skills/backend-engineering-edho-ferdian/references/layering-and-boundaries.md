@@ -256,11 +256,9 @@ per integration; apply this checklist.
 | Vendor SDK imported directly in feature code | New integration re-litigated every time it's touched; no fake for tests | Vendor SDK only inside its adapter file |
 | Refactor with no characterization tests first | Cannot tell "preserved behavior" from "silently changed it" | Freeze behavior with tests before extracting a port |
 
-## Provenance
+## Notes
 
-Adapted from general industry practice (ports & adapters / hexagonal
+Drawn from general industry practice (ports & adapters / hexagonal
 architecture, repository pattern, composition root) and NestJS's own module/
-DI conventions — see `skills/backend-engineering-edho-ferdian/SKILL.md`
-provenance note for comparison of house style. No single ECC agent covers
-this topic; framework-specific wiring here follows `references/nestjs.md` in
-this same skill.
+DI conventions. Framework-specific wiring here follows `references/nestjs.md`
+in this same skill.

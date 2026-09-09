@@ -1,10 +1,9 @@
 # Perl — dependency, syntax & test-bootstrap resolution lens
 
-Adapted from ECC `perl-patterns`/`perl-security`/`perl-testing`, fetched
-2026-09-09. Supersedes the earlier "skipped permanently, not deferred"
-decision recorded in `SKILL.md` — that decision assumed ECC carried no
-dedicated Perl build/testing content; `perl-patterns`, `perl-security`, and
-`perl-testing` were actually present upstream and simply never fetched.
+Supersedes the earlier "skipped permanently, not deferred"
+decision recorded in `SKILL.md` — that decision assumed no dedicated Perl
+build/testing content was available; fuller Perl patterns, security, and
+testing content was actually available and simply never incorporated.
 
 Scope: `cpanm`/`cpan` dependency-resolution failures, `perl -c` syntax-check
 errors, and `prove`/`Test::More`/`Test2::V0` bootstrap failures. You fix the
@@ -135,6 +134,6 @@ prove -lr --state=failed t/       # re-run only what failed last time, after a f
 
 ## Provenance
 
-Adapted from ECC `perl-patterns`/`perl-security`/`perl-testing`, fetched
-2026-09-09. Supersedes the earlier "skipped permanently" decision — Perl
-content was assumed absent from ECC but was actually present and unfetched.
+Supersedes the earlier "skipped permanently" decision — Perl
+content was assumed absent but was actually available and simply never
+incorporated.

@@ -1,7 +1,5 @@
 # Mode — Demo & Walkthrough Recording (Playwright)
 
-Adapted from ECC `ui-demo`, fetched 2026-09-04.
-
 **This is not a test.** It produces a WebM walkthrough video of a working app —
 for a release note, a README, a client handoff, or a bug reproduction someone
 else has to watch. It reuses this skill's Playwright driver detection

@@ -1,31 +1,26 @@
 # Workspace Ops — Google Drive, Docs, Sheets, Slides, Calendar
 
-Adapted from ECC `google-workspace-ops`, fetched 2026-09-06. Built ahead of
-its original trigger (MCP Google Drive/Gmail/Calendar authorization) per
-explicit user request, D-035 — mark any Google-specific API detail as
-needing re-verification once actually authorized and used.
+Built ahead of its original trigger (MCP Google Drive/Gmail/Calendar
+authorization) per explicit user request, D-035 — mark any Google-specific
+API detail as needing re-verification once actually authorized and used.
 
 ## Scope note — read this before assuming coverage
 
-The ECC source for this file (`google-workspace-ops`) covers exactly one
-surface: **Drive-hosted documents — Docs, Sheets, Slides** — as a workflow
-system (find the right asset, inspect before editing, edit precisely, keep
-the working system clean). It does **not** mention Gmail or Calendar at all.
-Two consequences, stated plainly instead of papered over:
+This file covers exactly one surface: **Drive-hosted documents — Docs,
+Sheets, Slides** — as a workflow system (find the right asset, inspect
+before editing, edit precisely, keep the working system clean). It does
+**not** cover Gmail or Calendar. Two consequences, stated plainly instead
+of papered over:
 
 - **Mail** (composing, replying, sending) is not this file's job. That
   discipline already exists in `channel-operations.md` §1 of this same
-  skill, ported separately from ECC `email-ops`. Do not duplicate it here —
-  cross-reference it.
-- **Calendar** has no ECC source at all — this survey found no
-  `calendar-ops` or equivalent skill in ECC. The Calendar section below is
-  this ecosystem's own generalization: it applies the approval-gate
-  convention this ecosystem already uses everywhere else (see
+  skill. Do not duplicate it here — cross-reference it.
+- **Calendar** is this ecosystem's own generalization: it applies the
+  approval-gate convention this ecosystem already uses everywhere else (see
   `CLAUDE.md`-level "Explicit permission required" rule, which already names
   "granting calendar invites" and "modifying public content") to the
   Calendar surface, plus the `meeting_info`-tier reconciliation logic
-  already defined in this skill's `SKILL.md`. It is **not** a port of ECC
-  content — flag it as such if it's ever compared against upstream ECC.
+  already defined in this skill's `SKILL.md`.
 
 ## When to use this file
 
@@ -78,8 +73,8 @@ Before any change:
 
 ### Sharing permission model — the part this ecosystem adds explicitly
 
-The ECC source doesn't spell out a sharing policy beyond "keep the system
-clean." This ecosystem's standing rule fills the gap:
+Base guidance stops at "keep the system clean." This ecosystem's standing
+rule fills the gap:
 
 - **Never set a sensitive or business-relevant document to "anyone with the
   link can view/edit" without explicit, per-file confirmation from the
@@ -131,13 +126,12 @@ FOLLOW-UPS
 
 ---
 
-## §2 — Calendar (ecosystem-native — no ECC source; see scope note above)
+## §2 — Calendar (ecosystem-native; see scope note above)
 
-This section exists only because Calendar shares Google Workspace's
-authorization trigger with Drive and Gmail (per D-035's framing), not
-because ECC has a calendar skill to port. Treat it as provisional
-first-pass guidance to be corrected against real API behavior once
-Calendar is actually connected.
+This section exists because Calendar shares Google Workspace's
+authorization trigger with Drive and Gmail (per D-035's framing). Treat it
+as provisional first-pass guidance to be corrected against real API
+behavior once Calendar is actually connected.
 
 ### Read-only vs approval-required
 

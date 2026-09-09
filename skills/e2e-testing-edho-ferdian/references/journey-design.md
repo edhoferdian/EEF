@@ -1,9 +1,7 @@
 # Journey Design & Page Object Model (Phase 1–2)
 
-Reference for Phase 1 and Phase 2 of `e2e-testing-edho-ferdian`. Adapted
-from ECC `e2e-runner`, fetched 2026-09-04 (Playwright examples kept — a
-standard, widely-used framework, not an ECC-specific tool; the ECC-specific
-`agent-browser` CLI is dropped per this skill's SKILL.md).
+Reference for Phase 1 and Phase 2 of `e2e-testing-edho-ferdian`. Playwright
+examples are used throughout — a standard, widely-used framework.
 
 ## Phase 1 — Critical journey mapping
 
@@ -154,7 +152,7 @@ about real behavior.
 
 ### Native OS matrix — a Linux CI container doesn't cover other platforms
 
-One rule harvested from ECC `docker-patterns`, fetched 2026-09-04: a Linux
+A Linux
 container in CI validates Linux behavior, not macOS or Windows behavior —
 Docker shares the host's Linux kernel, so it cannot exercise
 macOS/Windows-specific code paths at all. For anything host-path-sensitive —

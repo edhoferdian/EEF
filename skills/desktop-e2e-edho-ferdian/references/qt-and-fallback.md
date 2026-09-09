@@ -1,7 +1,5 @@
 # Qt Quirks & Screenshot Fallback
 
-Adapted from ECC `windows-desktop-e2e`, fetched 2026-09-04.
-
 ## Qt 5.x accessibility
 
 Qt 5.7–5.14 ship with accessibility off in many builds. Set

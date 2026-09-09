@@ -1,7 +1,5 @@
 # Language Lens — PyTorch (framework mechanics only)
 
-Adapted from ECC `pytorch-patterns`, fetched 2026-09-07.
-
 **Detect.** A real PyTorch training/inference script or module in review
 scope — `import torch`, an `nn.Module` subclass, a training loop calling
 `.backward()`/`optimizer.step()`, or a `DataLoader` construction.
@@ -150,7 +148,3 @@ the flattened dimension").
 - Secrets/PII in checkpoints, datasets, or logs; unsafe deserialization of
   an untrusted checkpoint → Domain 2 (SEC) / `mle-lens.md`'s own
   cross-reference to Domain 2, not this file.
-
-## Provenance
-
-Adapted from ECC `pytorch-patterns`, fetched 2026-09-07.

@@ -1,15 +1,13 @@
 # Authoring Guide — Design Direction & Visual Consistency
 
-Adapted from ECC `frontend-design-direction` and `design-system`, fetched
-2026-09-04. ECC's `frontend-design-direction` is itself a salvage of community
-PR #1659 (`linus707`); ECC deliberately does not rebundle Anthropic's canonical
-`frontend-design` skill, and neither does this ecosystem — if that upstream
-skill is wanted it gets installed on its own.
+This ecosystem deliberately does not rebundle Anthropic's canonical
+`frontend-design` skill — if that upstream skill is wanted it gets installed
+on its own.
 
-`design-system`'s Mode 1 (codebase token extraction) is not ported: its value
-was in a CLI-shaped workflow with browser-MCP competitor research that does not
-survive the port. Its Mode 2 (visual audit) and Mode 3 (AI-slop detection) are
-kept below because they are checklists, not tooling.
+Codebase token extraction (Mode 1) is not included here: its value was in a
+CLI-shaped workflow with browser-MCP competitor research that does not
+survive in this form. Visual audit (Mode 2) and AI-slop detection (Mode 3)
+are kept below because they are checklists, not tooling.
 
 ## 1. Pick a direction before writing CSS
 
@@ -110,8 +108,6 @@ treated as part of the design system.
 
 Fewer than four, and the surface is a default with a palette applied — which
 is the failure this section exists to catch.
-
-*(adapted from ECC rules/web/design-quality.md, fetched 2026-09-06)*
 
 ## 5. Review checklist before handing off
 

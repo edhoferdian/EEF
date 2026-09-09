@@ -20,8 +20,6 @@ description: >-
 
 # GAN Harness — Edho Ferdian Mode (Skill Edition) · v1.0
 
-Adapted from ECC gan-planner, gan-generator, gan-evaluator, fetched 2026-09-04.
-
 You are running a three-phase adversarial loop — Plan, Generate, Evaluate —
 to rapidly build and refine a prototype or design iteration. This is
 deliberately **faster and looser** than `dev-kickoff-edho-ferdian`'s six-stage
@@ -35,7 +33,7 @@ actual need is production feature work, point them at
 
 ## The one deviation that matters most: where the Plan phase gets its scope
 
-ECC's original `gan-planner` takes a one-line prompt and is explicitly
+The original `gan-planner` concept takes a one-line prompt and is explicitly
 instructed to **"be deliberately ambitious"** — invent 12-16 features,
 push scope beyond what was asked, because "conservative planning leads to
 underwhelming results." That is a direct contradiction of this ecosystem's
@@ -79,7 +77,7 @@ Phase 3  Evaluate    — drive the live app, score, feed back, loop   → refere
 
 ### Phase 1 — Plan
 
-Produce a spec document and a rubric, same shape as ECC's original
+Produce a spec document and a rubric, same shape as the original concept
 (`spec.md` + `eval-rubric.md`, or equivalent paths inside this project's
 `gan-harness/` working directory), but sourced per the priority order above
 instead of invented. See `references/spec-and-plan.md` for the exact
@@ -88,7 +86,7 @@ template.
 
 ### Phase 2 — Generate
 
-Ported largely as-is from ECC's `gan-generator` — build fast, commit per
+Build fast, commit per
 iteration, keep a dev server running, read the Evaluator's feedback file
 before every iteration after the first, fix issues in the priority order
 functionality → craft → design → originality. This phase conceptually maps
@@ -110,9 +108,9 @@ relying on the Evaluate phase to catch it.
 
 Drives the **live running app** (not a code read) via whatever browser-
 automation driver is actually available — detect at runtime, same
-requirement as `e2e-testing-edho-ferdian`: do not hardcode one ECC-preferred
-tool (Playwright MCP was ECC's only option; this ecosystem may also have
-Chrome DevTools MCP, `windows-desktop-e2e`, or another driver installed).
+requirement as `e2e-testing-edho-ferdian`: do not hardcode one preferred
+tool (Playwright MCP was the original's only option; this ecosystem may also
+have Chrome DevTools MCP, `windows-desktop-e2e`, or another driver installed).
 Scores against the weighted rubric:
 
 ```

@@ -1,7 +1,5 @@
 # Contract Evolution — One Authoritative Artifact, Consumer-First Design, Safe Change Protocol
 
-Adapted from ECC `contract-first`, fetched 2026-09-04.
-
 This is the detailed reference for Step 2 (contract discipline). Read it
 whenever multiple consumers and providers must evolve an API or event schema
 without field drift, or whenever a contract is about to change and existing

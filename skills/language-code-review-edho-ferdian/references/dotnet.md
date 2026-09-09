@@ -1,10 +1,6 @@
 # Language Lens — .NET (C# / F#)
 
-Adapted from ECC `csharp-reviewer`, `fsharp-reviewer`, `dotnet-patterns`,
-`csharp-testing`, and `fsharp-testing`, fetched 2026-09-07.
-
-**FOLD-M.** Content is medium-depth and plausible, ported straight from ECC's
-.NET reviewer agents and pattern/testing skills, but **there is no evidence
+**FOLD-M.** Content is medium-depth and plausible, but **there is no evidence
 of an active .NET project in Edho's workspace yet** — unlike Angular/NestJS
 (verified against `ghostfolio`) or Python/React (already exercised elsewhere
 in this ecosystem). Treat this file as a ready-to-use lens the moment a
@@ -148,7 +144,7 @@ F# shares the CLR, ASP.NET Core, EF Core, and DI container with C# — the
 "Shared .NET criteria" above applies whenever an F# codebase touches those
 surfaces (e.g. an F# EF Core repository still gets the N+1/`AsNoTracking`
 findings above). What's genuinely different is F#'s functional-idiom
-surface, ported from ECC `fsharp-reviewer`:
+surface:
 
 ### HIGH
 
@@ -200,7 +196,7 @@ surface, ported from ECC `fsharp-reviewer`:
 
 ## Testing lens (from `csharp-testing` / `fsharp-testing`)
 
-- **Arrange-Act-Assert structure**, `[Fact]`/`[Theory]` (xUnit is ECC's and
+- **Arrange-Act-Assert structure**, `[Fact]`/`[Theory]` (xUnit is
   this ecosystem's preferred .NET test framework) — flag tests that mix
   arrange/act/assert without a clear boundary, or that assert on
   implementation details (`.ToString()` output, internal field state)
@@ -257,8 +253,3 @@ surface, ported from ECC `fsharp-reviewer`:
   `performance-audit-edho-ferdian` rather than asserting from code reading
   alone.
 
-## Provenance
-
-Adapted from ECC `csharp-reviewer` (agent), `fsharp-reviewer` (agent),
-`dotnet-patterns` (skill), `csharp-testing` (skill), and `fsharp-testing`
-(skill), fetched 2026-09-07.

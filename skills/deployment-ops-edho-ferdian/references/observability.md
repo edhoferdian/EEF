@@ -1,8 +1,7 @@
 # Observability — dashboards and logs an operator can act on
 
-Adapted from ECC `dashboard-builder` (Grafana / SigNoz and similar), with
-structured-logging rules harvested from ECC `backend-patterns`, fetched
-2026-09-04.
+Covers dashboard construction (Grafana / SigNoz and similar) alongside
+structured-logging rules.
 
 ## Start from operator questions, never from the metric list
 
@@ -38,9 +37,9 @@ look native to its platform will not be maintained.
 
 ## Notification severity classes
 
-Adapted from ECC `unified-notifications-ops`, fetched 2026-09-06. One event
-must not fan out to every channel — collapse duplicates before adding
-channels, and default to digest-first when interruption cost is unclear.
+One event must not fan out to every channel — collapse duplicates before
+adding channels, and default to digest-first when interruption cost is
+unclear.
 
 | Class | Examples | Default handling |
 |---|---|---|

@@ -24,10 +24,10 @@ That has a known ceiling. Asking a model "did you violate anything?"
 reliably returns "no" — self-evaluation shares the biases that produced the
 output. What changes behaviour is being made to **produce a fact**: asked
 to list every file that imports a module, the model has to actually run
-Grep and Read, and the resulting context changes what it writes next. ECC's
-A/B measurements on gated vs ungated agents put the gap at roughly +2.25
-points on a 10-point rubric across two tasks — a small sample, quoted as
-directional evidence rather than proof.
+Grep and Read, and the resulting context changes what it writes next.
+Internal A/B measurements on gated vs ungated agents put the gap at
+roughly +2.25 points on a 10-point rubric across two tasks — a small
+sample, quoted as directional evidence rather than proof.
 
 So the gates here are deliberately **not** reasoning gates. Each one either
 demands an artifact or checks a machine-verifiable fact.
@@ -56,7 +56,7 @@ ALLOW — permit the retry once those facts are on the table
 3. Data-shape facts, as above, if it touches data files.
 4. The user's current instruction, quoted verbatim.
 
-Fact 3 is the one people skip and the one that pays. In both ECC A/B trials
+Fact 3 is the one people skip and the one that pays. In both A/B trials
 the ungated agent assumed ISO-8601 dates while the real data used
 `%Y/%m/%d %H:%M`. Checking the actual shape kills that entire bug class.
 
@@ -91,19 +91,20 @@ reaches for.
 Never build a shell command by interpolating a string. Pass the executable
 and its arguments as separate entries with `shell: false` — string
 interpolation is how a filename with a space or a quote becomes an
-arbitrary command. (Adapted from ECC `terminal-opener`, fetched 2026-09-04.)
+arbitrary command.
 
 ## Gate 3 — Freeze: scope the write surface
 
-Adapted from ECC `safety-guard` Freeze Mode. Lock Write/Edit to a named
+Freeze Mode locks Write/Edit to a named
 subtree; reads stay unrestricted. Anything outside is refused with an
 explanation rather than silently allowed.
 
 This is the directly load-bearing gate for how this ecosystem actually
 works. Its own porting effort dispatches several Sonnet agents in parallel,
 each owning a slice of the tree — and the kelompok 3 batch found real
-damage of exactly this shape afterwards (an agent leaving pointers into ECC
-paths across files outside its brief, fixed by hand later). A freeze on
+damage of exactly this shape afterwards (an agent leaving stale pointers
+into out-of-scope paths across files outside its brief, fixed by hand
+later). A freeze on
 each agent's assigned subtree turns that from a post-hoc discovery into a
 refusal at the moment it happens.
 
@@ -115,13 +116,12 @@ contributes to one change, only one of them may write to the filesystem —
 the rest produce a proposal (a diff, a patch, a plan) for the writer to
 apply, never a direct write of their own. Two writers on the same change
 means there is no single diff left to review and no way to attribute a
-regression to the process that caused it. (Adapted from ECC
-`commands/multi-execute.md`, fetched 2026-09-06.)
+regression to the process that caused it.
 
 ## Gate 4 — Stop-gate: do not declare done before the record is written
 
-Adapted from ECC `delivery-gate` (fetched 2026-09-04), retargeted from its
-ECC learning-library paths to this ecosystem's `project-memory/`.
+Retargeted from a learning-library path convention to this ecosystem's
+`project-memory/`.
 
 Stage 6 REMEMBER of `dev-kickoff-edho-ferdian` requires the memory files to
 be updated "in the same turn, not later", and the anti-pattern table
@@ -148,8 +148,7 @@ block and the audit skills are for. Defense in depth, not a replacement.
 Report execution state with exactly one of: `inspected` / `changed locally` /
 `verified locally` / `committed` / `pushed` / `blocked`. Never say *fixed*
 until the proving command has been rerun and named. Never say *pushed*
-unless the upstream branch actually moved. (Adapted from ECC `terminal-ops`,
-fetched 2026-09-04.)
+unless the upstream branch actually moved.
 
 ## Choosing gates
 
@@ -193,18 +192,3 @@ grows enough to need its own worked examples/edge-case catalogue (the way
 split that gate into `references/`, following the domain+lens pattern other
 skills in this ecosystem use — do not let this file creep past ~300 lines to
 avoid making that call.
-
-## Provenance
-
-Adapted from ECC `gateguard` (community), `safety-guard`, and
-`delivery-gate` v1.1.1, all fetched 2026-09-04, consolidated per D-009 —
-`gateguard`'s destructive-Bash gate and `safety-guard`'s Careful Mode
-covered nearly the same command list, so they are one gate here, with
-Freeze kept as `safety-guard`'s distinct contribution. Every ECC-specific
-mechanism was dropped rather than adapted: `ECC_GATEGUARD` /
-`GATEGUARD_*` environment variables, the `gateguard-ai` PyPI package and
-`.gateguard.yml`, ECC's `scripts/hooks/*` paths, and `delivery-gate`'s
-disk-space checks (a machine concern, not a work-quality one) and its
-`LIBS` paths (replaced with `project-memory/`). Gate 3's single-writer rule
-is a small later harvest from ECC `commands/multi-execute.md`, fetched
-2026-09-06.

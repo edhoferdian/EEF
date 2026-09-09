@@ -1,7 +1,5 @@
 # Kubernetes workload patterns
 
-Adapted from ECC `kubernetes-patterns`, fetched 2026-09-04.
-
 ## Probes — the trio, in the right roles
 
 Use `startupProbe` for slow boots, then let liveness and readiness take over.

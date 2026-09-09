@@ -19,8 +19,8 @@ security posture of the container, which is a different skill's job.
 
 **Security-specific container concerns are out of scope here — they live in
 `security-review-edho-ferdian`.** A parallel effort in this ecosystem
-extracts the security-specific items from ECC's `docker-patterns` source
-into `security-review-edho-ferdian/references/domain-specific.md`:
+extracts the security-specific items into
+`security-review-edho-ferdian/references/domain-specific.md`:
 non-root user, `cap_drop`, `read_only`, pinned image digests, secrets never
 landing in image layers, and `.dockerignore` as a secret-exposure control.
 
@@ -45,14 +45,6 @@ hardening half to `security-review-edho-ferdian` — say so explicitly rather
 than silently covering both from memory, since the security skill is the
 single source of truth for those criteria and duplicating them here risks
 drift.
-
-## Provenance
-
-Adapted from ECC `docker-patterns`, fetched 2026-09-04. The source skill's
-"Prompt Defense Baseline" boilerplate was stripped, and its security-coded
-content (non-root, cap_drop, read_only, pinned digests, secret management,
-`.dockerignore` as a leak control) was intentionally excluded — see the
-Boundary section above.
 
 ## Scope map
 

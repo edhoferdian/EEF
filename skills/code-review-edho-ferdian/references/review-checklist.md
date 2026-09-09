@@ -28,8 +28,8 @@ activate only when Phase 0 detects the relevant scope.
 Baseline conventions this domain checks against — immutability, KISS/DRY/
 YAGNI, size limits (functions <50 lines, files 200–400/800 max), naming
 conventions, and comment discipline — are defined natively in
-**`references/baseline-conventions.md`** (this ecosystem's own replacement
-for the previously-inherited ECC global rule). Read it once; the codes below
+**`references/baseline-conventions.md`** (this ecosystem's own native
+convention set). Read it once; the codes below
 cite it rather than re-deriving the same thresholds inline.
 
 - **CQ-01 Single Responsibility** — does each function/component do exactly
@@ -44,7 +44,7 @@ cite it rather than re-deriving the same thresholds inline.
     function/class extracted for "reusability" that has exactly one call site
     and adds an indirection layer with no independent test value should be
     inlined back. DRY cuts both ways — a single-use abstraction isn't reuse,
-    it's indirection. (Harvested from ECC `code-simplifier`.) `baseline-
+    it's indirection. `baseline-
     conventions.md` §2 adds one nuance on top: don't let a DRY extraction
     turn an isolated mutation into a shared one — see that section's
     immutability cross-note.
@@ -73,7 +73,7 @@ cite it rather than re-deriving the same thresholds inline.
 
 ### CQ-06b — Type design (typed languages only)
 
-Adapted from ECC `type-design-analyzer`, fetched 2026-09-04. Applies to
+Applies to
 **domain/model types** — the types that encode business rules — not DTOs or
 framework-required shapes (a Prisma-generated type, a form schema, an API
 request/response wire type). Forcing this lens onto a DTO produces noise: a
@@ -96,8 +96,6 @@ For each domain/model type in scope, check:
   that undoes the constructor's validation)?
 
 ### CQ-08 — Comments, sub-codes
-
-Adapted from ECC `comment-analyzer`, fetched 2026-09-04.
 
 - **CQ-08a Contradicts the code** (highest severity of the four — actively
   misleading) — the comment describes behavior the code does not actually
@@ -170,8 +168,7 @@ cost depends on production data volume, a suspected memory leak that needs a
 heap-snapshot diff to confirm, a Core Web Vitals regression that needs a real
 Lighthouse/RUM run. Report the suspicion with its reasoning and confidence
 label as usual, but say explicitly that confirming it needs measurement this
-skill doesn't perform, rather than asserting it as fact. (Harvested from ECC
-`performance-optimizer`.)
+skill doesn't perform, rather than asserting it as fact.
 
 ## 4. Domain 4 — Blueprint / Consistency (BC)
 

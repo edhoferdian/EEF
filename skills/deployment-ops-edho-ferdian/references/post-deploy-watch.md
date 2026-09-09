@@ -1,7 +1,5 @@
 # Post-deploy watch
 
-Adapted from ECC `canary-watch`, fetched 2026-09-04.
-
 **Different activity from `e2e-testing-edho-ferdian/references/qa-sweep.md`.**
 A QA sweep is one broad pass ending in a ship/no-ship verdict. This is a
 narrow, repeated, unattended watch across a release window, judged against a
@@ -41,8 +39,6 @@ file only adds what repetition and baselines make possible.
 | Info | minor variance, new third-party requests appearing | Log only — but a *new third-party script* is a security question, hand it to `security-review-edho-ferdian` |
 
 ## Verifikasi ≠ validasi
-
-*(adapted from ECC `quality-nonconformance`, fetched 2026-09-06)*
 
 Dua pertanyaan berbeda yang sering diruntuhkan jadi satu, dan meruntuhkannya
 adalah cara paling umum sebuah insiden dinyatakan tertutup padahal belum:

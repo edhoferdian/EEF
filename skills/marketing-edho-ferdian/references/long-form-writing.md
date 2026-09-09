@@ -1,7 +1,5 @@
 # Long-Form Writing — Articles, Guides, Essays, Newsletters
 
-Adapted from ECC `skills/article-writing`, fetched 2026-09-06.
-
 Covers anything longer than a paragraph that is meant to be read on its own:
 blog posts, technical guides, tutorials, launch write-ups, essays,
 newsletter issues, conference-talk write-ups, and long-form README sections.

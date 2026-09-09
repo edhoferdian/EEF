@@ -1,30 +1,25 @@
 # Networking Lens — Design Principles
 
-Adapted from ECC `network-architect` and `homelab-architect`, fetched
-2026-09-04.
-
 **Mode.** Use this reference when the user wants to design or plan a new
 network, or extend an existing one — "rancang jaringan untuk homelab saya",
 "design network segmentation for this office", "how should I VLAN this",
 "plan redundancy for this site", "what's the right topology for N sites".
 
-**Honesty about this file's origin.** Both ECC source agents
-(`network-architect`, `homelab-architect`) are, in ECC's own design, thin
-routers: most of their real diagnostic and automation depth lived in skills
-they deferred to — `network-bgp-diagnostics`, `network-interface-health`,
-`cisco-ios-patterns`, `netmiko-ssh-automation`, `homelab-network-setup`,
-`homelab-network-readiness`, `network-config-validation`. All of that depth
-has since been ported natively into this skill's own reference set — see
-`interface-and-bgp-diagnostics.md` (interface health + BGP), `automation-and-
-preflight.md` (Netmiko-style SSH automation and preflight checks),
-`device-command-and-change-window.md` (Cisco IOS command patterns and
-change-window discipline), `homelab-planning.md` (homelab setup/readiness),
-and `remote-access-and-local-dns.md` (remote access and local DNS) — none of
-it depends on ECC's install anymore (per D-005). What follows in this file
-is the genuine design-principle content that lived directly in the two
-agent prompts themselves — segmentation logic, redundancy/failover basics,
-and the home-lab-vs-enterprise scope split — which stands on its own and is
-complemented, not blocked, by the five reference files above.
+**Honesty about this file's origin.** The design-planning material here was
+originally paired with thin routing logic: most of the real diagnostic and
+automation depth lived elsewhere and was only deferred to, not actually
+present. All of that depth has since been ported natively into this
+skill's own reference set — see `interface-and-bgp-diagnostics.md`
+(interface health + BGP), `automation-and-preflight.md` (Netmiko-style SSH
+automation and preflight checks), `device-command-and-change-window.md`
+(Cisco IOS command patterns and change-window discipline),
+`homelab-planning.md` (homelab setup/readiness), and
+`remote-access-and-local-dns.md` (remote access and local DNS) — none of it
+depends on any external install anymore (per D-005). What follows in this
+file is the genuine design-principle content — segmentation logic,
+redundancy/failover basics, and the home-lab-vs-enterprise scope split —
+which stands on its own and is complemented, not blocked, by the five
+reference files above.
 
 ## Scope split: homelab vs. enterprise/multi-site
 

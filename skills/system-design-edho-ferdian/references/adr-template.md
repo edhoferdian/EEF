@@ -1,7 +1,5 @@
 # ADR template
 
-Adapted from ECC `architect`, fetched 2026-09-04.
-
 One ADR = one decision. If you're tempted to write "and also," that's a
 second ADR.
 
@@ -64,7 +62,7 @@ writing — narrow to the real contenders first.>
 traded away.>
 ```
 
-## Worked example (ported from ECC, kept as reference shape)
+## Worked example (kept as reference shape)
 
 ```markdown
 # ADR-001: Use Redis for Semantic Search Vector Storage

@@ -1,7 +1,5 @@
 # False-Positive Catalogue
 
-Adapted from ECC `code-reviewer`, fetched 2026-09-04.
-
 Patterns that LLM code reviewers commonly mis-flag. This skill's Pre-Report
 Gate (`references/reflection-critique.md`) and Phase 3 false-positive gate
 both cross-check candidate findings against this list before drafting or
