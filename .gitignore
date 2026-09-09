@@ -2,3 +2,5 @@
 *.zip
 CLAUDE.md
 project-memory/
+__pycache__/
+*.pyc
