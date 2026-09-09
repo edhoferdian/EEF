@@ -83,6 +83,28 @@ const TARGETS = {
     },
   },
 
+  hermes: {
+    label: "Hermes Agent",
+    scope: "project by default, --global for ~/.hermes",
+    install(_skillNames, opts) {
+      const destRoot = opts.global
+        ? path.join(os.homedir(), ".hermes", "skills")
+        : path.join(process.cwd(), ".hermes", "skills");
+      copyDirInto(path.join(PKG_ROOT, ".hermes", "skills"), destRoot);
+    },
+  },
+
+  openclaw: {
+    label: "OpenClaw",
+    scope: "project by default, --global for ~/.agents",
+    install(_skillNames, opts) {
+      const destRoot = opts.global
+        ? path.join(os.homedir(), ".agents", "skills")
+        : path.join(process.cwd(), ".agents", "skills");
+      copyDirInto(path.join(PKG_ROOT, ".agents", "skills"), destRoot);
+    },
+  },
+
   kiro: {
     label: "Kiro",
     scope: "project by default, --global for ~/.kiro",

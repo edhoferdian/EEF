@@ -53,6 +53,10 @@ jobs:
         run: python scripts/export_kiro.py --check
       - name: Check GEMINI.md is up to date
         run: python scripts/export_gemini_md.py --check
+      - name: Check .hermes/skills/ is up to date
+        run: python scripts/export_hermes.py --check
+      - name: Check .agents/skills/ is up to date
+        run: python scripts/export_openclaw.py --check
 
   npm-cli-smoke-test:
     name: eef-install CLI smoke test

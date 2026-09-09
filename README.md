@@ -21,7 +21,9 @@ npx eef-install --target cursor             # Cursor, into ./.cursor/rules/
 npx eef-install --target windsurf           # Windsurf + Devin
 npx eef-install --target cline              # Cline
 npx eef-install --target copilot            # GitHub Copilot
-npx eef-install --target kiro               # Kiro (add --global for ~/.kiro)
+npx eef-install --target kiro                # Kiro (add --global for ~/.kiro)
+npx eef-install --target hermes              # Hermes Agent (add --global for ~/.hermes)
+npx eef-install --target openclaw            # OpenClaw (add --global for ~/.agents)
 npx eef-install --target agents-md          # AGENTS.md into the current project
 npx eef-install --target gemini-md          # GEMINI.md into the current project
 npx eef-install --list                      # list all skill names
@@ -128,6 +130,22 @@ checked in CI (`export-targets-sync` job):
 - **[GEMINI.md](GEMINI.md)** — byte-identical to `AGENTS.md`, generated
   from it (`scripts/export_gemini_md.py`), because Gemini CLI looks for
   this specific filename by default and doesn't fall back to `AGENTS.md`.
+
+- **[.hermes/skills/](.hermes/skills/)** — a generated copy for
+  [Hermes Agent](https://hermes-agent.nousresearch.com) (Nous Research).
+  Regenerate: `python scripts/export_hermes.py` (`--global` for
+  `~/.hermes/skills/` instead of project-local).
+- **[.agents/skills/](.agents/skills/)** — a generated copy for
+  [OpenClaw](https://openclaw.ai). Regenerate:
+  `python scripts/export_openclaw.py` (`--global` for `~/.agents/skills/`).
+
+Hermes and Kiro's copy-based adapters, and OpenClaw's, all work the same
+way for the same reason: their skill format is
+[agentskills.io](https://agentskills.io)'s open standard — the same
+`SKILL.md` + `name`/`description` frontmatter format this ecosystem
+already uses, originally developed by Anthropic and now adopted by dozens
+of agent products. No content transform is needed for any tool on that
+list; only a correctly-shaped copy in the right directory.
 
 Every adapter above is generated, never hand-maintained, and CI fails if
 any of them drifts from `skills/`. Several harnesses need no adapter at

@@ -1,0 +1,123 @@
+---
+name: test-authoring-edho-ferdian
+description: >-
+  Guidance for WRITING unit and component tests well — React/Testing
+  Library, Python/pytest, Go, and Vue, plus stack-agnostic regression-test
+  patterns. A companion to code-review-edho-ferdian's test-quality-lens
+  (which judges tests after they're written) and dev-kickoff-edho-ferdian's
+  TEST stage (which mandates writing a failing test first but doesn't teach
+  test-writing craft). Trigger phrases: "tulis test untuk component ini",
+  "bagaimana test hook ini", "test yang bagus untuk fitur X", "tulis test
+  pytest/Go/Vue untuk ini", or during dev-kickoff's TEST stage when the task
+  needs concrete authoring guidance beyond "write a failing test."
+---
+
+# Test Authoring — Edho Ferdian Mode
+
+You are helping someone **write** a unit or component test — choosing
+queries, structuring setup, mocking the network, testing a hook in
+isolation, asserting the right thing the first time. This skill is about
+craft at the point of authorship, not about judging a test after the fact.
+
+---
+
+## The three-way boundary (read this before anything else)
+
+This ecosystem has three other skills that sound adjacent to this one. They
+are not substitutes for each other — each answers a different question:
+
+| Skill | Question it answers | When it runs |
+|---|---|---|
+| **test-authoring-edho-ferdian** (this skill) | *How do I write this test well?* Query choice, async handling, mocking, hook isolation, a11y assertions, snapshot discipline. | While the test is being written — during dev-kickoff's TEST stage, or any time someone is authoring a new unit/component test. |
+| **code-review-edho-ferdian** → `references/test-quality-lens.md` (TQ-01..06) | *Is this already-written test actually good?* Behavioral mapping, edge-case/error-path coverage, assertion strength, flakiness, isolation/naming, coverage-vs-behavior divergence. | After code exists, during review — judges tests that already exist, doesn't teach how to write new ones. |
+| **dev-kickoff-edho-ferdian** → `references/test-design-checklist.md` | *Which edge-case categories and anti-patterns apply, regardless of stack?* An 8-category checklist (null/undefined, empty, invalid types, boundary values, error paths, race conditions, large data, special characters) and 4 anti-patterns. Stack-agnostic — no React/Jest/pytest specifics. | Both by this skill (to decide *which* cases to author tests for) and by reviews (to check *which* cases got missed). It is the shared checklist, not owned by either side. |
+| **e2e-testing-edho-ferdian** | *Does this full user journey work end-to-end in a real browser?* Login → checkout, multi-page flows, anything touching money or auth. | Separate layer entirely — Playwright/Chrome-DevTools-driven, Page Object Model, journey mapping. Not unit or component level. |
+
+In short:
+
+- **This skill = authoring.** It teaches the mechanics of writing a good
+  test *before* it exists.
+- **test-quality-lens = reviewing.** It judges a test that already exists,
+  with tool-backed evidence (run the suite, run coverage) before labeling
+  anything High confidence.
+- **test-design-checklist = the shared checklist.** Both authoring and
+  review should apply its 8 categories and 4 anti-patterns; it belongs to
+  neither exclusively.
+- **e2e-testing = a different layer.** Full user flows in a real browser,
+  not the unit/component tests this skill covers.
+
+If someone asks "is this test any good?" about code that's already written,
+point them at `code-review-edho-ferdian`'s test-quality-lens instead of this
+skill. If someone asks "does the whole login flow work?", point them at
+`e2e-testing-edho-ferdian`. This skill is for the moment of writing a new
+unit or component test.
+
+> Evaluating an **agent's** reliability (pass@k / pass^k, model-based vs
+> code-based graders) is a different discipline from authoring software
+> tests and lives in `gan-harness-edho-ferdian/references/evaluate-phase.md`,
+> not here.
+
+---
+
+## Core principle
+
+Test what the user sees and does, not implementation details.
+
+A good test:
+
+- Renders the component with the same providers it has in production.
+- Interacts via accessible queries (role, label) and `userEvent`.
+- Asserts visible output and observable side effects (a callback fired, a
+  request was sent) — not internal state, not which hooks ran, not render
+  count.
+
+Apply the stack-agnostic edge-case categories from
+`dev-kickoff-edho-ferdian/references/test-design-checklist.md` when deciding
+*which* cases to write tests for — this skill covers *how* to write each one
+well once you've decided it belongs.
+
+## Baseline standards (stack-agnostic)
+
+- **`references/baseline-testing-standards.md`** — the numbers and the loop:
+  the 80% coverage floor (and its three qualifications), the unit/
+  integration/E2E layer split, RED→GREEN→REFACTOR, Arrange-Act-Assert
+  structure, behaviour-describing naming, the diagnose-in-order protocol for
+  a failing test, and how to close a coverage gap deliberately rather than
+  file-by-file. Read this before authoring in any stack — the stack-specific
+  files below cover *how*, this file covers *how much and in what order*.
+
+## Stack-specific guidance
+
+- **React / Testing Library**: `references/react.md` — query priority,
+  `userEvent.setup()` discipline, async assertions, MSW network mocking,
+  `renderHook` for custom hooks (including the shared-QueryClient flake
+  trap), `jest-axe` accessibility assertions, the RTL vs Playwright
+  Component Testing vs full E2E decision boundary, and coverage
+  expectations per layer.
+- **Regression tests (stack-agnostic)**: `references/regression-testing.md` —
+  writing the test a found bug earned, the four recurring regression patterns
+  (dual-path shape drift, projection omission, error-state leakage, missing
+  rollback), DB-free sandbox-mode testing, and why AI self-review is not
+  evidence.
+
+- **Python/pytest**: `references/python-pytest.md` — fixtures and scoping,
+  parametrize with `ids`, `unittest.mock`/`pytest-mock` (patch-site rule,
+  `autospec`), `pytest-asyncio` async tests and `AsyncMock`, coverage
+  configuration.
+- **Go**: `references/go.md` — table-driven tests, `t.Run` subtests
+  (including the loop-variable capture trap), interface-based mocking,
+  testify vs stdlib `testing`, benchmark tests.
+- **Vue**: `references/vue.md` — Vue Test Utils mount strategies, testing
+  Composition API composables in isolation, Pinia store testing with
+  `createTestingPinia`, Vitest async-update handling.
+
+When a stack isn't covered above, apply the core principle and the
+stack-agnostic checklist above by hand, and note in your response that
+stack-specific guidance for that language isn't written yet — don't
+silently fall back to React-flavored advice for a non-React stack.
+
+## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
+
+Communication to the user in Bahasa Indonesia; test code, test names, and
+assertions in English — fixed, never ask. Full contract:
+`skill-authoring-edho-ferdian` §7.
