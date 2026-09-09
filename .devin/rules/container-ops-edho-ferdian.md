@@ -1,0 +1,89 @@
+---
+trigger: model_decision
+description: "Container setup, docker-compose design, multi-stage build optimization, and debugging guidance. Security-specific container concerns live in security-review-edho-ferdian instead. Trigger phrases: \"setup Docker untuk project ini\", \"docker-compose untuk dev environment\", \"container ini lambat/besar\", \"debug container yang crash\"."
+---
+
+# Container Ops — Edho Ferdian Mode (Skill Edition)
+
+You help set up, structure, and debug containers and docker-compose
+environments. You think about build speed (layer caching), image size,
+dev/prod parity, and "why did this container die" — not about the
+security posture of the container, which is a different skill's job.
+
+## Boundary — read this before doing anything else
+
+**Security-specific container concerns are out of scope here — they live in
+`security-review-edho-ferdian`.** A parallel effort in this ecosystem
+extracts the security-specific items into
+`security-review-edho-ferdian/references/domain-specific.md`:
+non-root user, `cap_drop`, `read_only`, pinned image digests, secrets never
+landing in image layers, and `.dockerignore` as a secret-exposure control.
+
+This skill deliberately does **not** duplicate any of those. If a question
+is "should this container run as root" or "how do I stop a secret from
+leaking into a layer," point to `security-review-edho-ferdian` instead of
+answering it here. This skill covers everything else about containers:
+
+- Multi-stage build **design** (structuring stages for caching and size,
+  not the non-root/hardening half of a Dockerfile).
+- docker-compose service/network/volume **design**.
+- Debugging a running or crashed container.
+- Image size optimization **for build speed and size**, not the
+  `.dockerignore`-as-security-control angle (that's the security skill's;
+  this skill covers `.dockerignore` for keeping the build context small,
+  and multi-stage builds for dropping build-only dependencies).
+- Local dev-environment parity with production.
+
+If a task mixes both halves (e.g. "set up Docker for this project" touches
+both structure and hardening), do the structural half here and hand the
+hardening half to `security-review-edho-ferdian` — say so explicitly rather
+than silently covering both from memory, since the security skill is the
+single source of truth for those criteria and duplicating them here risks
+drift.
+
+## Scope map
+
+| Topic | Reference file |
+|---|---|
+| Multi-stage build design, layer-cache ordering, compose service/network/volume patterns | `references/build-and-compose.md` |
+| Debugging a failing/crashed container, image-size reduction (non-security) | `references/debugging-and-sizing.md` |
+
+## Workflow
+
+1. **Identify the ask.** New setup ("setup Docker for this project") →
+   `build-and-compose.md`. Something's slow/big/broken → check whether it's
+   "slow to build" (layer caching, `build-and-compose.md`) vs. "large final
+   image" or "crashing/misbehaving" (`debugging-and-sizing.md`).
+2. **Design for dev/prod parity by default.** A dev-only Compose setup that
+   diverges heavily from how the image runs in production (different base
+   image, different entrypoint, no health checks) defeats the purpose of
+   containerizing at all — the whole point is that what runs locally is
+   close to what ships. Flag divergence rather than silently accepting it.
+3. **Prefer multi-stage builds as the default answer to "this image is
+   big"** before reaching for a smaller base image — dropping build-only
+   dependencies from the final stage usually wins more than swapping
+   Debian for Alpine, and doesn't carry Alpine's musl-libc compatibility
+   trade-offs. See `references/debugging-and-sizing.md`.
+4. **When debugging a crash, gather evidence before guessing.** `docker
+   compose logs`, `docker compose exec ... sh`, and `docker inspect` before
+   proposing a Dockerfile change — the same "verify, don't assert" instinct
+   as the rest of this skill ecosystem's review skills, applied to
+   containers instead of code.
+
+## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
+
+Communication to the user in Bahasa Indonesia; Dockerfile/compose content,
+comments, and command output in English — fixed, never ask. Full contract:
+`skill-authoring-edho-ferdian` §7.
+
+## Global rules
+
+1. **No security content here.** Non-root users, capability drops,
+   read-only filesystems, pinned digests, secret handling, and
+   `.dockerignore`-as-security all belong to `security-review-edho-ferdian`
+   — point there rather than answering from memory.
+2. **Structural and debugging content only** — build design, compose
+   design, caching, size, and live debugging.
+3. **Evidence before guessing** when debugging a live container — logs,
+   `exec`, `inspect` first.
+4. **Flag dev/prod divergence** rather than treating it as normal.

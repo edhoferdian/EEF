@@ -30,17 +30,25 @@ jobs:
         run: python scripts/package_skills.py --check
 
   export-targets-sync:
-    name: AGENTS.md and .cursor/rules/ match skills/
+    name: Cross-harness exports match skills/
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.x"
+      - name: Install PyYAML (frontmatter validation)
+        run: pip install pyyaml
       - name: Check AGENTS.md is up to date
         run: python scripts/export_agents_md.py --check
       - name: Check .cursor/rules/ is up to date
         run: python scripts/export_cursor.py --check
+      - name: Check .windsurf/rules/ and .devin/rules/ are up to date
+        run: python scripts/export_windsurf.py --check
+      - name: Check .clinerules/ is up to date
+        run: python scripts/export_cline.py --check
+      - name: Check .github/copilot-instructions.md is up to date
+        run: python scripts/export_copilot.py --check
 
   plugin-validate:
     name: Claude Code plugin manifest

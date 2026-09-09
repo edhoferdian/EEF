@@ -1,0 +1,56 @@
+---
+trigger: model_decision
+description: "Getting a build to production and keeping it healthy — release strategy (rolling / blue-green / canary), CI/CD pipeline gates, health checks and Kubernetes probes, environment config and rollback, a production-readiness ship/block verdict, operator dashboards, and post-deploy watching. Starts where container-ops-edho-ferdian stops (image built, compose working). Trigger phrases: \"deploy ini gimana\", \"bikin pipeline CI/CD\", \"rollback\", \"manifest kubernetes\", \"siap rilis belum\", \"pantau setelah deploy\", \"bikin dashboard monitoring\"."
+---
+
+# Deployment Ops — Edho Ferdian Mode
+
+## Boundary — read before doing anything else
+
+This skill owns the interval between "the image builds" and "the release is
+observably healthy". Everything on either side belongs elsewhere:
+
+| Question | Skill that owns it |
+|---|---|
+| How do I structure the Dockerfile / compose file? | `container-ops-edho-ferdian` |
+| Should this container run as root? Secrets in layers? | `security-review-edho-ferdian` |
+| Is this page fast enough? What is the LCP budget? | `performance-audit-edho-ferdian` |
+| Does this user journey still work? | `e2e-testing-edho-ferdian` |
+| Is this deployed build broadly OK right now, once? | `e2e-testing-edho-ferdian` → `qa-sweep.md` |
+| Should this be microservices? Which datastore? | `system-design-edho-ferdian` |
+| Did *I*, the agent, actually finish the task I claimed? | `safe-execution-edho-ferdian` (delivery gate) |
+
+That last row matters: `safe-execution`'s delivery gate is about **agent claim
+discipline**. `references/production-readiness.md` here is about **application
+risk**. They ask different questions and must not restate each other.
+
+## Workflow
+
+Step 1  Pick the release strategy        → references/release-strategies.md
+Step 2  Wire the pipeline gates          → references/cicd-pipeline.md
+Step 3  (K8s only) write the manifests   → references/kubernetes.md
+Step 4  Production-readiness verdict     → references/production-readiness.md
+Step 5  Deploy, then watch               → references/post-deploy-watch.md
+Step 6  Make it operable                 → references/observability.md
+
+`references/cicd-pipeline.md` (Step 2) covers gate ordering (lint → typecheck
+→ unit test → security scan → build → deploy) with rationale, GitHub
+branch-protection required-status-checks setup, a full concrete GitHub
+Actions workflow with parallel gates and a branch/event-guarded deploy job,
+lockfile-hash-keyed caching, and the fail-fast-vs-fail-informatively
+distinction.
+
+## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
+
+Communication to the user in Bahasa Indonesia; deploy/rollback commands,
+config, and status output in English — fixed, never ask. Full contract:
+`skill-authoring-edho-ferdian` §7.
+
+## Global rules
+
+- **Never claim a deploy is healthy from the deploy tool's exit code.** The
+  pipeline says "deployed"; only Step 5 says "healthy".
+- **A release without a written rollback path is not ready** — this is a hard
+  cap in Step 4, not a suggestion.
+- Deploying to production is a destructive-class action: run
+  `safe-execution-edho-ferdian` Gate 2 before executing one.

@@ -74,9 +74,35 @@ checked in CI (`export-targets-sync` job):
   own multi-file rules format. Each carries the skill's `description` for
   Cursor's "Apply Intelligently" auto-matching, the same trigger semantics
   Claude Code uses. Regenerate: `python scripts/export_cursor.py`.
+- **[.windsurf/rules/](.windsurf/rules/) and [.devin/rules/](.devin/rules/)**
+  — one file per skill for Windsurf (Cascade) and Devin, which share an
+  identical rules schema post-acquisition. `trigger: model_decision` gives
+  the same relevance-based auto-loading as Cursor's `description` matching.
+  Six skills exceed Windsurf's 12,000-character-per-file limit and are
+  truncated with a pointer back to the full `SKILL.md` — a documented
+  limitation, not silent data loss. Regenerate: `python scripts/export_windsurf.py`.
+- **[.clinerules/](.clinerules/)** — a single always-on router file for
+  Cline, matching AGENTS.md's shape (Cline's `paths:` frontmatter only
+  supports file-glob scoping, not relevance-based matching, so 33 always-on
+  full-body files would reinject every skill into every request; a small
+  router avoids that). Cline also reads `AGENTS.md` automatically — this
+  adapter mainly gives EEF its own toggleable entry in Cline's Rules panel.
+  Regenerate: `python scripts/export_cline.py`.
+- **[.github/copilot-instructions.md](.github/copilot-instructions.md)** —
+  a router in the same shape as AGENTS.md, for GitHub Copilot (Chat, CLI,
+  code review, cloud agent) — the single largest coding-agent user base by
+  market share. Copilot's newer path-scoped `.github/instructions/*.md`
+  mechanism was deliberately not used: this ecosystem's skills are
+  workflow-triggered, not file-type-triggered, so a glob-based `applyTo`
+  wouldn't fire reliably. Regenerate: `python scripts/export_copilot.py`.
 
-More targets (Windsurf, Cline, GitHub Copilot) are in progress — see the
-repo's issues/roadmap for status.
+Every adapter above is generated, never hand-maintained, and CI fails if
+any of them drifts from `skills/`. Two harnesses need no adapter at all:
+[Pi](https://github.com/earendil-works/pi-coding-agent) resolves a
+standard `skills/` folder directly (`pi install git:edhoferdian/EEF`) with
+no generated files required, and several tools (Codex, OpenCode, Muse
+Code) read `AGENTS.md` natively. Kiro (kiro.dev) support is planned as a
+lightweight generated `.kiro/skills/` copy, not yet built.
 
 ## Skills
 

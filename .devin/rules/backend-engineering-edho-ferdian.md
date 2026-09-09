@@ -1,0 +1,55 @@
+---
+trigger: model_decision
+description: "Authoring server-side code between the API contract and the datastore — layering and ports/adapters boundaries, error taxonomy and resilience (typed errors, Result style, retry with backoff, circuit breakers), background jobs and queues, structured logging emission, and adding a new integration that matches the repo's existing connector pattern. The backend counterpart to frontend-engineering-edho-ferdian. Trigger phrases: \"struktur service layer\", \"error handling di backend\", \"retry/circuit breaker\", \"background job / queue\", \"tambah integrasi baru\"."
+---
+
+# Backend Engineering — Edho Ferdian Mode
+
+## Where this sits
+
+- `api-design-edho-ferdian` decides the **contract** at the boundary.
+- `data-layer-patterns-edho-ferdian` decides the **storage** behind it.
+- This skill is the **middle**: how the code between them is layered, how it
+  fails, and how it defers work.
+- `code-review-edho-ferdian` reviews the result — in particular
+  `silent-failure-lens.md`, which is the review-side mirror of
+  `references/error-and-resilience.md` here. Cross-reference, never restate.
+
+## References
+
+- `references/error-and-resilience.md`
+- `references/llm-pipelines.md` — regex-first parsing with confidence-scoring
+  as the LLM gate, plus cost-aware model routing, budget tracking, retry
+  policy, and prompt caching for pipelines that call an LLM API.
+- `references/scheduled-collection.md` — unattended collect/enrich/store
+  pipelines (scrapers, feed pollers, report builders): source selection,
+  per-source failure isolation, LLM-enrichment batching and fallback,
+  prompt-injection rules for untrusted scraped content, idempotent upsert,
+  and cron/alerting operations. Covers the background-job concerns
+  (idempotency, dead-letter-style backfill, run scheduling) for this class of
+  job — see the note below for what it does not cover.
+- `references/nestjs.md` — NestJS project structure (`common/`, `config/`,
+  `modules/<fitur>/` with module-local DTOs), canonical bootstrap (global
+  `ValidationPipe`, `ClassSerializerInterceptor`, `HttpExceptionFilter`), env
+  validation at boot, repository/transaction placement, and background
+  jobs/event consumers in their own modules. Not speculative — this is the
+  framework behind `ghostfolio`, a real project in Edho's stack.
+
+- `references/layering-and-boundaries.md` — ports & adapters (hexagonal
+  architecture) with a framework-agnostic dependency-direction diagram, the
+  repository-vs-service layer split with a misplaced-concern test, the
+  composition root (NestJS DI and hand-wired bootstrap variants), a six-step
+  migration playbook for entangled/legacy code, and a checklist for adding a
+  new integration cleanly through the same port/adapter seam.
+- `references/jobs-and-queues.md` — generic queue-backend reference, distinct
+  from `references/scheduled-collection.md` (which covers the
+  scheduled-collection job shape specifically): backend choice (BullMQ vs
+  SQS vs Postgres-based pg-boss/graphile-worker), worker-pool concurrency
+  sizing, retry/backoff classification, dead-letter queues generically, job
+  idempotency keys, and queue observability.
+
+## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
+
+Communication to the user in Bahasa Indonesia; code, comments, and any
+generated files in English — fixed, never ask. Full contract:
+`skill-authoring-edho-ferdian` §7.
