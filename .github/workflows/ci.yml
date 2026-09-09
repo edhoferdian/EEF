@@ -49,6 +49,8 @@ jobs:
         run: python scripts/export_cline.py --check
       - name: Check .github/copilot-instructions.md is up to date
         run: python scripts/export_copilot.py --check
+      - name: Check .kiro/skills/ is up to date
+        run: python scripts/export_kiro.py --check
 
   plugin-validate:
     name: Claude Code plugin manifest

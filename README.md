@@ -96,13 +96,18 @@ checked in CI (`export-targets-sync` job):
   workflow-triggered, not file-type-triggered, so a glob-based `applyTo`
   wouldn't fire reliably. Regenerate: `python scripts/export_copilot.py`.
 
+- **[.kiro/skills/](.kiro/skills/)** — a generated copy for
+  [Kiro](https://kiro.dev) (AWS's agentic IDE), which has no equivalent of
+  Claude's Skill-loading mechanism and expects skill folders physically
+  present under its own `.kiro/skills/`. See [.kiro/README.md](.kiro/README.md)
+  for the install command. Regenerate: `python scripts/export_kiro.py`.
+
 Every adapter above is generated, never hand-maintained, and CI fails if
 any of them drifts from `skills/`. Two harnesses need no adapter at all:
 [Pi](https://github.com/earendil-works/pi-coding-agent) resolves a
 standard `skills/` folder directly (`pi install git:edhoferdian/EEF`) with
 no generated files required, and several tools (Codex, OpenCode, Muse
-Code) read `AGENTS.md` natively. Kiro (kiro.dev) support is planned as a
-lightweight generated `.kiro/skills/` copy, not yet built.
+Code) read `AGENTS.md` natively.
 
 ## Skills
 
