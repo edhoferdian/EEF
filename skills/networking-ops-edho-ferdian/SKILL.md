@@ -1,23 +1,21 @@
 ---
 name: networking-ops-edho-ferdian
 description: >-
-  Networking skill covering five modes — reviewing an existing router/switch
-  config for security and correctness issues, designing a new network
-  (homelab or enterprise/multi-site), diagnosing a live network symptom with
-  a read-only OSI-layer methodology, running device commands and change
-  windows safely (Cisco IOS-flavoured), and homelab/small-network build-out
-  (remote access, local DNS, Netmiko-driven automation with preflight
-  validation). Use whenever the user pastes a config to review ("cek config
-  Cisco ini", "audit ACL ini"), wants a network designed or segmented
-  ("rancang jaringan homelab", "design VLAN segmentation for this office"),
-  is troubleshooting connectivity/DNS/routing/BGP symptoms ("kenapa internet
-  lambat", "site can't reach site"), needs to run or script a device change
-  ("push this ACL via SSH", "automate this change across 40 switches"), or is
-  building out a homelab (WireGuard remote access, Pi-hole/local DNS, VLAN
-  segmentation planning). Consolidates four ECC network agents
-  (homelab-architect, network-architect, network-config-reviewer,
-  network-troubleshooter) plus device-automation and homelab-build reference
-  material into one skill with per-mode reference files.
+  Networking skill covering five modes — reviewing a router/switch config
+  for security and correctness, designing a network (homelab or
+  enterprise/multi-site), diagnosing a live symptom via a read-only
+  OSI-layer methodology, running device commands and change windows safely
+  (Cisco IOS-flavoured), and homelab build-out (remote access, local DNS,
+  Netmiko automation with preflight validation). Use whenever the user
+  pastes a config to review ("cek config Cisco ini", "audit ACL ini"), wants
+  a network designed or segmented ("rancang jaringan homelab", "design VLAN
+  segmentation"), is troubleshooting connectivity/DNS/routing/BGP symptoms
+  ("kenapa internet lambat", "site can't reach site"), needs to run or
+  script a device change ("push this ACL via SSH", "automate this across 40
+  switches"), or is building a homelab (WireGuard remote access,
+  Pi-hole/local DNS, VLAN segmentation planning). Consolidates four ECC
+  network agents plus device-automation and homelab-build reference
+  material into one skill.
 ---
 
 # Networking Ops — Edho Ferdian Mode
@@ -61,13 +59,15 @@ for, why preflight validation matters, how to read interface/BGP state in
 general — but not their native command syntax. Translate the concept, don't
 assume the Cisco command works verbatim elsewhere.
 
-**Deliberately out of scope, not an oversight:** step-by-step configuration
-walkthroughs through a specific vendor's management UI — UniFi Controller,
-pfSense's web GUI, MikroTik's WinBox/WebFig. This is a DEFER, not a
-permanent gap: those walkthroughs go stale fast (UI moves between
-firmware versions) and are worthless without verifying against real
-hardware. Build that content when there's evidence Edho actually has that
-specific hardware in front of him — not speculatively now.
+**Covered conceptually, with an explicit accuracy caveat:** where VLAN
+segmentation, DNS/DHCP integration (including Pi-hole), and firewall
+rule/policy configuration conceptually live in UniFi, pfSense/OPNsense, and
+MikroTik (WinBox/WebFig) — see `references/vendor-gui-concepts.md`. That
+file deliberately does not claim exact, current click-paths or menu labels
+(those go stale with firmware/software updates and cannot be verified
+without the hardware in hand); it documents the stable conceptual location
+and naming of each setting instead, with a prominent caveat on every section
+to verify against the actual installed version before executing.
 
 ## Mode detection
 
@@ -137,3 +137,4 @@ and scripts in English — fixed, never ask. Full contract:
 | `references/automation-and-preflight.md` | Device operations — Netmiko-driven SSH automation patterns and the preflight validation checks that must pass before any scripted change runs |
 | `references/homelab-planning.md` | Homelab build — small-network planning and hardware/readiness assessment before buying or racking gear |
 | `references/remote-access-and-local-dns.md` | Homelab build — WireGuard-style remote access design and local DNS (sinkhole/conditional-forwarding) architecture, vendor-UI-agnostic |
+| `references/vendor-gui-concepts.md` | Homelab build — where VLAN, DNS/DHCP, and firewall configuration conceptually live in UniFi, pfSense/OPNsense, and MikroTik, with a prominent staleness caveat on every section |

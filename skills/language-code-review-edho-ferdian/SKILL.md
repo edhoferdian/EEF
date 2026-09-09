@@ -178,6 +178,9 @@ This is stated once here rather than repeated as commentary in each file.
 | `references/dotnet.md` | any `.csproj`/`.fsproj`/`.sln` file | — |
 | `references/cpp.md` | `CMakeLists.txt`, or any `.cpp`/`.hpp`/`.cc` file in scope | — |
 | `references/pytorch.md` | `torch` import or dependency in scope | `code-review-edho-ferdian/references/mle-lens.md` |
+| `references/perl.md` | any `.pl`/`.pm`/`.t` file, or `cpanfile`/`Makefile.PL`/`.perlcriticrc` at repo root | — |
+| `references/arkts.md` | `oh-package.json5`/`module.json5` at repo root, or `.ets` files in scope | — |
+| `references/ruby.md` | `Gemfile` at repo root, `config/routes.rb`, or `.rb`/`.rake`/`.erb` files in scope | — |
 
 **Status after the kelompok-1 follow-up analysis: Angular and NestJS are
 active, proven lenses** (verified against Edho's real `ghostfolio` project,
@@ -262,14 +265,33 @@ review lenses since the two skills need different depth per stack.
   `code-review-edho-ferdian/references/mle-lens.md` — this file
   cross-references it rather than re-covering it, per that file's own
   "Handoffs" section.
-- **Perl** — **skipped permanently, not deferred**, the one item in the
-  original backlog that stays out of scope regardless of the trigger change
-  above. `perl-patterns` and `perl-testing` are not planned; extend the
-  existing explicit precedent in
-  `security-review-edho-ferdian/references/language-specific.md`
-  §"Perl — intentionally not built" to the patterns/testing side too if a
-  Perl question ever comes up — don't write new Perl content, point at that
-  section and its already-harvested generic findings (SEC-16..19).
+- **Perl** — `references/perl.md` (idiom/OO/testing lens, CQ-15; Moo vs
+  blessed hashrefs, modern signatures, postfix deref, Test2::V0 vs
+  Test::More), ported from ECC `perl-patterns`/`perl-testing`. The earlier
+  "skipped permanently" call was reversed 2026-09-09 — it assumed ECC never
+  built full Perl content, which was wrong; `perl-patterns`/`perl-security`/
+  `perl-testing` all existed unfetched. Security criteria stay solely in
+  `security-review-edho-ferdian/references/language-specific.md` §"Perl"
+  (now a full section, not the old SEC-16..19-only placeholder), cross-
+  referenced rather than duplicated. Detect: any `.pl`/`.pm`/`.t` file, or a
+  `cpanfile`/`Makefile.PL`/`.perlcriticrc` at repo root.
+- **ArkTS/HarmonyOS** — `references/arkts.md` (review/idiom lens, CQ-16):
+  V2 state-management compliance (`@ComponentV2`/`@Local`/
+  `@Param`/`@Monitor`, never the V1 decorators), Navigation-only routing,
+  ArkTS syntax-constraint violations, MVVM layering. Ported from ECC
+  `harmonyos-app-resolver` (a single unified agent, not split into
+  build/review) plus `rules/arkts/*`. Security lives in
+  `security-review-edho-ferdian/references/language-specific.md` §"ArkTS /
+  HarmonyOS" (SEC-08 cross-reference). Detect: `oh-package.json5` or
+  `module.json5` at repo root, or `.ets` files in scope.
+- **Ruby / Rails** — `references/ruby.md`. Detect: `Gemfile` at repo root,
+  `config/routes.rb` present, or `.rb`/`.rake`/`.erb` files in scope.
+  Rules-only ECC provenance (`rules/ruby/*`) — no dedicated ECC
+  `ruby-reviewer` skill/agent ever existed to port, so this lens is thinner
+  than the Go/Laravel/Java ones; say so if a finding feels underspecified
+  rather than inventing depth the source doesn't have. Security lives in
+  `security-review-edho-ferdian/references/language-specific.md` §"Ruby /
+  Rails".
 
 ## Provenance
 
@@ -313,6 +335,7 @@ Inherited, not restated — this lens has no report format of its own (see
 6. **Check project convention before flagging** — an explicitly endorsed
    pattern is not a defect.
 7. **Provenance line in every reference file**, stated once here.
-8. **34-item DEFER backlog stays deferred until its trigger fires** — see
-   "Stacks planned (not yet built) — review lens" above; don't pre-build a
-   lens for a stack with no ground truth in Edho's own work yet.
+8. **The former 34-item DEFER backlog is now built ahead of trigger** — see
+   "Stacks built (FOLD-M, ahead of trigger)" above. A shipped FOLD-M lens is
+   still unverified against Edho's own ground truth, so treat its findings
+   with the same confidence discipline as rule 4, not as field-proven.

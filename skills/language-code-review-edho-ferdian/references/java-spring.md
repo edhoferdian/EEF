@@ -31,7 +31,7 @@ states at its own top.
 **Code placement.** Findings land as **CQ-11 (Java/Spring idiom and
 architecture anti-patterns)** in the general report. **Security items have
 already been ported and live in `security-review-edho-ferdian/references/
-language-specific.md` §"Java / Spring Boot [DEFERRED]"** (from D-012),
+language-specific.md` §"Java / Spring Boot"** (from D-012),
 Quarkus included as that section's own sub-section — do not re-author SQL
 injection via native `@Query` concatenation, missing `@PreAuthorize`/
 `@RolesAllowed`, weak `PasswordEncoder`, wildcard CORS + credentials, or CSRF
@@ -267,7 +267,7 @@ references/language-specific.md`.
 **Security note:** Quarkus security criteria (`@RolesAllowed`,
 `quarkus.http.cors.origins=*`, `X-Forwarded-For`-keyed rate limiting) are
 already ported as the Quarkus sub-section of `security-review-edho-ferdian/
-references/language-specific.md` §"Java / Spring Boot [DEFERRED]" — do not
+references/language-specific.md` §"Java / Spring Boot" — do not
 re-author them here.
 
 ---
@@ -308,7 +308,7 @@ re-author them here.
   (missing `@PreAuthorize`/`@RolesAllowed`, wildcard CORS + credentials,
   weak password encoder, plaintext secrets) — that's
   `security-review-edho-ferdian/references/language-specific.md` §"Java /
-  Spring Boot [DEFERRED]", not this file.
+  Spring Boot", not this file.
 - The finding is about test coverage percentage or test quality in the
   abstract (not a specific idiom listed above) — that's Domain 5
   (`test-quality-lens.md`) in the general skill.
@@ -329,4 +329,4 @@ Spring/Quarkus review criteria embedded in ECC's `java-reviewer` agent
 ecosystem's Java/Spring + Quarkus review lens. Security content
 (`springboot-security`/`quarkus-security`) was deliberately **not**
 re-ported here — it already lives in `security-review-edho-ferdian/
-references/language-specific.md` §"Java / Spring Boot [DEFERRED]" per D-012.
+references/language-specific.md` §"Java / Spring Boot" per D-012.

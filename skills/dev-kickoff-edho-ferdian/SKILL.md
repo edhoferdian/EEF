@@ -1,22 +1,24 @@
 ---
 name: dev-kickoff-edho-ferdian
 description: >-
-  Kickoff and execute a development project from ANY specification or planning
-  documents — PRD, SRS, SDD, UIX Flow, WBS (including V1.2 per-phase files and
-  _MANIFEST.md), or equivalents like a tech spec, RFC, ADRs, OpenAPI/schema files,
-  Jira/Linear/Notion exports, GitHub issues, or a detailed README. Classifies docs
-  by role, cross-validates them, extracts a binding Project Decision Register,
-  generates an Execution Context Pack (CLAUDE.md, AGENTS.md, .cursorrules) plus a
-  project-fit agent roster and project-memory files, then builds task-by-task
-  through Plan, Test, Implement, Review, Verify, Remember — with Reflection gates,
-  Critique-Correction on high-risk tasks, and Session Snapshots. Use whenever the
-  user wants to build from specs, or says "mulai proyek", "kickoff", "eksekusi
-  WBS", "buat context pack", "buat agent untuk proyek ini", "handoff ke Cursor" —
-  or wants to RESUME: "lanjutkan proyek", "resume", "lanjut dari snapshot".
-  Also use when a repo has /project-memory/ and the user asks to continue it.
+  Kickoff and execute a development project from ANY specification or
+  planning documents — PRD, SRS, SDD, UIX Flow, WBS, tech spec, RFC, ADRs,
+  OpenAPI/schema files, Jira/Linear/Notion exports, GitHub issues, or a
+  detailed README. Classifies docs by role, cross-validates them, extracts a
+  binding Project Decision Register, generates an Execution Context Pack
+  (CLAUDE.md, AGENTS.md, .cursorrules) plus a project-fit agent roster and
+  project-memory files, then builds task-by-task through Plan, Test,
+  Implement, Review, Verify, Remember, Improve — auto-invoking this
+  ecosystem's other skills at each stage as needed, with Reflection gates,
+  Critique-Correction on high-risk tasks, and Session Snapshots. Use
+  whenever the user wants to build from specs, or says "mulai proyek",
+  "kickoff", "eksekusi WBS", "buat context pack", "buat agent untuk proyek
+  ini", "handoff ke Cursor" — or wants to RESUME: "lanjutkan proyek",
+  "resume", "lanjut dari snapshot". Also use when a repo has
+  /project-memory/ and the user asks to continue it.
 ---
 
-# Dev Kickoff — Edho Ferdian Mode (Skill Edition) · v2.0
+# Dev Kickoff — Edho Ferdian Mode (Skill Edition) · v3.0
 
 ## Provenance
 
@@ -49,29 +51,62 @@ Three jobs, one skill:
 3. **Survive** — maintain project-memory files and Session Snapshots so an
    interrupted session loses nothing.
 
-## The execution loop (v2.0)
+## The execution loop (v3.0 — self-orchestrating)
 
-Every task runs through six stages. This is the spine of Phase 3.
+Every task runs through seven stages. This is the spine of Phase 3. New in
+v3.0: this skill does not implement every stage's specialty itself — it
+**auto-invokes the matching sibling skill in this ecosystem** the moment a
+stage's job is that skill's actual specialty, the same way a senior engineer
+pulls in a specialist rather than winging an unfamiliar domain solo. Full
+per-stage protocol, including the exact handoff trigger conditions:
+`references/execution-loop.md`.
 
 ```
-PLAN → TEST → IMPLEMENT → REVIEW → VERIFY → REMEMBER
+PLAN → TEST → IMPLEMENT → REVIEW → VERIFY → REMEMBER → IMPROVE
 ```
 
 - **PLAN** — restate the task, its acceptance criteria, dependencies, and the
   files you intend to touch. Get agreement before writing code on anything
-  non-trivial.
-- **TEST** — write the failing test first (RED). Escape hatches and the rule
-  for untestable tasks: `references/execution-loop.md`.
+  non-trivial. Feature-level and API-shaped work invokes
+  `system-design-edho-ferdian` / `api-design-edho-ferdian` for the blueprint
+  before Stage 1 closes — see `references/execution-loop.md`.
+- **TEST** — write the failing test first (RED), using
+  `test-authoring-edho-ferdian`'s stack-specific reference for the actual
+  stack in scope. Escape hatches and the rule for untestable tasks:
+  `references/execution-loop.md`.
 - **IMPLEMENT** — real code until the test passes (GREEN). No placeholders.
-- **REVIEW** — fresh-context review: the reviewer must not reuse the
-  implementer's reasoning. Auto Critique-Correction for HIGH-RISK tasks.
+  Detect the surface being touched and invoke the matching specialist skill
+  for its idioms (`frontend-engineering-edho-ferdian`,
+  `backend-engineering-edho-ferdian`, `api-design-edho-ferdian`,
+  `data-layer-patterns-edho-ferdian`) rather than writing from general
+  knowledge alone — this is the literal answer to "when I'm designing
+  frontend, the frontend skill should just fire": it fires here, at
+  IMPLEMENT, the moment the touched files say so.
+- **REVIEW** — fresh-context review via `code-review-edho-ferdian` (or
+  `language-code-review-edho-ferdian`'s stack lens for idiom-specific
+  findings); a HIGH-RISK task also invokes `security-review-edho-ferdian`.
+  The reviewer must not reuse the implementer's reasoning. Auto
+  Critique-Correction for HIGH-RISK tasks.
 - **VERIFY** — run the real tooling: build, lint, type-check, full test run.
-  Tool output or it didn't happen.
+  Tool output or it didn't happen. A failing build hands off to
+  `build-fix-edho-ferdian` rather than being patched ad hoc inline — that
+  skill owns the diagnose→minimal-fix→reverify contract, this loop doesn't
+  re-derive it.
 - **REMEMBER** — update `/project-memory/`, record any new decision, write the
   Session Snapshot, and promote any reusable lesson to an instinct.
+- **IMPROVE** — close the loop from "we learned X" to "something changed
+  because of X." Not a second REVIEW (that already gated correctness) and
+  not REMEMBER (that already recorded the fact) — this stage acts on
+  accumulated signal. Full trigger conditions and the skills it invokes
+  (`skill-audit-edho-ferdian`, `dead-code-cleanup-edho-ferdian`,
+  `performance-audit-edho-ferdian`, PDR-convention promotion):
+  `references/execution-loop.md`.
 
 Skipping a stage is allowed only with a stated reason recorded in the task's
-Reflection block. "It's a small change" is not a reason.
+Reflection block. "It's a small change" is not a reason. A sibling-skill
+handoff at any stage follows the same rule: skip only with a stated reason
+(e.g. the touched surface has no matching specialist skill yet), never
+silently.
 
 ## Language routing (fixed base rule — see skill-authoring-edho-ferdian §7; this skill extends it below, v2.0 inherited-not-hardcoded)
 
@@ -234,7 +269,8 @@ Mode B ends here. Otherwise continue.
 ## Phase 3 — Execution loop
 
 Per task, in plan order, run PLAN → TEST → IMPLEMENT → REVIEW → VERIFY →
-REMEMBER. Per-stage protocol, the test-first escape hatches, Reflection gates,
+REMEMBER → IMPROVE. Per-stage protocol, the auto-invocation contract for
+sibling skills, the test-first escape hatches, Reflection gates,
 CCL stop rules, EDHO SCAN, and the anti-pattern list:
 **`references/execution-loop.md`**. On a task touching pre-existing code, the
 REVIEW/VERIFY stages also check Salak freshness first if installed —

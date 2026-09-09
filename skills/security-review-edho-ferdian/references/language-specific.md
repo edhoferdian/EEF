@@ -799,16 +799,295 @@ mapping, transaction boundaries, concurrency) belong in
 here — that lens is being built separately; this section only owns the
 security-relevant subset.
 
-## Perl — intentionally not built
+## Ruby / Rails
 
-`perl-security` (ECC source) was analyzed but is intentionally NOT ported as
-a language section here — zero use-case in Edho's ecosystem. Its entire
-value was already harvested as generic, language-independent findings: see
-SEC-16 (ReDoS), SEC-17 (path traversal), SEC-18 (open redirect), and SEC-19
-(TOCTOU/temp-file) in `general-checklist.md`. This is the only kelompok-2
-item skipped as a stack while being fully harvested as generic content —
-recorded here so a future session doesn't re-derive Perl content that was
-already extracted.
+## Provenance
+
+Source: ECC `rules/ruby/security.md` (fetched 2026-09-09), with ground-truth
+commands cross-referenced against `rules/ruby/hooks.md`. **Rules-only ECC
+content** — ECC carries **no dedicated `ruby-reviewer`/Rails-security skill
+or agent** to port from, unlike the PHP/Laravel and Java/Spring Boot
+sections above, which both came from a dedicated ECC security skill
+(`laravel-security`, `springboot-security`). The checklist below is
+therefore thinner and closer to a project-wide coding-convention list than
+those two sections — it reads as "here is the Rails-idiomatic default," not
+an enumerated, prioritized vulnerability catalogue. Re-derive this section
+from a live `gh api` fetch if ECC ever ships a dedicated Ruby/Rails security
+skill.
+
+**Stack detection.** A `Gemfile` at the project root requiring `rails`, or
+`config/routes.rb` present — same manifest-signal pattern as the other
+stacks in this file.
+
+### CRITICAL
+
+- **CSRF protection disabled** — `protect_from_forgery` removed, or
+  `skip_forgery_protection` called, on a controller serving state-changing
+  browser requests that isn't a genuine token-incapable webhook receiver.
+  Same finding shape as Django's `@csrf_exempt` and Laravel's
+  `VerifyCsrfToken::$except` entries above — the Rails call site for
+  general **SEC-09**.
+- **Mass assignment without strong parameters** — a `create`/`update` call
+  fed directly from `params` (`Model.new(params[:model])`, or a permit-all
+  `params.require(:model).permit!`) instead of an explicit
+  `params.require(:model).permit(:field, ...)` allowlist. The Rails
+  instance of general **SEC-14** (mass assignment) — same defect class as
+  Laravel's `$guarded = []`, Django's `fields = '__all__'`, and the NestJS
+  `ValidationPipe` whitelist gap elsewhere in this file.
+- **Raw SQL built via string interpolation** — `Model.where("email =
+  '#{x}'")`, `ActiveRecord::Base.connection.execute("... #{x}")`, or any
+  query built by concatenating a request, cookie, header, job, or webhook
+  value into a SQL string instead of Active Record's parameterized query
+  APIs (`where(email: x)`, `where("email = ?", x)`). The Rails call site
+  for general **SEC-04** (injection).
+- **Plaintext secrets committed to source** — a credential in a
+  `.env`-style file checked into version control, or a literal committed
+  to `config/database.yml`/application code, instead of Rails credentials
+  (`config/credentials.yml.enc`) or an environment variable/secret
+  manager. Instance of general **SEC-02** (secret exposure).
+
+### HIGH
+
+- **`html_safe`/`raw`/a custom sanitizer applied to user-controlled input
+  with no allowlist-based sanitization at the same call site** — Rails
+  templates auto-escape by default; `html_safe`/`raw` are the explicit
+  opt-out, structurally identical to Django's `mark_safe()`/`{{
+  value|safe }}` and Laravel's `{!! !!}` findings above. Only acceptable
+  when the value has already passed through an allowlist sanitizer
+  (Rails' `sanitize` helper with an explicit `tags:`/`attributes:`
+  allowlist, or an equivalent) in the codebase, verifiable, not assumed.
+- **Unvalidated file upload** — no check on content type, extension,
+  size, or storage destination for an upload accepted via Active Storage
+  or a hand-rolled upload path. Same finding shape as the Django/Laravel/
+  Spring Boot file-upload items above — a client-declared content type or
+  filename extension proves nothing about the file's actual bytes;
+  require a magic-byte check cross-checked against the declared
+  extension, not an extension/MIME rule alone.
+- **Account-recovery/password-reset flow without expiry, single-use
+  tokens, rate limiting, or audit logging** — a reset token that never
+  expires or can be reused, or a recovery endpoint with no throttling,
+  widens the window for account takeover. Instance of general **SEC-08**
+  (rate limiting) combined with **SEC-10** (token handling).
+- **Background job, webhook, Action Cable, or Turbo Stream input trusted
+  as if it came from an authenticated browser request** — these entry
+  points bypass the browser-session/CSRF assumptions the rest of the app
+  relies on; each needs its own explicit authentication/validation, not
+  an inherited assumption from the controller layer. Instance of general
+  **SEC-01** (input validation at every boundary).
+- **A new gem added without checking maintainer activity, native-
+  extension risk, or transitive dependency exposure** —
+  `rules/ruby/security.md` calls this out explicitly as a review step
+  when `Gemfile`/`Gemfile.lock` changes; not itself a code-level finding,
+  but a supply-chain gap worth flagging when a PR adds a new dependency
+  with no such review evident. Instance of general **SEC-07** (dependency
+  risk).
+
+### Ground-truth
+
+```bash
+bundle exec bundle-audit check --update   # dependency vulnerability scan (SEC-07)
+bundle exec brakeman --no-progress        # static analysis: mass assignment, SQLi, XSS, CSRF, unsafe redirects
+```
+
+Do not label a Brakeman-detectable finding (mass assignment, SQL injection
+via string interpolation, `html_safe`/`raw` on unescaped input,
+`redirect_to params[...]`) **[High confidence]** without actually running
+`brakeman` — reading the line and recognizing the pattern is reasoning, not
+verification, same rule as `bandit`/Slither/ESLint for the other stacks in
+this file.
+
+### False-positive traps
+
+- `html_safe`/`raw` fed by content that has already passed through Rails'
+  `sanitize` helper (or an equivalent allowlist sanitizer) earlier in the
+  same pipeline, verifiable in the codebase, is not a finding — trace the
+  actual sanitization step before assuming it's missing, same discipline
+  as the React/Django/Laravel escaping false-positive traps above.
+- `protect_from_forgery`/CSRF excluded on a route that is a genuine
+  third-party webhook receiver (Stripe, GitHub, etc.), scoped to that
+  specific controller/action rather than disabled application-wide, is
+  correctly configured — not a finding.
+- A background job, webhook, or Action Cable handler that already
+  performs its own explicit authentication/signature verification (e.g.
+  verifying a webhook's HMAC signature header) is not a finding merely
+  because it isn't behind the browser session/CSRF layer — that boundary
+  is intentionally different; check for the explicit verification step
+  before flagging.
+
+**Non-security Ruby/Rails findings** (service-object layering, background
+job framework choice, Hotwire/Turbo conventions, RuboCop style) stay in
+`language-code-review-edho-ferdian/references/ruby.md` — not duplicated
+here.
+
+---
+
+## Perl
+
+Source: ECC `perl-security` (fetched 2026-09-09). Supersedes the earlier
+"intentionally not built" decision on this section — that decision was based
+on a wrong assumption that ECC carried no dedicated Perl security content;
+`perl-security` (plus `perl-patterns`/`perl-testing` and `rules/perl/
+security.md`) was actually present upstream and simply never fetched. The
+four generic findings previously harvested from this skill — SEC-16 (ReDoS),
+SEC-17 (path traversal), SEC-18 (open redirect), and SEC-19 (TOCTOU/temp-file)
+in `general-checklist.md` — stay exactly as they are; this section adds the
+Perl-specific criteria and call sites around them rather than duplicating
+them.
+
+**Stack detection.** Any `.pl`/`.pm`/`.t` file in review scope, or a
+`cpanfile`/`Makefile.PL`/`.perlcriticrc` at repo root.
+
+### CRITICAL
+
+- **Two-argument `open` (or a three-argument `open` whose mode/filename
+  string is built by interpolating user input)** — `open FH, $path;` or
+  `open my $fh, "< $path";` where `$path` contains attacker-controlled
+  content lets an operand like `path|rm -rf /` or embedded shell
+  metacharacters run as a command instead of opening a file. The fix is a
+  three-argument `open` with a literal mode string and the filename passed
+  as its own argument: `open my $fh, '<:encoding(UTF-8)', $path or die
+  "...: $!";` — never interpolate the path into the mode string. Instance of
+  general **SEC-01** (input sanitization) at the filesystem boundary; also
+  covered by the `perlcritic` `InputOutput::ProhibitTwoArgOpen` policy.
+- **String-form `system`/`exec`/backticks built from unsanitized input** —
+  `system("grep -r '$pattern' /var/log/app/")` or `` `ls $user_dir` ``
+  passes the whole string through the shell, so any shell metacharacter in
+  `$pattern`/`$user_dir` (`;`, `|`, `` ` ``, `$()`) executes as a separate
+  command. The fix is the list form, which bypasses the shell entirely:
+  `system('grep', '-r', $pattern, '/var/log/app/');` (or `IPC::Run3`'s
+  `run3(\@cmd, ...)` when output needs capturing). Instance of general
+  **SEC-04** (injection) — this is Perl's command-injection call site for
+  that code, analogous to unsanitized `subprocess.run(..., shell=True)` in
+  Python or template-literal shell calls in Node.
+- **SQL built via string interpolation instead of DBI placeholders** —
+  `$dbh->prepare("SELECT * FROM users WHERE email = '$email'")` or
+  `$dbh->do("DELETE FROM users WHERE id = $id")` — the classic SQLi shape,
+  Perl's DBI call site for general **SEC-04**. The fix is always a
+  placeholder: `$dbh->prepare('SELECT * FROM users WHERE email = ?')` then
+  `$sth->execute($email)`. DBIx::Class (`$schema->resultset(...)->search({...})`)
+  parameterizes automatically and is not a finding on its own.
+- **`eval` (string form) or `eval "use $module"` on a value influenced by
+  user input** — `eval $user_code;` or `eval "require $module";` where
+  `$module`/`$user_code` reaches user control is direct remote code
+  execution, not merely injection — Perl's string `eval` compiles and runs
+  arbitrary code. Instance of general **SEC-01**, but flag at CRITICAL
+  regardless of input-sanitization framing elsewhere, since there is no safe
+  partial mitigation short of removing the string `eval`. Prefer
+  `Module::Runtime::require_module($module)` for dynamic module loading —
+  it validates the module name shape and never compiles arbitrary code.
+- **A CGI/web-facing script with no `-T` (taint mode) flag, or one that
+  disables taint checking (a lazy full-match untaint like `($input) =
+  $input =~ /(.*)/s;`)** — taint mode is Perl's built-in mechanism for
+  refusing to let data that originated outside the program (`@ARGV`,
+  `%ENV`, `<STDIN>`, CGI params) reach a "dangerous" operation (`open`,
+  `system`, `eval`, DBI with unparameterized SQL) without passing through an
+  explicit, narrowing regex capture first. A pattern like `/(.*)/ `
+  "untaints" by matching everything, defeating the entire control. Instance
+  of general **SEC-01**; the ground-truth check is running the script under
+  `-T` and confirming it dies on any un-narrowed use of tainted data.
+
+### HIGH
+
+- **A blocklist-style input validator** (`die "Invalid" if $input =~
+  /[<>"';&|]/`) instead of an allowlist — blocklists always miss an
+  encoding or character class the author didn't think of. The Perl-idiomatic
+  fix is a narrow, anchored capture-and-return: `if ($input =~
+  /^([a-zA-Z0-9_]{3,30})$/) { return $1 }` (the captured `$1` is also the
+  untainted value under `-T`). Instance of general **SEC-01**.
+- **A dynamic `ORDER BY`/column-name value interpolated directly into SQL**
+  — `$dbh->prepare("SELECT * FROM users ORDER BY $column $direction")` —
+  the same dynamic-SQL-identifier gap noted under general **SEC-04**
+  (placeholders only bind values, never identifiers). Perl's fix is the same
+  shape shown in that entry: `my %allowed = map { $_ => 1 } qw(name email
+  created_at); die "Invalid column\n" unless $allowed{$column};` before the
+  value ever reaches the query string, plus a separate allowlist for
+  `ASC`/`DESC`.
+- **A regex built from or applied to untrusted input with nested
+  quantifiers** — `qr/^(a+)+$/`, `qr/^([a-zA-Z]+)*$/`, or `qr/^(.*?,){10,}$/`
+  against attacker-controlled strings risks catastrophic backtracking
+  (ReDoS) — this is the Perl call site for general **SEC-16**. Rewrite
+  without nested quantifiers (`qr/^[a-zA-Z]+$/`), use a possessive quantifier
+  (`qr/^[a-zA-Z]++$/`, 5.10+) or atomic group (`qr/^(?>a+)$/`), or wrap the
+  match in an `alarm()`-based timeout when the pattern itself isn't fully
+  trusted.
+- **A user-supplied path reaching filesystem operations without a
+  `realpath`-and-prefix check** — building a path via `File::Spec->catfile`
+  from user input and opening it without confirming the resolved path stays
+  inside an allowed base directory is Perl's path-traversal call site for
+  general **SEC-17**: `my $real = realpath(File::Spec->catfile($base_dir,
+  $user_path)); die "blocked\n" unless $real =~ /^\Q$base_real\E(?:\/|\z)/;`
+- **A temp file created without `O_EXCL`, or reused across a check-then-use
+  gap** — `open my $fh, '>', $path;` where `$path` was previously computed
+  by `-e $path` or similar is Perl's TOCTOU call site for general **SEC-19**:
+  use `sysopen(my $fh, $path, O_WRONLY | O_CREAT | O_EXCL, 0600)` for atomic
+  creation, or `File::Temp::tempfile(UNLINK => 1)` to avoid the predictable-
+  path race entirely; pair with `flock(LOCK_EX)` when a longer-lived lock is
+  needed.
+- **A CGI/PSGI redirect built from a user-supplied URL with no allowlist
+  check** — `print $cgi->redirect($user_url);` is Perl's open-redirect call
+  site for general **SEC-18** — validate against an allowlist of permitted
+  hosts/paths before redirecting, or restrict to relative paths only.
+- **Raw output interpolated directly into an HTML response** —
+  `print "<div>Welcome, $username!</div>";` (or the Mojolicious `<%==
+  $raw_html %>` unescaped-output tag) without `HTML::Entities::
+  encode_entities()` first. Instance of general **SEC-04** (XSS). Template
+  auto-escaping (`<%= %>` in Mojolicious, `[% var | html %]` in Template
+  Toolkit) is the correct default — flag only genuinely raw/unescaped output
+  paths, not every template variable.
+- **A hand-rolled CSRF token comparison, or no CSRF protection at all on a
+  session-cookie-authenticated app** — Perl has no framework-agnostic CSRF
+  default the way some other stacks do; Mojolicious, Dancer2, and Catalyst
+  each ship their own CSRF helpers and those should be preferred over a
+  hand-rolled `eq` comparison of tokens (which is not constant-time).
+  Instance of general **SEC-09**-style CSRF reasoning — check how the app
+  authenticates (session cookie vs. bearer token) before flagging, same
+  false-positive discipline as the general SEC-09 trap elsewhere in this
+  file.
+
+### Ground-truth
+
+```bash
+perlcritic --severity 3 --theme security lib/   # static security lint
+perlcritic --severity 4 --theme security --quiet lib/ || exit 1   # CI gate
+perl -T script.pl                                # confirm taint mode actually triggers
+```
+
+Relevant `perlcriticrc` policies to look for (their absence is itself a
+signal the project has no automated backstop for these findings):
+`InputOutput::ProhibitTwoArgOpen`, `InputOutput::RequireThreeArgOpen`,
+`InputOutput::ProhibitBacktickOperators`, `BuiltinFunctions::
+ProhibitStringyEval`, `Modules::RequireTaintChecking`, `InputOutput::
+ProhibitBarewordFileHandles`.
+
+### False-positive traps
+
+- `system(@cmd)` (list form, no shell metacharacters possible) is safe even
+  when an individual `@cmd` element originated from user input — the finding
+  is specifically about the **string form** or backticks with interpolation.
+  Check which form is used before flagging SEC-04.
+- `DBIx::Class` resultset calls (`->search({...})`) parameterize
+  automatically under the hood — not a finding, even though no `?`
+  placeholder is visible in the review diff.
+- A `no strict 'refs'` block paired with a hardcoded, non-user-controlled
+  package name (not built from any request-influenced variable) is a
+  legitimate, narrow metaprogramming pattern, not a finding — the risk is
+  specifically `${"My::Package::$var"}` where `$var` is attacker-influenced.
+- `eval { ... }` (block form, not string form) is Perl's normal exception-
+  handling idiom and carries none of the code-injection risk of string
+  `eval $code` — do not conflate the two when scanning for SEC-01/CRITICAL
+  `eval` findings.
+
+Non-security Perl findings (modern-idiom compliance, Moo/OO patterns,
+signatures, module organization, testing conventions) belong in
+`language-code-review-edho-ferdian`'s Perl lens
+(`references/perl.md`), not duplicated here — this section only owns the
+security-relevant subset.
+
+## Provenance
+
+Adapted from ECC `perl-security`, fetched 2026-09-09. Supersedes the earlier
+"skipped permanently" decision — Perl content was assumed absent from ECC
+but was actually present and unfetched.
 
 ---
 
@@ -979,3 +1258,89 @@ patterns, test coverage, NatSpec documentation) are out of scope for this
 skill entirely — no `-edho-ferdian` non-security Solidity lens exists yet in
 `language-code-review-edho-ferdian`; this section stands alone as the only
 Solidity-specific content in the ecosystem today.
+
+---
+
+## ArkTS / HarmonyOS
+
+Source: ECC `rules/arkts/security.md`, fetched 2026-09-09. Written proactively
+closing the ArkTS/HarmonyOS placeholder note (the "wait for a real project"
+gate has been removed per the ecosystem owner's decision) — treat as a
+ready-to-use lens once a HarmonyOS project actually appears, not as
+field-validated content, same FOLD-M caveat as the non-security ArkTS lens in
+`language-code-review-edho-ferdian/references/arkts.md`.
+
+**Stack detection.** An `oh-package.json5`/`module.json5` at the project
+root, or any `.ets` file in scope — same signal as the non-security ArkTS
+lens.
+
+### CRITICAL
+
+- **A system API call requiring a permission with no matching declaration in
+  `module.json5`'s `requestPermissions`** — HarmonyOS enforces permissions at
+  the OS level, but an undeclared permission is a broken/crashing feature at
+  best and a review-time signal that the permission model wasn't considered
+  at all at worst; verify every sensitive API call (camera, location,
+  contacts, etc.) has a corresponding `requestPermissions` entry with a
+  `reason` string and `usedScene`, plus a runtime
+  `requestPermissionsFromUser` flow with a graceful denial fallback — not
+  just the manifest declaration alone.
+- **Hardcoded API key, token, or password literal in `.ets`/`.ts` source**
+  (`const API_KEY: string = 'sk-xxxxxxxxxxxx'`) — same class of finding as
+  general secret-handling checks elsewhere in this ecosystem, called out
+  here because it is explicitly named in the ECC source as a HarmonyOS
+  anti-pattern; the fix is HUKS (`@kit.UniversalKeystoreKit`) for genuinely
+  sensitive credentials, or a non-sensitive build-profile config value for
+  anything that isn't actually a secret.
+- **Deep-link/URI handler that navigates without validating the target path
+  against an allowlist** — `handleDeepLink(uri)` parsing a URI and pushing
+  it onto a `NavPathStack` without checking the resulting path against a
+  known-safe set of route names lets an external caller (another app, a
+  malicious link) navigate the app to an arbitrary or unintended internal
+  destination. Fix: validate the parsed path against an explicit allowlist
+  before calling `navPathStack.pushPath(...)`, and log+reject anything that
+  doesn't match.
+
+### HIGH
+
+- **Network request made over plain HTTP, or with server-certificate
+  validation disabled/weakened** — HarmonyOS network APIs default to secure
+  behavior; an explicit opt-out (disabled cert validation, an `http://`
+  endpoint for anything beyond truly public, non-sensitive content) removes
+  transport-layer protection for data in transit.
+- **Sensitive data (tokens, credentials, PII) written to network
+  request/response logs** — a debug log statement that includes the raw
+  `Authorization` header value, a session token, or full user credentials is
+  readable by anyone with device log access; log a redacted/masked value
+  instead.
+- **Sensitive local data stored via plain Preferences instead of an
+  encrypted store** — HarmonyOS's Preferences API is appropriate for
+  non-sensitive configuration only; genuinely sensitive local data (auth
+  tokens, cached PII) needs an encrypted preferences store or HUKS-backed
+  encryption, not plain Preferences.
+- **Third-party OHPM dependency pulled from an untrusted source, or with no
+  pinned version** in `oh-package.json5` — dependencies should come from the
+  official ohpm registry with pinned versions; an unpinned or
+  non-registry-sourced dependency can silently change (or be compromised)
+  between builds.
+
+### False-positive traps
+
+- A permission declared in `module.json5` **and** checked at runtime via
+  `abilityAccessCtrl`/`checkAccessToken` before the API call, with a
+  graceful fallback on denial, is correctly implemented — not a finding,
+  even if the check happens in a different file than the API call itself
+  (trace the actual call path before assuming the check is missing).
+- A build-profile config value (`BuildProfile.API_ENDPOINT`) that is
+  genuinely non-sensitive (a public API base URL, not a credential) is not
+  a secret-handling finding — the hardcoded-secret rule above is about
+  actual keys/tokens/passwords, not all configuration constants.
+- A deep-link handler that only ever navigates to a hardcoded, fixed
+  destination (no user/external-controlled path component at all) has no
+  meaningful validation gap to flag — the allowlist finding applies when the
+  navigated path is derived from the incoming URI.
+
+**Non-security ArkTS/HarmonyOS findings** (V2 state-management compliance,
+Navigation-only routing, ArkTS syntax constraints, architecture layering,
+performance patterns) stay in `language-code-review-edho-ferdian/references/
+arkts.md` — not duplicated here.

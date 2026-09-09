@@ -2,23 +2,20 @@
 name: code-review-edho-ferdian
 description: >-
   Senior-engineer code review across five domains — Code Quality, Security,
-  Performance, Blueprint/Spec Consistency, and Test Quality — plus conditional
-  lenses for database, accessibility, RAG-pipeline, ML-engineering,
-  healthcare/clinical code, and agent/LLM-feature code, producing an
-  evidence-backed findings report,
-  confidence-labeled severities, an adaptive fix (full rewrite for short
-  files, surgical patch for long files), and a saved Markdown report. Use
-  this whenever the user wants code reviewed,
-  audited, or checked before merge/deploy; whenever they say "review this",
-  "audit", "cek kode", "review PR", "is this production-ready", "find
-  bugs/security issues", "code review", or paste code and ask what's wrong
-  with it — even if they don't use the exact word "review". Built-in
-  Reflection (self-correction) and Critique-Correction Loop (adversarial
-  second pass) to suppress false positives and unsafe fixes. If the request
-  is entirely about security (e.g. "security audit", "cek keamanan kode
-  ini") rather than a full multi-domain review, route to
-  `security-review-edho-ferdian` instead — that skill states itself as the
-  single source of truth for security review criteria.
+  Performance, Blueprint/Spec Consistency, and Test Quality — plus
+  conditional lenses for database, accessibility, RAG-pipeline,
+  ML-engineering, healthcare, and agent/LLM code. Produces an
+  evidence-backed findings report with confidence-labeled severities and an
+  adaptive fix (full rewrite for short files, surgical patch for long
+  files). Use whenever the user wants code reviewed, audited, or checked
+  before merge/deploy: "review this", "audit", "cek kode", "review PR", "is
+  this production-ready", "find bugs/security issues", "code review", or
+  pasted code asking what is wrong — even without the word "review".
+  Includes Reflection and a Critique-Correction Loop to suppress false
+  positives and unsafe fixes. If the request is entirely about security
+  ("security audit", "cek keamanan kode ini"), route to
+  `security-review-edho-ferdian` instead — that skill is the single source
+  of truth for security review criteria.
 ---
 
 # Code Review — Edho Ferdian Mode (Skill Edition)

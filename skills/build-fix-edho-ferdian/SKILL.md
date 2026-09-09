@@ -30,8 +30,9 @@ opening line for why). `references/go.md` (ECC `golang-patterns` +
 plausible, medium-depth content with no evidence yet of an active Go or Rust
 project in Edho's workspace, unlike the JS/TS and Django/Python lenses which
 back real work already in this ecosystem. The stacks listed under "Stacks
-planned (not yet built)" at the bottom have no reference file yet and
-therefore no ECC source ported for them.
+built (FOLD-M, ahead of trigger)" at the bottom (fetched 2026-09-07) carry
+the same FOLD-M status for the same reason — ported ahead of any evidence of
+an active project in that stack, not withheld pending one.
 
 You are a **build error resolution specialist**. Your only mandate is to get
 a failing build, compile step, dependency install, or startup command back to
@@ -101,6 +102,9 @@ stack-specific fixes you can't verify.
 - .NET (`.csproj`/`.fsproj`/`.sln`): **`references/dotnet.md`** (FOLD-M, covers C# and F#)
 - C++ (`CMakeLists.txt`, or `.cpp`/`.hpp`): **`references/cpp.md`** (FOLD-M)
 - PyTorch (`torch` import/dependency): **`references/pytorch.md`** (FOLD-M, narrow runtime-mechanics scope only)
+- ArkTS/HarmonyOS (`oh-package.json5`/`module.json5` at repo root, or `.ets` files): **`references/arkts.md`** (FOLD-M)
+- Perl (`.pl`/`.pm`/`.t` files, or `cpanfile`/`Makefile.PL`): **`references/perl.md`** (FOLD-M)
+- Ruby/Rails (`Gemfile` present): **`references/ruby.md`** (FOLD-M, general-knowledge diagnostic tables beyond ECC's ground-truth commands — see Provenance in the file)
 
 ### Phase 1 — Reproduce
 
@@ -296,15 +300,22 @@ error category map, not full idiom/security coverage.
   device-placement errors, CUDA OOM, AMP/mixed-precision failures, DataLoader
   worker crashes, with a handoff back to the review lens for issues that run
   without error but are still wrong. Ported from ECC `pytorch-patterns`.
-- **ArkTS/HarmonyOS** — not part of the backlog above; already has
-  agent-level coverage via `harmonyos-app-resolver` in ECC's agent roster.
-  Kept here only as a placeholder until confirmed ported or explicitly out
-  of scope.
-- **Perl — skipped permanently, not deferred**, the one item that stays out
-  of scope regardless of the trigger-removal above. No `perl-patterns`/
-  `perl-testing` build-fix lens is planned. If a Perl build ever needs
-  diagnosing, use the generic Phase 0–6 loop; the only Perl content this
-  ecosystem keeps is the already-harvested generic security findings
-  (SEC-16..19) noted in `security-review-edho-ferdian/references/
-  language-specific.md` §"Perl — intentionally not built", which don't apply
-  to build-fix work anyway.
+- **ArkTS/HarmonyOS** — `references/arkts.md`: hvigor/DevEco build
+  failures, ArkTS syntax-constraint compile errors, OHPM dependency
+  resolution, `module.json5` config errors. Ported from ECC
+  `harmonyos-app-resolver` (a single unified agent covering both review and
+  build validation) plus `rules/arkts/*`.
+- **Perl** — `references/perl.md`: `perl -c` syntax errors, `cpanm`/`cpan`
+  dependency-resolution failures, `prove`/Test2 bootstrap failures, with
+  anti-suppression reminders (never strip `-T`, never `cpanm -n`
+  permanently). The earlier "skipped permanently" call was reversed
+  2026-09-09 — ECC actually has `perl-patterns`/`perl-security`/
+  `perl-testing`, it was just never fetched. Ported from ECC
+  `perl-patterns`/`perl-testing`.
+- **Ruby / Rails** — `references/ruby.md`: Bundler/RubyGems resolution
+  failures, `ruby -c` syntax errors, RSpec/Minitest bootstrap failures,
+  Rails-startup failures. Ground-truth commands are ECC-sourced
+  (`rules/ruby/hooks.md`); the diagnostic-command tables beyond that are
+  general Ruby-ecosystem knowledge, not ECC-sourced — no dedicated ECC
+  `ruby-build-resolver` skill ever existed. Say so if asked, don't imply
+  deeper ECC provenance than this has.

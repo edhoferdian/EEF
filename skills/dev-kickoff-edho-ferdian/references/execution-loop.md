@@ -1,8 +1,43 @@
 # Execution Loop, Snapshot & Recovery
 
-Reference for Phase 3 and Phase 4 of dev-kickoff-edho-ferdian v2.0.
+Reference for Phase 3 and Phase 4 of dev-kickoff-edho-ferdian v3.0.
 
-Every task runs: **PLAN → TEST → IMPLEMENT → REVIEW → VERIFY → REMEMBER.**
+Every task runs: **PLAN → TEST → IMPLEMENT → REVIEW → VERIFY → REMEMBER →
+IMPROVE.**
+
+## Auto-invocation contract (v3.0)
+
+This skill orchestrates; it does not re-implement a sibling skill's
+specialty inline. At any stage where a matching specialist skill exists in
+this ecosystem, **invoke it** (via the Skill tool, mid-task, the same way
+you would if the user had asked for that specialty directly) rather than
+producing the same category of work from general knowledge alone. This is
+not optional politeness — a stack-specific idiom check from
+`language-code-review-edho-ferdian`'s lens catches things generic review
+prose does not, the same way a human team pulls in the person who actually
+owns that surface instead of guessing.
+
+**How to detect which skill applies, per stage:**
+
+| Stage | Detect | Invoke |
+|---|---|---|
+| PLAN (feature-level) | New module/component, or a system-shaped decision (data flow, service boundary, scaling) | `system-design-edho-ferdian` |
+| PLAN (API-shaped) | Task adds/changes an HTTP/GraphQL/RPC contract | `api-design-edho-ferdian` |
+| TEST | Any task with TEST not skipped | `test-authoring-edho-ferdian` (stack-specific reference for the stack actually in scope) |
+| IMPLEMENT (frontend) | Touched files are UI/component/client-side | `frontend-engineering-edho-ferdian` |
+| IMPLEMENT (backend) | Touched files are server-side services, jobs, queues | `backend-engineering-edho-ferdian` |
+| IMPLEMENT (API surface) | Touched files define/change endpoints or contracts | `api-design-edho-ferdian` |
+| IMPLEMENT (data layer) | Touched files are schema, migration, ORM, query | `data-layer-patterns-edho-ferdian` |
+| REVIEW | Any completed IMPLEMENT | `code-review-edho-ferdian`; add its stack lens via `language-code-review-edho-ferdian` when the stack has one |
+| REVIEW (HIGH-RISK) | Auth, payments, migrations, personal data, permissions | `security-review-edho-ferdian`, in addition to the above |
+| REVIEW (E2E-shaped) | A user-facing flow with multiple state-changing steps | `e2e-testing-edho-ferdian` or `click-path-audit-edho-ferdian` |
+| VERIFY (build fails) | Any gate in the Stage 5 order fails | `build-fix-edho-ferdian` |
+| IMPROVE | See Stage 7 below | `skill-audit-edho-ferdian`, `dead-code-cleanup-edho-ferdian`, `performance-audit-edho-ferdian` |
+
+**Skip rule.** A stage may proceed without invoking the matching skill only
+with a stated reason in the task's Reflection block — "no specialist skill
+exists for this surface yet" is a valid reason; silence is not. This mirrors
+the existing stage-skip rule below and is not a separate, softer standard.
 
 ---
 
@@ -296,7 +331,50 @@ the instincts file, and update that instead. Parallel copies of the same
 fact across files are the failure mode this ecosystem is most exposed to,
 because every one of them looks authoritative.
 
-## Per-task Reflection (8 gates)
+## Stage 7 — IMPROVE
+
+**What IMPROVE is not.** It is not a second REVIEW (Stage 4 already gated
+correctness before VERIFY) and it is not REMEMBER (Stage 6 already recorded
+the fact). IMPROVE is where a recorded fact is allowed to change something —
+without it, `04-instincts.md` and `01-decision-register.md` accumulate
+observations that never feed back into the actual code or process, which
+defeats the point of recording them at all.
+
+Run these checks, in order, once REMEMBER has closed for the task:
+
+1. **Instinct-promotion check.** Re-read the instinct just written (or
+   updated) in Stage 6. Does it now have 3+ occurrences, or an explicit user
+   confirmation? If Stage 6's own promotion rule already fires, execute the
+   promotion here — write the new PDR §3 convention — don't leave it as a
+   dangling "propose promoting" note.
+2. **Cheap-refactor check.** If IMPLEMENT left an intentional shortcut
+   (named as such in the Reflection block, not a silent one) that is now
+   cheap to clean up because the surrounding code is already open and fresh
+   in context, do it now — before the diff is closed and reopening it costs
+   a fresh context load. If the shortcut is not cheap right now, leave it
+   named as debt in `02-gap-analysis.md` rather than force it.
+3. **Dead-code signal.** If IMPLEMENT or REVIEW surfaced code that is now
+   unreachable (an old code path fully replaced, a flag that's always the
+   same value post-change), invoke `dead-code-cleanup-edho-ferdian` rather
+   than leaving it — a task that adds code without removing what it made
+   obsolete is only half done.
+4. **Performance signal.** If VERIFY's tool output showed a real regression
+   (build time, bundle size, a slow test) that Stage 5 correctly didn't
+   block on (it wasn't a correctness gate), invoke
+   `performance-audit-edho-ferdian` to size it — don't silently carry it
+   forward unmeasured.
+5. **Periodic ecosystem health.** Every sprint boundary (not every task —
+   see the EDHO SCAN item below), invoke `skill-audit-edho-ferdian` if this
+   session touched or leaned on this repo's own `skills/` content, to catch
+   drift before it compounds across many tasks.
+
+Each of the five checks above is a **check**, not a mandatory action — most
+tasks will find nothing to do at several of them, and that's the expected
+outcome, not a failure. What IMPROVE forbids is skipping the check itself
+without saying so; "checked, nothing applied" is a valid Stage 7 outcome,
+"didn't look" is not.
+
+## Per-task Reflection (9 gates)
 
 ```
 CATATAN REFLEKSI — TASK [id]
@@ -311,6 +389,8 @@ Gate 5: Error handling & edge cases present? — checked against
 Gate 6: No hardcoded secrets/credentials?                     [.]
 Gate 7: Full verification run — real tool output, not eyeball?[.]
 Gate 8: Memory files + snapshot updated this turn?            [.]
+Gate 9: IMPROVE checks run (1-5 above), each explicitly
+        checked-and-skipped or checked-and-acted-on?          [.]
 ```
 
 Any FAIL → fix before moving to the next task, or record it explicitly as
@@ -325,6 +405,9 @@ accepted debt in `02-gap-analysis.md`.
 - [ ] Every completed task has real verification output behind it
 - [ ] Progress Ledger matches reality
 - [ ] Memory files (01/02/03/04) are not lagging behind actual state
+- [ ] `skill-audit-edho-ferdian` ran this sprint if this repo's own
+      `skills/` content was touched or leaned on
+- [ ] No instinct sat at 3+ occurrences without a promotion decision
 
 ## Anti-pattern detection (warn the user when detected)
 

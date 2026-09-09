@@ -241,6 +241,43 @@ inline restatement of the full contract):
 `## Language routing (fixed — see skill-authoring-edho-ferdian's canonical
 contract)` followed by a sentence naming the base rule and pointing here.
 
+## §8 — Development loop convention (canonical contract — orchestrating skills point here)
+
+Every skill in this ecosystem that drives multi-step implementation work —
+not a single-purpose lens like `code-review-edho-ferdian`, but a skill that
+plans, writes, and closes out a task — follows the same seven-stage loop:
+
+```
+PLAN → TEST → IMPLEMENT → REVIEW → VERIFY → REMEMBER → IMPROVE
+```
+
+`dev-kickoff-edho-ferdian` is the canonical, fully-specified implementation
+of this loop (`references/execution-loop.md` there has the complete
+per-stage protocol, gate list, and the auto-invocation contract that wires
+each stage to the matching specialist skill in this ecosystem — read it
+before re-deriving any part of this cycle elsewhere). Two rules apply to any
+other skill that adopts this loop:
+
+1. **Point, don't restate.** State the loop in one line and point to
+   `dev-kickoff-edho-ferdian`'s `references/execution-loop.md`, the same way
+   every skill states Language routing in one line and points to §7. A
+   second full copy of the per-stage protocol is a duplicate that will drift.
+2. **The last two stages are not optional decoration.** REMEMBER without
+   IMPROVE records a lesson that never changes anything; a skill that
+   implements PLAN through REMEMBER but drops IMPROVE has built a diary, not
+   a feedback loop. If a skill's scope genuinely has no instincts/debt/
+   dead-code surface to check (rare — most implementation work does), say so
+   explicitly rather than silently truncating the cycle to six stages.
+
+**Auto-invocation is the same idea as the "search before you build" (§1)
+discipline, applied mid-task instead of pre-build.** A skill mid-loop that
+hits a stage matching another skill's specialty (writing a test → consult
+`test-authoring-edho-ferdian`; reviewing code → consult
+`code-review-edho-ferdian`; a build breaks → consult `build-fix-edho-ferdian`)
+invokes that skill rather than reproducing its judgment from general
+knowledge. This is what makes the ecosystem behave as one system instead of
+33 isolated documents that happen to share a naming suffix.
+
 ## Provenance
 
 Adapted from ECC `skill-scout`, `skill-stocktake`, `skill-comply`, and
@@ -257,3 +294,10 @@ not adapted from an external source.
 audit finding), executed under D-035 override. Native to this ecosystem,
 consolidated from the 14 skill-local variants it replaces rather than
 adapted from an external source.
+
+§8 (development loop convention) added 2026-09-09 per explicit user
+request that the ecosystem's skills auto-invoke each other and that
+`dev-kickoff-edho-ferdian`'s Plan-Test-Implement-Review-Verify-Remember
+cycle gain a seventh, closing stage (Improve). Native to this ecosystem —
+points to `dev-kickoff-edho-ferdian`'s `references/execution-loop.md` v3.0
+as the canonical implementation rather than restating it.

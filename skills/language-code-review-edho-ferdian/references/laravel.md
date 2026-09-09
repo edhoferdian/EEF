@@ -23,7 +23,7 @@ findings those two also touch).
 **Code placement.** Findings land as **CQ-11 (Laravel/Eloquent idiom
 anti-patterns)** in the general report. **All PHP/Laravel security items
 (SEC-08 territory) already live in `security-review-edho-ferdian/
-references/language-specific.md` §"PHP / Laravel [DEFERRED]"** (from D-012)
+references/language-specific.md` §"PHP / Laravel"** (from D-012)
 — `APP_DEBUG=true` in production, `$guarded = []`, `{!! !!}` without
 HTMLPurifier, `$hidden` gaps, CSRF/CORS/Sanctum misconfiguration. This file
 does **not** re-port that content; load the security file (or delegate to
@@ -182,7 +182,7 @@ skill's Phase 2 rule.
   this lens.
 - The finding is a security misconfiguration already catalogued in
   `security-review-edho-ferdian/references/language-specific.md` §"PHP /
-  Laravel [DEFERRED]" — `APP_DEBUG`, `APP_KEY`, `$guarded`, Blade `{!! !!}`,
+  Laravel" — `APP_DEBUG`, `APP_KEY`, `$guarded`, Blade `{!! !!}`,
   `$hidden`, CSRF/CORS/Sanctum. Cross-reference it; don't re-derive it here.
 - The finding is about test coverage percentage or test-quality patterns
   beyond "does this test exist at all" — that's Domain 5
@@ -199,3 +199,108 @@ skill's Phase 2 rule.
   — that's a refactor scoped beyond a review finding; note it and hand off to
   `code-review-edho-ferdian`'s adaptive-fix judgment rather than prescribing
   the restructure inline.
+
+---
+
+## Vanilla PHP (no framework)
+
+Source: ECC `agents/php-reviewer.md` (fetched 2026-09-09). Added after
+comparing this general PHP reviewer agent against the Laravel-specific
+content above: most of `php-reviewer.md` is either generic (already owned
+by the general skill's `review-checklist.md`) or Eloquent/Laravel-specific
+content this file's HIGH/MEDIUM sections above already cover in more depth
+than the agent does. The genuine gap is the subset below, which applies to
+PHP with **no framework present** — a standalone script, a Composer
+library, or a project not detected as Laravel by this skill's manifest
+table — and was not covered anywhere else in this ecosystem before this
+addition.
+
+**Detect.** A `composer.json` present with no `laravel/framework`
+requirement, or any `.php` file in review scope with no `artisan` file and
+no `app/Http/Kernel.php`/`bootstrap/app.php` at the project root (i.e. this
+skill's own Laravel detection signals above all fail). When Laravel *is*
+detected, use the Laravel-specific sections above instead — this section
+does not re-apply on top of them.
+
+**Boundary.** Generic injection, generic secret handling, generic
+function-length/nesting/magic-number checks — already owned by
+`references/review-checklist.md` in the general skill. This section adds
+only PSR-12/type-system conventions and Composer package structure that
+have no Laravel-specific equivalent above.
+
+**Code placement.** Findings land as **CQ-11 (PHP idiom anti-patterns)**,
+same code as the Laravel-specific findings above.
+
+### HIGH
+
+- **Missing `declare(strict_types=1)`** in a non-view PHP file — without
+  it, PHP silently coerces scalar type mismatches at call boundaries
+  instead of raising a `TypeError`, defeating the point of type hints.
+- **Public method missing type hints on parameters or return type**, or
+  using `mixed` where a specific union type is expressible — weakens
+  static analysis (PHPStan/Psalm) and IDE tooling for every caller.
+- **Constructor-promoted property that is never reassigned but not marked
+  `readonly`** — a missed immutability guarantee PHP 8.1+ provides for
+  free.
+- **Class not designed for inheritance left without `final`** — an
+  open-for-extension class with no actual subclassing use case invites
+  fragile-base-class problems later.
+
+### MEDIUM — PSR-12 and package hygiene
+
+- **Import order, spacing, brace placement, or naming conventions**
+  deviating from PSR-12 with no project-local style override on record —
+  confirm with `vendor/bin/pint --test` (or `phpcs` if the project uses
+  that instead of Pint) before flagging as [High confidence]; reading the
+  diff and recognizing a PSR-12 deviation by eye is [Medium confidence] at
+  most.
+- **`dd()`/`dump()`/`var_dump()` left in committed code** — debug
+  statements that shouldn't ship.
+- **Unused or overly broad `use` imports** — import only what's needed,
+  keep the import block clean.
+- **`composer.json` missing an explicit `"require"` PHP version
+  constraint**, or a package with no `composer validate`-clean manifest —
+  a library intended for reuse (has a `composer.json` `"type": "library"`,
+  or is published/publishable) without a pinned PHP version range risks
+  silently supporting (or breaking on) versions never actually tested.
+- **Plain PHP auth/crypto not using the standard library primitives** —
+  `password_hash()`/`password_verify()` for password storage,
+  PDO prepared statements for queries, and a header-based (or
+  framework-agnostic middleware) CSRF token check for state-changing
+  requests, in a project with no framework providing these by default.
+  This is the non-Laravel instance of the same defect classes
+  `security-review-edho-ferdian` already tracks for Laravel (`$guarded`,
+  raw SQL, CSRF middleware) — cross-reference that file's PHP/Laravel
+  section for the underlying rationale rather than re-deriving it; the
+  finding here is only "this project has no framework doing it
+  automatically, so the manual equivalent needs to actually be present."
+
+### Ground-truth commands
+
+```bash
+./vendor/bin/phpstan analyse --level max   # type safety and errors
+./vendor/bin/psalm --show-info=true        # static analysis
+./vendor/bin/pint --test                   # PSR-12 formatting (or phpcs, if the project uses that)
+composer validate                          # composer.json/lock consistency
+composer audit                             # dependency vulnerabilities
+```
+
+### False-positive traps
+
+- `mixed` on a parameter that receives genuinely heterogeneous,
+  validated-just-before-use input (the vanilla-PHP equivalent of the
+  Python `Any`-on-raw-JSON trap in the security file) is a correct
+  boundary type, not a finding.
+- A class left non-`final` that is genuinely designed for extension (an
+  abstract base class, a documented extension point in a library's public
+  API) is not a finding — `final` is for classes with no such intent.
+
+### Redundancy note (why this section is short)
+
+`php-reviewer.md`'s Eloquent/Laravel-specific content (N+1 via `with()`/
+`load()`, `$fillable`/`$casts`, FormRequest validation, Livewire/Filament
+checks) is **not** re-derived here — it fully overlaps with, and is less
+detailed than, the Laravel-specific sections earlier in this file. Only
+the framework-agnostic subset above (PSR-12/type-system conventions,
+Composer package hygiene, plain-PHP auth/crypto primitives) was a genuine
+gap; this is a deliberate scope decision, not an oversight.

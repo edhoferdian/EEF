@@ -3,8 +3,9 @@
 Adapted from ECC `homelab-network-setup`, `homelab-network-readiness`, and
 the vendor-neutral half of `homelab-vlan-segmentation`, all fetched
 2026-09-04. The three vendor configuration walkthroughs in that last source
-(UniFi Controller, pfSense/OPNsense, MikroTik) were deliberately not
-ported — see the "Not covered" section at the end.
+(UniFi Controller, pfSense/OPNsense, MikroTik) were ported separately,
+conceptually rather than as literal click-paths — see the "Vendor GUI
+concepts" section at the end.
 
 **Mode.** Use this reference alongside `design-principles.md` when the
 target is a home, small-lab, or single-operator network — consumer or
@@ -189,12 +190,17 @@ client before rollout has no validation gate at all.
 - Copying commands from a different vendor or firmware version without
   checking the exact platform syntax.
 
-## Not covered
+## Vendor GUI concepts
 
-Vendor-specific configuration walkthroughs (controller UI click paths,
-firewall-appliance interface assignment, switch-OS bridge/VLAN CLI) are
-deliberately out of scope. They cannot be verified without the hardware in
-hand, they go stale with each firmware release, and the concepts above are
-what actually transfer. If specific managed hardware enters the picture,
-that is the trigger to write a vendor file — not a reason to guess at one
-now.
+Where the VLAN, DNS/DHCP, and firewall concepts above conceptually live in
+UniFi (Network application/Controller), pfSense/OPNsense, and MikroTik
+(WinBox/WebFig) is covered in `references/vendor-gui-concepts.md` — organized
+by concept (e.g. "VLAN assignment happens per-port under the switch/port
+profile section") rather than by literal menu navigation, because concept
+names stay stable across firmware/software updates while exact click-paths
+and button labels do not. That file carries an explicit caveat on every
+section: verify against the actual installed version's UI before executing
+any step, and prefer the platform's own current documentation for exact
+navigation. It does not claim to have exact, current click-paths, and it
+should not be treated as a substitute for the platform's own docs — it is a
+map of where to look, not a script to follow verbatim.

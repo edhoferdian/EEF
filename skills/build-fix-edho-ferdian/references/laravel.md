@@ -8,7 +8,7 @@ PHPUnit/Pest bootstrap failures, config/cache staleness, and queue/scheduler
 startup problems. You fix the error only — you do not refactor controllers,
 models, or service layers beyond what the error demands. The security-side
 content for this stack already lives in `security-review-edho-ferdian/
-references/language-specific.md` §"PHP / Laravel [DEFERRED]" (D-012) —
+references/language-specific.md` §"PHP / Laravel" (D-012) —
 irrelevant to this skill's job (build-fix never touches security posture as
 its goal), noted only so a future session doesn't confuse "security
 deferred" with "nothing about Laravel is ported yet."
