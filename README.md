@@ -72,7 +72,6 @@ similarly-scoped skill from any other package you have installed.
 .claude-plugin/     plugin.json + marketplace.json (Option C)
 skills/              source of truth — 33 skill folders
 dist/                packaged .skill archives (Option A), one per skill
-project-memory/      this ecosystem's own planning/decision history
 install.sh           installer (macOS/Linux/Git Bash)
 install.ps1          installer (Windows PowerShell)
 ```
