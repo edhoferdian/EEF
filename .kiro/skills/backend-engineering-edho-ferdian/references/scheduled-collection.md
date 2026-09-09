@@ -3,10 +3,10 @@
 This file keeps the architecture and the failure modes generic and states
 the vendor pieces (LLM enrichment, storage, scheduler) as replaceable
 contracts rather than one hard-wired stack. **This file also supplies the
-content for the LLM-enrichment layer that D-021 deferred out of
-`llm-pipeline-engineering-edho-ferdian`** — the batching, fallback, and
-prompt-injection rules below are that material, in the home D-021 itself
-named as the fallback.
+content for the LLM-enrichment layer that D-021 deferred** — a standalone
+`llm-pipeline-engineering-edho-ferdian` skill was considered and never
+built; the batching, fallback, and prompt-injection rules below are the
+material D-021 named as that skill's fallback.
 
 Covers any unattended job that gathers data from a source on a schedule:
 price/listing monitors, release watchers, feed collectors, status pollers,
