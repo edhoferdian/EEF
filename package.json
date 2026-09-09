@@ -1,0 +1,49 @@
+{
+  "name": "eef-install",
+  "version": "1.0.0",
+  "description": "Install Ekosistem Edho Ferdian's 33 Claude Code skills into Claude Code, Cursor, Windsurf, Devin, Cline, GitHub Copilot, or Kiro — no git clone required.",
+  "license": "MIT",
+  "author": {
+    "name": "Edho Ferdian",
+    "email": "edhoferdian31@gmail.com",
+    "url": "https://github.com/edhoferdian"
+  },
+  "homepage": "https://github.com/edhoferdian/EEF#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edhoferdian/EEF.git"
+  },
+  "bin": {
+    "eef-install": "bin/eef.js"
+  },
+  "files": [
+    "bin/",
+    "skills/",
+    "AGENTS.md",
+    "GEMINI.md",
+    ".cursor/",
+    ".windsurf/",
+    ".devin/",
+    ".clinerules/",
+    ".github/copilot-instructions.md",
+    ".kiro/"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "claude-code",
+    "claude",
+    "skills",
+    "cursor",
+    "windsurf",
+    "cline",
+    "copilot",
+    "agents-md",
+    "kiro",
+    "ai-coding-agent"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

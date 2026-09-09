@@ -10,16 +10,37 @@ another project's paths or infrastructure.
 
 ## Install
 
-Three ways to get these skills, pick whichever fits:
+Four ways to get these skills, pick whichever fits:
 
-### Option A — Manual `.skill` upload
+### Option A — npm (works for every harness this repo supports, no git needed)
+
+```bash
+npx eef-install                            # Claude Code, all 33 skills
+npx eef-install code-review-edho-ferdian    # Claude Code, specific skills only
+npx eef-install --target cursor             # Cursor, into ./.cursor/rules/
+npx eef-install --target windsurf           # Windsurf + Devin
+npx eef-install --target cline              # Cline
+npx eef-install --target copilot            # GitHub Copilot
+npx eef-install --target kiro               # Kiro (add --global for ~/.kiro)
+npx eef-install --target agents-md          # AGENTS.md into the current project
+npx eef-install --target gemini-md          # GEMINI.md into the current project
+npx eef-install --list                      # list all skill names
+npx eef-install --help
+```
+
+The package bundles the actual skill content (see
+[`package.json`](package.json)'s `files` list) — no separate git clone, no
+network access after the initial `npx` download. Source:
+[`bin/eef.js`](bin/eef.js), zero runtime dependencies.
+
+### Option B — Manual `.skill` upload
 
 Each skill is pre-packaged as a `.skill` archive under [`dist/`](dist/).
 Download the one(s) you want and upload through the Skills UI in Claude.ai,
 Claude Desktop, or Claude Code. Good for trying a single skill without
 touching your local `~/.claude` setup.
 
-### Option B — Install script (copies into `~/.claude/skills/`)
+### Option C — Install script (copies into `~/.claude/skills/`)
 
 Clone this repo, then run the installer for your platform:
 
@@ -44,7 +65,7 @@ cd EEF
 Set `CLAUDE_SKILLS_DIR` (env var, both platforms) to install somewhere other
 than `~/.claude/skills`.
 
-### Option C — Claude Code plugin marketplace
+### Option D — Claude Code plugin marketplace
 
 ```
 /plugin marketplace add edhoferdian/EEF
@@ -54,9 +75,11 @@ than `~/.claude/skills`.
 This tracks the repo directly — updates land when the plugin/marketplace
 `version` fields are bumped in [`.claude-plugin/`](.claude-plugin/).
 
-> **Note:** this repo is currently private. Anyone installing via Option B
-> or C needs read access to it; Option A's packaged `.skill` files can be
-> shared independently of repo access.
+> **Note:** this GitHub repo is currently private. Options C and D need
+> read access to it. **Option A (npm) does not** — the npm registry is a
+> separate distribution channel, so `npx eef-install` will work for anyone
+> even while the repo itself stays private, same as Option B's packaged
+> `.skill` files — once `eef-install` has had its first `npm publish`.
 
 ## Other harnesses (not just Claude Code)
 
@@ -102,12 +125,17 @@ checked in CI (`export-targets-sync` job):
   present under its own `.kiro/skills/`. See [.kiro/README.md](.kiro/README.md)
   for the install command. Regenerate: `python scripts/export_kiro.py`.
 
+- **[GEMINI.md](GEMINI.md)** — byte-identical to `AGENTS.md`, generated
+  from it (`scripts/export_gemini_md.py`), because Gemini CLI looks for
+  this specific filename by default and doesn't fall back to `AGENTS.md`.
+
 Every adapter above is generated, never hand-maintained, and CI fails if
-any of them drifts from `skills/`. Two harnesses need no adapter at all:
-[Pi](https://github.com/earendil-works/pi-coding-agent) resolves a
-standard `skills/` folder directly (`pi install git:edhoferdian/EEF`) with
-no generated files required, and several tools (Codex, OpenCode, Muse
-Code) read `AGENTS.md` natively.
+any of them drifts from `skills/`. Several harnesses need no adapter at
+all — confirmed via each tool's own docs, not assumed: `AGENTS.md` alone
+already covers Codex, OpenCode, Muse Code (Meta), Cline, Zed, and Google
+Antigravity, and [Pi](https://github.com/earendil-works/pi-coding-agent)
+resolves a standard `skills/` folder directly
+(`pi install git:edhoferdian/EEF`) with no generated files at all.
 
 ## Skills
 
@@ -119,15 +147,18 @@ similarly-scoped skill from any other package you have installed.
 ## Repo layout
 
 ```
-.claude-plugin/     plugin.json + marketplace.json (Option C)
+.claude-plugin/     plugin.json + marketplace.json (Option D)
 .github/            CI workflow + FUNDING.yml
-.cursor/rules/      generated — Cursor adapter, see export_cursor.py
-AGENTS.md            generated — cross-vendor router, see export_agents_md.py
+.cursor/, .windsurf/, .devin/, .clinerules/, .kiro/
+                     generated per-harness adapters, see scripts/export_*.py
+AGENTS.md, GEMINI.md generated cross-vendor router files
 skills/              source of truth — 33 skill folders
-dist/                packaged .skill archives (Option A), one per skill
+dist/                packaged .skill archives (Option B), one per skill
+bin/eef.js           npm CLI entry point (Option A)
 scripts/             packaging + validation + cross-harness export scripts
-install.sh           installer (macOS/Linux/Git Bash)
-install.ps1          installer (Windows PowerShell)
+install.sh           installer (macOS/Linux/Git Bash, Option C)
+install.ps1          installer (Windows PowerShell, Option C)
+package.json         npm package manifest (Option A)
 ```
 
 ## Sponsors

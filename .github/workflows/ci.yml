@@ -51,6 +51,32 @@ jobs:
         run: python scripts/export_copilot.py --check
       - name: Check .kiro/skills/ is up to date
         run: python scripts/export_kiro.py --check
+      - name: Check GEMINI.md is up to date
+        run: python scripts/export_gemini_md.py --check
+
+  npm-cli-smoke-test:
+    name: eef-install CLI smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: npm pack produces a valid tarball
+        run: npm pack --dry-run
+      - name: --list runs and returns 33 skills
+        run: |
+          count=$(node bin/eef.js --list | wc -l)
+          test "$count" -eq 33
+      - name: --help runs without error
+        run: node bin/eef.js --help
+      - name: install target=cursor into a throwaway directory
+        run: |
+          mkdir -p /tmp/eef-cli-test
+          cd /tmp/eef-cli-test
+          node "$GITHUB_WORKSPACE/bin/eef.js" --target cursor
+          test -d .cursor/rules
+          test "$(ls .cursor/rules | wc -l)" -eq 33
 
   plugin-validate:
     name: Claude Code plugin manifest

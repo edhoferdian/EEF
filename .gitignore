@@ -1,6 +1,8 @@
 .claude/
 *.zip
+*.tgz
 CLAUDE.md
 project-memory/
 __pycache__/
 *.pyc
+node_modules/
