@@ -1,13 +1,14 @@
 ---
 name: test-authoring-edho-ferdian
 description: >-
-  Guidance for WRITING unit and component tests well — starting with
-  React/Testing Library (more stacks planned). A companion to
-  code-review-edho-ferdian's test-quality-lens (which judges tests after
-  they're written) and dev-kickoff-edho-ferdian's TEST stage (which mandates
-  writing a failing test first but doesn't teach test-writing craft). Trigger
-  phrases: "tulis test untuk component ini", "bagaimana test hook ini", "test
-  yang bagus untuk fitur X", or during dev-kickoff's TEST stage when the task
+  Guidance for WRITING unit and component tests well — React/Testing
+  Library, Python/pytest, Go, and Vue, plus stack-agnostic regression-test
+  patterns. A companion to code-review-edho-ferdian's test-quality-lens
+  (which judges tests after they're written) and dev-kickoff-edho-ferdian's
+  TEST stage (which mandates writing a failing test first but doesn't teach
+  test-writing craft). Trigger phrases: "tulis test untuk component ini",
+  "bagaimana test hook ini", "test yang bagus untuk fitur X", "tulis test
+  pytest/Go/Vue untuk ini", or during dev-kickoff's TEST stage when the task
   needs concrete authoring guidance beyond "write a failing test."
 ---
 

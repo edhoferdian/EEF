@@ -3,9 +3,11 @@ name: build-fix-edho-ferdian
 description: >-
   Diagnose and fix build, compile, dependency, and runtime-startup failures
   with minimal surgical diffs — never refactors, never architectural changes,
-  always verified green. Detects the stack (JavaScript/TypeScript,
-  Django/Python, Go, and Rust so far; more stacks to follow) and loads the
-  matching diagnostic lens. Use whenever a build, compile, analyze, or startup step fails, or the
+  always verified green. Auto-detects the stack from project files (JS/TS,
+  Python/Django, Go, Rust, PHP/Laravel, Java/Spring, Quarkus, Kotlin, Swift,
+  React Native, Flutter, Android, .NET, C++, PyTorch, ArkTS, Perl, Ruby, and
+  more) and loads the matching diagnostic lens. Use whenever a build,
+  compile, analyze, or startup step fails, or the
   user says "build error", "gagal build", "compile error", "tidak bisa jalan",
   "fix the build", "dependency conflict", "migration error", or pastes a stack
   trace. Enforces a 3-attempt loop guard, an anti-suppression Reflection gate,

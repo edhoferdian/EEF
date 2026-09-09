@@ -3,8 +3,9 @@ name: security-review-edho-ferdian
 description: >-
   Single source of truth for security review criteria across the Edho Ferdian
   ecosystem — general OWASP-style checklist (SEC-01..19), stack-specific
-  security items (React, Python, FastAPI, Django, plus deferred PHP/Java), and
-  domain-specific security items (database RLS/privilege, healthcare PHI,
+  security items (React, Python, FastAPI, Django, PHP/Laravel, Java/Spring
+  Boot, Perl, Ruby/Rails, ArkTS/HarmonyOS, and Solidity/EVM smart contracts),
+  and domain-specific security items (database RLS/privilege, healthcare PHI,
   LLM/agent pipelines, ML, containers, cloud/IaC/CI-CD, agent-harness config).
   Runs
   STANDALONE for a security-only pass ("cek keamanan kode ini", "security
