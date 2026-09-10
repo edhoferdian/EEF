@@ -38,6 +38,11 @@ Step 1  Pick the release strategy        → references/release-strategies.md
 Step 2  Wire the pipeline gates          → references/cicd-pipeline.md
 Step 3  (K8s only) write the manifests   → references/kubernetes.md
 Step 4  Production-readiness verdict     → references/production-readiness.md
+                                            (fans out to 4 risk-lens agents
+                                            in parallel on a harness that
+                                            supports delegation — see that
+                                            file's "Delegation, not
+                                            duplication" section)
 Step 5  Deploy, then watch               → references/post-deploy-watch.md
 Step 6  Make it operable                 → references/observability.md
 

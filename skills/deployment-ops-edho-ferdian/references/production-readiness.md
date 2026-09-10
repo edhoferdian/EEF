@@ -52,6 +52,15 @@ change the number.
 
 This file owns only the aggregation, the caps, and the one-sentence verdict.
 
+**On a harness with sub-agent delegation**, consult these four as parallel
+delegates — one per row, run at the same time, not read one after
+another — since the four risk domains don't depend on each other's
+findings. Wait for all four before scoring; a verdict built on partial
+returns silently under-checks the release. Full recipe:
+`workflows/production-readiness-fanout-edho-ferdian.md`. On a harness
+with no delegation primitive, consult each lens sequentially in this same
+context instead — same rows, just not parallel.
+
 ## Output
 
 Lead with one sentence, e.g.:

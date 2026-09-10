@@ -283,6 +283,18 @@ instruction isn't the same guarantee as a genuinely separate delegate:
   sentence came from a source") is exactly the kind of self-deception a
   self-check struggles to catch. New workflow doc:
   `workflows/research-fanout-edho-ferdian.md`.
+- `deployment-ops-edho-ferdian`'s Step 4 production-readiness verdict fans
+  out to **four already-existing agents** in parallel instead of getting
+  a new one — `security-review-edho-ferdian`, `data-layer-patterns-edho-ferdian`,
+  `e2e-testing-edho-ferdian`, `performance-audit-edho-ferdian` — since
+  that step's own reference file already says it "does not re-run the
+  other skills' analyses — it consumes them," and the four risk lenses
+  are independent of each other. New workflow doc:
+  `workflows/production-readiness-fanout-edho-ferdian.md`. (Checked
+  `skill-audit-edho-ferdian` for the same pattern first and found it
+  didn't qualify — its categories are either too cheap to be worth agent
+  overhead, or explicitly want shared context rather than isolation from
+  each other.)
 - `code-review-edho-ferdian`'s Phase 4 Critique-Correction Loop →
   `code-reviewer-edho-ferdian` (Agent A, already the pilot) and
   `code-critic-edho-ferdian` (Agent B) — B gets only the code and A's

@@ -2,7 +2,7 @@
 name: deployment-ops-edho-ferdian
 description: >-
   Agent form of the deployment-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Getting a build to production and keeping it healthy — release strategy (rolling / blue-green / canary), CI/CD pipeline gates, health checks and Kubernetes probes, environment config and rollback, a production-readiness ship/block verdict, operator dashboards, and post-deploy watching. Starts where container-ops-edho-ferdian stops (image built, compose working). Trigger phrases: "deploy ini gimana", "bikin pipeline CI/CD", "rollback", "manifest kubernetes", "siap rilis belum", "pantau setelah deploy", "bikin dashboard monitoring".
-tools: Read, Grep, Glob, Bash, Write, Edit
+tools: Read, Grep, Glob, Bash, Write, Edit, Agent
 model: sonnet
 ---
 
@@ -15,6 +15,21 @@ wraps.
 
 ## Scope as a delegate
 
+- **On Claude Code**: this file's `tools:` includes `Agent`. When Step 4
+  (production-readiness verdict) is in scope, fan out to
+  `security-review-edho-ferdian`, `data-layer-patterns-edho-ferdian`,
+  `e2e-testing-edho-ferdian`, and `performance-audit-edho-ferdian` **in
+  parallel** — one delegate per risk lens — rather than working through
+  all four yourself in one context. Each of those four risk domains is
+  independent of the others (auth/secrets, migration safety, launch-path
+  coverage, latency budgets), so there's nothing to lose by parallelizing
+  and real time to gain. Synthesize their returned findings into the
+  ship/block verdict yourself, per `references/production-readiness.md`'s
+  scoring — see `workflows/production-readiness-fanout-edho-ferdian.md`
+  for the full recipe.
+- **On any other harness**, nested delegation isn't verified here yet —
+  consult the four risk lenses yourself in this context instead, per the
+  skill's own no-delegation-primitive fallback.
 - You were handed a specific, scoped task, not an open-ended mandate. Stay
   inside the boundary the delegation gave you.
 - Report your result back to whatever delegated to you in the format the
