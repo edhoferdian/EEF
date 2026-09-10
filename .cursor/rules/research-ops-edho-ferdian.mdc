@@ -67,6 +67,15 @@ you escalate and why.
 1. **Break the topic into 3-5 sub-questions.** A topic you cannot decompose
    is a topic you have not understood yet. Write them down; they become the
    report's section headings and the "what I could not answer" list.
+
+   On a harness with sub-agent delegation, fan these out to
+   `research-worker-edho-ferdian` — one per sub-question, **run in
+   parallel, not sequentially** — rather than researching each one
+   yourself in the same context. The sub-questions are independent by
+   construction; researching them in one context wastes that independence
+   and is strictly slower for the same depth. On a harness with no
+   delegation primitive, work through them yourself in this phase as
+   described below. Full recipe: `workflows/research-fanout-edho-ferdian.md`.
 2. **Two to three keyword variations per sub-question.** Mix general
    phrasing with the vocabulary practitioners actually use.
 3. **Source priority:** primary/official (vendor docs, specs, filings,
@@ -168,6 +177,16 @@ For a **quick factual** path, collapse this to: the answer, the label, the
 citation, and the date. Do not inflate a one-fact lookup into a full report.
 
 ## Phase 5 — Reflection gate (before delivering)
+
+On a harness with sub-agent delegation, delegate to
+`research-fact-checker-edho-ferdian` after Phase 4's draft — an
+independent citation audit catches what self-reflection can't, for the
+same reason `code-review-edho-ferdian`'s Critique-Correction Loop needs a
+separate Critic: the report's own author already believes it, so a
+self-check re-reads with the same confidence that produced the report in
+the first place. Fold the audit's findings into the gates below before
+delivering. On a harness with no delegation primitive, run the gates below
+as a self-check only, and say so.
 
 1. **Label audit** — does every important claim carry exactly one label? Any
    unlabeled assertion is a defect, not a style choice.

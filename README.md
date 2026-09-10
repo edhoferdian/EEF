@@ -271,6 +271,18 @@ instruction isn't the same guarantee as a genuinely separate delegate:
   `opensource-sanitizer-edho-ferdian`, because that phase's own rule is
   "never open FORK_REPORT.md" — only enforceable if the phase never shared
   a context with the report's author in the first place.
+- `research-ops-edho-ferdian`'s Phase 2 decomposition →
+  `research-worker-edho-ferdian`, one per sub-question run **in
+  parallel** — the isolation value here is throughput, not adversarial
+  trust: 3-5 sub-questions are independent by construction, so
+  researching them in one context wastes that independence. Its Phase 5
+  reflection gate also gets `research-fact-checker-edho-ferdian`, an
+  independent citation audit — same adversarial reasoning as the
+  Critique-Correction split below, because the skill's own stated failure
+  mode ("a confident paragraph where the reader cannot tell which
+  sentence came from a source") is exactly the kind of self-deception a
+  self-check struggles to catch. New workflow doc:
+  `workflows/research-fanout-edho-ferdian.md`.
 - `code-review-edho-ferdian`'s Phase 4 Critique-Correction Loop →
   `code-reviewer-edho-ferdian` (Agent A, already the pilot) and
   `code-critic-edho-ferdian` (Agent B) — B gets only the code and A's

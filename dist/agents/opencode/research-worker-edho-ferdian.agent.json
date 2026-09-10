@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "research-worker-edho-ferdian": {
+      "description": "One parallel research sub-agent for a single sub-question out of research-ops-edho-ferdian's Phase 2 decomposition. Delegate one of these per sub-question (in parallel, not sequentially) once Phase 1 has classified the ask and Phase 2 has decomposed it \u2014 each worker searches and returns sourced findings for its own sub-question only, never the others'. On a harness without sub-agent delegation, research each sub-question inline instead, per research-ops-edho-ferdian's own instructions.",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/research-worker-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": false,
+        "edit": false,
+        "bash": true
+      }
+    }
+  }
+}

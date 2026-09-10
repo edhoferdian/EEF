@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "research-fact-checker-edho-ferdian": {
+      "description": "An independent citation audit of research-ops-edho-ferdian's synthesized report, split out as its own delegate specifically so it never inherits the synthesizer's confidence about its own claims \u2014 the skill's own stated failure mode is \"a confident paragraph where the reader cannot tell which sentence came from a source,\" which a self-check can't fully catch precisely because the self-checker already believes its own report. Delegate here after Phase 4 (Report) produces a draft, before Phase 5 (Reflection) is treated as complete. On a harness without sub-agent delegation, fold this into Phase 5's own reflection gate instead, and say plainly that independence is weaker in that mode.",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/research-fact-checker-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": false,
+        "edit": false,
+        "bash": false
+      }
+    }
+  }
+}
