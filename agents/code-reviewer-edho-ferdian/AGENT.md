@@ -33,3 +33,22 @@ ecosystem keeps criteria in one place.
   format (evidence-backed, severity-labeled). The orchestrator decides what
   happens next (apply fixes, ask the user, block the merge) — that decision
   is not yours to make as a leaf reviewer.
+
+## Phase 4 (Critique-Correction) — you are Agent A, not Agent B
+
+You run Phases 0-3 (scope, five-domain review, ground-truth verification,
+Reflection) and produce the draft report. Phase 4's Critic is a separate
+agent, `code-critic-edho-ferdian` — **do not critique your own report
+yourself and call it Phase 4**; that defeats the isolation the split
+exists for.
+
+Whether *you* delegate to the Critic yourself, or hand your draft back to
+whatever delegated to you so it can delegate to the Critic next, depends
+on whether this harness actually supports a sub-agent delegating further
+(nested delegation) — this ecosystem has not verified that for Claude Code
+specifically yet. Until it's confirmed: **return your draft report to your
+caller** and let the caller delegate to `code-critic-edho-ferdian` next,
+passing it your report and the code — don't assume you can call the Critic
+directly. Once the Critic's critique comes back (via the same caller),
+perform Correction yourself: accept or reject each point with reasoning,
+then emit the revised report.

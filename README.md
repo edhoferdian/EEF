@@ -261,6 +261,15 @@ instruction isn't the same guarantee as a genuinely separate delegate:
   `opensource-sanitizer-edho-ferdian`, because that phase's own rule is
   "never open FORK_REPORT.md" — only enforceable if the phase never shared
   a context with the report's author in the first place.
+- `code-review-edho-ferdian`'s Phase 4 Critique-Correction Loop →
+  `code-reviewer-edho-ferdian` (Agent A, already the pilot) and
+  `code-critic-edho-ferdian` (Agent B) — B gets only the code and A's
+  draft report, never A's Phase 1-3 reasoning, so the critique is a real
+  adversarial check instead of the same model agreeing with itself. Both
+  delegations are made by whatever orchestrates the review (dev-kickoff,
+  another agent, or the user) — **not** A delegating to B directly, since
+  nested agent-to-agent delegation isn't a verified capability on every
+  harness yet (see the note above).
 
 The skill still keeps its own whole-pipeline agent too (delegating the
 *entire* run as one unit, e.g. several gan-harness loops in parallel) —

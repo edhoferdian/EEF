@@ -92,9 +92,14 @@ PLAN → TEST → IMPLEMENT → REVIEW → VERIFY → REMEMBER → IMPROVE
   (still a fresh pass, just without hard context isolation — see that
   skill's own SKILL.md for the caveat this implies). Either path also
   loads `language-code-review-edho-ferdian`'s stack lens for idiom-specific
-  findings; a HIGH-RISK task also invokes `security-review-edho-ferdian`
-  (skill only — no agent for it yet). Auto Critique-Correction for
-  HIGH-RISK tasks.
+  findings; a HIGH-RISK task also delegates to `security-review-edho-ferdian`
+  (its own agent, or the skill directly with no delegation primitive).
+  Auto Critique-Correction for HIGH-RISK tasks: after the Reviewer's draft
+  comes back, delegate separately to `code-critic-edho-ferdian` (Agent B),
+  passing it the code and the Reviewer's draft report only — never the
+  Reviewer's own reasoning, that's the entire point of the split. Feed the
+  critique back for Correction (accept/reject with reasoning, revise), per
+  `code-review-edho-ferdian`'s Phase 4.
 - **VERIFY** — run the real tooling: build, lint, type-check, full test run.
   Tool output or it didn't happen. A failing build hands off to
   `build-fix-edho-ferdian` rather than being patched ad hoc inline — that

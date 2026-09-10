@@ -163,11 +163,16 @@ Correction loops fail in two ways: they **oscillate** (A and B flip-flop) or the
 
 ### Implementation: real subagents vs role-play
 
-- **With subagents (Claude Code `Task` tool):** spawn A and B as *separate*
-  agents so B doesn't inherit A's rationalizations. This is the stronger setup.
-  Give B only the code + A's report, and the critic mandate above. Cost: extra
-  tokens/latency for genuine independence — usually worth it for pre-merge or
-  security-sensitive reviews.
+- **With subagents (a harness with delegation support):** A is
+  `code-reviewer-edho-ferdian`, B is `code-critic-edho-ferdian` — two
+  *separate* agents so B doesn't inherit A's rationalizations. This is the
+  stronger setup. Give B only the code + A's report, and the critic
+  mandate above, nothing of A's internal reasoning. Cost: extra
+  tokens/latency for genuine independence — usually worth it for pre-merge
+  or security-sensitive reviews. Both delegations are made by whatever is
+  orchestrating the review (not by A delegating to B directly — nested
+  agent-to-agent delegation isn't a verified capability on every harness
+  yet; see this ecosystem's README on agent orchestration).
 - **Without subagents:** role-play the two parts sequentially in one context.
   Less independent (you've seen A's reasoning), but still catches real errors if
   you commit to the adversarial stance. State which mode you used in the report.

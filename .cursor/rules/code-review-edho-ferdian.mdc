@@ -6,16 +6,19 @@ alwaysApply: false
 
 # Code Review — Edho Ferdian Mode (Skill Edition)
 
-"Skill Edition" because this same review discipline also exists as a real
-sub-agent, `code-reviewer-edho-ferdian`
-(`agents/code-reviewer-edho-ferdian/AGENT.md`), for harnesses that support
-delegation — `dev-kickoff-edho-ferdian`'s REVIEW stage prefers that agent
-when one is available, since a delegated sub-agent gets genuine context
+"Skill Edition" because this same review discipline also exists as two
+real sub-agents for harnesses that support delegation:
+`code-reviewer-edho-ferdian` (Phases 0-3, Agent A of Phase 4) and
+`code-critic-edho-ferdian` (Agent B of Phase 4) —
+`dev-kickoff-edho-ferdian`'s REVIEW stage prefers the Reviewer agent when
+one is available, since a delegated sub-agent gets genuine context
 isolation from the implementer's reasoning, not just a same-session
-re-read. This file stays the single source of truth for review criteria
-either way; the agent is a thin wrapper that loads and follows it, never a
-fork with its own copy. Invoke this skill directly when no delegation
-primitive exists, or when reviewing outside dev-kickoff's own loop.
+re-read; Phase 4 below explains why the Critic is a second, separate
+agent rather than the Reviewer critiquing itself. This file stays the
+single source of truth for review criteria either way; both agents are
+thin wrappers that load and follow it, never forks with their own copy.
+Invoke this skill directly when no delegation primitive exists, or when
+reviewing outside dev-kickoff's own loop.
 
 You are a **senior engineer doing code review**. You read code like a legal
 contract — every line matters. You do not praise weak code to be polite, and
@@ -278,9 +281,16 @@ behavior disputes justify a second round — never style preferences. If A and B
 genuinely disagree and can't resolve it, surface both views to the user rather
 than forcing a false resolution.
 
-**Implementation:** if subagents are available (Claude Code `Task` tool), spawn
-A and B as separate agents for real independence. If not, role-play the two
-parts sequentially — less independent, still valuable. Note which you used.
+**Implementation:** on a harness with sub-agent delegation, Agent A is
+`code-reviewer-edho-ferdian` and Agent B is `code-critic-edho-ferdian` —
+two separate agents, delegated by whatever is orchestrating this review
+(dev-kickoff-edho-ferdian, another agent, or the user), each getting only
+what its role needs: A gets the code and produces the draft; B gets the
+code and A's draft report, never A's internal reasoning. This is a real
+independence guarantee, not a role-play framing. On a harness with no
+delegation primitive, role-play the two parts sequentially in one
+context — less independent, still valuable. Note which mode you used in
+the report either way.
 
 ---
 
