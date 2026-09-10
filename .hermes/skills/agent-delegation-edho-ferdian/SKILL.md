@@ -151,9 +151,11 @@ delegate_task(
 
 **When to delegate here:** Agent form of the click-path-audit-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Trace every user-facing touchpoint (button, toggle, form submit) through its full state-change sequence to find defects that reading code line by line cannot see: handlers whose calls silently undo each other, async races, stale closures, and effects that reset the very state the button just set. Use when a control "does nothing" despite the handler existing and not crashing, after refactoring a shared state store (Zustand/Redux/context/ signals), or before release on critical flows. Trigger phrases: "tombolnya gak jalan", "diklik tapi gak ada yang terjadi", "the button does nothing", "state-nya balik lagi", "sudah dicek semua tapi gak ketemu bug-nya".
 
+This agent delegates further on Claude Code (its canonical `tools:` includes `Agent`) — on Hermes, `role="orchestrator"` only takes effect if `delegation.max_spawn_depth` is set to 2 or higher in Hermes' own config; at the default of 1, Hermes silently forces it back to `"leaf"` and this agent must do the sub-delegation's work inline instead. Check with `hermes config get delegation.max_spawn_depth` before relying on nested delegation here.
+
 ```python
 delegate_task(
-    role="leaf",
+    role="orchestrator",
     goal="<the specific task for click-path-audit-edho-ferdian>",
     context=(
         "# click-path-audit-edho-ferdian (Agent)\n"
@@ -295,9 +297,11 @@ delegate_task(
 
 **When to delegate here:** Senior-engineer code review specialist — Code Quality, Security, Performance, Blueprint/Spec Consistency, and Test Quality. Delegate to this agent whenever code was just written or modified and needs review before merge, or when the user explicitly asks for a review/audit.
 
+This agent delegates further on Claude Code (its canonical `tools:` includes `Agent`) — on Hermes, `role="orchestrator"` only takes effect if `delegation.max_spawn_depth` is set to 2 or higher in Hermes' own config; at the default of 1, Hermes silently forces it back to `"leaf"` and this agent must do the sub-delegation's work inline instead. Check with `hermes config get delegation.max_spawn_depth` before relying on nested delegation here.
+
 ```python
 delegate_task(
-    role="leaf",
+    role="orchestrator",
     goal="<the specific task for code-reviewer-edho-ferdian>",
     context=(
         "# Code Reviewer — Edho Ferdian Mode\n"
@@ -513,9 +517,11 @@ delegate_task(
 
 **When to delegate here:** Agent form of the deployment-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Getting a build to production and keeping it healthy — release strategy (rolling / blue-green / canary), CI/CD pipeline gates, health checks and Kubernetes probes, environment config and rollback, a production-readiness ship/block verdict, operator dashboards, and post-deploy watching. Starts where container-ops-edho-ferdian stops (image built, compose working). Trigger phrases: "deploy ini gimana", "bikin pipeline CI/CD", "rollback", "manifest kubernetes", "siap rilis belum", "pantau setelah deploy", "bikin dashboard monitoring".
 
+This agent delegates further on Claude Code (its canonical `tools:` includes `Agent`) — on Hermes, `role="orchestrator"` only takes effect if `delegation.max_spawn_depth` is set to 2 or higher in Hermes' own config; at the default of 1, Hermes silently forces it back to `"leaf"` and this agent must do the sub-delegation's work inline instead. Check with `hermes config get delegation.max_spawn_depth` before relying on nested delegation here.
+
 ```python
 delegate_task(
-    role="leaf",
+    role="orchestrator",
     goal="<the specific task for deployment-ops-edho-ferdian>",
     context=(
         "# deployment-ops-edho-ferdian (Agent)\n"
@@ -800,9 +806,11 @@ delegate_task(
 
 **When to delegate here:** Agent form of the gan-harness-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Rapid, adversarial-loop prototyping and design iteration: a Plan → Generate → Evaluate/iterate cycle where a generator builds a live app and an evaluator drives it in a real browser, scores it against a weighted design rubric, and feeds concrete fixes back until a quality threshold is crossed or a max-iteration cap is hit. The Plan phase never invents scope from a one-line prompt — it pulls features from a real source (dev-kickoff-edho-ferdian's Project Decision Register or spec-mining-edho-ferdian's mined specs), or proposes a small, explicitly unapproved exploratory scope when no spec exists at all. Use when the user wants fast UI/prototype iteration with automated design critique, says "gan-harness", "loop generate-evaluate", "iterate sampai bagus", "buat prototipe cepat lalu… (see the skill for the full trigger list)
 
+This agent delegates further on Claude Code (its canonical `tools:` includes `Agent`) — on Hermes, `role="orchestrator"` only takes effect if `delegation.max_spawn_depth` is set to 2 or higher in Hermes' own config; at the default of 1, Hermes silently forces it back to `"leaf"` and this agent must do the sub-delegation's work inline instead. Check with `hermes config get delegation.max_spawn_depth` before relying on nested delegation here.
+
 ```python
 delegate_task(
-    role="leaf",
+    role="orchestrator",
     goal="<the specific task for gan-harness-edho-ferdian>",
     context=(
         "# gan-harness-edho-ferdian (Agent)\n"
@@ -968,9 +976,11 @@ delegate_task(
 
 **When to delegate here:** Agent form of the opensource-release-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Fork, sanitize, and package a project for open-source release in three phases — extract secrets into .env.example rather than deleting them, run an independent adversarial audit that never trusts the fork phase's own report (PASS/FAIL/PASS-WITH-WARNINGS, hard-gates packaging on FAIL), then generate CLAUDE.md/README/LICENSE/CONTRIBUTING/issue-templates. Use when the user wants to open-source a project, says "mau open-source-kan ini", "siapkan repo ini buat publik", "audit sebelum rilis publik", or "cek apakah aman di-publish".
 
+This agent delegates further on Claude Code (its canonical `tools:` includes `Agent`) — on Hermes, `role="orchestrator"` only takes effect if `delegation.max_spawn_depth` is set to 2 or higher in Hermes' own config; at the default of 1, Hermes silently forces it back to `"leaf"` and this agent must do the sub-delegation's work inline instead. Check with `hermes config get delegation.max_spawn_depth` before relying on nested delegation here.
+
 ```python
 delegate_task(
-    role="leaf",
+    role="orchestrator",
     goal="<the specific task for opensource-release-edho-ferdian>",
     context=(
         "# opensource-release-edho-ferdian (Agent)\n"
@@ -1143,9 +1153,11 @@ delegate_task(
 
 **When to delegate here:** Agent form of the research-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Evidence-first research workflow — classify what kind of research the question actually needs, take the lightest evidence path that answers it, synthesize multiple sources into a cited report, and label every claim by evidence type (sourced fact / user-supplied / inference / recommendation) so a reader can tell what is proven from what is guessed. Use whenever the user says "riset", "cari tahu", "cek fakta", "bandingkan X vs Y", "apa yang terbaru soal", "research this", "deep dive", "investigate", or asks a question whose answer depends on current public information rather than on this repo's own code. For competitor benchmarking and positioning research, use `marketing-edho-ferdian/references/market-and-competitor-research.md` instead — it consumes this skill's evidence method rather than repeating it.
 
+This agent delegates further on Claude Code (its canonical `tools:` includes `Agent`) — on Hermes, `role="orchestrator"` only takes effect if `delegation.max_spawn_depth` is set to 2 or higher in Hermes' own config; at the default of 1, Hermes silently forces it back to `"leaf"` and this agent must do the sub-delegation's work inline instead. Check with `hermes config get delegation.max_spawn_depth` before relying on nested delegation here.
+
 ```python
 delegate_task(
-    role="leaf",
+    role="orchestrator",
     goal="<the specific task for research-ops-edho-ferdian>",
     context=(
         "# research-ops-edho-ferdian (Agent)\n"
@@ -1267,9 +1279,11 @@ delegate_task(
 
 **When to delegate here:** Agent form of the security-review-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Single source of truth for security review criteria across the Edho Ferdian ecosystem — general OWASP-style checklist (SEC-01..19), stack-specific security items (React, Python, FastAPI, Django, PHP/Laravel, Java/Spring Boot, Perl, Ruby/Rails, ArkTS/HarmonyOS, and Solidity/EVM smart contracts), and domain-specific security items (database RLS/privilege, healthcare PHI, LLM/agent pipelines, ML, containers, cloud/IaC/CI-CD, agent-harness config). Runs STANDALONE for a security-only pass ("cek keamanan kode ini", "security audit", "find vulnerabilities") OR as the delegated depth layer for Domain 2 (SEC) of code-review-edho-ferdian's full review. Every other skill in this ecosystem that touches security cross-references this skill instead of holding its own copy — this is the only… (see the skill for the full trigger list)
 
+This agent delegates further on Claude Code (its canonical `tools:` includes `Agent`) — on Hermes, `role="orchestrator"` only takes effect if `delegation.max_spawn_depth` is set to 2 or higher in Hermes' own config; at the default of 1, Hermes silently forces it back to `"leaf"` and this agent must do the sub-delegation's work inline instead. Check with `hermes config get delegation.max_spawn_depth` before relying on nested delegation here.
+
 ```python
 delegate_task(
-    role="leaf",
+    role="orchestrator",
     goal="<the specific task for security-review-edho-ferdian>",
     context=(
         "# security-review-edho-ferdian (Agent)\n"
@@ -1308,9 +1322,11 @@ delegate_task(
 
 **When to delegate here:** Agent form of the seo-audit-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Technical + on-page SEO audit workflow — crawl/gather site signals, check them against a real technical-SEO checklist (crawlability, indexability, structured data, meta tags, sitemap/robots.txt, mobile-friendliness, internal linking), severity-rank findings on an indexing-impact ladder, and report with fix priority. Use this whenever the user wants an SEO audit; whenever they say "audit SEO", "kenapa website ini tidak muncul di Google", "cek meta tags", "structured data", "sitemap/robots.txt", "cek SEO", "SEO check" — or when reviewing any public-facing web project. Cross- references `performance-audit-edho-ferdian` for Core Web Vitals depth rather than duplicating it.
 
+This agent delegates further on Claude Code (its canonical `tools:` includes `Agent`) — on Hermes, `role="orchestrator"` only takes effect if `delegation.max_spawn_depth` is set to 2 or higher in Hermes' own config; at the default of 1, Hermes silently forces it back to `"leaf"` and this agent must do the sub-delegation's work inline instead. Check with `hermes config get delegation.max_spawn_depth` before relying on nested delegation here.
+
 ```python
 delegate_task(
-    role="leaf",
+    role="orchestrator",
     goal="<the specific task for seo-audit-edho-ferdian>",
     context=(
         "# seo-audit-edho-ferdian (Agent)\n"
@@ -1409,9 +1425,11 @@ delegate_task(
 
 **When to delegate here:** Agent form of the spec-mining-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Extract behavioral specifications from an existing codebase that has no written spec — mining a brownfield repo into a flat list of Requirements (WHEN/THEN) and Invariants (always-true), each anchored to the exact code location that enforces it, with machine-readable metadata (entities, enforced, depends_on) grounded in Salak's dependency graph when that tool is installed. Groups the codebase into capabilities first, then mines them one at a time using a bounded sample-and-expand read strategy — never reading a whole module blindly. Use when entering a project with code but no spec, when dev-kickoff-edho-ferdian Phase 0 reports a missing BEHAVIOR_SPEC role, or when the user says "ekstrak spec", "buat spec dari kode", "dokumentasikan behavior", "reverse-engineer the spec", or "repo… (see the skill for the full trigger list)
 
+This agent delegates further on Claude Code (its canonical `tools:` includes `Agent`) — on Hermes, `role="orchestrator"` only takes effect if `delegation.max_spawn_depth` is set to 2 or higher in Hermes' own config; at the default of 1, Hermes silently forces it back to `"leaf"` and this agent must do the sub-delegation's work inline instead. Check with `hermes config get delegation.max_spawn_depth` before relying on nested delegation here.
+
 ```python
 delegate_task(
-    role="leaf",
+    role="orchestrator",
     goal="<the specific task for spec-mining-edho-ferdian>",
     context=(
         "# spec-mining-edho-ferdian (Agent)\n"

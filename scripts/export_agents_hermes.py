@@ -15,6 +15,18 @@ official docs and its own tools/delegate_tool.py source, not guessed):
   credentials, chat history) provisioned via `hermes profile create` or the
   desktop UI — not a file this script can safely generate or overwrite.
 
+Nested delegation (a delegated agent calling delegate_task itself, e.g. a
+Reviewer delegating to a Critic) is real in Hermes but **off by default**,
+confirmed against delegate_tool.py directly: `MAX_DEPTH = 1` — "flat by
+default: parent (0) -> child (1); grandchild rejected unless
+max_spawn_depth raised" — gated by the config key
+`delegation.max_spawn_depth` (the `orchestrator_enabled` kill switch is
+separate and defaults to True, so depth is the only knob that actually
+needs raising). Templates below use `role="orchestrator"` for any
+canonical agent whose own `tools:` includes `Agent` (the same marker that
+grants it Claude Code Task-tool delegation) and add a note about the
+config requirement; every other agent stays `role="leaf"`.
+
 So instead of forcing a file-based export where none exists, this script
 generates ONE skill (matching the same "single router file" pattern
 export_cline.py already uses for a harness with no per-item relevance
@@ -63,11 +75,25 @@ def build_skill_md(agents: list[Agent]) -> str:
     ]
 
     for a in agents:
+        can_orchestrate = "Agent" in [t.strip() for t in a.tools.split(",")]
+        role = "orchestrator" if can_orchestrate else "leaf"
+
         parts.append(f"## {a.name}\n\n")
         parts.append(f"**When to delegate here:** {a.description}\n\n")
+        if can_orchestrate:
+            parts.append(
+                "This agent delegates further on Claude Code (its canonical "
+                "`tools:` includes `Agent`) — on Hermes, `role=\"orchestrator\"` "
+                "only takes effect if `delegation.max_spawn_depth` is set to 2 "
+                "or higher in Hermes' own config; at the default of 1, Hermes "
+                "silently forces it back to `\"leaf\"` and this agent must do "
+                "the sub-delegation's work inline instead. Check with "
+                "`hermes config get delegation.max_spawn_depth` before relying "
+                "on nested delegation here.\n\n"
+            )
         parts.append("```python\n")
         parts.append("delegate_task(\n")
-        parts.append('    role="leaf",\n')
+        parts.append(f'    role="{role}",\n')
         parts.append(f'    goal="<the specific task for {a.name}>",\n')
         parts.append('    context=(\n')
         for line in a.body.splitlines():

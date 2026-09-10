@@ -251,12 +251,37 @@ agent leaf-only. `code-reviewer-edho-ferdian`, `gan-harness-edho-ferdian`,
 and `opensource-release-edho-ferdian` all carry `Agent` in their `tools:`
 for exactly this reason — each delegates its own isolation-critical
 sub-phase (Critic, Generate/Evaluate, the sanitize audit) directly rather
-than routing through whatever called it. **On every other harness this
-project supports, nested delegation is still unverified** — those same
+than routing through whatever called it.
+
+**Hermes supports nested delegation too, but it's opt-in, not automatic** —
+confirmed against `tools/delegate_tool.py`'s own source, not the docs (which
+don't cover this detail): `delegate_task(role="orchestrator")` only actually
+nests when `delegation.max_spawn_depth` is set to 2+ in Hermes' own config;
+at the default of 1 ("flat by default: parent (0) -> child (1); grandchild
+rejected unless max_spawn_depth raised"), Hermes silently downgrades
+`"orchestrator"` back to `"leaf"` — no error, just quietly less isolation
+than requested. `scripts/export_agents_hermes.py` marks the same 9 agents
+that carry `Agent` in Claude Code (`click-path-audit-edho-ferdian`,
+`code-reviewer-edho-ferdian`, `deployment-ops-edho-ferdian`,
+`gan-harness-edho-ferdian`, `opensource-release-edho-ferdian`,
+`research-ops-edho-ferdian`, `security-review-edho-ferdian`,
+`seo-audit-edho-ferdian`, `spec-mining-edho-ferdian`) with
+`role="orchestrator"` in their generated Hermes templates, and adds the
+`hermes config get delegation.max_spawn_depth` check inline so a user finds
+out *before* relying on it, not after silently getting weaker isolation.
+
+**On OpenCode and ZCode, nested delegation is still unverified.** OpenCode's
+docs confirm a `permission.task` control exists but don't state subagents'
+default access to it; binary inspection of the installed `opencode.exe`
+found subagents get `todowrite: "deny"` merged into their default
+permissions but no equivalent `task: "deny"`, which is suggestive but not a
+documented guarantee. ZCode has a `spawn_agent` tool and a "spawn multiple
+subagent" string (parallel spawning is real), but no depth-limit or
+recursion-guard terminology was found in the client bundle — inconclusive
+either way, since that could be enforced server-side instead. Those two
 agents' instructions fall back to "return your result to your caller and
-let it make the next delegation" when the harness isn't Claude Code, since
-assuming an unconfirmed capability is worse than a same-context fallback
-that's honest about its weaker isolation.
+let it make the next delegation" until a live test (not just static
+inspection) confirms otherwise, same reasoning as before.
 
 **Some skills split into more than one agent, hand-tuned rather than
 generated**, when an internal phase's own instructions demand real context
