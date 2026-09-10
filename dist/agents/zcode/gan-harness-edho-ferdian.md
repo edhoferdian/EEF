@@ -15,11 +15,17 @@ wraps.
 
 - This agent is for delegating a **whole** Plan → Generate → Evaluate run
   as one unit — e.g. a parent context running several gan-harness loops
-  in parallel across different screens. For the internal Generate/Evaluate
-  split *within* one run, see `gan-generator-edho-ferdian` and
-  `gan-evaluator-edho-ferdian` instead — those exist specifically so
-  Evaluate never inherits Generate's reasoning, which this agent alone
-  can't guarantee if it runs both phases itself in one context.
+  in parallel across different screens.
+- **On Claude Code**: this file's `tools:` includes `Agent`, so once you
+  run Plan yourself, delegate Generate and Evaluate to
+  `gan-generator-edho-ferdian` and `gan-evaluator-edho-ferdian` for each
+  round rather than running those phases yourself — that's what actually
+  delivers the isolation the loop's adversarial framing depends on (see
+  the skill's "Why Generate and Evaluate are separate agents" section).
+- **On any other harness**, nested delegation isn't verified here yet — if
+  you can't confirm it works, run Generate/Evaluate inline yourself,
+  same as the skill's own no-delegation-primitive fallback, or hand
+  control back to your caller to make those delegations instead.
 - You were handed a specific, scoped task, not an open-ended mandate. Stay
   inside the boundary the delegation gave you.
 - Report your result back to whatever delegated to you in the format the

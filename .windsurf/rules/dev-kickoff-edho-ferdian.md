@@ -68,7 +68,7 @@ PLAN → TEST → IMPLEMENT → REVIEW → VERIFY → REMEMBER → IMPROVE
   IMPLEMENT, the moment the touched files say so.
 - **REVIEW** — the reviewer must not reuse the implementer's reasoning, so
   prefer real isolation over merely framing it as "fresh-context": on a
-  harness with sub-agent delegation (Claude Code's Task tool, OpenCode's
+  harness with sub-agent delegation (Claude Code's `Agent` tool, OpenCode's
   agent block, ...), delegate to the `code-reviewer-edho-ferdian` agent
   (`agents/code-reviewer-edho-ferdian/AGENT.md`) — a genuinely separate
   context that never saw the implementer's own reasoning, not just a fresh
@@ -79,12 +79,16 @@ PLAN → TEST → IMPLEMENT → REVIEW → VERIFY → REMEMBER → IMPROVE
   loads `language-code-review-edho-ferdian`'s stack lens for idiom-specific
   findings; a HIGH-RISK task also delegates to `security-review-edho-ferdian`
   (its own agent, or the skill directly with no delegation primitive).
-  Auto Critique-Correction for HIGH-RISK tasks: after the Reviewer's draft
-  comes back, delegate separately to `code-critic-edho-ferdian` (Agent B),
-  passing it the code and the Reviewer's draft report only — never the
-  Reviewer's own reasoning, that's the entire point of the split. Feed the
-  critique back for Correction (accept/reject with reasoning, revise), per
-  `code-review-edho-ferdian`'s Phase 4.
+  Auto Critique-Correction for HIGH-RISK tasks: **on Claude Code**,
+  `code-reviewer-edho-ferdian` already handles this itself (its `tools:`
+  includes `Agent`, confirmed nested-delegation-capable per Claude Code's
+  own docs) — it delegates to `code-critic-edho-ferdian` and performs
+  Correction on its own, so dev-kickoff just waits for the final revised
+  report. **On any other harness**, dev-kickoff makes both delegations
+  itself instead: after the Reviewer's draft comes back, delegate
+  separately to `code-critic-edho-ferdian` (Agent B), passing it the code
+  and the Reviewer's draft report only — never the Reviewer's own
+  reasoning — then feed the critique back to the Reviewer for Correction.
 - **VERIFY** — run the real tooling: build, lint, type-check, full test run.
   Tool output or it didn't happen. A failing build hands off to
   `build-fix-edho-ferdian` rather than being patched ad hoc inline — that
@@ -185,11 +189,5 @@ Classify whatever the user has into six **roles**:
 | `OPS_CONSTRAINTS` | limits on execution | security policy, compliance notes, SLA, budget, existing repo conventions |
 
 **Coverage rule (Mode A):** `ARCHITECTURE` and `WORK_PLAN` must each be
-covered by at least one real document. Any document may cover more than one
-role. A missing role that is not mandatory is allowed — state the concrete
-impact instead of blocking.
-
-If `WORK_PLAN` is missing, you may offer to derive a **Provisional Task Plan**
-from the other documents — clearly labelled `[DERIVED — NOT APPROVED]`, and
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/dev-kickoff-edho-ferdian/SKILL.md` for complete instructions.

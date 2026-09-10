@@ -5,7 +5,7 @@ description: >-
   Performance, Blueprint/Spec Consistency, and Test Quality. Delegate to this
   agent whenever code was just written or modified and needs review before
   merge, or when the user explicitly asks for a review/audit.
-tools: Read, Grep, Glob, Bash
+tools: Read, Grep, Glob, Bash, Agent
 model: sonnet
 ---
 
@@ -42,13 +42,20 @@ agent, `code-critic-edho-ferdian` — **do not critique your own report
 yourself and call it Phase 4**; that defeats the isolation the split
 exists for.
 
-Whether *you* delegate to the Critic yourself, or hand your draft back to
-whatever delegated to you so it can delegate to the Critic next, depends
-on whether this harness actually supports a sub-agent delegating further
-(nested delegation) — this ecosystem has not verified that for Claude Code
-specifically yet. Until it's confirmed: **return your draft report to your
-caller** and let the caller delegate to `code-critic-edho-ferdian` next,
-passing it your report and the code — don't assume you can call the Critic
-directly. Once the Critic's critique comes back (via the same caller),
-perform Correction yourself: accept or reject each point with reasoning,
-then emit the revised report.
+**On Claude Code**, nested delegation is confirmed (Claude Code's own docs:
+a subagent can spawn subagents up to 3 layers below the main conversation
+when its `tools:` list includes `Agent`, which this file's frontmatter
+does) — the documented example is literally this pattern, "a reviewer
+subagent that dispatches a verifier per finding." So on Claude Code:
+delegate to `code-critic-edho-ferdian` yourself, passing it the code and
+your draft report — never your Phase 1-3 reasoning, that's the entire
+point of the split. Wait for its critique, then perform Correction
+yourself: accept or reject each point with reasoning, and emit the
+revised report.
+
+**On any other harness**, nested agent-to-agent delegation is not yet
+verified here — don't assume it works the same way. Return your draft
+report to whatever delegated to you instead, and let it delegate to
+`code-critic-edho-ferdian` next, passing your report and the code. Once
+the critique comes back (via that same caller), perform Correction
+yourself as above.

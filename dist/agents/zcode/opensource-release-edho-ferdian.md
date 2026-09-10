@@ -14,10 +14,16 @@ wraps.
 ## Scope as a delegate
 
 - This agent is for delegating the **whole** three-phase pipeline as one
-  unit. For Phase 2 specifically, see `opensource-sanitizer-edho-ferdian`
-  instead — that agent exists so the adversarial audit never opens
-  FORK_REPORT.md, a guarantee this agent alone can't make if it runs
-  Phase 1 and Phase 2 itself in the same context.
+  unit.
+- **On Claude Code**: this file's `tools:` includes `Agent`, so once Phase
+  1 completes, delegate Phase 2 to `opensource-sanitizer-edho-ferdian`
+  rather than auditing your own Phase 1 output yourself — that's what
+  actually makes "never trust FORK_REPORT.md" enforceable instead of just
+  requested.
+- **On any other harness**, nested delegation isn't verified here yet —
+  if you can't confirm it works, run Phase 2 inline yourself per the
+  skill's no-delegation-primitive fallback, or hand control back to your
+  caller to make that delegation instead.
 - You were handed a specific, scoped task, not an open-ended mandate. Stay
   inside the boundary the delegation gave you.
 - Report your result back to whatever delegated to you in the format the

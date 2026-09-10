@@ -242,11 +242,21 @@ agents (`code-reviewer-edho-ferdian`, `security-review-edho-ferdian`,
 `click-path-audit-edho-ferdian`) gets read-only tools instead of the
 default full set — a delegated reviewer that structurally *can't* write
 anything is a stronger isolation guarantee than one that merely shouldn't.
-Nested delegation (an agent calling another agent, not just a skill) isn't
-wired up yet — it needs an explicit per-harness capability check first
-(does the harness even let a sub-agent re-delegate, and if so, a
-leaf/orchestrator guard against runaway recursion — see Hermes'
-`delegate_task` role system for the pattern this ecosystem would mirror).
+**Nested delegation is confirmed working on Claude Code**, verified against
+Claude Code's own docs rather than assumed: a subagent can delegate
+further (up to 3 layers below the main conversation by default, tunable
+via `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`) as long as `Agent` is in its
+`tools:` list — omit it (or add `Agent` to `disallowedTools`) to keep an
+agent leaf-only. `code-reviewer-edho-ferdian`, `gan-harness-edho-ferdian`,
+and `opensource-release-edho-ferdian` all carry `Agent` in their `tools:`
+for exactly this reason — each delegates its own isolation-critical
+sub-phase (Critic, Generate/Evaluate, the sanitize audit) directly rather
+than routing through whatever called it. **On every other harness this
+project supports, nested delegation is still unverified** — those same
+agents' instructions fall back to "return your result to your caller and
+let it make the next delegation" when the harness isn't Claude Code, since
+assuming an unconfirmed capability is worse than a same-context fallback
+that's honest about its weaker isolation.
 
 **Some skills split into more than one agent, hand-tuned rather than
 generated**, when an internal phase's own instructions demand real context

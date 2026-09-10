@@ -2,7 +2,7 @@
 name: gan-harness-edho-ferdian
 description: >-
   Agent form of the gan-harness-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Rapid, adversarial-loop prototyping and design iteration: a Plan → Generate → Evaluate/iterate cycle where a generator builds a live app and an evaluator drives it in a real browser, scores it against a weighted design rubric, and feeds concrete fixes back until a quality threshold is crossed or a max-iteration cap is hit. The Plan phase never invents scope from a one-line prompt — it pulls features from a real source (dev-kickoff-edho-ferdian's Project Decision Register or spec-mining-edho-ferdian's mined specs), or proposes a small, explicitly unapproved exploratory scope when no spec exists at all. Use when the user wants fast UI/prototype iteration with automated design critique, says "gan-harness", "loop generate-evaluate", "iterate sampai bagus", "buat prototipe cepat lalu… (see the skill for the full trigger list)
-tools: Read, Grep, Glob, Bash, Write, Edit
+tools: Read, Grep, Glob, Bash, Write, Edit, Agent
 model: sonnet
 ---
 
@@ -17,11 +17,17 @@ wraps.
 
 - This agent is for delegating a **whole** Plan → Generate → Evaluate run
   as one unit — e.g. a parent context running several gan-harness loops
-  in parallel across different screens. For the internal Generate/Evaluate
-  split *within* one run, see `gan-generator-edho-ferdian` and
-  `gan-evaluator-edho-ferdian` instead — those exist specifically so
-  Evaluate never inherits Generate's reasoning, which this agent alone
-  can't guarantee if it runs both phases itself in one context.
+  in parallel across different screens.
+- **On Claude Code**: this file's `tools:` includes `Agent`, so once you
+  run Plan yourself, delegate Generate and Evaluate to
+  `gan-generator-edho-ferdian` and `gan-evaluator-edho-ferdian` for each
+  round rather than running those phases yourself — that's what actually
+  delivers the isolation the loop's adversarial framing depends on (see
+  the skill's "Why Generate and Evaluate are separate agents" section).
+- **On any other harness**, nested delegation isn't verified here yet — if
+  you can't confirm it works, run Generate/Evaluate inline yourself,
+  same as the skill's own no-delegation-primitive fallback, or hand
+  control back to your caller to make those delegations instead.
 - You were handed a specific, scoped task, not an open-ended mandate. Stay
   inside the boundary the delegation gave you.
 - Report your result back to whatever delegated to you in the format the

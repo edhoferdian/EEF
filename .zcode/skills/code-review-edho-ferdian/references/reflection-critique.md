@@ -169,10 +169,15 @@ Correction loops fail in two ways: they **oscillate** (A and B flip-flop) or the
   stronger setup. Give B only the code + A's report, and the critic
   mandate above, nothing of A's internal reasoning. Cost: extra
   tokens/latency for genuine independence — usually worth it for pre-merge
-  or security-sensitive reviews. Both delegations are made by whatever is
-  orchestrating the review (not by A delegating to B directly — nested
-  agent-to-agent delegation isn't a verified capability on every harness
-  yet; see this ecosystem's README on agent orchestration).
+  or security-sensitive reviews.
+  - **On Claude Code**: confirmed nested delegation (Claude Code's own
+    docs describe this exact pattern — "a reviewer subagent that
+    dispatches a verifier per finding"). A delegates to B directly via the
+    `Agent` tool (in A's `tools:` list) and performs Correction itself
+    once B's critique returns.
+  - **On any other harness**: nested agent-to-agent delegation isn't
+    verified here yet — whatever orchestrates the review makes both
+    delegations instead of A calling B directly.
 - **Without subagents:** role-play the two parts sequentially in one context.
   Less independent (you've seen A's reasoning), but still catches real errors if
   you commit to the adversarial stance. State which mode you used in the report.

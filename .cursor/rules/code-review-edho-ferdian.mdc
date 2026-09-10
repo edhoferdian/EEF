@@ -283,14 +283,24 @@ than forcing a false resolution.
 
 **Implementation:** on a harness with sub-agent delegation, Agent A is
 `code-reviewer-edho-ferdian` and Agent B is `code-critic-edho-ferdian` —
-two separate agents, delegated by whatever is orchestrating this review
-(dev-kickoff-edho-ferdian, another agent, or the user), each getting only
-what its role needs: A gets the code and produces the draft; B gets the
-code and A's draft report, never A's internal reasoning. This is a real
-independence guarantee, not a role-play framing. On a harness with no
-delegation primitive, role-play the two parts sequentially in one
-context — less independent, still valuable. Note which mode you used in
-the report either way.
+two separate agents, each getting only what its role needs: A gets the
+code and produces the draft; B gets the code and A's draft report, never
+A's internal reasoning. This is a real independence guarantee, not a
+role-play framing.
+
+On **Claude Code specifically**, this is nested delegation, confirmed
+against Claude Code's own docs: a subagent can delegate further (up to 3
+layers below the main conversation by default) when its `tools:` list
+includes `Agent` — `code-reviewer-edho-ferdian`'s does, so A delegates
+directly to B and performs Correction itself once B's critique returns.
+On **any other harness**, that nested capability hasn't been verified
+here — whatever is orchestrating the review (dev-kickoff-edho-ferdian,
+another agent, or the user) makes both delegations instead, handing A's
+draft to B and B's critique back to A.
+
+On a harness with no delegation primitive at all, role-play the two parts
+sequentially in one context — less independent, still valuable. Note
+which mode you used in the report either way.
 
 ---
 
