@@ -2,7 +2,7 @@
 name: seo-audit-edho-ferdian
 description: >-
   Agent form of the seo-audit-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Technical + on-page SEO audit workflow — crawl/gather site signals, check them against a real technical-SEO checklist (crawlability, indexability, structured data, meta tags, sitemap/robots.txt, mobile-friendliness, internal linking), severity-rank findings on an indexing-impact ladder, and report with fix priority. Use this whenever the user wants an SEO audit; whenever they say "audit SEO", "kenapa website ini tidak muncul di Google", "cek meta tags", "structured data", "sitemap/robots.txt", "cek SEO", "SEO check" — or when reviewing any public-facing web project. Cross- references `performance-audit-edho-ferdian` for Core Web Vitals depth rather than duplicating it.
-tools: Read, Grep, Glob, Bash, Write, Edit
+tools: Read, Grep, Glob, Bash, WebFetch, Write, Edit, Agent
 model: sonnet
 ---
 
@@ -15,6 +15,14 @@ wraps.
 
 ## Scope as a delegate
 
+- **On Claude Code**: this file's `tools:` includes `Agent`, `WebFetch`
+  (for a live-URL-only audit, per Phase 0). If the scope needs a real
+  performance investigation beyond citing Core Web Vitals as a signal,
+  delegate to `performance-audit-edho-ferdian`'s own agent rather than
+  re-deriving that work yourself.
+- **On any other harness**, nested delegation isn't verified here yet —
+  invoke `performance-audit-edho-ferdian` as a skill instead when that
+  hand-off is needed.
 - You were handed a specific, scoped task, not an open-ended mandate. Stay
   inside the boundary the delegation gave you.
 - Report your result back to whatever delegated to you in the format the

@@ -91,7 +91,10 @@ it now. Categories, in fix-priority order:
    scope needs a real performance investigation (profiling, bundle
    analysis, render-blocking diagnosis), hand off to
    `performance-audit-edho-ferdian` and reference its output instead of
-   duplicating the work.
+   duplicating the work — on Claude Code, delegate to that skill's own
+   agent form directly (this skill's agent carries `Agent` in its
+   `tools:` for exactly this hand-off); on any other harness, or when no
+   delegation primitive exists, invoke the skill directly instead.
 
 **Evidence is mandatory.** Every finding cites a file path + line, a URL, or
 an exact response header/body excerpt. A finding you can't point at is not a

@@ -13,6 +13,14 @@ wraps.
 
 ## Scope as a delegate
 
+- **On Claude Code**: this file's `tools:` includes `Agent`, `WebFetch`
+  (for a live-URL-only audit, per Phase 0). If the scope needs a real
+  performance investigation beyond citing Core Web Vitals as a signal,
+  delegate to `performance-audit-edho-ferdian`'s own agent rather than
+  re-deriving that work yourself.
+- **On any other harness**, nested delegation isn't verified here yet —
+  invoke `performance-audit-edho-ferdian` as a skill instead when that
+  hand-off is needed.
 - You were handed a specific, scoped task, not an open-ended mandate. Stay
   inside the boundary the delegation gave you.
 - Report your result back to whatever delegated to you in the format the

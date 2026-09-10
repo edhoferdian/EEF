@@ -295,6 +295,16 @@ instruction isn't the same guarantee as a genuinely separate delegate:
   didn't qualify — its categories are either too cheap to be worth agent
   overhead, or explicitly want shared context rather than isolation from
   each other.)
+- `seo-audit-edho-ferdian`'s existing single hand-off to
+  `performance-audit-edho-ferdian` (for real performance investigation
+  beyond citing Core Web Vitals as a ranking signal) is now a literal
+  agent delegation on Claude Code, not just skill-to-skill prose — no new
+  agent, reusing the existing one, same as deployment-ops's fan-out but
+  for one lens instead of four. (Checked `dead-code-cleanup-edho-ferdian`
+  for a split too and found it didn't qualify either — its four removal
+  categories are intentionally sequential for safety, not parallelizable,
+  and its Salak cross-check is ground-truth data, not an adversarial
+  second opinion.)
 - `code-review-edho-ferdian`'s Phase 4 Critique-Correction Loop →
   `code-reviewer-edho-ferdian` (Agent A, already the pilot) and
   `code-critic-edho-ferdian` (Agent B) — B gets only the code and A's
