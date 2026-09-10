@@ -305,6 +305,18 @@ instruction isn't the same guarantee as a genuinely separate delegate:
   categories are intentionally sequential for safety, not parallelizable,
   and its Salak cross-check is ground-truth data, not an adversarial
   second opinion.)
+- `click-path-audit-edho-ferdian`'s whole-app tier → `click-path-tracer-edho-ferdian`,
+  one per screen/module run **in parallel**, all consuming the same
+  Step 1 side-effect map (which must complete first and stay a single
+  source of truth — the skill's own rules already said "never let each
+  agent build its own partial map" before this agent existed to make that
+  concrete). Smaller scopes (one control/screen/store) stay inline; the
+  fan-out only pays for itself at whole-app scale.
+- `spec-mining-edho-ferdian`'s Phase 2 → `spec-mining-worker-edho-ferdian`,
+  one per selected capability run **in parallel** — the simplest fan-out
+  in this ecosystem so far, since each capability reads different modules
+  and writes its own independent output file, with no aggregation step
+  needed afterward.
 - `code-review-edho-ferdian`'s Phase 4 Critique-Correction Loop →
   `code-reviewer-edho-ferdian` (Agent A, already the pilot) and
   `code-critic-edho-ferdian` (Agent B) — B gets only the code and A's

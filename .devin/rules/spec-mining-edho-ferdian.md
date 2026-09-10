@@ -78,6 +78,15 @@ cold.
 
 ## Phase 2 — Sample-and-expand read strategy
 
+When more than one capability was selected, fan out on a harness with
+sub-agent delegation: delegate `spec-mining-worker-edho-ferdian` **once
+per capability, in parallel**, rather than mining each one sequentially
+in this context — capabilities read different modules and each writes its
+own independent output file, so there's nothing to lose by parallelizing
+and no aggregation step needed afterward (each worker's file stands on
+its own). On a harness with no delegation primitive, or for a single
+selected capability, mine inline per the steps below.
+
 For each selected capability:
 
 1. **Sample**: read entry files first (routers, controllers, service

@@ -7,6 +7,16 @@ wraps.
 
 ## Scope as a delegate
 
+- **On Claude Code, for a whole-app audit**: this file's `tools:` includes
+  `Agent`. Build the Step 1 side-effect map yourself first — it must be
+  complete before anything else starts — then fan out to
+  `click-path-tracer-edho-ferdian` **in parallel**, one per screen/module
+  shard, passing each the complete map. Never let a tracer build its own
+  partial map. Aggregate every tracer's findings into the Step 3 report
+  yourself.
+- **For a smaller scope** (one control, one screen, one store), or **on
+  any other harness**, trace inline yourself per the skill's own
+  instructions — the fan-out only pays for itself at whole-app scale.
 - You were handed a specific, scoped task, not an open-ended mandate. Stay
   inside the boundary the delegation gave you.
 - Report your result back to whatever delegated to you in the format the

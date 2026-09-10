@@ -165,6 +165,16 @@ delegate_task(
         "\n"
         "## Scope as a delegate\n"
         "\n"
+        "- **On Claude Code, for a whole-app audit**: this file's `tools:` includes\n"
+        "  `Agent`. Build the Step 1 side-effect map yourself first — it must be\n"
+        "  complete before anything else starts — then fan out to\n"
+        "  `click-path-tracer-edho-ferdian` **in parallel**, one per screen/module\n"
+        "  shard, passing each the complete map. Never let a tracer build its own\n"
+        "  partial map. Aggregate every tracer's findings into the Step 3 report\n"
+        "  yourself.\n"
+        "- **For a smaller scope** (one control, one screen, one store), or **on\n"
+        "  any other harness**, trace inline yourself per the skill's own\n"
+        "  instructions — the fan-out only pays for itself at whole-app scale.\n"
         "- You were handed a specific, scoped task, not an open-ended mandate. Stay\n"
         "  inside the boundary the delegation gave you.\n"
         "- Report your result back to whatever delegated to you in the format the\n"
@@ -174,6 +184,50 @@ delegate_task(
         "  a skill\" or \"heavy enough to delegate here\" — that judgment is made by\n"
         "  whatever is orchestrating (a skill like dev-kickoff-edho-ferdian, another\n"
         "  agent, or the user) at the point of delegation.\n"
+    ),
+)
+```
+
+## click-path-tracer-edho-ferdian
+
+**When to delegate here:** Step 2 (trace each touchpoint) of click-path-audit-edho-ferdian's whole-app audit tier, split out as a parallel delegate — one tracer per screen or module, all consuming the same Step 1 side-effect map, never building their own partial map. Delegate one of these per shard of touchpoints (in parallel, not sequentially) once Step 1 has produced the complete map. On a harness without sub-agent delegation, trace every touchpoint inline instead, per click-path-audit-edho-ferdian's own instructions.
+
+```python
+delegate_task(
+    role="leaf",
+    goal="<the specific task for click-path-tracer-edho-ferdian>",
+    context=(
+        "# Click-Path Tracer (Agent)\n"
+        "\n"
+        "You trace touchpoints against an **already-built** side-effect map. Load\n"
+        "`click-path-audit-edho-ferdian`'s Step 2 instructions (the six defect\n"
+        "patterns, the trace format, the four questions per call) — this file\n"
+        "holds no criteria of its own.\n"
+        "\n"
+        "## What you receive — and what you must not do\n"
+        "\n"
+        "You are given the complete Step 1 side-effect map (every store, every\n"
+        "action's sets/resets, the dangerous-resets list) and a specific shard of\n"
+        "touchpoints to trace — one screen, one module, or an explicit list.\n"
+        "**Never build your own map, even a partial one for the touchpoints you\n"
+        "were given.** If the map you were handed looks incomplete for the stores\n"
+        "your touchpoints actually touch, stop and report that back rather than\n"
+        "filling the gap yourself — a tracer's partial map and the canonical Step 1\n"
+        "map can silently diverge, and `click-path-audit-edho-ferdian`'s own rules\n"
+        "call an audit against a partial map \"worse than no audit.\"\n"
+        "\n"
+        "## Scope as a delegate\n"
+        "\n"
+        "- Trace **only** the touchpoints in your shard, in execution order, against\n"
+        "  all six patterns (sequential undo, async race, stale closure, missing\n"
+        "  transition, conditional dead path, effect interference).\n"
+        "- **Do not fix anything.** Report findings in the wrapped skill's trace\n"
+        "  format; `click-path-audit-edho-ferdian`'s own rules are explicit that an\n"
+        "  audit which starts editing loses its own coverage — that applies to you\n"
+        "  the same way it applies to the skill running standalone.\n"
+        "- Return your findings to whatever delegated to you, in the numbered\n"
+        "  call-sequence format the wrapped skill defines — the caller aggregates\n"
+        "  every tracer's findings into one Step 3 report.\n"
     ),
 )
 ```
@@ -1355,6 +1409,14 @@ delegate_task(
         "\n"
         "## Scope as a delegate\n"
         "\n"
+        "- **On Claude Code**, once Phase 1 groups the codebase and the user\n"
+        "  selects which capabilities to mine: if more than one was selected, fan\n"
+        "  out to `spec-mining-worker-edho-ferdian` **in parallel**, one per\n"
+        "  capability, rather than mining each yourself in one context — this\n"
+        "  file's `tools:` includes `Agent` for that. Each worker writes its own\n"
+        "  output file; there's no aggregation step to do afterward.\n"
+        "- **On any other harness**, or when only one capability was selected, mine\n"
+        "  inline yourself per the skill's own steps.\n"
         "- You were handed a specific, scoped task, not an open-ended mandate. Stay\n"
         "  inside the boundary the delegation gave you.\n"
         "- Report your result back to whatever delegated to you in the format the\n"
@@ -1364,6 +1426,55 @@ delegate_task(
         "  a skill\" or \"heavy enough to delegate here\" — that judgment is made by\n"
         "  whatever is orchestrating (a skill like dev-kickoff-edho-ferdian, another\n"
         "  agent, or the user) at the point of delegation.\n"
+    ),
+)
+```
+
+## spec-mining-worker-edho-ferdian
+
+**When to delegate here:** Phases 2-3 (mine, then emit) of spec-mining-edho-ferdian for a single capability, split out as a parallel delegate — one worker per capability the user selected in Phase 1, since each capability reads different modules and writes its own independent output file. Delegate one of these per selected capability (in parallel, not sequentially) once Phase 1 has grouped the codebase and the user has picked which capabilities to mine. On a harness without sub-agent delegation, mine each capability inline instead, per spec-mining-edho-ferdian's own instructions.
+
+```python
+delegate_task(
+    role="leaf",
+    goal="<the specific task for spec-mining-worker-edho-ferdian>",
+    context=(
+        "# Spec Mining Worker (Agent)\n"
+        "\n"
+        "You mine **one capability**, not the whole selection. Load\n"
+        "`spec-mining-edho-ferdian`'s Phase 2 (sample-and-expand read strategy,\n"
+        "stopping rules, defer-never-drop) and Phase 3 (output format,\n"
+        "`references/spec-format.md`'s block structure) — this file holds no\n"
+        "criteria of its own.\n"
+        "\n"
+        "## Why this is a parallel delegate, not a loop inside one context\n"
+        "\n"
+        "Capabilities the user selects in Phase 1 (`orders`, `payments`,\n"
+        "`user-auth`, ...) read different modules and write to different output\n"
+        "files (`/project-memory/mined-specs/<capability>.md`) — there is no\n"
+        "shared state between them the way Step 1's side-effect map is shared in\n"
+        "`click-path-audit-edho-ferdian`. Each capability is fully self-contained\n"
+        "from sampling through emission, which makes this an even simpler fan-out\n"
+        "than a synthesis-requiring one: no aggregation step needed afterward, each\n"
+        "worker's output file stands on its own.\n"
+        "\n"
+        "## Scope as a delegate\n"
+        "\n"
+        "- Mine **only your assigned capability**. Stay inside its own\n"
+        "  sample-and-expand budget (roughly 70% coverage from entry files, one\n"
+        "  level of expansion, stop at a system boundary / 3 barren files / 15\n"
+        "  files total) — don't wander into another capability's modules even if a\n"
+        "  call chain leads there; note the cross-capability dependency instead\n"
+        "  (`depends_on` metadata) rather than mining it yourself.\n"
+        "- **Never invent behavior.** Uncertain code gets an\n"
+        "  `<!-- uncertainty: ... -->` marker, never a confident-sounding\n"
+        "  Requirement the code doesn't clearly support.\n"
+        "- **Defer, never drop.** Anything past your stopping point gets an\n"
+        "  explicit `<!-- deferred: <reason> -->` marker in your output file.\n"
+        "- Write your capability's spec file yourself\n"
+        "  (`/project-memory/mined-specs/<capability>.md`) — there is no separate\n"
+        "  aggregation step waiting on you; your file is the final output for this\n"
+        "  capability.\n"
     ),
 )
 ```

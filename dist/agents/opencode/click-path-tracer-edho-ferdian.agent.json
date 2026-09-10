@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "click-path-tracer-edho-ferdian": {
+      "description": "Step 2 (trace each touchpoint) of click-path-audit-edho-ferdian's whole-app audit tier, split out as a parallel delegate \u2014 one tracer per screen or module, all consuming the same Step 1 side-effect map, never building their own partial map. Delegate one of these per shard of touchpoints (in parallel, not sequentially) once Step 1 has produced the complete map. On a harness without sub-agent delegation, trace every touchpoint inline instead, per click-path-audit-edho-ferdian's own instructions.",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/click-path-tracer-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": false,
+        "edit": false,
+        "bash": true
+      }
+    }
+  }
+}

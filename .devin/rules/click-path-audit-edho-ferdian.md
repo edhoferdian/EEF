@@ -32,9 +32,15 @@ This audit is expensive; scope it before starting:
 | Whole app | Pre-release, or after a refactor that touched shared state broadly |
 
 For a whole-app audit, Step 1 must complete before any Step 2 work begins —
-its output is the input for everything else. If work is parallelized across
-agents, one agent produces the store map and the rest consume it; never let
-each agent build its own partial map.
+its output is the input for everything else. On a harness with sub-agent
+delegation, build the map yourself, then fan out Step 2 to
+`click-path-tracer-edho-ferdian` **in parallel** — one delegate per
+screen/module, each given the complete map, never building its own
+partial one. This is worth the delegation overhead at whole-app scale
+(potentially dozens of touchpoints, each independent to trace once the
+map exists) but not for the smaller scopes above — trace those inline.
+On a harness with no delegation primitive, trace every touchpoint inline
+regardless of scope, per Step 2 below.
 
 ## Step 1 — Build the side-effect map (mandatory, always first)
 

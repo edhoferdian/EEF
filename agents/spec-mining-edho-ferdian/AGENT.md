@@ -2,7 +2,7 @@
 name: spec-mining-edho-ferdian
 description: >-
   Agent form of the spec-mining-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Extract behavioral specifications from an existing codebase that has no written spec — mining a brownfield repo into a flat list of Requirements (WHEN/THEN) and Invariants (always-true), each anchored to the exact code location that enforces it, with machine-readable metadata (entities, enforced, depends_on) grounded in Salak's dependency graph when that tool is installed. Groups the codebase into capabilities first, then mines them one at a time using a bounded sample-and-expand read strategy — never reading a whole module blindly. Use when entering a project with code but no spec, when dev-kickoff-edho-ferdian Phase 0 reports a missing BEHAVIOR_SPEC role, or when the user says "ekstrak spec", "buat spec dari kode", "dokumentasikan behavior", "reverse-engineer the spec", or "repo… (see the skill for the full trigger list)
-tools: Read, Grep, Glob, Bash, Write, Edit
+tools: Read, Grep, Glob, Bash, Write, Edit, Agent
 model: sonnet
 ---
 
@@ -15,6 +15,14 @@ wraps.
 
 ## Scope as a delegate
 
+- **On Claude Code**, once Phase 1 groups the codebase and the user
+  selects which capabilities to mine: if more than one was selected, fan
+  out to `spec-mining-worker-edho-ferdian` **in parallel**, one per
+  capability, rather than mining each yourself in one context — this
+  file's `tools:` includes `Agent` for that. Each worker writes its own
+  output file; there's no aggregation step to do afterward.
+- **On any other harness**, or when only one capability was selected, mine
+  inline yourself per the skill's own steps.
 - You were handed a specific, scoped task, not an open-ended mandate. Stay
   inside the boundary the delegation gave you.
 - Report your result back to whatever delegated to you in the format the

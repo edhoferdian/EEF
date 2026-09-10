@@ -13,6 +13,14 @@ wraps.
 
 ## Scope as a delegate
 
+- **On Claude Code**, once Phase 1 groups the codebase and the user
+  selects which capabilities to mine: if more than one was selected, fan
+  out to `spec-mining-worker-edho-ferdian` **in parallel**, one per
+  capability, rather than mining each yourself in one context — this
+  file's `tools:` includes `Agent` for that. Each worker writes its own
+  output file; there's no aggregation step to do afterward.
+- **On any other harness**, or when only one capability was selected, mine
+  inline yourself per the skill's own steps.
 - You were handed a specific, scoped task, not an open-ended mandate. Stay
   inside the boundary the delegation gave you.
 - Report your result back to whatever delegated to you in the format the
