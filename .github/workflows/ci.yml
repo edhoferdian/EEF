@@ -114,9 +114,11 @@ jobs:
       - name: install target=zcode-agents twice is idempotent and additive-only
         run: |
           mkdir -p /tmp/eef-cli-test-zcode-agents
-          node "$GITHUB_WORKSPACE/bin/eef.js" --target zcode-agents
-          node "$GITHUB_WORKSPACE/bin/eef.js" --target zcode-agents
-          test -f "$HOME/.zcode/agents/code-reviewer-edho-ferdian.md"
+          echo "existing content" > /tmp/eef-cli-test-zcode-agents/my-own-agent.md
+          ZCODE_AGENTS_DIR=/tmp/eef-cli-test-zcode-agents node "$GITHUB_WORKSPACE/bin/eef.js" --target zcode-agents
+          ZCODE_AGENTS_DIR=/tmp/eef-cli-test-zcode-agents node "$GITHUB_WORKSPACE/bin/eef.js" --target zcode-agents
+          test -f /tmp/eef-cli-test-zcode-agents/code-reviewer-edho-ferdian.md
+          test -f /tmp/eef-cli-test-zcode-agents/my-own-agent.md
 
   plugin-validate:
     name: Claude Code plugin manifest

@@ -87,7 +87,19 @@ def build_description(skill) -> str:
     body = skill.description
     if len(prefix) + len(body) > DESC_LIMIT:
         budget = DESC_LIMIT - len(prefix) - len(TRUNCATION_SUFFIX)
-        body = body[:budget].rsplit(" ", 1)[0] + TRUNCATION_SUFFIX
+        if budget <= 0:
+            # The prefix (or a future longer skill name) alone already
+            # exceeds the limit — no room for any body text at all. Not
+            # reachable by any of the 33 skills today, but truncating to a
+            # negative slice or calling .rsplit on an empty string would
+            # otherwise fail confusingly here instead of with a clear error.
+            raise ValueError(
+                f"{skill.name}: prefix + truncation suffix alone exceed "
+                f"DESC_LIMIT ({DESC_LIMIT}); shorten PREFIX_TEMPLATE or "
+                f"raise DESC_LIMIT before adding a name this long."
+            )
+        truncated = body[:budget].rsplit(" ", 1)[0]
+        body = (truncated or body[:budget]) + TRUNCATION_SUFFIX
     return prefix + body
 
 

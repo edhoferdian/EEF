@@ -71,7 +71,7 @@ def build_skill_md(agents: list[Agent]) -> str:
         parts.append(f'    goal="<the specific task for {a.name}>",\n')
         parts.append('    context=(\n')
         for line in a.body.splitlines():
-            escaped = line.replace('"', '\\"')
+            escaped = line.replace('\\', '\\\\').replace('"', '\\"')
             parts.append(f'        "{escaped}\\n"\n')
         parts.append("    ),\n")
         parts.append(")\n")

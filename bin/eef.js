@@ -149,9 +149,9 @@ const TARGETS = {
 
   "zcode-agents": {
     label: "ZCode sub-agents (added to ~/.zcode/agents/, existing files never touched)",
-    scope: "global only (no confirmed project-local Subagent directory)",
+    scope: "global only (or $ZCODE_AGENTS_DIR — no confirmed project-local Subagent directory)",
     install() {
-      const destRoot = path.join(os.homedir(), ".zcode", "agents");
+      const destRoot = process.env.ZCODE_AGENTS_DIR || path.join(os.homedir(), ".zcode", "agents");
       const srcDir = path.join(PKG_ROOT, "dist", "agents", "zcode");
       fs.mkdirSync(destRoot, { recursive: true });
       let count = 0;
@@ -230,6 +230,12 @@ function copyFileInto(src, dest) {
  * Also copies each referenced prompts/agents/<name>.txt alongside the
  * config, since opencode.json's prompt field is a {file:...} reference
  * relative to opencode.json's own directory.
+ *
+ * Logs "Added"/"Updated"/"Unchanged" per agent so an overwrite of a
+ * pre-existing (possibly hand-edited) entry is never silent — found by
+ * code-reviewer-edho-ferdian's own review of this file: the previous
+ * single "Merged agent: X" message for every case made a real overwrite
+ * of a customized entry indistinguishable from a first-time add.
  */
 function mergeOpencodeAgents(destRoot) {
   const srcDir = path.join(PKG_ROOT, "dist", "agents", "opencode");
@@ -261,8 +267,15 @@ function mergeOpencodeAgents(destRoot) {
     if (!file.endsWith(".agent.json")) continue;
     const fragment = JSON.parse(fs.readFileSync(path.join(srcDir, file), "utf8"));
     for (const [name, def] of Object.entries(fragment.agent || {})) {
+      const existing = config.agent[name];
+      if (existing === undefined) {
+        console.log(`Added agent: ${name}`);
+      } else if (JSON.stringify(existing) !== JSON.stringify(def)) {
+        console.log(`Updated agent: ${name} (replaced a differing entry already in opencode.json — any hand edits to it are gone)`);
+      } else {
+        console.log(`Unchanged agent: ${name}`);
+      }
       config.agent[name] = def;
-      console.log(`Merged agent: ${name}`);
       count++;
     }
   }
@@ -291,12 +304,15 @@ Usage:
 
 Targets (--target):
 `);
+  const widest = Math.max(...Object.keys(TARGETS).map((k) => k.length));
   for (const [key, t] of Object.entries(TARGETS)) {
-    console.log(`  ${key.padEnd(12)} ${t.label} — ${t.scope}`);
+    console.log(`  ${key.padEnd(widest + 1)} ${t.label} — ${t.scope}`);
   }
   console.log(`
 Env vars:
   CLAUDE_SKILLS_DIR   Install location for --target claude (default: ~/.claude/skills)
+  CLAUDE_AGENTS_DIR   Install location for --target claude-agents (default: ~/.claude/agents)
+  ZCODE_AGENTS_DIR    Install location for --target zcode-agents (default: ~/.zcode/agents)
 
 Examples:
   eef-install
