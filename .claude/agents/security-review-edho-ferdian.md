@@ -1,7 +1,7 @@
 ---
 name: security-review-edho-ferdian
 description: Agent form of the security-review-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Single source of truth for security review criteria across the Edho Ferdian ecosystem — general OWASP-style checklist (SEC-01..19), stack-specific security items (React, Python, FastAPI, Django, PHP/Laravel, Java/Spring Boot, Perl, Ruby/Rails, ArkTS/HarmonyOS, and Solidity/EVM smart contracts), and domain-specific security items (database RLS/privilege, healthcare PHI, LLM/agent pipelines, ML, containers, cloud/IaC/CI-CD, agent-harness config). Runs STANDALONE for a security-only pass ("cek keamanan kode ini", "security audit", "find vulnerabilities") OR as the delegated depth layer for Domain 2 (SEC) of code-review-edho-ferdian's full review. Every other skill in this ecosystem that touches security cross-references this skill instead of holding its own copy — this is the only… (see the skill for the full trigger list)
-tools: Read, Grep, Glob, Bash
+tools: Read, Grep, Glob, Bash, Agent
 model: sonnet
 ---
 
@@ -14,6 +14,16 @@ wraps.
 
 ## Scope as a delegate
 
+- **On Claude Code, when running Mode A** (standalone security-only pass):
+  this file's `tools:` includes `Agent`. After your own Reflection pass
+  drafts findings, delegate to `code-critic-edho-ferdian` for an
+  adversarial check before finalizing — self-reflection alone is backwards
+  for this mode's own highest-stakes use case. Perform Correction yourself
+  once the critique returns.
+- **In Mode B** (delegated depth layer inside a full review), or **on any
+  other harness**: no change — Mode B's findings are already covered by
+  the host review's own Critique-Correction pass, and other harnesses fall
+  back to Reflection alone per the skill's own instructions.
 - You were handed a specific, scoped task, not an open-ended mandate. Stay
   inside the boundary the delegation gave you.
 - Report your result back to whatever delegated to you in the format the

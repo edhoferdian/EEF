@@ -317,6 +317,15 @@ instruction isn't the same guarantee as a genuinely separate delegate:
   in this ecosystem so far, since each capability reads different modules
   and writes its own independent output file, with no aggregation step
   needed afterward.
+- `security-review-edho-ferdian`'s Mode A (standalone security-only pass)
+  reuses `code-critic-edho-ferdian` — generalized rather than forked —
+  for an adversarial check after its own Reflection pass. Mode A
+  previously only self-reflected, which was backwards for its own
+  highest-stakes use case ("is this safe to ship security-wise"); Mode B
+  (running inside a full code review) was already covered by the host
+  review's own Critique-Correction pass. This closes the full sweep of all
+  33 skills for this criterion — see below for what was checked and
+  correctly left alone.
 - `code-review-edho-ferdian`'s Phase 4 Critique-Correction Loop →
   `code-reviewer-edho-ferdian` (Agent A, already the pilot) and
   `code-critic-edho-ferdian` (Agent B) — B gets only the code and A's
@@ -332,9 +341,45 @@ The skill still keeps its own whole-pipeline agent too (delegating the
 the phase-specific agents are for the isolation guarantee *within* one
 run, not a replacement for the whole-pipeline form.
 
-Only one pilot agent exists today (`code-reviewer-edho-ferdian`) and one
-pilot workflow (`review-then-verify-edho-ferdian`) — this layer is still
-being validated before more of the roster gets ported.
+**Status: all 33 skills have been checked against this criterion** (not
+just the ones with a split — every skill was read end-to-end and evaluated
+for context-isolation or parallelism value). 41 agents and 5 workflows
+exist today: 33 generic thin-wrapper stubs, 8 hand-tuned agents from a
+genuine split (`code-critic`, `gan-generator`/`gan-evaluator`,
+`opensource-sanitizer`, `research-worker`/`research-fact-checker`,
+`click-path-tracer`, `spec-mining-worker`). Two skills gained a wired
+hand-off to an *existing* agent instead of a new one
+(`deployment-ops-edho-ferdian`'s four-lens fan-out,
+`seo-audit-edho-ferdian`'s single hand-off to `performance-audit-edho-ferdian`),
+and one gained a *reused* agent across two different skills
+(`code-critic-edho-ferdian`, generalized to also serve
+`security-review-edho-ferdian`'s Mode A).
+
+The remaining skills were checked and correctly left as skill-only
+(generic agent stub, no internal split) — most because they're
+collaborative/authoring/design-time work that isolation doesn't help, a
+few for a specific documented reason:
+
+- `skill-audit-edho-ferdian`, `config-hygiene-edho-ferdian` — mechanical
+  checks too cheap to be worth agent-spawn overhead, or explicitly want
+  shared context between sub-checks rather than isolation from them.
+- `dead-code-cleanup-edho-ferdian`, `build-fix-edho-ferdian` — internally
+  sequential *by design* for safety (test after each category/fix; a
+  regression must surface at the smallest blast radius), not
+  parallelizable without defeating that purpose.
+- `safe-execution-edho-ferdian` — a cross-cutting policy other
+  orchestrators follow, not a task with its own splittable phases.
+- `e2e-testing-edho-ferdian` — journeys could parallelize, but workers may
+  share a Page Object file for the same screen; declined rather than
+  design around an unresolved write-conflict risk the skill's own text
+  doesn't address.
+- `docs-sync-edho-ferdian` — per-area codemaps could parallelize in
+  principle, but nothing in the skill signals many areas processed in one
+  run the way `spec-mining-edho-ferdian`'s multi-capability selection
+  does; too speculative to build against.
+- `performance-audit-edho-ferdian` — its own text explicitly declines
+  `gan-harness-edho-ferdian`'s heavier generator/evaluator machinery for
+  its bounded optimization-loop pattern.
 
 ## Skills
 

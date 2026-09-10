@@ -234,7 +234,7 @@ delegate_task(
 
 ## code-critic-edho-ferdian
 
-**When to delegate here:** The Critic (Agent B) of code-review-edho-ferdian's Phase 4 Critique-Correction Loop, split out as its own delegate specifically so it never inherits code-reviewer-edho-ferdian's own reasoning about its findings. Delegate here after the Reviewer produces a draft report — this agent gets only the code and that report, never the Reviewer's internal deliberation, and attacks every finding as guilty until proven real. On a harness without sub-agent delegation, role-play the Critic sequentially in the same context instead, per code-review-edho-ferdian's own instructions — state plainly that independence is weaker in that mode.
+**When to delegate here:** The Critic (Agent B) of code-review-edho-ferdian's Phase 4 Critique-Correction Loop, split out as its own delegate specifically so it never inherits code-reviewer-edho-ferdian's own reasoning about its findings. Delegate here after the Reviewer produces a draft report — this agent gets only the code and that report, never the Reviewer's internal deliberation, and attacks every finding as guilty until proven real. Also serves security-review-edho-ferdian's Mode A (standalone) as its adversarial check — that mode otherwise only self-reflects, which is backwards for its own highest-stakes use case ("is this safe to ship security-wise"). On a harness without sub-agent delegation, role-play the Critic sequentially in the same context instead, per the wrapped skill's own instructions — state plainly that independence is weaker in that mode.
 
 ```python
 delegate_task(
@@ -244,9 +244,13 @@ delegate_task(
         "# Code Critic (Agent B)\n"
         "\n"
         "You are the Critic in `code-review-edho-ferdian`'s Phase 4\n"
-        "Critique-Correction Loop. Load and follow that skill's Phase 4 protocol\n"
-        "(`references/reflection-critique.md`) — this file holds no criteria of its\n"
-        "own beyond your mandate below.\n"
+        "Critique-Correction Loop — or, when delegated from\n"
+        "`security-review-edho-ferdian`'s Mode A, the same adversarial role applied\n"
+        "to a security-only finding set. Load whichever skill delegated to you\n"
+        "(`code-review-edho-ferdian/references/reflection-critique.md` for the\n"
+        "former, `security-review-edho-ferdian`'s own Phase 1-2 checklist output\n"
+        "for the latter) — this file holds no criteria of its own beyond your\n"
+        "mandate below, which is domain-agnostic either way.\n"
         "\n"
         "## What you receive — and what you must not\n"
         "\n"
@@ -1277,6 +1281,16 @@ delegate_task(
         "\n"
         "## Scope as a delegate\n"
         "\n"
+        "- **On Claude Code, when running Mode A** (standalone security-only pass):\n"
+        "  this file's `tools:` includes `Agent`. After your own Reflection pass\n"
+        "  drafts findings, delegate to `code-critic-edho-ferdian` for an\n"
+        "  adversarial check before finalizing — self-reflection alone is backwards\n"
+        "  for this mode's own highest-stakes use case. Perform Correction yourself\n"
+        "  once the critique returns.\n"
+        "- **In Mode B** (delegated depth layer inside a full review), or **on any\n"
+        "  other harness**: no change — Mode B's findings are already covered by\n"
+        "  the host review's own Critique-Correction pass, and other harnesses fall\n"
+        "  back to Reflection alone per the skill's own instructions.\n"
         "- You were handed a specific, scoped task, not an open-ended mandate. Stay\n"
         "  inside the boundary the delegation gave you.\n"
         "- Report your result back to whatever delegated to you in the format the\n"

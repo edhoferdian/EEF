@@ -1,7 +1,7 @@
 {
   "agent": {
     "code-critic-edho-ferdian": {
-      "description": "The Critic (Agent B) of code-review-edho-ferdian's Phase 4 Critique-Correction Loop, split out as its own delegate specifically so it never inherits code-reviewer-edho-ferdian's own reasoning about its findings. Delegate here after the Reviewer produces a draft report \u2014 this agent gets only the code and that report, never the Reviewer's internal deliberation, and attacks every finding as guilty until proven real. On a harness without sub-agent delegation, role-play the Critic sequentially in the same context instead, per code-review-edho-ferdian's own instructions \u2014 state plainly that independence is weaker in that mode.",
+      "description": "The Critic (Agent B) of code-review-edho-ferdian's Phase 4 Critique-Correction Loop, split out as its own delegate specifically so it never inherits code-reviewer-edho-ferdian's own reasoning about its findings. Delegate here after the Reviewer produces a draft report \u2014 this agent gets only the code and that report, never the Reviewer's internal deliberation, and attacks every finding as guilty until proven real. Also serves security-review-edho-ferdian's Mode A (standalone) as its adversarial check \u2014 that mode otherwise only self-reflects, which is backwards for its own highest-stakes use case (\"is this safe to ship security-wise\"). On a harness without sub-agent delegation, role-play the Critic sequentially in the same context instead, per the wrapped skill's own instructions \u2014 state plainly that independence is weaker in that mode.",
       "mode": "subagent",
       "prompt": "{file:prompts/agents/code-critic-edho-ferdian.txt}",
       "tools": {

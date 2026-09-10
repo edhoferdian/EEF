@@ -175,6 +175,18 @@ intent-preservation, hallucination checks apply identically to a
 security-only finding set). Read that file now if you're running Mode A.
 Emit the same **Reflection Notes** block format it defines.
 
+Self-reflection alone is backwards for Mode A's own highest-stakes use case
+("is this safe to ship security-wise") — the same self-checking-its-own-work
+limitation `code-review-edho-ferdian` addresses with a second, adversarial
+role. On a harness with sub-agent delegation, after Reflection produces a
+draft, delegate to `code-critic-edho-ferdian` — the same Critic agent
+`code-review-edho-ferdian`'s Phase 4 uses, generalized to also serve this
+mode — passing it the code and the draft findings, never your own
+reasoning. Perform Correction yourself once its critique returns. On a
+harness with no delegation primitive, this step is skipped and Mode A relies
+on Reflection alone, same as before — say so in the report rather than
+implying an adversarial pass happened.
+
 **Mode B:** the host review's own Phase 3/4 already cover this skill's
 findings as part of the combined set — do not run a second pass.
 
@@ -192,24 +204,5 @@ Use the **same report format** as `code-review-edho-ferdian`
 (`references/review-checklist.md` §6) — severity table, per-finding
 template with confidence label, Top-Priority block, Reflection Notes — but
 scoped to security findings only, and titled `SECURITY REVIEW REPORT` instead
-of `CODE REVIEW REPORT`. Save the report file the same way
-(`./<file-or-module>-security-review.md`) and tell the user the path.
-
-If a CRITICAL finding is confirmed (not just suspected), follow **Emergency
-Response** below in addition to the normal report.
-
----
-
-## Severity system
-
-Same 5-level scale as the rest of the ecosystem — do not invent a parallel
-one:
-
-- 🔴 **CRITICAL** — direct security breach, data leak, or exploitable RCE/auth
-  bypass. Must fix before ship.
-- 🟠 **HIGH** — serious exploitable issue, narrower blast radius or requiring
-  some precondition (e.g. admin access, specific timing).
-- 🟡 **MEDIUM** — real weakness, low likelihood or limited impact today.
-- 🔵 **LOW** — minor hardening opportunity, defense-in-depth.
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/security-review-edho-ferdian/SKILL.md` for complete instructions.

@@ -13,6 +13,16 @@ wraps.
 
 ## Scope as a delegate
 
+- **On Claude Code, when running Mode A** (standalone security-only pass):
+  this file's `tools:` includes `Agent`. After your own Reflection pass
+  drafts findings, delegate to `code-critic-edho-ferdian` for an
+  adversarial check before finalizing — self-reflection alone is backwards
+  for this mode's own highest-stakes use case. Perform Correction yourself
+  once the critique returns.
+- **In Mode B** (delegated depth layer inside a full review), or **on any
+  other harness**: no change — Mode B's findings are already covered by
+  the host review's own Critique-Correction pass, and other harnesses fall
+  back to Reflection alone per the skill's own instructions.
 - You were handed a specific, scoped task, not an open-ended mandate. Stay
   inside the boundary the delegation gave you.
 - Report your result back to whatever delegated to you in the format the
