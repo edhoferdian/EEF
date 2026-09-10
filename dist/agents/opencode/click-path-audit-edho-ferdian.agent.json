@@ -9,6 +9,11 @@
         "write": false,
         "edit": false,
         "bash": true
+      },
+      "permission": {
+        "task": {
+          "*": "allow"
+        }
       }
     }
   }

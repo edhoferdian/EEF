@@ -68,6 +68,16 @@ def agent_json_path(agent: Agent):
 
 
 def agent_block(agent: Agent) -> dict:
+    # OpenCode grants every subagent its "task" tool (nested delegation) by
+    # default, confirmed live via `opencode debug agent <name>` against this
+    # package's own installed agents — including ones with no `Agent` in
+    # their Claude Code tools: at all. That's more permissive than this
+    # ecosystem's own leaf/orchestrator design, which deliberately restricts
+    # nested delegation to the agents whose isolation-critical sub-phase
+    # actually needs it (see README's "agent orchestration" section). Set
+    # permission.task explicitly per agent so OpenCode's behavior matches
+    # Claude Code's Agent-tool gating instead of silently diverging from it.
+    can_orchestrate = "Agent" in [t.strip() for t in agent.tools.split(",") if t.strip()]
     return {
         "agent": {
             agent.name: {
@@ -75,6 +85,7 @@ def agent_block(agent: Agent) -> dict:
                 "mode": "subagent",
                 "prompt": f"{{file:prompts/agents/{agent.name}.txt}}",
                 "tools": opencode_tools(agent.tools),
+                "permission": {"task": {"*": "allow" if can_orchestrate else "deny"}},
             }
         }
     }

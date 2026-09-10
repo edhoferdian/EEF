@@ -270,18 +270,32 @@ that carry `Agent` in Claude Code (`click-path-audit-edho-ferdian`,
 `hermes config get delegation.max_spawn_depth` check inline so a user finds
 out *before* relying on it, not after silently getting weaker isolation.
 
-**On OpenCode and ZCode, nested delegation is still unverified.** OpenCode's
-docs confirm a `permission.task` control exists but don't state subagents'
-default access to it; binary inspection of the installed `opencode.exe`
-found subagents get `todowrite: "deny"` merged into their default
-permissions but no equivalent `task: "deny"`, which is suggestive but not a
-documented guarantee. ZCode has a `spawn_agent` tool and a "spawn multiple
-subagent" string (parallel spawning is real), but no depth-limit or
-recursion-guard terminology was found in the client bundle — inconclusive
-either way, since that could be enforced server-side instead. Those two
-agents' instructions fall back to "return your result to your caller and
-let it make the next delegation" until a live test (not just static
-inspection) confirms otherwise, same reasoning as before.
+**OpenCode is confirmed too — live, not static inspection.**
+`opencode debug agent <name>` shows the exact resolved tool set a running
+agent gets, no LLM call needed. Checked directly: every subagent got
+`"task": true` by default, **including ones this ecosystem deliberately
+built leaf-only** (`backend-engineering-edho-ferdian` has no `Agent` in its
+Claude Code `tools:` and got `task: true` anyway) — OpenCode is *more*
+permissive than this ecosystem's own leaf/orchestrator design, not less.
+Left alone, every one of the 41 agents could nest-delegate on OpenCode
+regardless of what Claude Code allows it to do. Fixed:
+`export_agents_opencode.py` now sets `permission.task` explicitly per
+agent (`{"*": "allow"}` for the same 9 orchestrator agents, `{"*": "deny"}`
+for the other 32) so OpenCode's actual behavior matches the documented
+design instead of silently exceeding it. Re-verified after the fix with
+the same `opencode debug agent` command: `backend-engineering-edho-ferdian`
+now resolves to `task: false`, `code-reviewer-edho-ferdian` stays
+`task: true`.
+
+**ZCode has a real headless CLI** (`zcode.cjs --prompt`, found in the
+installed app's own `resources/glm/` — this ecosystem previously only knew
+about the GUI), so a live test is possible in principle, but it has no free
+introspection command the way OpenCode's `debug agent` does — confirming
+nested delegation there means an actual model call against the
+account's Z.AI credits. Deferred rather than spent without asking; the
+`spawn_agent`-tool and no-depth-limit-found static evidence from before
+still stands as the best available signal, and the fallback instructions
+stay as documented until someone opts into that cost.
 
 **Some skills split into more than one agent, hand-tuned rather than
 generated**, when an internal phase's own instructions demand real context
