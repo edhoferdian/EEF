@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "opensource-sanitizer-edho-ferdian": {
+      "description": "The Phase 2 independent adversarial audit of opensource-release-edho-ferdian's three-phase release pipeline, split out as its own delegate specifically so it never opens or trusts FORK_REPORT.md \u2014 a project is safe to publish because someone who didn't do the sanitizing re-checked it from scratch, not because the person who sanitized it says so. Delegate here after Phase 1 (Fork/Prep) completes. On a harness without sub-agent delegation, run this phase inline instead per opensource-release-edho-ferdian's own instructions, and be explicit that the isolation guarantee is weaker in that mode.",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/opensource-sanitizer-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": false,
+        "bash": true
+      }
+    }
+  }
+}

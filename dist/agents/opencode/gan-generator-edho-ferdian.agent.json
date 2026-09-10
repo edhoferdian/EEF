@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "gan-generator-edho-ferdian": {
+      "description": "The Generate phase of gan-harness-edho-ferdian's Plan \u2192 Generate \u2192 Evaluate loop, split out as its own delegate. Delegate here once Plan has produced a spec/rubric \u2014 this agent builds or iterates the live app for one round, then hands off to gan-evaluator-edho-ferdian. On a harness without sub-agent delegation, run this phase inline instead per gan-harness-edho-ferdian's own instructions.",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/gan-generator-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    }
+  }
+}

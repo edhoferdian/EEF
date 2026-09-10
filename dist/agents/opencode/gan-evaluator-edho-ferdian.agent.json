@@ -1,0 +1,15 @@
+{
+  "agent": {
+    "gan-evaluator-edho-ferdian": {
+      "description": "The Evaluate phase of gan-harness-edho-ferdian's Plan \u2192 Generate \u2192 Evaluate loop, split out as its own delegate specifically so it never inherits the Generator's reasoning about its own work. Delegate here after each Generate round to drive the live app, score it against the rubric, and write honest feedback. On a harness without sub-agent delegation, run this phase inline instead per gan-harness-edho-ferdian's own instructions \u2014 note in the feedback file that isolation wasn't available, same honesty rule as the evaluation-mode field.",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/gan-evaluator-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": false,
+        "bash": true
+      }
+    }
+  }
+}

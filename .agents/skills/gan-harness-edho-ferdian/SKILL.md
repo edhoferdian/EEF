@@ -75,6 +75,19 @@ Phase 2  Generate    — build/iterate the live app                  → referen
 Phase 3  Evaluate    — drive the live app, score, feed back, loop   → references/evaluate-phase.md
 ```
 
+### Why Generate and Evaluate are separate agents, not just separate sections
+
+Plan stays in the main thread — it's about faithfully extracting scope
+that already exists (Decision Register, mined specs), not adversarial
+judgment, so isolation buys little there. Generate and Evaluate are
+different: the entire adversarial framing of this loop depends on Evaluate
+scoring the app **without having seen Generate's own reasoning about it**.
+A same-context "now evaluate what you just built, but pretend you don't
+remember building it" instruction is not a real isolation guarantee — the
+context is still there. Delegating each phase to its own agent
+(`gan-generator-edho-ferdian`, `gan-evaluator-edho-ferdian`) makes the
+separation structural instead of just requested.
+
 ### Phase 1 — Plan
 
 Produce a spec document and a rubric, same shape as the original concept
@@ -85,6 +98,14 @@ decision tree, source-reading rules, and the `[EXPLORATORY — NOT APPROVED]`
 template.
 
 ### Phase 2 — Generate
+
+On a harness with sub-agent delegation (Claude Code, OpenCode, Hermes via
+its delegate_task template, ZCode's own Subagents), delegate this phase to
+the `gan-generator-edho-ferdian` agent for each round rather than running
+it inline — see "Why phases are separate agents" below for why this
+matters more here than it does for a typical review delegation. On a
+harness with no delegation primitive, run the phase inline instead, per
+the instructions below.
 
 Build fast, commit per
 iteration, keep a dev server running, read the Evaluator's feedback file
@@ -105,6 +126,15 @@ the checklist tells you *what* to fix; that skill's references tell you
 relying on the Evaluate phase to catch it.
 
 ### Phase 3 — Evaluate
+
+On a harness with sub-agent delegation, delegate this phase to the
+`gan-evaluator-edho-ferdian` agent — this is the phase where isolation
+matters most (see below): an evaluator that shares the Generator's context
+already has its justifications in view and will tend to agree with them
+instead of judging the app on its own terms. On a harness with no
+delegation primitive, run the phase inline, and say so plainly in the
+feedback file rather than letting the loop's output imply an isolation
+guarantee that wasn't actually available.
 
 Drives the **live running app** (not a code read) via whatever browser-
 automation driver is actually available — detect at runtime, same

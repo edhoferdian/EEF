@@ -13,6 +13,11 @@ wraps.
 
 ## Scope as a delegate
 
+- This agent is for delegating the **whole** three-phase pipeline as one
+  unit. For Phase 2 specifically, see `opensource-sanitizer-edho-ferdian`
+  instead — that agent exists so the adversarial audit never opens
+  FORK_REPORT.md, a guarantee this agent alone can't make if it runs
+  Phase 1 and Phase 2 itself in the same context.
 - You were handed a specific, scoped task, not an open-ended mandate. Stay
   inside the boundary the delegation gave you.
 - Report your result back to whatever delegated to you in the format the

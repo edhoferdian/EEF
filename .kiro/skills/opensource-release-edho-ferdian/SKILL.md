@@ -102,6 +102,18 @@ applied to a release pipeline instead of a code review:
   and git history directly, then optionally compares its independent
   findings against Phase 1's claims (a mismatch is itself a finding, not a
   contradiction to paper over).
+
+**On a harness with sub-agent delegation** (Claude Code, OpenCode, Hermes
+via its delegate_task template, ZCode's own Subagents), Phase 2 runs as
+the `opensource-sanitizer-edho-ferdian` agent, delegated fresh after Phase
+1 completes — a real separate context, not just an instruction to
+disregard what's already in view. "Never trust FORK_REPORT.md" is much
+easier to actually honor when the verifier genuinely never saw it, versus
+asking the same context that wrote it to pretend otherwise. On a harness
+with no delegation primitive, run Phase 2 inline per
+`references/sanitize-audit.md`, and note in `SANITIZATION_REPORT.md` that
+the independence guarantee is weaker in that mode — still re-derive every
+finding from scratch, just without hard context isolation backing it.
 - A FAIL sends the actual file/history issue back to Phase 1's method,
   never a patch applied directly by Phase 2 — Phase 2 stays read-only, full
   stop, per its own rules in `references/sanitize-audit.md`.
@@ -119,9 +131,10 @@ than duplicating it here.
 2. **Run Phase 1** per `references/fork-prep.md`. Report file counts,
    secrets extracted, and internal references replaced. State plainly that
    this report is not the release gate.
-3. **Run Phase 2** per `references/sanitize-audit.md`, unconditionally, on
-   the staged copy — regardless of how confident Phase 1's own report
-   sounded. Get a verdict.
+3. **Run Phase 2** — delegate to `opensource-sanitizer-edho-ferdian` on a
+   harness that supports it, else run `references/sanitize-audit.md`
+   inline — unconditionally, on the staged copy, regardless of how
+   confident Phase 1's own report sounded. Get a verdict.
 4. **Apply the hard gate** above based on the verdict.
 5. **Run Phase 3** per `references/packaging-templates.md` once cleared.
    Report every file generated or enhanced, with `setup.sh` confirmed

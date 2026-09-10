@@ -248,6 +248,25 @@ wired up yet — it needs an explicit per-harness capability check first
 leaf/orchestrator guard against runaway recursion — see Hermes'
 `delegate_task` role system for the pattern this ecosystem would mirror).
 
+**Some skills split into more than one agent, hand-tuned rather than
+generated**, when an internal phase's own instructions demand real context
+isolation from another phase — a same-context "pretend you don't remember"
+instruction isn't the same guarantee as a genuinely separate delegate:
+
+- `gan-harness-edho-ferdian`'s Generate and Evaluate phases →
+  `gan-generator-edho-ferdian` / `gan-evaluator-edho-ferdian`, because the
+  Evaluator must score the Generator's work without having seen the
+  Generator's own reasoning about it.
+- `opensource-release-edho-ferdian`'s Phase 2 audit →
+  `opensource-sanitizer-edho-ferdian`, because that phase's own rule is
+  "never open FORK_REPORT.md" — only enforceable if the phase never shared
+  a context with the report's author in the first place.
+
+The skill still keeps its own whole-pipeline agent too (delegating the
+*entire* run as one unit, e.g. several gan-harness loops in parallel) —
+the phase-specific agents are for the isolation guarantee *within* one
+run, not a replacement for the whole-pipeline form.
+
 Only one pilot agent exists today (`code-reviewer-edho-ferdian`) and one
 pilot workflow (`review-then-verify-edho-ferdian`) — this layer is still
 being validated before more of the roster gets ported.
