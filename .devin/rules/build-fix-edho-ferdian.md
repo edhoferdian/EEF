@@ -191,6 +191,17 @@ solution onto a different-shaped problem:
 - Failing tests unrelated to the build error itself → the TEST stage of
   `dev-kickoff-edho-ferdian`'s execution loop, not this skill.
 
+**Context7 hook (signature/version-drift errors only).** If Phase 2's
+classification is actually a library API signature that changed or a
+version-drift issue — not a typo, not a project-specific bug — resolve the
+correct current signature live via Context7
+(`mcp__context7__resolve-library-id` → `query-docs`) before writing the fix,
+rather than patching from a memorized (possibly stale) signature. Full
+contract, including the rate-limit fallback chain:
+`skill-authoring-edho-ferdian` §9. Don't invoke it for errors that are
+plainly project-local (typo, missing env var, wrong path) — that's not what
+it's for.
+
 **Salak hook (optional, auto-detected, detect-defer-never-require).** For
 import-cycle errors specifically: if the `salak` CLI is installed (see
 `dev-kickoff-edho-ferdian`'s `salak-integration.md` for the full detect/
@@ -200,16 +211,5 @@ instead of grepping import statements by hand to reconstruct the cycle. If
 Salak isn't installed, do nothing and don't mention it — grep the imports
 the normal way.
 
-## Uji akar-masalah (jalankan sebelum menyebut sebuah fix "selesai")
-
-Kegagalan paling umum bukan salah memperbaiki — melainkan berhenti di gejala
-dan menamainya akar masalah. Tiga tanda bahaya, ambil langsung dari disiplin
-investigasi non-conformance manufaktur regulasi (di sana konsekuensi berhenti
-di gejala terukur dan terdokumentasi):
-
-1. **"Akar masalah"-mu mengandung kata *error*, *lupa*, atau *salah ketik*.**
-   Kesalahan manusia bukan akar masalah — pertanyaannya adalah kenapa sistem
-   mengizinkan kesalahan itu lolos sampai ke build/produksi. "Dev lupa
-   menambah env var" adalah gejala; akar masalahnya adalah tidak ada validasi
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/build-fix-edho-ferdian/SKILL.md` for complete instructions.

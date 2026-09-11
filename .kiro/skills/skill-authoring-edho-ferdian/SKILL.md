@@ -280,6 +280,52 @@ invokes that skill rather than reproducing its judgment from general
 knowledge. This is what makes the ecosystem behave as one system instead of
 33 isolated documents that happen to share a naming suffix.
 
+## §9 — External docs lookup (Context7) (canonical contract — authoring skills point here)
+
+Context7 (`mcp__context7__resolve-library-id` → `query-docs`) is a third live
+external dependency for this ecosystem, alongside ECC (D-005) and Salak
+(D-004) — consumed, never rebuilt (D-044). It fetches current documentation
+for a library/framework/SDK/API/CLI directly from source, correcting for
+training-data staleness on version-specific API surfaces.
+
+**When to call it (authoring-time only, not every line of code):**
+1. Adding a new dependency or integration.
+2. Upgrading or migrating a dependency's major/minor version.
+3. Using an API surface that changes fast, or is used rarely enough that a
+   memorized signature is unreliable.
+4. Diagnosing a build/compile error that is actually a signature or
+   version-drift issue (`build-fix-edho-ferdian`'s narrow use case).
+
+Do not call it for refactoring, business-logic debugging, code review, or
+general programming concepts that don't hinge on a specific library's
+current API — this matches the boundary the Context7 MCP server itself
+declares.
+
+**Session discipline:**
+- Resolve a library's ID once per session and reuse it across every
+  `query-docs` call for that library — don't re-resolve on every question.
+- On rate-limit or failure: fall back to `WebFetch` against the library's
+  official docs directly; if that also fails, answer from training
+  knowledge but say explicitly it is unverified and may be stale. Never
+  silently answer as if it were confirmed current.
+- **No local caching of fetched docs.** Caching would recreate exactly the
+  maintenance burden this ecosystem already rejected for ECC and Salak — a
+  local copy that quietly goes stale. Query live, every time it's needed.
+
+**Rate limits.** The anonymous/no-key MCP connection is rate-limited. A free
+API key from context7.com/dashboard raises the limit substantially. Add it
+by reconfiguring the existing registration: `claude mcp remove context7`
+then `claude mcp add context7 -- npx -y @upstash/context7-mcp@latest
+--api-key <key>` (or set the `CONTEXT7_API_KEY` env var on the same
+command instead of the flag). Key issuance and MCP reconfiguration is a
+manual user action — the executor never stores or performs this unattended.
+
+**Standard form for every other skill** (one heading, one sentence, pointing
+here — same convention as §7/§8):
+`## External docs (fixed — see skill-authoring-edho-ferdian's canonical
+contract)` followed by a sentence naming when this skill calls Context7 and
+pointing here.
+
 ## Provenance
 
 Consolidated into one skill per D-009. Every install-specific path
@@ -301,3 +347,12 @@ request that the ecosystem's skills auto-invoke each other and that
 cycle gain a seventh, closing stage (Improve). Native to this ecosystem —
 points to `dev-kickoff-edho-ferdian`'s `references/execution-loop.md` v3.0
 as the canonical implementation rather than restating it.
+
+§9 (external docs lookup / Context7) added 2026-09-11 per D-044, discussed
+and agreed with the user in-session. Native to this ecosystem — Context7
+was already connected as a live MCP server and referenced narrowly inside
+`api-design-edho-ferdian/references/mcp-tool-surface.md`; this section
+promotes that pattern to a canonical contract so the other authoring-time
+skills (`frontend-engineering-edho-ferdian`,
+`backend-engineering-edho-ferdian`, `build-fix-edho-ferdian`) point to one
+definition instead of each restating it.

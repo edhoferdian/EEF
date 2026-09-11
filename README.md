@@ -1,6 +1,6 @@
 # Ekosistem Edho Ferdian (EEF)
 
-A native Claude Code skill ecosystem — 33 skills covering engineering
+A native Claude Code skill ecosystem — 34 skills covering engineering
 (backend, frontend, API design, data layer, security, performance, testing),
 operations (deployment, containers, networking, git/release), and
 cross-cutting practices (code review, spec mining, marketing, research).
@@ -15,7 +15,7 @@ Four ways to get these skills, pick whichever fits:
 ### Option A — npm (works for every harness this repo supports, no git needed)
 
 ```bash
-npx eef-install                            # Claude Code, all 33 skills
+npx eef-install                            # Claude Code, all 34 skills
 npx eef-install code-review-edho-ferdian    # Claude Code, specific skills only
 npx eef-install --target cursor             # Cursor, into ./.cursor/rules/
 npx eef-install --target windsurf           # Windsurf + Devin
@@ -51,7 +51,7 @@ Clone this repo, then run the installer for your platform:
 # macOS / Linux / Git Bash
 git clone https://github.com/edhoferdian/EEF.git
 cd EEF
-./install.sh                 # installs all 33 skills
+./install.sh                 # installs all 34 skills
 ./install.sh code-review-edho-ferdian dev-kickoff-edho-ferdian   # only specific ones
 ./install.sh --list          # see all installable skill names
 ```
@@ -60,7 +60,7 @@ cd EEF
 # Windows PowerShell
 git clone https://github.com/edhoferdian/EEF.git
 cd EEF
-.\install.ps1                                    # installs all 33 skills
+.\install.ps1                                    # installs all 34 skills
 .\install.ps1 -Only code-review-edho-ferdian,dev-kickoff-edho-ferdian
 .\install.ps1 -ListOnly
 ```
@@ -277,7 +277,7 @@ agent gets, no LLM call needed. Checked directly: every subagent got
 built leaf-only** (`backend-engineering-edho-ferdian` has no `Agent` in its
 Claude Code `tools:` and got `task: true` anyway) — OpenCode is *more*
 permissive than this ecosystem's own leaf/orchestrator design, not less.
-Left alone, every one of the 41 agents could nest-delegate on OpenCode
+Left alone, every one of the 42 agents could nest-delegate on OpenCode
 regardless of what Claude Code allows it to do. Fixed:
 `export_agents_opencode.py` now sets `permission.task` explicitly per
 agent (`{"*": "allow"}` for the same 9 orchestrator agents, `{"*": "deny"}`
@@ -380,13 +380,14 @@ The skill still keeps its own whole-pipeline agent too (delegating the
 the phase-specific agents are for the isolation guarantee *within* one
 run, not a replacement for the whole-pipeline form.
 
-**Status: all 33 skills have been checked against this criterion** (not
+**Status: all 34 skills have been checked against this criterion** (not
 just the ones with a split — every skill was read end-to-end and evaluated
-for context-isolation or parallelism value). 41 agents and 5 workflows
-exist today: 33 generic thin-wrapper stubs, 8 hand-tuned agents from a
+for context-isolation or parallelism value). 42 agents and 5 workflows
+exist today: 33 generic thin-wrapper stubs, 9 hand-tuned agents — 8 from a
 genuine split (`code-critic`, `gan-generator`/`gan-evaluator`,
 `opensource-sanitizer`, `research-worker`/`research-fact-checker`,
-`click-path-tracer`, `spec-mining-worker`). Two skills gained a wired
+`click-path-tracer`, `spec-mining-worker`) plus the original pilot,
+`code-reviewer-edho-ferdian`. Two skills gained a wired
 hand-off to an *existing* agent instead of a new one
 (`deployment-ops-edho-ferdian`'s four-lens fan-out,
 `seo-audit-edho-ferdian`'s single hand-off to `performance-audit-edho-ferdian`),
@@ -435,7 +436,7 @@ similarly-scoped skill from any other package you have installed.
 .cursor/, .windsurf/, .devin/, .clinerules/, .kiro/, .zcode/
                      generated per-harness adapters, see scripts/export_*.py
 AGENTS.md, GEMINI.md generated cross-vendor router files
-skills/              source of truth — 33 skill folders
+skills/              source of truth — 34 skill folders
 agents/, workflows/  canonical sub-agent + multi-agent-workflow definitions (experimental)
 dist/                packaged .skill archives (Option B), one per skill; also dist/agents/opencode/
 bin/eef.js           npm CLI entry point (Option A)

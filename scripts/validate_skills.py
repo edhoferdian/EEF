@@ -84,7 +84,7 @@ def check_ecc_mentions(errors: list[str]) -> None:
         content = md_file.read_text(encoding="utf-8")
         for i, line in enumerate(content.splitlines(), 1):
             if "ECC" in line:
-                errors.append(f"{rel}:{i}: contains \"ECC\" (only {ECC_EXEMPT_SKILL} is exempt)")
+                errors.append(f"{rel}:{i}: contains \"ECC\" (only {ECC_EXEMPT_SKILLS} is exempt)")
 
 
 def check_broken_references(errors: list[str]) -> None:

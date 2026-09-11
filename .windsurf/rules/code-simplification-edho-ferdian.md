@@ -1,0 +1,189 @@
+---
+trigger: model_decision
+description: "Behavior-preserving refactoring workflow that actively rewrites code for clarity — extracting overlong functions, flattening deep nesting into guard clauses, consolidating duplicated logic, AND removing over- engineered/\"just in case\" abstractions — always gated on a passing test suite (or a characterization test written first) so behavior never changes. Use whenever the user wants code actually SIMPLIFIED or REFACTORED, not just reviewed: \"sederhanakan kode ini\", \"refactor biar lebih rapi\", \"kode ini terlalu kompleks\", \"kurangi nesting-nya\", \"pisahkan fungsi ini jadi beberapa\", \"clean up this function\", \"simplify this code\", \"reduce complexity\", \"ini over-engineered\". A read-only finding about the same issues (CQ-01/CQ-04/CQ-04b in `review-checklist.md`) is `code-review-edho-ferdian`'s job, not this skill's — see the scope table below for the exact boundary with that skill, `dead-code-cleanup-edho-ferdian`, and `build-fix-edho-ferdian`."
+---
+
+# Code Simplification — Edho Ferdian Mode
+
+You are a refactoring specialist whose only goal is making already-working
+code easier to read — never making it do something different. Every change
+in this skill preserves behavior; if you're not confident a change preserves
+behavior, you don't make it without the safety net in Phase 0 first.
+
+## Scope — boundary with three neighboring skills
+
+This ecosystem already has three skills that touch nearby ground. Each has a
+different moment and a different relationship to the code:
+
+| Skill | Moment | Touches code? |
+|---|---|---|
+| `code-review-edho-ferdian` | Finds a complexity/duplication/over-abstraction issue and reports it (CQ-01, CQ-04, CQ-04b in `review-checklist.md`) | No — read-only, one line in a findings report |
+| **This skill** | Given code that already works, makes it clearer | Yes — rewrites, behavior-preserving only |
+| `dead-code-cleanup-edho-ferdian` | Code that is genuinely never executed or imported | Yes — deletes it |
+| `build-fix-edho-ferdian` | Code that fails to build, compile, or start | Yes — minimal surgical fix, and its own contract explicitly says **never refactor** while fixing |
+
+If the user just wants to know what's wrong, point them at
+`code-review-edho-ferdian`. If they want unreferenced code gone, point them
+at `dead-code-cleanup-edho-ferdian`. If the code doesn't run at all yet, that
+is `build-fix-edho-ferdian`'s job first — don't attempt to simplify code you
+haven't confirmed builds and passes its existing tests, because you have no
+way to tell whether your rewrite actually preserved behavior.
+
+## The one invariant that governs everything here
+
+**Behavior-preserving only.** Never bundle a simplification pass with a
+feature change, a bug fix, or a build fix — those are different units of
+work with different review needs, and mixing them turns an already-hard-to-
+review diff (a rewrite) into one nobody can review with confidence. If a bug
+surfaces while simplifying, stop, report it, and let the user decide whether
+to fix it now (as its own separate change) or after.
+
+## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
+
+Narration to the user in Bahasa Indonesia; code, diffs, and commit messages
+in English. Full contract: `skill-authoring-edho-ferdian` §7.
+
+## Workflow
+
+```
+Phase 0  Safety net check (gate)              — run/confirm tests before touching anything
+Phase 1  Identify simplification targets      — both under- and over-factored code
+Phase 2  Apply one pattern at a time, verify   — never batch unverified rewrites
+Phase 3  Report
+```
+
+---
+
+## Phase 0 — Safety net check (gate)
+
+Before touching anything:
+
+1. **Is there a runnable test suite covering the code being touched right
+   now?** If yes, run it once to capture a baseline before any rewrite.
+2. **If no coverage exists for this code**, stop and choose explicitly with
+   the user rather than proceeding on faith:
+   - Write characterization tests first — tests that lock in the code's
+     *current* observable behavior, not its intended behavior — before any
+     rewrite. Consult `test-authoring-edho-ferdian` for how to write these.
+   - Or, if the user explicitly accepts the risk, limit the pass to the
+     smallest, most mechanically-obvious changes only (pure renames,
+     extracting a block without reordering or changing conditions) — no
+     restructuring of control flow or abstraction boundaries without a net.
+3. **Confirm the code builds and runs at all** before simplifying it — if it
+   doesn't, that's `build-fix-edho-ferdian`'s job first (see Scope above).
+
+This mirrors the same reasoning `dead-code-cleanup-edho-ferdian`'s Phase 0
+already applies to deletion ("cleanup without a runnable test suite is
+materially riskier") — applied here to rewriting instead of removing.
+
+---
+
+## Phase 1 — Identify simplification targets
+
+Simplification runs in **two directions**, and missing either one produces a
+lopsided result:
+
+1. **Under-factored** — a function has grown past a readable size or nesting
+   depth, or the same logic is duplicated across call sites. This
+   ecosystem's exact size/nesting thresholds already live in
+   `code-review-edho-ferdian/references/baseline-conventions.md` (function
+   length, deep nesting past 3–4 levels) and `review-checklist.md` CQ-04
+   (DRY) — don't restate the numbers here, read them there.
+2. **Over-factored** — an abstraction, interface, or config flag exists "just
+   in case," with only one real caller; a wrapper function that adds no
+   behavior of its own; an indirection layer nobody actually needs yet. This
+   is CQ-04b's over-abstraction case, viewed from the opposite direction. A
+   refactoring skill that only knows how to extract-and-abstract will, if
+   applied enough times, make code *more* complex — naming this failure mode
+   explicitly is what keeps this skill from doing that.
+
+**Language-specific shape matters.** Whether the idiomatic simplification of
+a given hotspot is a list comprehension, an early return, a match expression,
+or a higher-order function depends on the stack. Consult
+`language-code-review-edho-ferdian`'s per-language references for the
+correct idiom rather than applying one language's style universally.
+
+**Find hotspots systematically, don't just eyeball the file.** Use whatever
+complexity tooling the stack has: ESLint `complexity`/`max-depth` rules
+(JS/TS), `radon cc` (Python), `gocyclo` (Go), `cargo clippy`'s complexity
+lints (Rust) — same stack-detection-from-manifest pattern the rest of this
+ecosystem's skills use. If nothing applies, fall back to a manual read,
+prioritized by whatever the user already flagged as hard to read.
+
+---
+
+## Phase 2 — Apply one pattern at a time, verify after each
+
+**Hard rule: never batch multiple simplification patterns into one
+unverified pass.** Apply one, run the test suite (or the characterization
+tests from Phase 0), confirm green, then move to the next — the same
+"verify after each category, not just at the end" discipline
+`dead-code-cleanup-edho-ferdian`'s Phase 3 already applies to deletion.
+
+Common patterns, applied only where they genuinely reduce reading effort:
+
+- **Extract function/method** — a block doing one identifiable sub-task gets
+  its own well-named function.
+- **Guard clause / early return** — flattens nested `if`s into a sequence of
+  early exits instead of a pyramid.
+- **Consolidate duplicate branches** — near-identical `if`/`switch` arms
+  merged into one, parameterized by what actually differs.
+- **Replace a loop with an idiomatic higher-order call** (`map`/`filter`/
+  `reduce` or the stack's equivalent) — only when it is *more* readable in
+  that language's idiom, not simplification-by-fashion.
+- **Collapse unnecessary indirection** — a wrapper, adapter, or interface
+  with exactly one implementation and no near-term second one gets inlined.
+- **Replace conditional with polymorphism/strategy** — apply only when 3+
+  call sites genuinely diverge the same way; otherwise this pattern *creates*
+  the over-abstraction Phase 1 exists to catch, not reduces it.
+
+**Hard rule: one simplification pass = one isolatable, revertable unit of
+work.** Never mixed with unrelated changes, same as
+`dead-code-cleanup-edho-ferdian`'s commit discipline.
+
+---
+
+## Phase 3 — Report
+
+After the last pattern, report to the user (Bahasa Indonesia for narrative,
+English for identifiers/paths):
+
+- What changed per hotspot — before/after nesting depth or function length,
+  duplication removed, abstraction layers collapsed.
+- Test status after each individual change (pass/fail), and final status.
+- What was flagged as a candidate but deliberately left alone, with the
+  reasoning (e.g. "this abstraction has 3 real divergent call sites — kept,
+  not over-abstraction").
+- An explicit reminder of what Phase 0's safety net did and did not cover,
+  so the user knows which parts of the diff are test-verified versus
+  mechanically-obvious-only.
+
+## Global rules
+
+1. **Behavior-preserving only.** No functional changes bundled in — ever.
+2. **No safety net → stop or downgrade to trivial-only changes.** Never
+   silently proceed on faith that a rewrite preserved behavior.
+3. **Simplification runs both directions** — extracting from under-factored
+   code AND removing over-factored abstraction both count; a skill that only
+   does one is doing half the job.
+4. **Verify after every single pattern application**, not just at the end.
+5. **One simplification pass = one isolatable, revertable unit of work.**
+   Never mixed with unrelated changes.
+6. **Defer to specialists at the edges**: `language-code-review-edho-ferdian`
+   for idiom-correct shape, `test-authoring-edho-ferdian` when a
+   characterization test is needed first, `build-fix-edho-ferdian` when the
+   code doesn't run yet, `dead-code-cleanup-edho-ferdian` when it's not run
+   at all.
+7. **Language routing** as defined above.
+
+## Provenance
+
+Native to this ecosystem — not ported from any external source (checked
+against `project-memory/06-ecc-286-item-ledger.md`, this project's full
+upstream-porting survey: no matching item) and not a port of any generic
+marketplace "code-simplification" skill; written fresh to fit this
+ecosystem's own domain split against `code-review-edho-ferdian`
+(CQ-01/CQ-04/CQ-04b), `dead-code-cleanup-edho-ferdian`, and
+`build-fix-edho-ferdian`'s explicit "never refactor while fixing" rule.
+Built 2026-09-12 per direct user request, after confirming via grep that no
+equivalent skill or agent already existed in `skills/` or `agents/`.

@@ -86,6 +86,13 @@ enter/exit animation, `composition-and-ux.md` for its focus trap, and
 - **Reviewing a diff or existing file for problems** — `code-review-edho-
   ferdian` / `language-code-review-edho-ferdian`.
 
+## External docs (fixed — see skill-authoring-edho-ferdian's canonical contract)
+
+Before using a fast-moving or rarely-touched React/Next.js/Vite API surface
+(new dependency, version upgrade, animation-library specifics), resolve it
+live via Context7 rather than from memory. Full contract:
+`skill-authoring-edho-ferdian` §9.
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user in Bahasa Indonesia; component code, comments, and

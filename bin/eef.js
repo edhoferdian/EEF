@@ -296,7 +296,7 @@ function printHelp() {
   console.log(`eef-install — install Ekosistem Edho Ferdian's skills
 
 Usage:
-  eef-install                          Install all 33 skills for Claude Code
+  eef-install                          Install all 34 skills for Claude Code
   eef-install <skill> [<skill> ...]    Install only these skills for Claude Code
   eef-install --list                   List all installable skill names
   eef-install --target <name>          Install for a different harness (see below)

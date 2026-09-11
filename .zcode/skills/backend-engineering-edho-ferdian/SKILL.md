@@ -56,6 +56,13 @@ description: >-
   sizing, retry/backoff classification, dead-letter queues generically, job
   idempotency keys, and queue observability.
 
+## External docs (fixed — see skill-authoring-edho-ferdian's canonical contract)
+
+Before using a fast-moving or rarely-touched framework/queue/ORM API surface
+(new integration, version upgrade, NestJS/BullMQ/pg-boss specifics), resolve
+it live via Context7 rather than from memory. Full contract:
+`skill-authoring-edho-ferdian` §9.
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user in Bahasa Indonesia; code, comments, and any
