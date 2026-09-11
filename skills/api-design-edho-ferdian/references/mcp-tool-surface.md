@@ -3,7 +3,9 @@
 **Deliberately free of SDK signatures** — the MCP SDK's registration API has changed shape
 more than once, and the source skill itself defers to live docs. Resolve
 current signatures via Context7 (`resolve-library-id` → `query-docs`) at
-authoring time; the rules below are what stays true across versions.
+authoring time — full contract, session/fallback discipline, and rate-limit
+handling: `skill-authoring-edho-ferdian` §9. The rules below are what stays
+true across versions.
 
 An MCP server is an API surface whose client happens to be a model. Everything
 in `rest-conventions.md` about naming, error shape, and versioning applies —
