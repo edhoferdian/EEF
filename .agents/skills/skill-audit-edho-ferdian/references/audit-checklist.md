@@ -8,50 +8,68 @@ the fast findings already in hand for context.
 
 ## 1. Staleness
 
-**What it catches:** a skill whose provenance line cites a source fetch
-date long in the past, that hasn't been meaningfully touched since — while
-its original source has presumably kept evolving upstream. This ecosystem's
-own convention (every ported file carries `Adapted from <source>, fetched
-<date>.`) makes this checkable mechanically instead of by memory.
+**What it used to catch, and why that mechanism is retired:** this section
+originally checked a skill's provenance line (`Adapted from <source>,
+fetched <date>.`) against today's date — a signal that made sense while
+this ecosystem was still actively porting content from an external upstream
+(D-005's transitional phase). That phase is over: every "Adapted from
+<source>, fetched <date>" line in this repo was rewritten into free-form
+prose during the external-attribution-removal pass (commit `53ba399`), and
+every skill built since is native to begin with. A grep for that pattern now
+returns **zero matches across the entire `skills/` tree** — not because
+nothing is stale, but because the signal it looked for no longer exists in
+the corpus. Don't run that grep; it will always report a clean bill of
+health regardless of actual staleness. (Found and retired 2026-09-12, during
+the audit that first noticed the checklist itself had gone stale.)
+
+**What it catches now:** a skill that hasn't been substantively revisited
+even as the ecosystem's own canonical, cross-skill contracts and shared
+conventions moved on around it — the same underlying risk (content quietly
+falling behind a moving reference point), just measured against this
+repo's own evolving norms instead of an external upstream.
 
 **How to check:**
-1. ```bash
-   grep -rnE "Adapted from .*fetched [0-9]{4}-[0-9]{2}-[0-9]{2}" skills/*/SKILL.md skills/*/references/*.md
+1. Get each skill's last substantive touch date:
+   ```bash
+   git log -1 --format=%ad --date=short -- skills/<name>/SKILL.md skills/<name>/references/*.md
    ```
-   to collect every provenance line and its fetch date. Require a
-   parseable ISO date, not just the plain string `"Adapted from"` —
-   the plain-string version matches unfilled template placeholders (e.g.
-   `Adapted from <source-name>, fetched <date>`) as false positives —
-   require a parseable date to count as real provenance.
-2. For each match, compare the fetch date to today's date. Flag anything
-   older than roughly **90 days** as a staleness candidate — this is a
-   judgment threshold, not a hard rule; a skill with a 90-day-old fetch date
-   whose original source hasn't meaningfully changed is not actually stale.
-3. Cross-check the file's last git modification date
-   (`git log -1 --format=%ad -- <path>`) against the provenance fetch date.
-
-   **Fallback when the repo has no `.git` (e.g. this repo before its
-   dedicated GitHub remote exists — see `CLAUDE.md` §A):** `git log` fails
-   outright. Use filesystem mtime instead (`ls -la` / `ls --time-style=full-iso`)
-   as a documented substitute, understanding it is weaker evidence — mtime
-   changes on any touch, including a non-substantive one, while a git commit
-   date reflects an intentional change. Once this repo has real git history,
-   prefer `git log` again.
-
-   Two signals matter:
-   - **Never revisited**: git-modified date ≈ fetch date, and the fetch
-     date is old. This is the strongest staleness signal — the file was
-     written once and never looked at again.
-   - **Silently diverged**: git-modified date is recent but the provenance
-     line's fetch date wasn't updated. This means someone edited the file
-     without re-checking the original source or updating the paper trail —
-     flag it as a provenance-hygiene issue even if the content itself is
-     fine.
-4. Where feasible, spot-check the actual original source against the
-   ported content for the highest-priority candidates (skills that get used
-   often, or that other skills depend on). This step is expensive — don't
-   run it against every skill on every audit; reserve it for candidates
-   flagged by steps 1-3.
+   **Fallback when the repo has no `.git`:** use filesystem mtime instead
+   (`ls -la` / `ls --time-style=full-iso`), understanding it is weaker
+   evidence — mtime changes on any touch, including a non-substantive one,
+   while a git commit date reflects an intentional change.
+2. Find this ecosystem's current list of canonical, cross-skill contracts
+   and when each was introduced — read `skill-authoring-edho-ferdian`'s own
+   numbered sections (§7 Language routing, §8 Development loop convention,
+   §9 External docs/Context7, and whatever has been added since — its own
+   `## Provenance` section dates each one) and check `01-decision-register.md`
+   for any other ecosystem-wide promotion (a shared rule file, a baseline
+   conventions doc, a new required section). This list will keep growing;
+   don't hardcode today's set into this checklist.
+3. For each skill, compare its last-touch date (step 1) against each
+   contract's introduction date (step 2). A skill last touched **before** a
+   contract that applies to it was introduced, and that does not carry that
+   contract's one-line pointer, is a staleness candidate — it predates the
+   norm and may never have adopted it. (A skill that's genuinely exempt from
+   a given contract, the way `safe-execution-edho-ferdian` and
+   `config-hygiene-edho-ferdian` are exempt from Language routing, is not a
+   candidate — check the contract's own stated exemptions before flagging.)
+4. Two signals matter, same shape as before, re-based on this ecosystem's
+   own timeline instead of an external one:
+   - **Never revisited**: a skill with no commits touching it in roughly
+     **90+ days** while its immediate neighbors (skills it cross-references,
+     or that cross-reference it) have been actively edited in that window —
+     the "written once, left behind while its neighborhood moved" signal.
+   - **Silently diverged**: a skill's own `## Provenance` section narrates
+     facts about the repo that no longer hold — a total skill/agent count
+     that's since changed, a decision ID it names that was later superseded
+     or corrected, a skill or file name it mentions that no longer exists.
+     This is a provenance-hygiene issue even if the skill's operative
+     instructions are otherwise fine.
+5. Where feasible, spot-check a flagged skill's actual content against
+   whatever it should be current with (the contract it's missing, the
+   decision it narrates) for the highest-priority candidates — skills that
+   get used often, or that other skills depend on. This step is judgment-
+   heavy; don't run it against every candidate on every audit.
 
 **Severity:** MEDIUM by default (staleness is a maintenance signal, not a
 functional break). Escalate to HIGH if the skill is one other skills
