@@ -39,6 +39,8 @@ jobs:
           python-version: "3.x"
       - name: Install PyYAML (frontmatter validation)
         run: pip install pyyaml
+      - name: Check package.json/bin/eef.js/plugin manifests quote the current skill count
+        run: python scripts/sync_metadata.py --check
       - name: Check AGENTS.md is up to date
         run: python scripts/export_agents_md.py --check
       - name: Check CATALOG.md is up to date
@@ -80,10 +82,11 @@ jobs:
           node-version: "20"
       - name: npm pack produces a valid tarball
         run: npm pack --dry-run
-      - name: --list runs and returns 35 skills
+      - name: --list returns one line per skill folder
         run: |
           count=$(node bin/eef.js --list | wc -l)
-          test "$count" -eq 35
+          expected=$(ls skills | wc -l)
+          test "$count" -eq "$expected"
       - name: --help runs without error
         run: node bin/eef.js --help
       - name: install target=cursor into a throwaway directory
@@ -92,14 +95,14 @@ jobs:
           cd /tmp/eef-cli-test
           node "$GITHUB_WORKSPACE/bin/eef.js" --target cursor
           test -d .cursor/rules
-          test "$(ls .cursor/rules | wc -l)" -eq 35
+          test "$(ls .cursor/rules | wc -l)" -eq "$(ls "$GITHUB_WORKSPACE/skills" | wc -l)"
       - name: install target=zcode into a throwaway directory
         run: |
           mkdir -p /tmp/eef-cli-test-zcode
           cd /tmp/eef-cli-test-zcode
           node "$GITHUB_WORKSPACE/bin/eef.js" --target zcode
           test -d .zcode/skills
-          test "$(ls .zcode/skills | wc -l)" -eq 35
+          test "$(ls .zcode/skills | wc -l)" -eq "$(ls "$GITHUB_WORKSPACE/skills" | wc -l)"
       - name: install target=claude-agents into a throwaway directory
         run: |
           mkdir -p /tmp/eef-cli-test-claude-agents

@@ -183,7 +183,12 @@ callable mid-task) rather than only single-agent instructions:
 - **[`workflows/`](workflows/)** — named multi-agent recipes (pipeline /
   parallel shape) referencing agents by name, generalized from patterns
   already used inline in skills like `gan-harness-edho-ferdian` and
-  `code-review-edho-ferdian`'s Critique-Correction Loop.
+  `code-review-edho-ferdian`'s Critique-Correction Loop. Three exist today:
+  [`review-then-verify-edho-ferdian`](workflows/review-then-verify-edho-ferdian.md)
+  (review, then independently re-check each finding before it counts as
+  confirmed — the generalized shape of `code-review-edho-ferdian`'s own
+  Reflection/Critique-Correction Loop), and the two fan-outs referenced
+  below (`research-fanout`, `production-readiness-fanout`).
 
 **`model:` is Claude Code-only.** Its value ("sonnet", "opus", ...) is a
 Claude Code-specific alias — every other harness's generator deliberately
@@ -470,7 +475,7 @@ opening each folder, see [CATALOG.md](CATALOG.md).
 
 ```
 .claude-plugin/     plugin.json + marketplace.json (Option D)
-.github/            CI workflow + FUNDING.yml
+.github/            CI workflow, npm-publish-on-release workflow, FUNDING.yml
 .cursor/, .windsurf/, .devin/, .clinerules/, .kiro/, .zcode/
                      generated per-harness adapters, see scripts/export_*.py
 AGENTS.md, GEMINI.md generated cross-vendor router files
@@ -499,6 +504,32 @@ GitHub issue, or help rolling this out to more than a couple of engineers?
 Open an issue titled "Enterprise inquiry" or email
 edhoferdian31@gmail.com — no fixed package, we figure out what actually
 fits your team.
+
+## Releasing
+
+For maintainers cutting a new version:
+
+1. Bump `version` in `package.json` (SemVer — MINOR for a new skill/feature,
+   PATCH for a fix, per this ecosystem's own bump rules).
+2. `python scripts/sync_metadata.py` — rewrites the skill/agent count
+   wherever it's quoted in `package.json`, `bin/eef.js`, and both
+   `.claude-plugin/*.json` manifests, so a version bump can't leave one of
+   them stale (a real bug found and fixed 2026-09-16).
+3. Commit, push to `main`, confirm CI is green (`gh run list` or the
+   Actions tab) — never tag a commit CI hasn't verified.
+4. `git tag vX.Y.Z <commit>` (matching `package.json`'s version exactly) and
+   `git push origin vX.Y.Z`.
+5. `gh release create vX.Y.Z --notes "..."` — publishing the GitHub Release
+   automatically triggers **[.github/workflows/publish.yml](.github/workflows/publish.yml)**,
+   which runs `npm publish` for you (it also refuses to publish if the tag
+   and `package.json` version don't match, as a last-resort guard). Requires
+   an `NPM_TOKEN` repo secret (an npm Automation token) to be configured
+   once — see the workflow file's `permissions`/`env` for what it needs.
+
+No CI job currently blocks a direct push to `main` on a failing check (this
+repo has no branch-protection rule requiring it) — treat "check CI after
+every push" in step 3 as a hard habit, not optional, until/unless that
+changes.
 
 ## Contributing
 
