@@ -1,13 +1,13 @@
 # Ekosistem Edho Ferdian — skill router (Cline)
 
-This project ships 33 skills under `skills/*/SKILL.md` — each one a focused
+This project ships 35 skills under `skills/*/SKILL.md` — each one a focused
 playbook for a specific engineering task (code review, API design, test
 authoring, deployment, and more).
 
 Cline has no relevance-based auto-loading for rule files (its only
 conditional mechanism, `paths:` frontmatter, matches file-path globs, not
-task intent) — so this file is deliberately a router, not a dump of all 33
-skills' full content, which would otherwise get reinjected into every single
+task intent) — so this file is deliberately a router, not a dump of every
+skill's full content, which would otherwise get reinjected into every single
 request regardless of relevance. Skim the table below, and when a request
 matches a row, **read that skill's `SKILL.md` file before acting** — it has
 the actual workflow, checklists, and reference material this index

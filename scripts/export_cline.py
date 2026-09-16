@@ -70,17 +70,17 @@ from lib_skills import REPO_ROOT, load_skills
 DEST_DIR = REPO_ROOT / ".clinerules"
 DEST = DEST_DIR / "00-ecosystem-router.md"
 
-HEADER = """\
+HEADER_TEMPLATE = """\
 # Ekosistem Edho Ferdian — skill router (Cline)
 
-This project ships 33 skills under `skills/*/SKILL.md` — each one a focused
+This project ships {count} skills under `skills/*/SKILL.md` — each one a focused
 playbook for a specific engineering task (code review, API design, test
 authoring, deployment, and more).
 
 Cline has no relevance-based auto-loading for rule files (its only
 conditional mechanism, `paths:` frontmatter, matches file-path globs, not
-task intent) — so this file is deliberately a router, not a dump of all 33
-skills' full content, which would otherwise get reinjected into every single
+task intent) — so this file is deliberately a router, not a dump of every
+skill's full content, which would otherwise get reinjected into every single
 request regardless of relevance. Skim the table below, and when a request
 matches a row, **read that skill's `SKILL.md` file before acting** — it has
 the actual workflow, checklists, and reference material this index
@@ -121,7 +121,8 @@ def build_content() -> str:
         # Escape pipe characters so they don't break the Markdown table.
         one_line = one_line.replace("|", "\\|")
         rows.append(f"| `{s.name}` | {one_line} | `skills/{s.name}/SKILL.md` |")
-    return HEADER + "\n".join(rows) + FOOTER
+    header = HEADER_TEMPLATE.format(count=len(skills))
+    return header + "\n".join(rows) + FOOTER
 
 
 def main() -> int:

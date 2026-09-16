@@ -1,12 +1,17 @@
 # Ekosistem Edho Ferdian (EEF)
 
-A native Claude Code skill ecosystem — 34 skills covering engineering
+A native Claude Code skill ecosystem — 35 skills covering engineering
 (backend, frontend, API design, data layer, security, performance, testing),
 operations (deployment, containers, networking, git/release), and
 cross-cutting practices (code review, spec mining, marketing, research).
 
 Standalone by design — no external harness install, no dependency on
 another project's paths or infrastructure.
+
+**Looking for what's actually in here?** [CATALOG.md](CATALOG.md) is the
+full table of every skill and agent with a one-line purpose and a "use
+when" — generated from source, kept in sync the same way every adapter
+below is.
 
 ## Install
 
@@ -15,7 +20,7 @@ Four ways to get these skills, pick whichever fits:
 ### Option A — npm (works for every harness this repo supports, no git needed)
 
 ```bash
-npx eef-install                            # Claude Code, all 34 skills
+npx eef-install                            # Claude Code, all 35 skills
 npx eef-install code-review-edho-ferdian    # Claude Code, specific skills only
 npx eef-install --target cursor             # Cursor, into ./.cursor/rules/
 npx eef-install --target windsurf           # Windsurf + Devin
@@ -51,7 +56,7 @@ Clone this repo, then run the installer for your platform:
 # macOS / Linux / Git Bash
 git clone https://github.com/edhoferdian/EEF.git
 cd EEF
-./install.sh                 # installs all 34 skills
+./install.sh                 # installs all 35 skills
 ./install.sh code-review-edho-ferdian dev-kickoff-edho-ferdian   # only specific ones
 ./install.sh --list          # see all installable skill names
 ```
@@ -60,7 +65,7 @@ cd EEF
 # Windows PowerShell
 git clone https://github.com/edhoferdian/EEF.git
 cd EEF
-.\install.ps1                                    # installs all 34 skills
+.\install.ps1                                    # installs all 35 skills
 .\install.ps1 -Only code-review-edho-ferdian,dev-kickoff-edho-ferdian
 .\install.ps1 -ListOnly
 ```
@@ -277,7 +282,7 @@ agent gets, no LLM call needed. Checked directly: every subagent got
 built leaf-only** (`backend-engineering-edho-ferdian` has no `Agent` in its
 Claude Code `tools:` and got `task: true` anyway) — OpenCode is *more*
 permissive than this ecosystem's own leaf/orchestrator design, not less.
-Left alone, every one of the 42 agents could nest-delegate on OpenCode
+Left alone, every one of the 43 agents could nest-delegate on OpenCode
 regardless of what Claude Code allows it to do. Fixed:
 `export_agents_opencode.py` now sets `permission.task` explicitly per
 agent (`{"*": "allow"}` for the same 9 orchestrator agents, `{"*": "deny"}`
@@ -421,12 +426,45 @@ few for a specific documented reason:
   `gan-harness-edho-ferdian`'s heavier generator/evaluator machinery for
   its bounded optimization-loop pattern.
 
+## Usage
+
+Installing gets the skills onto disk; **using** them day to day depends on
+the harness, and mostly needs no explicit invocation:
+
+- **Claude Code, Cursor, Windsurf/Devin** — these support relevance-based
+  auto-loading. Just describe the task normally ("review this PR", "set up
+  a Vite project", "audit SEO on this page"). The harness matches your
+  request against each skill's `description` and loads the matching one's
+  full `SKILL.md` on its own; you don't type a skill name. In Claude Code
+  specifically, you can also force one explicitly with `/skill-name` (e.g.
+  `/code-review-edho-ferdian`) when you want a specific skill rather than
+  whatever the harness picks.
+- **Everything else (AGENTS.md-style harnesses, Copilot, Cline, Kiro,
+  Hermes, ZCode, OpenClaw)** — these read a router file (or a folder of
+  files) in full on every turn and decide from there which `SKILL.md` to
+  open before acting, per the "Other harnesses" section above. Same
+  end result, different mechanism: no manual invocation needed either.
+- **Not sure which skill fits a task, or want to browse what's available
+  first?** [CATALOG.md](CATALOG.md) lists all of them with a one-line
+  purpose and a "use when" — skim it instead of guessing from a folder
+  name in `skills/`.
+- **Agents** (the `agents/`/`.claude/agents/` layer) are for delegation,
+  not day-to-day use directly — see "Agent orchestration" above for when a
+  task is substantial enough to hand off to one instead of just using the
+  skill inline.
+- Most skills are self-contained; a few (`dev-kickoff-edho-ferdian`
+  especially) auto-invoke several others mid-task per their own PLAN →
+  IMPLEMENT → REVIEW → VERIFY loop — that's expected, not a sign you
+  triggered the wrong one.
+
 ## Skills
 
 See [`skills/`](skills/) — one folder per skill, each a `SKILL.md` plus a
 `references/` directory. Skill names ending in `-edho-ferdian` are this
 ecosystem's own naming convention, so they don't collide with a
-similarly-scoped skill from any other package you have installed.
+similarly-scoped skill from any other package you have installed. For a
+browsable index with descriptions and "use when" guidance instead of
+opening each folder, see [CATALOG.md](CATALOG.md).
 
 ## Repo layout
 
@@ -436,7 +474,8 @@ similarly-scoped skill from any other package you have installed.
 .cursor/, .windsurf/, .devin/, .clinerules/, .kiro/, .zcode/
                      generated per-harness adapters, see scripts/export_*.py
 AGENTS.md, GEMINI.md generated cross-vendor router files
-skills/              source of truth — 34 skill folders
+CATALOG.md           generated skill+agent index, see scripts/generate_catalog.py
+skills/              source of truth — 35 skill folders
 agents/, workflows/  canonical sub-agent + multi-agent-workflow definitions (experimental)
 dist/                packaged .skill archives (Option B), one per skill; also dist/agents/opencode/
 bin/eef.js           npm CLI entry point (Option A)

@@ -1,6 +1,6 @@
 # AGENTS.md — Ekosistem Edho Ferdian (EEF)
 
-This project ships 33 skills under `skills/*/SKILL.md` — each one a focused
+This project ships 35 skills under `skills/*/SKILL.md` — each one a focused
 playbook for a specific engineering task (code review, API design, test
 authoring, deployment, and more). This file is a router, not a full copy:
 skim the table below, and when a request matches a row, **read that skill's

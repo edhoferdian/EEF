@@ -68,10 +68,10 @@ from lib_skills import REPO_ROOT, load_skills
 
 DEST = REPO_ROOT / ".github" / "copilot-instructions.md"
 
-HEADER = """\
+HEADER_TEMPLATE = """\
 # GitHub Copilot Instructions — Ekosistem Edho Ferdian (EEF)
 
-This project ships 33 skills under `skills/*/SKILL.md` — each one a focused
+This project ships {count} skills under `skills/*/SKILL.md` — each one a focused
 playbook for a specific engineering task (code review, API design, test
 authoring, deployment, and more). This file is a router, not a full copy:
 skim the table below, and when a request matches a row, **read that skill's
@@ -120,7 +120,8 @@ def build_content() -> str:
         # Escape pipe characters so they don't break the Markdown table.
         one_line = one_line.replace("|", "\\|")
         rows.append(f"| `{s.name}` | {one_line} | `skills/{s.name}/SKILL.md` |")
-    return HEADER + "\n".join(rows) + FOOTER
+    header = HEADER_TEMPLATE.format(count=len(skills))
+    return header + "\n".join(rows) + FOOTER
 
 
 def main() -> int:

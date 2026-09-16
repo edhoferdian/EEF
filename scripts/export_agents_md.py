@@ -8,7 +8,7 @@ convention several vendors have converged on independently).
 None of those tools have Claude Code's "Skill" progressive-disclosure
 mechanism (a skill's full body only loads into context when the agent
 decides to consult it) — they read one instructions file wholesale, every
-turn. So this file is deliberately NOT a dump of all 33 skills' full
+turn. So this file is deliberately NOT a dump of every skill's full
 content (that would burn a huge amount of context on every single turn
 regardless of relevance). Instead it's a router: a compact table of every
 skill's name, trigger description, and path, with one instruction telling
@@ -28,10 +28,10 @@ from lib_skills import REPO_ROOT, load_skills
 
 DEST = REPO_ROOT / "AGENTS.md"
 
-HEADER = """\
+HEADER_TEMPLATE = """\
 # AGENTS.md — Ekosistem Edho Ferdian (EEF)
 
-This project ships 33 skills under `skills/*/SKILL.md` — each one a focused
+This project ships {count} skills under `skills/*/SKILL.md` — each one a focused
 playbook for a specific engineering task (code review, API design, test
 authoring, deployment, and more). This file is a router, not a full copy:
 skim the table below, and when a request matches a row, **read that skill's
@@ -78,7 +78,8 @@ def build_content() -> str:
         # Escape pipe characters so they don't break the Markdown table.
         one_line = one_line.replace("|", "\\|")
         rows.append(f"| `{s.name}` | {one_line} | `skills/{s.name}/SKILL.md` |")
-    return HEADER + "\n".join(rows) + FOOTER
+    header = HEADER_TEMPLATE.format(count=len(skills))
+    return header + "\n".join(rows) + FOOTER
 
 
 def main() -> int:
