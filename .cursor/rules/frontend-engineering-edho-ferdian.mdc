@@ -1,5 +1,5 @@
 ---
-description: "Authoring and configuration guidance for building React/Next.js frontend applications well from the start — component composition patterns, UX/ interaction recipes, and Vite build-tool configuration. A companion to language-code-review-edho-ferdian (which reviews code after it's written) — use this when DESIGNING or WRITING new frontend code, not when reviewing existing code. Trigger phrases: \"bagaimana cara structure component ini\", \"best practice React untuk X\", \"setup Vite untuk Y\", \"bikin animasi/transisi yang smooth\", or when starting a new frontend feature."
+description: "Authoring and configuration guidance for building React/Next.js frontend applications well from the start — component composition patterns, UX/ interaction recipes, and Vite build-tool configuration. A companion to language-code-review-edho-ferdian (which reviews code after it's written) — use this when DESIGNING or WRITING new frontend code, not when reviewing existing code. Also covers choosing/setting up the HeroUI component library and routing to the external Impeccable design-craft tool when a project has it installed. Trigger phrases: \"bagaimana cara structure component ini\", \"best practice React untuk X\", \"setup Vite untuk Y\", \"bikin animasi/transisi yang smooth\", \"pakai HeroUI atau shadcn\", \"desain website pakai impeccable\", or when starting a new frontend feature."
 globs:
 alwaysApply: false
 ---
@@ -61,6 +61,8 @@ skill is written for.
 | `references/design-direction.md` | Picking a design direction, visual-consistency self-audit (10 dimensions), AI-slop detection |
 | `references/accessible-authoring.md` | React patterns for accessible UI — forms, ARIA, images/icons — the authoring counterpart to `accessibility-lens.md` |
 | `references/vite.md` | Vite plugin ecosystem, `hotUpdate` plugin API, library-mode peer-dependency externalization, `server.warmup`, `vite --profile`, stale-chunk mitigation, monorepo `server.fs.allow`, `server.host` for containers, plus a short Turbopack (Next.js) configuration note |
+| `references/heroui.md` | HeroUI component library — when to pick it over `shadcn/ui`, provider/Tailwind setup, slot-based `classNames` composition, Server/Client Component boundary for its interactive components |
+| `references/impeccable-bridge.md` | Routing to the external `pbakaus/impeccable` design-craft tool when it's installed in the target project — detection, when to defer to it vs. this skill's own craft references, boundary with the installed `ui-ux-pro-max` skill |
 
 Load the file(s) matching what the user is building. Several can apply at
 once (e.g. a new Vite+React modal needs `motion-system.md` for its

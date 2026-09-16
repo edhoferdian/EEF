@@ -104,7 +104,13 @@ Not exhaustive for every stack in this ecosystem (e.g. Go/Rust/Java tooling
 lives in those stacks' own build-fix/review references) — this table covers
 what ECC's `plankton-code-quality` ships and is meant as a fast reference,
 not a replacement for the per-stack detection tables already in
-`build-fix-edho-ferdian` and `language-code-review-edho-ferdian`.
+`build-fix-edho-ferdian` and `language-code-review-edho-ferdian`. It is
+also not the setup guide — installing and wiring any of these tools
+(including the Husky/lint-staged git-hook layer around them) is
+`code-quality-tooling-edho-ferdian`'s job; this table exists only so this
+skill's own tamper-detection scan (above) has a fast fact-check for
+"what should be running here" before flagging its absence or a suspicious
+edit as drift.
 
 ## Context budget (channel 9)
 

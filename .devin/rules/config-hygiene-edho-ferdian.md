@@ -95,7 +95,13 @@ Not exhaustive for every stack in this ecosystem (e.g. Go/Rust/Java tooling
 lives in those stacks' own build-fix/review references) — this table covers
 what ECC's `plankton-code-quality` ships and is meant as a fast reference,
 not a replacement for the per-stack detection tables already in
-`build-fix-edho-ferdian` and `language-code-review-edho-ferdian`.
+`build-fix-edho-ferdian` and `language-code-review-edho-ferdian`. It is
+also not the setup guide — installing and wiring any of these tools
+(including the Husky/lint-staged git-hook layer around them) is
+`code-quality-tooling-edho-ferdian`'s job; this table exists only so this
+skill's own tamper-detection scan (above) has a fast fact-check for
+"what should be running here" before flagging its absence or a suspicious
+edit as drift.
 
 ## Context budget (channel 9)
 
@@ -201,10 +207,5 @@ breaks before its replacement exists:
 ## Provenance
 
 Adapted from ECC `config-gc`, `context-budget`, `workspace-surface-audit`,
-`automation-audit-ops`, `strategic-compact`, and the DAILY/LIBRARY concept
-of `agent-sort` — all fetched 2026-09-04. Consolidated into one skill with
-per-channel lenses per D-009 rather than six near-overlapping skills.
-The ECC decommissioning track has no upstream equivalent; it exists
-because of D-005 and inverts `agent-sort`'s purpose (which was to plan an
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/config-hygiene-edho-ferdian/SKILL.md` for complete instructions.

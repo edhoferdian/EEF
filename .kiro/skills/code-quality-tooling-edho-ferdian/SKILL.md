@@ -1,0 +1,111 @@
+---
+name: code-quality-tooling-edho-ferdian
+description: >-
+  Set up and configure the automated code-quality gate around a project —
+  Biome or ESLint+Prettier, Husky Git hooks (pre-commit/pre-push), and
+  lint-staged for JS/TS, plus the equivalent tooling for other stacks
+  (Ruff/pre-commit for Python, golangci-lint/lefthook for Go, rustfmt/clippy
+  for Rust). This
+  is authoring/setup guidance for wiring the gate itself, not the code
+  style rules it enforces or the commit-message format it may check.
+  Trigger phrases: "setup ESLint", "setup Biome", "tambah Prettier", "pasang husky",
+  "pre-commit hook", "lint-staged", "kenapa commit ke-block linter",
+  "format on save", "enforce lint sebelum push", "linter belum ada di
+  project ini".
+---
+
+# Code Quality Tooling — Edho Ferdian Mode
+
+You are setting up the mechanical gate that catches style and lint
+violations *before* they land in a commit or a push, not writing the style
+rules themselves and not reviewing already-written code for quality.
+
+## Boundary with neighbouring skills — read this first
+
+This is a genuine gap this ecosystem didn't cover until now (there was no
+skill for hook/formatter/linter setup itself), so the boundary with what
+already exists matters more than usual:
+
+| | This skill | Neighbour |
+|---|---|---|
+| Git hook enforces "no commit without passing lint" | **This skill** | — |
+| Commit message format, branch strategy, PR triage | `git-and-release-ops-edho-ferdian` | Different concern: message/workflow shape, not gate tooling. Both can fire together (a pre-commit hook can also check commit message format via `commitlint`) — when it does, this skill covers wiring the hook, `git-and-release-ops-edho-ferdian` covers what the format rule should be. |
+| A build/lint step is already configured but now fails | `build-fix-edho-ferdian` | This skill sets up a *working* gate for the first time or reconfigures it; a config that used to pass and now doesn't is a build-fix diagnosis, not a fresh setup. |
+| What code pattern to write in a given language/framework | `frontend-engineering-edho-ferdian`, `backend-engineering-edho-ferdian`, `language-code-review-edho-ferdian` | This skill's linter/formatter rules should reflect those patterns, but this skill doesn't author the patterns themselves. |
+| Reviewing a diff for quality issues a human should catch (naming, complexity, duplication) | `code-review-edho-ferdian` | This skill's gate catches only what a linter/formatter can catch mechanically — style, common bug patterns, import order. It is not a substitute for the review skill's judgment-based findings. |
+| Detecting whether an *already-configured* gate was tampered with (a rule quietly loosened to make a failing check pass) | `config-hygiene-edho-ferdian`'s "Config tamper guard" and "Language/tool gate table" | This skill sets up or intentionally reconfigures the gate; `config-hygiene-edho-ferdian` scans an existing config for unexplained narrowing during its periodic `~/.claude`-environment hygiene pass. Its language/tool table is a fast fact-check reference for that scan, not competing setup guidance — see `references/javascript-typescript.md` §1 for how the two tables' Biome/ESLint framing reconciles. |
+
+## When to use this skill
+
+- A project has no linter/formatter/git-hooks yet and the user wants one
+  set up.
+- The user wants to add Husky pre-commit or pre-push enforcement to an
+  existing project.
+- ESLint/Prettier configs conflict with each other, or a `no-unused-vars`
+  style false-positive needs a config-level fix (not a code-level one).
+- Deciding what should run in a local hook vs. only in CI (a common
+  question with no obvious default — see below).
+
+## Core recommendation for a new JS/TS project
+
+1. **Biome by default** — one Rust-based tool doing both linting and
+   formatting, no ESLint/Prettier config-conflict class of bug to manage,
+   and it's this ecosystem's existing default per
+   `config-hygiene-edho-ferdian`'s language/tool gate table (Biome-first
+   for `.ts`/`.tsx`/`.js`/`.jsx`) — this skill now matches that rather than
+   contradicting it. Fall back to **ESLint + Prettier** when the project
+   needs plugin coverage Biome doesn't have yet (framework-specific rule
+   sets like `eslint-plugin-jsx-a11y`, a custom rule, or an existing large
+   ESLint config not worth migrating). See `references/
+   javascript-typescript.md` §1 for the full decision guide.
+2. **Husky** (v9+, `npx husky init`) to install Git hooks that are
+   versioned in the repo (`.husky/`) so every contributor gets them
+   automatically on `npm install` — not a personal `~/.gitconfig` hook that
+   only exists on one machine.
+3. **lint-staged** to run the chosen linter/formatter only on staged files
+   inside the pre-commit hook — running a full-repo lint on every commit
+   doesn't scale past a small project and trains people to skip the hook
+   out of impatience.
+
+See `references/javascript-typescript.md` for exact config files for both
+paths, the ESLint flat-config migration note, and the hook script contents.
+
+## What goes in pre-commit vs. pre-push vs. CI-only
+
+A hook that's too slow gets bypassed (`git commit --no-verify` becomes a
+habit); a gate that's too weak lets broken code land. Split by cost:
+
+- **pre-commit:** lint + format on staged files only (lint-staged). Should
+  finish in well under a second for a typical commit.
+- **pre-push:** the type-checker and the test suite (or a fast subset of
+  it) — expensive enough to be wrong for every commit, cheap enough to be
+  worth blocking a push.
+- **CI-only:** the full test suite, build, and any slow static analysis.
+  Never make a contributor wait for the full suite locally before every
+  push — CI is where the authoritative, complete gate lives; local hooks
+  are a fast approximation that catches most problems earlier.
+
+Full rationale and the cross-stack equivalents (Python, Go, Rust) are in
+`references/other-stacks.md`.
+
+## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
+
+Communication to the user in Bahasa Indonesia; config files, hook scripts,
+and commit-adjacent output in English — fixed, never ask. Full contract:
+`skill-authoring-edho-ferdian` §7.
+
+## External docs (fixed — see skill-authoring-edho-ferdian's canonical contract)
+
+ESLint's flat-config API, Husky's hook script format, and lint-staged's
+config surface have all changed across major versions in ways a memorized
+answer can get wrong. Resolve current setup steps live via Context7 before
+writing config into a project. Full contract: `skill-authoring-edho-ferdian`
+§9.
+
+## Provenance
+
+Native skill, added 2026-09-16 per D-048, at the user's request after
+confirming this ecosystem had no coverage for linter/formatter/git-hook
+setup (checked `git-and-release-ops-edho-ferdian`, which covers commit
+format and PR workflow but not the enforcement tooling itself). Not adapted
+from an external source.
