@@ -83,11 +83,9 @@ than `~/.claude/skills`.
 This tracks the repo directly — updates land when the plugin/marketplace
 `version` fields are bumped in [`.claude-plugin/`](.claude-plugin/).
 
-> **Note:** this GitHub repo is currently private. Options C and D need
-> read access to it. **Option A (npm) does not** — the npm registry is a
-> separate distribution channel, so `npx eef-install` will work for anyone
-> even while the repo itself stays private, same as Option B's packaged
-> `.skill` files — once `eef-install` has had its first `npm publish`.
+> **Note:** this GitHub repo is public, and `eef-install` is published on
+> npm — all four install options above work for anyone, no special access
+> needed.
 
 ## Other harnesses (not just Claude Code)
 
@@ -523,8 +521,20 @@ For maintainers cutting a new version:
    automatically triggers **[.github/workflows/publish.yml](.github/workflows/publish.yml)**,
    which runs `npm publish` for you (it also refuses to publish if the tag
    and `package.json` version don't match, as a last-resort guard). Requires
-   an `NPM_TOKEN` repo secret (an npm Automation token) to be configured
-   once — see the workflow file's `permissions`/`env` for what it needs.
+   an `NPM_TOKEN` repo secret configured once (`gh secret set NPM_TOKEN`).
+
+   **The token must specifically be an npm Classic Token of type
+   `Automation`.** Verified the hard way on the v1.17.1 test release: a
+   Granular Access Token with "Read and write" permission still gets
+   `npm error code E404` (npm hides the real reason — insufficient
+   publish permission — behind a 404 to avoid leaking package existence),
+   and a Classic Token of type `Publish` gets `npm error code EOTP`
+   ("This operation requires a one-time password") because it's still
+   subject to the account's 2FA-for-publish setting. Only `Automation`
+   is explicitly exempted from that OTP requirement, which is the entire
+   point of using it in CI. If `publish.yml` fails with either error, the
+   fix is regenerating the token as `Automation`, not touching the
+   workflow file.
 
 No CI job currently blocks a direct push to `main` on a failing check (this
 repo has no branch-protection rule requiring it) — treat "check CI after
