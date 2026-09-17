@@ -194,6 +194,12 @@ Never touch unrelated code.** Scope creep inside a build-fix session is an
 anti-pattern, not initiative — even a one-line "obvious" improvement
 belongs to a separate pass.
 
+## Surgical changes (fixed — see skill-authoring-edho-ferdian's canonical contract)
+
+The rule above is this ecosystem's general surgical-changes default
+(`skill-authoring-edho-ferdian` §10), sharpened for the build-fix moment
+specifically: a broken build is not the time to also be reviewing style.
+
 **Escalation routing** — hand off rather than forcing a build-fix-shaped
 solution onto a different-shaped problem:
 

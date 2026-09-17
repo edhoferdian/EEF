@@ -407,7 +407,7 @@ accepted debt in `02-gap-analysis.md`.
 | Anti-pattern | Signal |
 |--------------|--------|
 | Sprint-skipping | Asked for a sprint-5 task while sprint 2 is unfinished |
-| Silent scope creep | A "small" feature not in any source doc requested mid-task |
+| Silent scope creep | A "small" feature not in any source doc requested mid-task — the project-planning-level form of the surgical-changes default in `skill-authoring-edho-ferdian` §10 |
 | Register drift | Code deviating from PDR decisions without updating the register |
 | Snapshot debt | >3 tasks completed without a fresh snapshot |
 | Big-bang task | One task that clearly needs >1 session — split before starting |

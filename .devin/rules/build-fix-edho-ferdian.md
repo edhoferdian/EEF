@@ -182,6 +182,12 @@ Never touch unrelated code.** Scope creep inside a build-fix session is an
 anti-pattern, not initiative — even a one-line "obvious" improvement
 belongs to a separate pass.
 
+## Surgical changes (fixed — see skill-authoring-edho-ferdian's canonical contract)
+
+The rule above is this ecosystem's general surgical-changes default
+(`skill-authoring-edho-ferdian` §10), sharpened for the build-fix moment
+specifically: a broken build is not the time to also be reviewing style.
+
 **Escalation routing** — hand off rather than forcing a build-fix-shaped
 solution onto a different-shaped problem:
 
@@ -205,11 +211,5 @@ it's for.
 **Salak hook (optional, auto-detected, detect-defer-never-require).** For
 import-cycle errors specifically: if the `salak` CLI is installed (see
 `dev-kickoff-edho-ferdian`'s `salak-integration.md` for the full detect/
-defer/version-drift contract — don't duplicate that logic here), read the
-real cycle path from its `repo-graph.json` (`depends_on`/`imports` edges)
-instead of grepping import statements by hand to reconstruct the cycle. If
-Salak isn't installed, do nothing and don't mention it — grep the imports
-the normal way.
-
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/build-fix-edho-ferdian/SKILL.md` for complete instructions.

@@ -180,7 +180,9 @@ skill doesn't perform, rather than asserting it as fact.
 - **BC-05 Data structure** — types/fields match the blueprint?
 - **BC-06 Error-handling spec** — error handling matches the spec?
 - **BC-07 Missing implementation** — any blueprint part not implemented at all?
-- **BC-08 Over-implementation** — features beyond blueprint scope (scope creep)?
+- **BC-08 Over-implementation** — features beyond blueprint scope (scope
+  creep — the review-time check for a violation of the authoring-time
+  default in `skill-authoring-edho-ferdian` §10)?
 
 **If no blueprint:**
 - **BC-01 Architectural consistency** — architectural patterns consistent throughout?

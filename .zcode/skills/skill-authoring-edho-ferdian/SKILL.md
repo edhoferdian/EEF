@@ -326,6 +326,46 @@ here — same convention as §7/§8):
 contract)` followed by a sentence naming when this skill calls Context7 and
 pointing here.
 
+## §10 — Surgical changes (canonical contract — any code-editing skill points here)
+
+A general default for editing existing code, distinct from any single
+skill's own workflow: **touch only what the user's current instruction
+requires.** This governs every skill that edits code, not just the ones
+that already name it below.
+
+**The rule:**
+1. Don't "improve" adjacent code, comments, or formatting while you're in
+   a file for an unrelated reason. Match existing style even where you'd
+   choose differently — that choice belongs to a separate, explicit task.
+2. Don't refactor something that isn't broken as a side effect of fixing
+   or extending something else.
+3. When your own change makes an import, variable, or function unused,
+   remove it — but don't remove *pre-existing* dead code you merely
+   noticed. Flag it (or hand off to `dead-code-cleanup-edho-ferdian`)
+   instead of pulling it into scope.
+4. The test that decides an edge case: every changed line should trace
+   directly to the user's current request. If it doesn't, it's a separate
+   task — mention it, don't fold it in silently.
+
+**This is a default, not an absolute** — a skill with its own stricter or
+more specific version of this rule for its own context keeps that version
+(e.g. `build-fix-edho-ferdian`'s Phase 3 "never touch unrelated code, even
+a one-line obvious improvement" is this same rule sharpened for the
+build-fix moment specifically, where scope discipline matters more than
+usual because a broken build is not the time to also be reviewing style).
+Skills that already flag a violation of this rule as a review-time finding
+(`code-review-edho-ferdian`'s BC-08 "scope creep", `dev-kickoff-edho-
+ferdian`'s "silent scope creep" anti-pattern) keep doing that — this
+section is the authoring-time default those two catch violations of,
+not a replacement for either.
+
+**Standard form for every other skill** (one heading, one sentence, pointing
+here — same convention as §7/§8/§9):
+`## Surgical changes (fixed — see skill-authoring-edho-ferdian's canonical
+contract)` followed by a sentence naming how this skill's own scope
+discipline relates to the default (inherits it as-is, or sharpens it for
+this skill's specific moment, per the build-fix example above).
+
 ## Provenance
 
 Consolidated into one skill per D-009. Every install-specific path
@@ -356,3 +396,19 @@ promotes that pattern to a canonical contract so the other authoring-time
 skills (`frontend-engineering-edho-ferdian`,
 `backend-engineering-edho-ferdian`, `build-fix-edho-ferdian`) point to one
 definition instead of each restating it.
+
+§10 (surgical changes canonical contract) added 2026-09-17, adapted from
+`multica-ai/andrej-karpathy-skills`'s `karpathy-guidelines` skill (fetched
+2026-09-17, MIT-licensed per that skill's own frontmatter) at the user's
+request to integrate it into this ecosystem. Checked first per this
+skill's own §1: 3 of that source's 4 principles ("Think Before Coding",
+"Simplicity First", "Goal-Driven Execution") were already covered —
+respectively by `safe-execution-edho-ferdian` Gate 1, `code-simplification-
+edho-ferdian`, and `dev-kickoff-edho-ferdian`'s execution loop — so nothing
+was ported for those three; porting them would have been exactly the
+"twelfth variant of something that already exists" failure mode this
+section warns against. Only the 4th principle ("Surgical Changes") had no
+existing general statement — it was scattered as build-fix-specific
+guidance and as two after-the-fact review findings, never as a stated
+authoring-time default — so that's the only piece promoted here, phrased
+generically rather than copied verbatim from the source's wording.
