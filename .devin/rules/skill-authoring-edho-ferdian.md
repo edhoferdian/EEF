@@ -164,7 +164,7 @@ automated gate.
 ### Packaging
 
 ```bash
-python scripts/package_skills.py            # all 33 skills
+python scripts/package_skills.py            # all 35 skills
 python scripts/package_skills.py <name>      # just one
 python scripts/package_skills.py --check     # dry run — exit 1 if stale, same check CI runs
 ```

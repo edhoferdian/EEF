@@ -1,6 +1,6 @@
 # Sponsoring Ekosistem Edho Ferdian (EEF)
 
-EEF is free to use — all 33 skills, the install script, and the plugin
+EEF is free to use — all 35 skills, the install script, and the plugin
 manifest stay open. Sponsoring funds the time to keep porting stacks,
 closing gaps, and fixing what breaks.
 
