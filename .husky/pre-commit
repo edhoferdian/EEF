@@ -1,0 +1,47 @@
+# Guards the exact drift that slipped into commit abded9c on 2026-09-19:
+# editing skills/*/SKILL.md without re-running the cross-harness export
+# scripts (AGENTS.md, CATALOG.md, dist/*.skill, .cursor/rules, etc.) that
+# CI's export-targets-sync job checks on every push. Mirrors
+# .github/workflows/ci.yml's validate/dist-sync/export-targets-sync jobs,
+# but scoped to only run when skills/ actually changed.
+
+STAGED_SKILLS=$(git diff --cached --name-only -- 'skills/')
+if [ -z "$STAGED_SKILLS" ]; then
+  exit 0
+fi
+
+echo "skills/ changed — validating and checking cross-harness export sync..."
+
+FAIL=0
+run_check() {
+  if ! python "scripts/$1.py" --check; then
+    FAIL=1
+  fi
+}
+
+python scripts/validate_skills.py || FAIL=1
+run_check package_skills
+run_check sync_metadata
+run_check export_agents_md
+run_check generate_catalog
+run_check export_cursor
+run_check export_windsurf
+run_check export_cline
+run_check export_copilot
+run_check export_kiro
+run_check export_gemini_md
+run_check export_hermes
+run_check export_openclaw
+run_check export_zcode
+run_check export_agents_claude
+run_check export_agents_opencode
+run_check export_agents_hermes
+run_check export_agents_zcode
+
+if [ "$FAIL" -ne 0 ]; then
+  echo ""
+  echo "One or more cross-harness exports are stale (would fail CI)."
+  echo "Run the matching generator script(s) above (drop --check), git add"
+  echo "the results, then commit again."
+  exit 1
+fi
