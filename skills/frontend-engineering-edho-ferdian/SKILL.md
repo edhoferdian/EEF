@@ -8,11 +8,16 @@ description: >-
   use this when DESIGNING or WRITING new frontend code, not when reviewing
   existing code. Also covers choosing/setting up the HeroUI component
   library and routing to the external Impeccable design-craft tool when a
-  project has it installed. Trigger phrases: "bagaimana cara structure
-  component ini", "best practice React untuk X", "setup Vite untuk Y",
-  "bikin animasi/transisi yang smooth", "pakai HeroUI atau shadcn",
-  "desain website pakai impeccable", or when starting a new frontend
-  feature.
+  project has it installed. Also covers AI-slop detection — catching a UI
+  that reads as generated rather than designed (gratuitous gradients,
+  purple-to-blue defaults, glassmorphism with no purpose, generic centered
+  hero) against a four-of-ten design-quality gate. Trigger phrases:
+  "bagaimana cara structure component ini", "best practice React untuk X",
+  "setup Vite untuk Y", "bikin animasi/transisi yang smooth", "pakai HeroUI
+  atau shadcn", "desain website pakai impeccable", "biar UI-nya gak
+  keliatan AI banget", "cara hindari AI slop di desain ini", "kok
+  hasil desainnya generic/template banget", or when starting a new
+  frontend feature.
 ---
 
 # Frontend Engineering — Edho Ferdian Mode (Authoring Layer)
