@@ -371,8 +371,9 @@ instruction isn't the same guarantee as a genuinely separate delegate:
   highest-stakes use case ("is this safe to ship security-wise"); Mode B
   (running inside a full code review) was already covered by the host
   review's own Critique-Correction pass. This closes the full sweep of all
-  33 skills for this criterion — see below for what was checked and
-  correctly left alone.
+  33 skills for this criterion (skill count at the time of this sweep —
+  see the Status line below for the running total) — see below for what
+  was checked and correctly left alone.
 - `code-review-edho-ferdian`'s Phase 4 Critique-Correction Loop →
   `code-reviewer-edho-ferdian` (Agent A, already the pilot) and
   `code-critic-edho-ferdian` (Agent B) — B gets only the code and A's
@@ -388,11 +389,14 @@ The skill still keeps its own whole-pipeline agent too (delegating the
 the phase-specific agents are for the isolation guarantee *within* one
 run, not a replacement for the whole-pipeline form.
 
-**Status: all 34 skills have been checked against this criterion** (not
-just the ones with a split — every skill was read end-to-end and evaluated
-for context-isolation or parallelism value). 42 agents and 5 workflows
-exist today: 33 generic thin-wrapper stubs, 9 hand-tuned agents — 8 from a
-genuine split (`code-critic`, `gan-generator`/`gan-evaluator`,
+**Status (as of this sweep): all 34 skills have been checked against this
+criterion** (not just the ones with a split — every skill was read
+end-to-end and evaluated for context-isolation or parallelism value).
+Point-in-time snapshot — later skill/agent additions aren't retroactively
+folded into these counts; see `skills/` and `dist/agents/` for the current
+totals. 42 agents and 5 workflows existed at the time: 33 generic
+thin-wrapper stubs, 9 hand-tuned agents — 8 from a genuine split
+(`code-critic`, `gan-generator`/`gan-evaluator`,
 `opensource-sanitizer`, `research-worker`/`research-fact-checker`,
 `click-path-tracer`, `spec-mining-worker`) plus the original pilot,
 `code-reviewer-edho-ferdian`. Two skills gained a wired
