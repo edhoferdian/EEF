@@ -2,18 +2,16 @@
 name: e2e-testing-edho-ferdian
 description: >-
   End-to-end testing for critical user journeys — the visual/browser-level
-  layer that dev-kickoff-edho-ferdian's TEST stage explicitly defers to. Maps
-  critical flows before writing any test, detects whichever E2E driver is
-  actually available in the current session/project at runtime (Playwright
-  via Claude's own browser tools, a project's own @playwright/test, Chrome
-  DevTools MCP, or desktop-e2e-edho-ferdian for native Windows apps) rather than
-  requiring one specific tool, builds tests with the Page Object Model
-  pattern, quarantines flaky tests instead of blocking or ignoring them, and
-  captures failure artifacts (screenshots/video/trace). Use when the user
-  wants E2E tests, browser tests, UI flow tests, or says "test end-to-end",
-  "uji alur pengguna", "tes E2E", "critical user flow", "test ini di
-  browser", or when dev-kickoff's TEST stage hits its "visual/layout work"
-  escape hatch and needs a real automated check instead of a skip.
+  layer that dev-kickoff-edho-ferdian's TEST stage explicitly defers to.
+  Maps critical flows before writing any test, auto-detects whichever E2E
+  driver is actually available at runtime (see Phase 0 below for the
+  priority order) rather than requiring one specific tool, builds tests
+  with the Page Object Model pattern, quarantines flaky tests instead of
+  blocking or ignoring them, and captures failure artifacts. Use when the
+  user wants E2E tests, browser tests, UI flow tests, or says "test
+  end-to-end", "uji alur pengguna", "tes E2E", "critical user flow", or
+  when dev-kickoff's TEST stage hits its "visual/layout work" escape hatch
+  and needs a real automated check instead of a skip.
 ---
 
 # E2E Testing — Edho Ferdian Mode (Skill Edition)

@@ -2,19 +2,15 @@
 name: frontend-engineering-edho-ferdian
 description: >-
   Authoring and configuration guidance for building React/Next.js frontend
-  applications well from the start — component composition patterns, UX/
-  interaction recipes, and Vite build-tool configuration. A companion to
-  language-code-review-edho-ferdian (which reviews code after it's written) —
-  use this when DESIGNING or WRITING new frontend code, not when reviewing
-  existing code. Also covers choosing/setting up the HeroUI component
-  library and routing to the external Impeccable design-craft tool when a
-  project has it installed. Also covers AI-slop detection against a
-  four-of-ten design-quality gate. Trigger phrases: "bagaimana cara
-  structure component ini", "best practice React untuk X", "setup Vite
-  untuk Y", "bikin animasi/transisi yang smooth", "pakai HeroUI atau
-  shadcn", "desain website pakai impeccable", "biar UI-nya gak keliatan AI
-  banget", "kok hasil desainnya generic/template banget", or when starting
-  a new frontend feature.
+  applications well from the start — component composition, UX/interaction
+  recipes, Vite config, HeroUI setup, and AI-slop detection (see the
+  Reference files table below for the full breakdown). A companion to
+  language-code-review-edho-ferdian (which reviews code after it's
+  written) — use this when DESIGNING or WRITING new frontend code, not
+  when reviewing existing code. Trigger phrases: "bagaimana cara structure
+  component ini", "best practice React untuk X", "setup Vite untuk Y",
+  "biar UI-nya gak keliatan AI banget", "kok hasil desainnya
+  generic/template banget", or when starting a new frontend feature.
 ---
 
 # Frontend Engineering — Edho Ferdian Mode (Authoring Layer)
@@ -108,6 +104,14 @@ Before using a fast-moving or rarely-touched React/Next.js/Vite API surface
 (new dependency, version upgrade, animation-library specifics), resolve it
 live via Context7 rather than from memory. Full contract:
 `skill-authoring-edho-ferdian` §9.
+
+## Surgical changes (fixed — see skill-authoring-edho-ferdian's canonical contract)
+
+This skill inherits the default as-is: when a task touches an existing
+component or config file (not a from-scratch new one), change only what the
+request requires — don't refactor adjacent, already-working code as a side
+effect of adding a feature. Full contract: `skill-authoring-edho-ferdian`
+§10.
 
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 

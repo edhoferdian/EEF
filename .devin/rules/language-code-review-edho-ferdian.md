@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Language- and framework-specific code review lenses layered on top of the general four-domain review in code-review-edho-ferdian — idioms, framework security misconfigurations, ORM/query correctness, performance traps, and testing conventions, auto-detected from project files across ~20 stacks (React, Python, FastAPI, Django, Go, Rust, Vue, Angular, NestJS, PHP/Laravel, Java/Spring, Quarkus, Kotlin, Swift, React Native, Flutter, Android, .NET, C++, PyTorch, ArkTS, Perl, Ruby, and more). Use whenever a review touches a specific language/framework and the generic checklist isn't enough — \"review kode Go/Python/React ini\", \"audit Django models\", \"cek FastAPI endpoint ini\", \"review kode Kotlin/Swift/Ruby ini\", or when the user names a stack while asking for review. Loads only the lens file(s) matching the detected stack. Inherits Reflection and Critique-Correction gates from code-review-edho-ferdian."
+description: "Language- and framework-specific code review lenses layered on top of the general four-domain review in code-review-edho-ferdian — idioms, framework security misconfigurations, ORM/query correctness, performance traps, and testing conventions, auto-detected across ~20 stacks (React, Python, Go, Java/Spring, Ruby, and more — see the reference table below for the full list). Use whenever a review touches a specific language/framework and the generic checklist isn't enough — \"review kode Go/Python/React ini\", \"audit Django models\", \"cek FastAPI endpoint ini\", or when the user names a stack while asking for review. Loads only the lens file(s) matching the detected stack. Inherits Reflection and Critique-Correction gates from code-review-edho-ferdian."
 ---
 
 # Language Code Review — Edho Ferdian Mode (Lens Layer)
@@ -160,5 +160,6 @@ extension.
 | `references/dotnet.md` | any `.csproj`/`.fsproj`/`.sln` file | — |
 | `references/cpp.md` | `CMakeLists.txt`, or any `.cpp`/`.hpp`/`.cc` file in scope | — |
 | `references/pytorch.md` | `torch` import or dependency in scope | `code-review-edho-ferdian/references/mle-lens.md` |
+| `references/perl.md` | any `.pl`/`.pm`/`.t` file, or `cpanfile`/`Makefile.PL`/`.perlcriticrc` at repo root | — |
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/language-code-review-edho-ferdian/SKILL.md` for complete instructions.

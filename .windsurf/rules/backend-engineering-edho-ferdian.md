@@ -55,6 +55,13 @@ Before using a fast-moving or rarely-touched framework/queue/ORM API surface
 it live via Context7 rather than from memory. Full contract:
 `skill-authoring-edho-ferdian` §9.
 
+## Surgical changes (fixed — see skill-authoring-edho-ferdian's canonical contract)
+
+This skill inherits the default as-is: when extending or fixing an existing
+service, error path, or job, change only what the task requires — don't
+relayer or restructure adjacent, already-working code as a side effect. Full
+contract: `skill-authoring-edho-ferdian` §10.
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user in Bahasa Indonesia; code, comments, and any

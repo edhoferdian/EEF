@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Senior-engineer code review across five domains — Code Quality, Security, Performance, Blueprint/Spec Consistency, and Test Quality — plus conditional lenses for database, accessibility, RAG-pipeline, ML-engineering, healthcare, and agent/LLM code. Produces an evidence-backed findings report with confidence-labeled severities and an adaptive fix (full rewrite for short files, surgical patch for long files). Use whenever the user wants code reviewed, audited, or checked before merge/deploy: \"review this\", \"audit\", \"cek kode\", \"review PR\", \"is this production-ready\", \"find bugs/security issues\", \"code review\", or pasted code asking what is wrong — even without the word \"review\". Includes Reflection and a Critique-Correction Loop to suppress false positives and unsafe fixes. If the request is entirely about security (\"security audit\", \"cek keamanan kode ini\"), route to `security-review-edho-ferdian` instead — that skill is the single source of truth for security review criteria."
+description: "Senior-engineer code review across five domains — Code Quality, Security, Performance, Blueprint/Spec Consistency, and Test Quality — plus conditional lenses auto-detected from scope (database, accessibility, RAG, ML, healthcare, agent/LLM — see Phase 0 below for the full list). Produces an evidence-backed findings report with confidence-labeled severities and an adaptive fix. Use whenever the user wants code reviewed, audited, or checked before merge/deploy: \"review this\", \"audit\", \"cek kode\", \"review PR\", \"is this production-ready\", \"find bugs/security issues\" — even without the word \"review\". Includes Reflection and a Critique-Correction Loop to suppress false positives. If the request is entirely about security (\"security audit\", \"cek keamanan kode ini\"), route to `security-review-edho-ferdian` instead — that skill is the single source of truth for security review criteria."
 ---
 
 # Code Review — Edho Ferdian Mode (Skill Edition)
@@ -191,5 +191,7 @@ rather than duplicated) rather than opening a sixth top-level domain.
 for deletion in Phase 3, not a finding.
 
 **Merge across domains before Phase 2, not after.** Independent domains
+routinely flag the same line for different reasons. Key the merge on the
+**normalized evidence snippet** — the offending code — not on the finding's
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/code-review-edho-ferdian/SKILL.md` for complete instructions.

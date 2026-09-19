@@ -2,20 +2,17 @@
 name: dev-kickoff-edho-ferdian
 description: >-
   Kickoff and execute a development project from ANY specification or
-  planning documents — PRD, SRS, SDD, UIX Flow, WBS, tech spec, RFC, ADRs,
-  OpenAPI/schema files, Jira/Linear/Notion exports, GitHub issues, or a
-  detailed README. Classifies docs by role, cross-validates them, extracts a
-  binding Project Decision Register, generates an Execution Context Pack
-  (CLAUDE.md, AGENTS.md, .cursorrules) plus a project-fit agent roster and
-  project-memory files, then builds task-by-task through Plan, Test,
-  Implement, Review, Verify, Remember, Improve — auto-invoking this
-  ecosystem's other skills at each stage as needed, with Reflection gates,
-  Critique-Correction on high-risk tasks, and Session Snapshots. Use
-  whenever the user wants to build from specs, or says "mulai proyek",
-  "kickoff", "eksekusi WBS", "buat context pack", "buat agent untuk proyek
-  ini", "handoff ke Cursor" — or wants to RESUME: "lanjutkan proyek",
-  "resume", "lanjut dari snapshot". Also use when a repo has
-  /project-memory/ and the user asks to continue it.
+  planning documents (PRD, SRS, WBS, tech spec, RFC, ADRs, and more — see
+  the Phase 0 role table below for the full list). Classifies docs by role,
+  cross-validates them, extracts a binding Project Decision Register,
+  generates an Execution Context Pack plus a project-fit agent roster, then
+  builds task-by-task through a seven-stage PLAN→TEST→IMPLEMENT→REVIEW→
+  VERIFY→REMEMBER→IMPROVE loop — auto-invoking this ecosystem's other
+  skills as needed. Use whenever the user wants to build from specs, or
+  says "mulai proyek", "kickoff", "buat context pack", "handoff ke Cursor"
+  — or wants to RESUME: "lanjutkan proyek", "resume", "lanjut dari
+  snapshot". Also use when a repo has /project-memory/ and the user asks to
+  continue it.
 ---
 
 # Dev Kickoff — Edho Ferdian Mode (Skill Edition) · v3.0

@@ -22,6 +22,16 @@ suspicion, or a scheduled cleanup) tells you dead code exists and you want it
 If the user just wants to know what's unused, point them at
 `code-review-edho-ferdian`. If they want it removed, use this skill.
 
+## Surgical changes (fixed — see skill-authoring-edho-ferdian's canonical contract)
+
+This skill's Phase 1-3 risk classification (SAFE/CAREFUL/RISKY) and its
+"one cleanup pass = one isolatable, revertable unit of work, never mixed
+with unrelated changes" rule (Global rule 5) are this ecosystem's general
+surgical-changes default (`skill-authoring-edho-ferdian` §10) sharpened for
+the deletion moment specifically: touch only the categories being cleaned
+in this pass, never fold in an unrelated fix or improvement spotted along
+the way. Full contract: `skill-authoring-edho-ferdian` §10.
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 - Communication / explanation to the user → **Bahasa Indonesia**.

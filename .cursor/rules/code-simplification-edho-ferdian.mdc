@@ -1,5 +1,5 @@
 ---
-description: "Behavior-preserving refactoring workflow that actively rewrites code for clarity — extracting overlong functions, flattening deep nesting into guard clauses, consolidating duplicated logic, AND removing over- engineered/\"just in case\" abstractions — always gated on a passing test suite (or a characterization test written first) so behavior never changes. Use whenever the user wants code actually SIMPLIFIED or REFACTORED, not just reviewed: \"sederhanakan kode ini\", \"refactor biar lebih rapi\", \"kode ini terlalu kompleks\", \"kurangi nesting-nya\", \"pisahkan fungsi ini jadi beberapa\", \"clean up this function\", \"simplify this code\", \"reduce complexity\", \"ini over-engineered\". A read-only finding about the same issues (CQ-01/CQ-04/CQ-04b in `review-checklist.md`) is `code-review-edho-ferdian`'s job, not this skill's — see the scope table below for the exact boundary with that skill, `dead-code-cleanup-edho-ferdian`, and `build-fix-edho-ferdian`."
+description: "Behavior-preserving refactoring workflow that actively rewrites code for clarity — extracting overlong functions, flattening deep nesting, consolidating duplicated logic, AND removing over-engineered \"just in case\" abstractions — always gated on a passing test suite (or a characterization test written first) so behavior never changes. Use whenever the user wants code actually SIMPLIFIED or REFACTORED, not just reviewed: \"sederhanakan kode ini\", \"refactor biar lebih rapi\", \"reduce complexity\", \"ini over-engineered\". A read-only finding about the same issues (CQ-01/CQ-04/CQ-04b in `review-checklist.md`) is `code-review-edho-ferdian`'s job, not this skill's — see the scope table below for the exact boundary with that skill, `dead-code-cleanup-edho- ferdian`, and `build-fix-edho-ferdian`."
 globs:
 alwaysApply: false
 ---
@@ -38,6 +38,20 @@ work with different review needs, and mixing them turns an already-hard-to-
 review diff (a rewrite) into one nobody can review with confidence. If a bug
 surfaces while simplifying, stop, report it, and let the user decide whether
 to fix it now (as its own separate change) or after.
+
+## Surgical changes (carve-out — see skill-authoring-edho-ferdian's canonical contract)
+
+This skill is a deliberate, stated exception to the default in
+`skill-authoring-edho-ferdian` §10 ("touch only what the user's current
+instruction requires"), not an adopter of it: this skill's entire purpose is
+non-surgical rewriting — restructuring already-working, adjacent code for
+clarity is the job, not a side effect to avoid. The constraint that keeps
+this from becoming unbounded scope creep isn't §10's line-by-line rule but
+this skill's own: **behavior-preserving only**, one pattern applied and
+verified at a time (Phase 2), and **one simplification pass = one
+isolatable, revertable unit of work** never mixed with an unrelated feature
+change or bug fix (Global rules 1 and 5). Full contract:
+`skill-authoring-edho-ferdian` §10.
 
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 

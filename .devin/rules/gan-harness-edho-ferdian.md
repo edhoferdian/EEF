@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Rapid, adversarial-loop prototyping and design iteration: a Plan → Generate → Evaluate/iterate cycle where a generator builds a live app and an evaluator drives it in a real browser, scores it against a weighted design rubric, and feeds concrete fixes back until a quality threshold is crossed or a max-iteration cap is hit. The Plan phase never invents scope from a one-line prompt — it pulls features from a real source (dev-kickoff-edho-ferdian's Project Decision Register or spec-mining-edho-ferdian's mined specs), or proposes a small, explicitly unapproved exploratory scope when no spec exists at all. Use when the user wants fast UI/prototype iteration with automated design critique, says \"gan-harness\", \"loop generate-evaluate\", \"iterate sampai bagus\", \"buat prototipe cepat lalu nilai\", or wants a live app scored and improved automatically. Not a substitute for dev-kickoff-edho-ferdian's IMPLEMENT stage on production feature work — this is the faster/looser prototyping variant."
+description: "Rapid, adversarial-loop prototyping and design iteration: a Plan → Generate → Evaluate cycle where a generator builds a live app and an evaluator drives it in a real browser, scores it against a weighted design rubric, and feeds fixes back until a quality threshold is crossed (see the Plan phase section below for exactly how scope is sourced, never invented from a one-line prompt). Use when the user wants fast UI/prototype iteration with automated design critique, says \"gan-harness\", \"loop generate-evaluate\", \"iterate sampai bagus\", or wants a live app scored and improved automatically. Not a substitute for dev-kickoff-edho-ferdian's IMPLEMENT stage on production feature work — this is the faster/looser prototyping variant."
 ---
 
 # GAN Harness — Edho Ferdian Mode (Skill Edition) · v1.0
@@ -197,5 +197,6 @@ evaluator reports in English — fixed, never ask. Full contract:
 
 **Done criteria for a full run:** scope sourced and labeled per the priority
 order (never invented) · Generate produces a live, running app with commits
-
-> **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/gan-harness-edho-ferdian/SKILL.md` for complete instructions.
+per iteration · Evaluate reports the mode actually achieved every round ·
+loop stops at threshold (≥7.0) or max-iteration cap, whichever comes first,
+with an honest final report either way.
