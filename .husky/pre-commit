@@ -6,12 +6,12 @@
 # but scoped to only run when skills/, agents/ or the generators changed
 # (agents/ was once missing here, so agent edits could reach CI unsynced).
 
-STAGED=$(git diff --cached --name-only -- 'skills/' 'agents/' 'scripts/')
+STAGED=$(git diff --cached --name-only -- 'skills/' 'agents/' 'scripts/' 'rules/')
 if [ -z "$STAGED" ]; then
   exit 0
 fi
 
-echo "skills/, agents/ or scripts/ changed — validating and checking cross-harness export sync..."
+echo "skills/, agents/, scripts/ or rules/ changed — validating and checking cross-harness export sync..."
 
 FAIL=0
 run_check() {

@@ -230,3 +230,9 @@ it:
   per D-035; load
   it once a Drive/Docs/Sheets/Slides/Calendar surface is actually named, and
   re-verify its Google-specific API details once that connector exists.
+
+When the agent itself is a participant in a channel that external
+counterparties read (a bot in a shared customer or supplier channel, an
+auto-replying desk agent), this skill's approval gate is not enough on its
+own — use `counterparty-comms-edho-ferdian` for audience and mention gating,
+leakage checks, and the hash-bound approval and delivery ledger.

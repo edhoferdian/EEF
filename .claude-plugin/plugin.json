@@ -1,6 +1,6 @@
 {
   "name": "ekosistem-edho-ferdian",
-  "description": "Edho Ferdian's native Claude Code skill ecosystem — 35 skills covering engineering (backend, frontend, API design, data layer, security, performance, testing), operations (deployment, containers, networking, git/release), and cross-cutting practices (code review, spec mining, marketing, research). Standalone, no external harness required.",
+  "description": "Edho Ferdian's native Claude Code skill ecosystem — 38 skills covering engineering (backend, frontend, API design, data layer, security, performance, testing), operations (deployment, containers, networking, git/release), and cross-cutting practices (code review, spec mining, marketing, research). Standalone, no external harness required.",
   "version": "1.1.0",
   "author": {
     "name": "Edho Ferdian",

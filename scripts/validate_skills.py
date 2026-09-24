@@ -178,8 +178,34 @@ def check_external_rule_pointers(errors: list[str]) -> None:
                 errors.append(f"{rel}:{i}: live pointer into ~/.claude/rules/ecc (D-034) — restate natively or mark historical")
 
 
+# D-059: rules/*.md load into every session, so they stay short and only
+# point into skills; every pointer must resolve.
+RULES_DIR = REPO_ROOT / "rules"
+MAX_RULE_BYTES = 2500
+SKILL_NAME_RE = re.compile(r"\b([a-z0-9-]+-edho-ferdian)\b")
+SKILL_PATH_RE = re.compile(r"\b([a-z0-9-]+-edho-ferdian/[A-Za-z0-9_./-]+\.md)\b")
+
+
+def check_rules(errors: list[str]) -> None:
+    for rule in sorted(RULES_DIR.glob("*.md")):
+        rel = rule.relative_to(REPO_ROOT)
+        content = rule.read_text(encoding="utf-8")
+        if len(content.encode("utf-8")) > MAX_RULE_BYTES:
+            errors.append(f"{rel}: {len(content.encode('utf-8'))} bytes, exceeds {MAX_RULE_BYTES} — move detail into a skill")
+        for name in set(SKILL_NAME_RE.findall(content)):
+            if not (SKILLS_DIR / name / "SKILL.md").exists():
+                errors.append(f"{rel}: points at {name}, which has no skills/{name}/SKILL.md")
+        for ref in set(SKILL_PATH_RE.findall(content)):
+            if not (SKILLS_DIR / ref).exists():
+                errors.append(f"{rel}: points at skills/{ref}, which does not exist")
+        for i, line in enumerate(content.splitlines(), 1):
+            if FS_WIDE_SEARCH_RE.search(line) and "fs-search-ok" not in line:
+                errors.append(f"{rel}:{i}: filesystem-wide search from a drive/home root")
+
+
 def main() -> int:
     errors: list[str] = []
+    check_rules(errors)
     check_frontmatter_and_description(errors)
     check_ecc_mentions(errors)
     check_broken_references(errors)

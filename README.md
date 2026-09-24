@@ -1,9 +1,10 @@
 # Ekosistem Edho Ferdian (EEF)
 
-A native Claude Code skill ecosystem — 35 skills covering engineering
+A native Claude Code skill ecosystem — 38 skills covering engineering
 (backend, frontend, API design, data layer, security, performance, testing),
 operations (deployment, containers, networking, git/release), and
-cross-cutting practices (code review, spec mining, marketing, research).
+cross-cutting practices (code review, spec mining, marketing, research,
+counterparty communications, legal ops, video style).
 
 Standalone by design — no external harness install, no dependency on
 another project's paths or infrastructure.
@@ -20,7 +21,7 @@ Four ways to get these skills, pick whichever fits:
 ### Option A — npm (works for every harness this repo supports, no git needed)
 
 ```bash
-npx eef-install                            # Claude Code, all 35 skills
+npx eef-install                            # Claude Code, all 38 skills
 npx eef-install code-review-edho-ferdian    # Claude Code, specific skills only
 npx eef-install --target cursor             # Cursor, into ./.cursor/rules/
 npx eef-install --target windsurf           # Windsurf + Devin
@@ -56,7 +57,7 @@ Clone this repo, then run the installer for your platform:
 # macOS / Linux / Git Bash
 git clone https://github.com/edhoferdian/EEF.git
 cd EEF
-./install.sh                 # installs all 35 skills
+./install.sh                 # installs all 38 skills
 ./install.sh code-review-edho-ferdian dev-kickoff-edho-ferdian   # only specific ones
 ./install.sh --list          # see all installable skill names
 ```
@@ -65,7 +66,7 @@ cd EEF
 # Windows PowerShell
 git clone https://github.com/edhoferdian/EEF.git
 cd EEF
-.\install.ps1                                    # installs all 35 skills
+.\install.ps1                                    # installs all 38 skills
 .\install.ps1 -Only code-review-edho-ferdian,dev-kickoff-edho-ferdian
 .\install.ps1 -ListOnly
 ```
@@ -433,6 +434,24 @@ few for a specific documented reason:
   `gan-harness-edho-ferdian`'s heavier generator/evaluator machinery for
   its bounded optimization-loop pattern.
 
+## Always-on rules (Claude Code)
+
+Skills load only when a task triggers them. A few baselines should hold in
+every session regardless — read before editing, surgical changes, verify
+before claiming done, no destructive or outward-facing action without a yes,
+no filesystem-wide searches. Those live as four short files in
+[rules/](rules/), each pointing into the skill that carries the detail:
+
+```bash
+npx eef-install --target claude-rules       # ~/.claude/rules/eef/ (or $CLAUDE_RULES_DIR)
+```
+
+`scripts/validate_skills.py` keeps them small (≤ 2.5 KB each) and checks
+that every skill they point at exists. The matching mechanical guard for the
+search rule is a Claude Code hook shipped with
+`safe-execution-edho-ferdian` (`hooks/block-fs-wide-search.js`, setup in
+that skill's appendix).
+
 ## Usage
 
 Installing gets the skills onto disk; **using** them day to day depends on
@@ -482,7 +501,8 @@ opening each folder, see [CATALOG.md](CATALOG.md).
                      generated per-harness adapters, see scripts/export_*.py
 AGENTS.md, GEMINI.md generated cross-vendor router files
 CATALOG.md           generated skill+agent index, see scripts/generate_catalog.py
-skills/              source of truth — 35 skill folders
+skills/              source of truth — 38 skill folders
+rules/               always-on baseline rules for Claude Code (claude-rules target)
 agents/, workflows/  canonical sub-agent + multi-agent-workflow definitions (experimental)
 dist/                packaged .skill archives (Option B), one per skill; also dist/agents/opencode/
 bin/eef.js           npm CLI entry point (Option A)

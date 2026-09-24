@@ -1,0 +1,47 @@
+# Illustrative policy data — not a schema any particular adapter accepts.
+# Map it onto the owning runtime's reviewed configuration and test every
+# consumer; a YAML key alone proves nothing is enforced.
+# Bind trusted platform/workspace/channel IDs; display names never grant trust.
+
+unknown_audience: external
+unknown_unsolicited: mute
+
+channels:
+  - platform: example-chat
+    workspace_id: ws-synthetic
+    channel_id: ch-shared-customer
+    audience: external
+    access: allowed
+    require_mention: true
+    open_question_responses: false
+  - platform: example-chat
+    workspace_id: ws-synthetic
+    channel_id: ch-ops-internal
+    audience: internal
+    access: allowed
+    operator_messages_are_requests: false
+
+participation:
+  thread_history_is_consent: false
+  group_attachment_is_consent: false
+  bot_traffic_needs_scoped_operator_request: true
+  scheduled_delivery_needs_exact_target_and_grant: true
+  defer_during_attachment_burst: true
+  commands_bypass_burst_deferral_only: true
+  passive_observation: false           # opt-in; never invokes model/media
+  passive_observation_needs_retention_policy: true
+
+output:
+  external: [final, safe_error]
+  internal: [final, safe_error, operational, progress]
+  never_silent_ack: internal_only
+  classify_after_final_assembly: true
+  check_paths: [send, edit, stream, standalone]
+
+autonomy:
+  default: auto                        # only after access + participation + delivery grant
+  draft_only: [prices_or_rates, contractual, legal_or_due_diligence, public_posts,
+               unverified_claims, unmeasured_technical_specs]
+  frozen: [simulated_counterparties]
+  never: [signing, money_movement, credential_entry, package_publication,
+          cross_counterparty_disclosure]

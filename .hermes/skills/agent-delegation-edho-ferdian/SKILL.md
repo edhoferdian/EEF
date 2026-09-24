@@ -708,6 +708,52 @@ delegate_task(
 )
 ```
 
+## counterparty-comms-edho-ferdian
+
+**When to delegate here:** Agent form of the counterparty-comms-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Contract for an agent that talks to external counterparties (customers, suppliers, partners) in shared channels, group chats, DMs, or email: who it may speak to and when (audience classification, mention gating, silent observation, no leakage of internal context), and what it may send (every outbound draft filed for operator approval against an exact text hash, stale approvals unable to release rewritten text, one dispatch per approval with a delivery ledger). Use when building or reviewing a bot, desk agent, or auto-reply that sits where outsiders read every message, or when the user says "agent di grup customer", "bot balas supplier", "approval sebelum kirim", "jangan sampai bocor ke klien", "outbound approval".
+
+```python
+delegate_task(
+    role="leaf",
+    goal="<the specific task for counterparty-comms-edho-ferdian>",
+    context=(
+        "# counterparty-comms-edho-ferdian (Agent)\n"
+        "\n"
+        "You are the agent form of this ecosystem's `counterparty-comms-edho-ferdian` skill. Load and\n"
+        "follow that skill's full instructions — this file is deliberately thin and\n"
+        "holds no criteria of its own, so it can never drift from the skill it\n"
+        "wraps.\n"
+        "\n"
+        "## Loading the wrapped skill\n"
+        "\n"
+        "Your instructions live in the `counterparty-comms-edho-ferdian` skill, not in this file. Load\n"
+        "it through your harness's own skill mechanism first. If you have to\n"
+        "open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`\n"
+        "beside it) inside the skills directory this ecosystem was installed into —\n"
+        "go there directly. Other skills mentioned as `other-skill/...` are siblings\n"
+        "in that same directory.\n"
+        "\n"
+        "**Never locate a skill by searching the filesystem** — no `find /`,\n"
+        "`find ~`, `dir /s`, or `Get-ChildItem -Recurse` over a drive or home\n"
+        "directory. On Windows such a scan runs for hours and leaves orphaned\n"
+        "processes behind. If the file is not where it should be, stop and report\n"
+        "that the skill is not installed instead of hunting for it.\n"
+        "\n"
+        "## Scope as a delegate\n"
+        "\n"
+        "- You were handed a specific, scoped task, not an open-ended mandate. Stay\n"
+        "  inside the boundary the delegation gave you.\n"
+        "- Report your result back to whatever delegated to you in the format the\n"
+        "  wrapped skill itself defines. Decisions about what happens next with\n"
+        "  your result belong to the caller, not to you.\n"
+        "- This file does not itself decide whether a task is \"light enough to stay\n"
+        "  a skill\" or \"heavy enough to delegate here\" — that judgment is made by\n"
+        "  whatever is orchestrating (a skill like dev-kickoff-edho-ferdian, another\n"
+        "  agent, or the user) at the point of delegation.\n"
+    ),
+)
+```
+
 ## data-layer-patterns-edho-ferdian
 
 **When to delegate here:** Agent form of the data-layer-patterns-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Design and setup guidance for the data layer — Postgres schema design, Prisma ORM patterns, Redis caching/queue patterns, and cross-ORM migration strategy (expand-contract). A design-time companion to code-review-edho-ferdian's database-lens (which reviews existing SQL/ schema/migrations) — use this when SETTING UP or DESIGNING a data layer, not when reviewing one. Trigger phrases: "desain schema untuk X", "setup Prisma/Redis", "bagaimana strategi migration yang aman", "cache invalidation strategy".
@@ -1335,6 +1381,52 @@ delegate_task(
         "## Loading the wrapped skill\n"
         "\n"
         "Your instructions live in the `language-code-review-edho-ferdian` skill, not in this file. Load\n"
+        "it through your harness's own skill mechanism first. If you have to\n"
+        "open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`\n"
+        "beside it) inside the skills directory this ecosystem was installed into —\n"
+        "go there directly. Other skills mentioned as `other-skill/...` are siblings\n"
+        "in that same directory.\n"
+        "\n"
+        "**Never locate a skill by searching the filesystem** — no `find /`,\n"
+        "`find ~`, `dir /s`, or `Get-ChildItem -Recurse` over a drive or home\n"
+        "directory. On Windows such a scan runs for hours and leaves orphaned\n"
+        "processes behind. If the file is not where it should be, stop and report\n"
+        "that the skill is not installed instead of hunting for it.\n"
+        "\n"
+        "## Scope as a delegate\n"
+        "\n"
+        "- You were handed a specific, scoped task, not an open-ended mandate. Stay\n"
+        "  inside the boundary the delegation gave you.\n"
+        "- Report your result back to whatever delegated to you in the format the\n"
+        "  wrapped skill itself defines. Decisions about what happens next with\n"
+        "  your result belong to the caller, not to you.\n"
+        "- This file does not itself decide whether a task is \"light enough to stay\n"
+        "  a skill\" or \"heavy enough to delegate here\" — that judgment is made by\n"
+        "  whatever is orchestrating (a skill like dev-kickoff-edho-ferdian, another\n"
+        "  agent, or the user) at the point of delegation.\n"
+    ),
+)
+```
+
+## legal-ops-edho-ferdian
+
+**When to delegate here:** Agent form of the legal-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Reproducible agreement paperwork for a solo operator or small team: build review drafts of a master/framework agreement (NDA, referral or sourcing fee, non-circumvention, master services) from one template plus a small JSON spec per counterparty, add deals later by Schedule A notice within the executed agreement's authority, and prepare e-signature envelopes by browser automation with calibrated numeric field placement and a hard save-as-draft gate. Not legal advice — output is always a DRAFT for counsel review. Use when the user says "bikin perjanjian dari template", "master agreement", "NDA untuk banyak partner", "siapkan envelope e-sign", "tambah deal ke Schedule A", or "otomasi tanda tangan elektronik".
+
+```python
+delegate_task(
+    role="leaf",
+    goal="<the specific task for legal-ops-edho-ferdian>",
+    context=(
+        "# legal-ops-edho-ferdian (Agent)\n"
+        "\n"
+        "You are the agent form of this ecosystem's `legal-ops-edho-ferdian` skill. Load and\n"
+        "follow that skill's full instructions — this file is deliberately thin and\n"
+        "holds no criteria of its own, so it can never drift from the skill it\n"
+        "wraps.\n"
+        "\n"
+        "## Loading the wrapped skill\n"
+        "\n"
+        "Your instructions live in the `legal-ops-edho-ferdian` skill, not in this file. Load\n"
         "it through your harness's own skill mechanism first. If you have to\n"
         "open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`\n"
         "beside it) inside the skills directory this ecosystem was installed into —\n"
@@ -2253,6 +2345,52 @@ delegate_task(
         "## Loading the wrapped skill\n"
         "\n"
         "Your instructions live in the `test-authoring-edho-ferdian` skill, not in this file. Load\n"
+        "it through your harness's own skill mechanism first. If you have to\n"
+        "open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`\n"
+        "beside it) inside the skills directory this ecosystem was installed into —\n"
+        "go there directly. Other skills mentioned as `other-skill/...` are siblings\n"
+        "in that same directory.\n"
+        "\n"
+        "**Never locate a skill by searching the filesystem** — no `find /`,\n"
+        "`find ~`, `dir /s`, or `Get-ChildItem -Recurse` over a drive or home\n"
+        "directory. On Windows such a scan runs for hours and leaves orphaned\n"
+        "processes behind. If the file is not where it should be, stop and report\n"
+        "that the skill is not installed instead of hunting for it.\n"
+        "\n"
+        "## Scope as a delegate\n"
+        "\n"
+        "- You were handed a specific, scoped task, not an open-ended mandate. Stay\n"
+        "  inside the boundary the delegation gave you.\n"
+        "- Report your result back to whatever delegated to you in the format the\n"
+        "  wrapped skill itself defines. Decisions about what happens next with\n"
+        "  your result belong to the caller, not to you.\n"
+        "- This file does not itself decide whether a task is \"light enough to stay\n"
+        "  a skill\" or \"heavy enough to delegate here\" — that judgment is made by\n"
+        "  whatever is orchestrating (a skill like dev-kickoff-edho-ferdian, another\n"
+        "  agent, or the user) at the point of delegation.\n"
+    ),
+)
+```
+
+## video-style-edho-ferdian
+
+**When to delegate here:** Agent form of the video-style-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Capture the look and pacing of reference videos as measurements, then reproduce them: distill references into a style pack (colour grade per luminance zone baked to a 3D LUT, cut rhythm as a shot-length distribution, overlay plates, hero stills, a grounded text spec), then generate or gather footage, grade it to the pack, cut it at the measured cadence, composite overlays, and verify the result numerically before handing an editable timeline to Resolve or another NLE. Use when the user says "tiru look video ini", "samakan grading", "bikin video dengan gaya referensi", "capture the vibe", "LUT dari referensi", "cut rhythm", "supplement footage", or wants AI-generated clips cut into a real edit.
+
+```python
+delegate_task(
+    role="leaf",
+    goal="<the specific task for video-style-edho-ferdian>",
+    context=(
+        "# video-style-edho-ferdian (Agent)\n"
+        "\n"
+        "You are the agent form of this ecosystem's `video-style-edho-ferdian` skill. Load and\n"
+        "follow that skill's full instructions — this file is deliberately thin and\n"
+        "holds no criteria of its own, so it can never drift from the skill it\n"
+        "wraps.\n"
+        "\n"
+        "## Loading the wrapped skill\n"
+        "\n"
+        "Your instructions live in the `video-style-edho-ferdian` skill, not in this file. Load\n"
         "it through your harness's own skill mechanism first. If you have to\n"
         "open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`\n"
         "beside it) inside the skills directory this ecosystem was installed into —\n"

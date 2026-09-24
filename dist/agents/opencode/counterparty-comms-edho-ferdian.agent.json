@@ -1,0 +1,20 @@
+{
+  "agent": {
+    "counterparty-comms-edho-ferdian": {
+      "description": "Agent form of the counterparty-comms-edho-ferdian skill, same triggers \u2014 delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Contract for an agent that talks to external counterparties (customers, suppliers, partners) in shared channels, group chats, DMs, or email: who it may speak to and when (audience classification, mention gating, silent observation, no leakage of internal context), and what it may send (every outbound draft filed for operator approval against an exact text hash, stale approvals unable to release rewritten text, one dispatch per approval with a delivery ledger). Use when building or reviewing a bot, desk agent, or auto-reply that sits where outsiders read every message, or when the user says \"agent di grup customer\", \"bot balas supplier\", \"approval sebelum kirim\", \"jangan sampai bocor ke klien\", \"outbound approval\".",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/counterparty-comms-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
+      "permission": {
+        "task": {
+          "*": "deny"
+        }
+      }
+    }
+  }
+}

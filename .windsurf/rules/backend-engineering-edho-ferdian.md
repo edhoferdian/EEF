@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Authoring server-side code between the API contract and the datastore — layering and ports/adapters boundaries, error taxonomy and resilience (typed errors, Result style, retry with backoff, circuit breakers), background jobs and queues, structured logging emission, and adding a new integration that matches the repo's existing connector pattern. The backend counterpart to frontend-engineering-edho-ferdian. Trigger phrases: \"struktur service layer\", \"error handling di backend\", \"retry/circuit breaker\", \"background job / queue\", \"tambah integrasi baru\"."
+description: "Authoring server-side code between the API contract and the datastore — layering and ports/adapters boundaries, error taxonomy and resilience (typed errors, Result style, retry with backoff, circuit breakers), background jobs and queues, structured logging emission, and adding a new integration that matches the repo's existing connector pattern. The backend counterpart to frontend-engineering-edho-ferdian. Framework guides: NestJS and Ruby on Rails (service/form/query objects, Hotwire, Rails 8 Solid stack). Trigger phrases: \"struktur service layer\", \"error handling di backend\", \"retry/circuit breaker\", \"background job / queue\", \"tambah integrasi baru\", \"bikin app Rails\", \"Rails service object\"."
 ---
 
 # Backend Engineering — Edho Ferdian Mode
@@ -34,6 +34,12 @@ description: "Authoring server-side code between the API contract and the datast
   validation at boot, repository/transaction placement, and background
   jobs/event consumers in their own modules. Not speculative — this is the
   framework behind `ghostfolio`, a real project in Edho's stack.
+- `references/rails.md` — Rails 7.1+/8.x authoring: directory contract,
+  when to extract a service/form/query object or ViewComponent, service
+  result objects and transactions, ActiveRecord discipline (eager loading,
+  callbacks, no `default_scope`), idempotent jobs, Hotwire, and the Rails 8
+  Solid stack. Review and build-failure lenses for Ruby live in
+  `language-code-review-edho-ferdian` and `build-fix-edho-ferdian`.
 
 - `references/layering-and-boundaries.md` — ports & adapters (hexagonal
   architecture) with a framework-agnostic dependency-direction diagram, the

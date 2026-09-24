@@ -136,6 +136,15 @@ const TARGETS = {
     },
   },
 
+  "claude-rules": {
+    label: "Claude Code always-on rules (rules/*.md, loaded every session)",
+    scope: "global (or $CLAUDE_RULES_DIR)",
+    install() {
+      const destRoot = process.env.CLAUDE_RULES_DIR || path.join(os.homedir(), ".claude", "rules", "eef");
+      copyDirInto(path.join(PKG_ROOT, "rules"), destRoot);
+    },
+  },
+
   "opencode-agents": {
     label: "OpenCode sub-agents (merged into opencode.json, never overwritten)",
     scope: "project by default, --global for ~/.config/opencode",
@@ -296,7 +305,7 @@ function printHelp() {
   console.log(`eef-install — install Ekosistem Edho Ferdian's skills
 
 Usage:
-  eef-install                          Install all 35 skills for Claude Code
+  eef-install                          Install all 38 skills for Claude Code
   eef-install <skill> [<skill> ...]    Install only these skills for Claude Code
   eef-install --list                   List all installable skill names
   eef-install --target <name>          Install for a different harness (see below)
@@ -312,6 +321,7 @@ Targets (--target):
 Env vars:
   CLAUDE_SKILLS_DIR   Install location for --target claude (default: ~/.claude/skills)
   CLAUDE_AGENTS_DIR   Install location for --target claude-agents (default: ~/.claude/agents)
+  CLAUDE_RULES_DIR    Install location for --target claude-rules (default: ~/.claude/rules/eef)
   ZCODE_AGENTS_DIR    Install location for --target zcode-agents (default: ~/.zcode/agents)
 
 Examples:

@@ -2,7 +2,7 @@
 
 Identical in content to this repo's `AGENTS.md` — Gemini CLI looks for this filename specifically and doesn't fall back to AGENTS.md by default. See `AGENTS.md` for the canonical version; this file is generated from it, not authored separately.
 
-This project ships 35 skills under `skills/*/SKILL.md` — each one a focused
+This project ships 38 skills under `skills/*/SKILL.md` — each one a focused
 playbook for a specific engineering task (code review, API design, test
 authoring, deployment, and more). This file is a router, not a full copy:
 skim the table below, and when a request matches a row, **read that skill's
@@ -28,6 +28,7 @@ method from its one-line description here — read the file.
 | `communications-triage-edho-ferdian` | Channel-agnostic framework for triaging incoming messages (email, chat, Slack, LINE, Messenger, or any other channel) into four priority… | `skills/communications-triage-edho-ferdian/SKILL.md` |
 | `config-hygiene-edho-ferdian` | Periodic garbage collection for Edho's own Claude Code environment (`~/.claude`): find redundant, stale, orphaned, or context-expensive… | `skills/config-hygiene-edho-ferdian/SKILL.md` |
 | `container-ops-edho-ferdian` | Container setup, docker-compose design, multi-stage build optimization, and debugging guidance. Security-specific container concerns live… | `skills/container-ops-edho-ferdian/SKILL.md` |
+| `counterparty-comms-edho-ferdian` | Contract for an agent that talks to external counterparties (customers, suppliers, partners) in shared channels, group chats, DMs, or… | `skills/counterparty-comms-edho-ferdian/SKILL.md` |
 | `data-layer-patterns-edho-ferdian` | Design and setup guidance for the data layer — Postgres schema design, Prisma ORM patterns, Redis caching/queue patterns, and cross-ORM… | `skills/data-layer-patterns-edho-ferdian/SKILL.md` |
 | `dead-code-cleanup-edho-ferdian` | Staged dead-code removal workflow — detect (stack-appropriate tooling: knip/depcheck/ts-prune, vulture/deptry, cargo-udeps, deadcode, ...),… | `skills/dead-code-cleanup-edho-ferdian/SKILL.md` |
 | `deployment-ops-edho-ferdian` | Getting a build to production and keeping it healthy — release strategy (rolling / blue-green / canary), CI/CD pipeline gates, health… | `skills/deployment-ops-edho-ferdian/SKILL.md` |
@@ -39,6 +40,7 @@ method from its one-line description here — read the file.
 | `gan-harness-edho-ferdian` | Rapid, adversarial-loop prototyping and design iteration: a Plan → Generate → Evaluate cycle where a generator builds a live app and an… | `skills/gan-harness-edho-ferdian/SKILL.md` |
 | `git-and-release-ops-edho-ferdian` | Git and forge workflow — branching strategy selection, conventional commit format, merge versus rebase, conflict resolution, PR readiness… | `skills/git-and-release-ops-edho-ferdian/SKILL.md` |
 | `language-code-review-edho-ferdian` | Language- and framework-specific code review lenses layered on top of the general four-domain review in code-review-edho-ferdian — idioms,… | `skills/language-code-review-edho-ferdian/SKILL.md` |
+| `legal-ops-edho-ferdian` | Reproducible agreement paperwork for a solo operator or small team: build review drafts of a master/framework agreement (NDA, referral or… | `skills/legal-ops-edho-ferdian/SKILL.md` |
 | `marketing-edho-ferdian` | Campaign/positioning strategy, brand-voice definition, landing-page and email copywriting patterns, and a lightweight competitive/market-… | `skills/marketing-edho-ferdian/SKILL.md` |
 | `networking-ops-edho-ferdian` | Networking skill covering five modes — config review, network design (homelab or enterprise/multi-site), read-only OSI-layer diagnosis,… | `skills/networking-ops-edho-ferdian/SKILL.md` |
 | `opensource-release-edho-ferdian` | Fork, sanitize, and package a project for open-source release in three phases — extract secrets into .env.example rather than deleting… | `skills/opensource-release-edho-ferdian/SKILL.md` |
@@ -52,6 +54,7 @@ method from its one-line description here — read the file.
 | `spec-mining-edho-ferdian` | Extract behavioral specifications from an existing codebase that has no written spec — mining a brownfield repo into a flat list of… | `skills/spec-mining-edho-ferdian/SKILL.md` |
 | `system-design-edho-ferdian` | Mid-project architectural decision-making — Architecture Decision Records (ADRs), structured trade-off analysis,… | `skills/system-design-edho-ferdian/SKILL.md` |
 | `test-authoring-edho-ferdian` | Guidance for WRITING unit and component tests well — React/Testing Library, Python/pytest, Go, and Vue, plus stack-agnostic regression-test… | `skills/test-authoring-edho-ferdian/SKILL.md` |
+| `video-style-edho-ferdian` | Capture the look and pacing of reference videos as measurements, then reproduce them: distill references into a style pack (colour grade… | `skills/video-style-edho-ferdian/SKILL.md` |
 
 ## Notes for non-Claude-Code harnesses
 
