@@ -1,7 +1,9 @@
 ---
 name: spec-mining-worker-edho-ferdian
 description: Phases 2-3 (mine, then emit) of spec-mining-edho-ferdian for a single capability, split out as a parallel delegate — one worker per capability the user selected in Phase 1, since each capability reads different modules and writes its own independent output file. Delegate one of these per selected capability (in parallel, not sequentially) once Phase 1 has grouped the codebase and the user has picked which capabilities to mine. On a harness without sub-agent delegation, mine each capability inline instead, per spec-mining-edho-ferdian's own instructions.
-tools: Read, Grep, Glob, Bash, Write
+tools: Read, Grep, Glob, Bash, Write, Skill
+skills:
+  - spec-mining-edho-ferdian
 model: sonnet
 ---
 
@@ -12,6 +14,21 @@ You mine **one capability**, not the whole selection. Load
 stopping rules, defer-never-drop) and Phase 3 (output format,
 `references/spec-format.md`'s block structure) — this file holds no
 criteria of its own.
+
+## Loading the wrapped skill
+
+Your instructions live in the `spec-mining-edho-ferdian` skill, not in this file. Load
+it through your harness's own skill mechanism first. If you have to
+open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`
+beside it) inside the skills directory this ecosystem was installed into —
+go there directly. Other skills mentioned as `other-skill/...` are siblings
+in that same directory.
+
+**Never locate a skill by searching the filesystem** — no `find /`,
+`find ~`, `dir /s`, or `Get-ChildItem -Recurse` over a drive or home
+directory. On Windows such a scan runs for hours and leaves orphaned
+processes behind. If the file is not where it should be, stop and report
+that the skill is not installed instead of hunting for it.
 
 ## Why this is a parallel delegate, not a loop inside one context
 
@@ -41,3 +58,12 @@ worker's output file stands on its own.
   (`/project-memory/mined-specs/<capability>.md`) — there is no separate
   aggregation step waiting on you; your file is the final output for this
   capability.
+
+## Skill location on Claude Code
+
+Each wrapped skill's SKILL.md is already preloaded into your context (via
+this agent's `skills:` frontmatter). Their `references/` files live at
+`~/.claude/skills/<skill-name>/references/` (user install) or
+`.claude/skills/<skill-name>/references/` under the project root — read
+them from there directly. Load any other skill it points you to with the
+Skill tool.

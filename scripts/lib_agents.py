@@ -15,6 +15,7 @@ DESC_INLINE_RE = re.compile(r"^description:\s*(.+)$", re.MULTILINE)
 NAME_RE = re.compile(r"^name:\s*(.+)$", re.MULTILINE)
 TOOLS_RE = re.compile(r"^tools:\s*(.+)$", re.MULTILINE)
 MODEL_RE = re.compile(r"^model:\s*(.+)$", re.MULTILINE)
+SKILLS_RE = re.compile(r"^skills:\s*(.+)$", re.MULTILINE)
 
 
 @dataclass(frozen=True)
@@ -25,6 +26,10 @@ class Agent:
     model: str
     body: str  # markdown body after the frontmatter (the system prompt)
     dir: Path  # agents/<name>/
+    # The -edho-ferdian skill(s) this agent wraps, from the comma-separated
+    # `skills:` frontmatter field. Harness exporters that support preloading
+    # (Claude Code) emit it so the agent never has to go looking for them.
+    skills: tuple[str, ...] = ()
 
     @property
     def agent_md(self) -> Path:
@@ -55,7 +60,12 @@ def _parse_agent_md(agent_md: Path) -> Agent:
     model_m = MODEL_RE.search(fm)
     model = model_m.group(1).strip() if model_m else ""
 
-    return Agent(name=name, description=description, tools=tools, model=model, body=body, dir=agent_md.parent)
+    skills_m = SKILLS_RE.search(fm)
+    skills = tuple(s.strip() for s in skills_m.group(1).split(",") if s.strip()) if skills_m else ()
+
+    return Agent(
+        name=name, description=description, tools=tools, model=model, body=body, dir=agent_md.parent, skills=skills
+    )
 
 
 def load_agents() -> list[Agent]:

@@ -12,6 +12,21 @@ reflection gate — your mandate below operationalizes gate 2
 ("source-count honesty") and gate 5 ("injection check") as a real
 independent check rather than the report's own author re-reading it.
 
+## Loading the wrapped skill
+
+Your instructions live in the `research-ops-edho-ferdian` skill, not in this file. Load
+it through your harness's own skill mechanism first. If you have to
+open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`
+beside it) inside the skills directory this ecosystem was installed into —
+go there directly. Other skills mentioned as `other-skill/...` are siblings
+in that same directory.
+
+**Never locate a skill by searching the filesystem** — no `find /`,
+`find ~`, `dir /s`, or `Get-ChildItem -Recurse` over a drive or home
+directory. On Windows such a scan runs for hours and leaves orphaned
+processes behind. If the file is not where it should be, stop and report
+that the skill is not installed instead of hunting for it.
+
 ## What you receive — and what you must not
 
 You are given the draft report and the actual source list. You are not

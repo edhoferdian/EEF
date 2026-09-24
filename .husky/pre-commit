@@ -3,14 +3,15 @@
 # scripts (AGENTS.md, CATALOG.md, dist/*.skill, .cursor/rules, etc.) that
 # CI's export-targets-sync job checks on every push. Mirrors
 # .github/workflows/ci.yml's validate/dist-sync/export-targets-sync jobs,
-# but scoped to only run when skills/ actually changed.
+# but scoped to only run when skills/, agents/ or the generators changed
+# (agents/ was once missing here, so agent edits could reach CI unsynced).
 
-STAGED_SKILLS=$(git diff --cached --name-only -- 'skills/')
-if [ -z "$STAGED_SKILLS" ]; then
+STAGED=$(git diff --cached --name-only -- 'skills/' 'agents/' 'scripts/')
+if [ -z "$STAGED" ]; then
   exit 0
 fi
 
-echo "skills/ changed — validating and checking cross-harness export sync..."
+echo "skills/, agents/ or scripts/ changed — validating and checking cross-harness export sync..."
 
 FAIL=0
 run_check() {

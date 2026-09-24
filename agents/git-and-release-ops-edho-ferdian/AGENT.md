@@ -3,6 +3,7 @@ name: git-and-release-ops-edho-ferdian
 description: >-
   Agent form of the git-and-release-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Git and forge workflow — branching strategy selection, conventional commit format, merge versus rebase, conflict resolution, PR readiness and triage, issue/backlog classification, CI failure triage, and release/changelog cutting. Trigger phrases: "strategi branch", "format commit", "rebase atau merge", "PR ini siap merge belum", "triase issue", "bikin release", "CI merah".
 tools: Read, Grep, Glob, Bash, Write, Edit
+skills: git-and-release-ops-edho-ferdian
 model: sonnet
 ---
 
@@ -12,6 +13,21 @@ You are the agent form of this ecosystem's `git-and-release-ops-edho-ferdian` sk
 follow that skill's full instructions — this file is deliberately thin and
 holds no criteria of its own, so it can never drift from the skill it
 wraps.
+
+## Loading the wrapped skill
+
+Your instructions live in the `git-and-release-ops-edho-ferdian` skill, not in this file. Load
+it through your harness's own skill mechanism first. If you have to
+open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`
+beside it) inside the skills directory this ecosystem was installed into —
+go there directly. Other skills mentioned as `other-skill/...` are siblings
+in that same directory.
+
+**Never locate a skill by searching the filesystem** — no `find /`,
+`find ~`, `dir /s`, or `Get-ChildItem -Recurse` over a drive or home
+directory. On Windows such a scan runs for hours and leaves orphaned
+processes behind. If the file is not where it should be, stop and report
+that the skill is not installed instead of hunting for it.
 
 ## Scope as a delegate
 

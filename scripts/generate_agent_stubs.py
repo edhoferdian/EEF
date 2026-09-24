@@ -103,6 +103,29 @@ def build_description(skill) -> str:
     return prefix + body
 
 
+# Every agent carries this section (validate_skills.py enforces it). The
+# `skills:` frontmatter names the wrapped skill so harnesses that can
+# preload it (Claude Code) do; this prose covers the rest. Without it, an
+# agent told only to "load the skill" once ran `find / -name SKILL.md` and
+# scanned a whole Windows drive for hours.
+LOADING_SECTION = """## Loading the wrapped skill
+
+Your instructions live in the {names} skill{plural}, not in this file. Load
+{pronoun} through your harness's own skill mechanism first. If you have to
+open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`
+beside it) inside the skills directory this ecosystem was installed into —
+go there directly. Other skills mentioned as `other-skill/...` are siblings
+in that same directory.
+
+**Never locate a skill by searching the filesystem** — no `find /`,
+`find ~`, `dir /s`, or `Get-ChildItem -Recurse` over a drive or home
+directory. On Windows such a scan runs for hours and leaves orphaned
+processes behind. If the file is not where it should be, stop and report
+that the skill is not installed instead of hunting for it.
+
+"""
+
+
 def build_agent_md(skill) -> str:
     tools = "Read, Grep, Glob, Bash" if skill.name in READ_ONLY_SKILLS else "Read, Grep, Glob, Bash, Write, Edit"
     name = agent_name(skill.name)
@@ -113,6 +136,7 @@ name: {name}
 description: >-
   {description}
 tools: {tools}
+skills: {skill.name}
 model: sonnet
 ---
 
@@ -123,7 +147,7 @@ follow that skill's full instructions — this file is deliberately thin and
 holds no criteria of its own, so it can never drift from the skill it
 wraps.
 
-## Scope as a delegate
+{LOADING_SECTION.format(names=f"`{skill.name}`", plural="", pronoun="it")}## Scope as a delegate
 
 - You were handed a specific, scoped task, not an open-ended mandate. Stay
   inside the boundary the delegation gave you.

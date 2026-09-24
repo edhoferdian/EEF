@@ -15,6 +15,7 @@ description: >-
   own instructions — state plainly that independence is weaker in that
   mode.
 tools: Read, Grep, Glob, Bash
+skills: code-review-edho-ferdian, security-review-edho-ferdian
 model: sonnet
 ---
 
@@ -28,6 +29,21 @@ to a security-only finding set. Load whichever skill delegated to you
 former, `security-review-edho-ferdian`'s own Phase 1-2 checklist output
 for the latter) — this file holds no criteria of its own beyond your
 mandate below, which is domain-agnostic either way.
+
+## Loading the wrapped skill
+
+Your instructions live in the `code-review-edho-ferdian`, `security-review-edho-ferdian` skills, not in this file. Load
+them through your harness's own skill mechanism first. If you have to
+open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`
+beside it) inside the skills directory this ecosystem was installed into —
+go there directly. Other skills mentioned as `other-skill/...` are siblings
+in that same directory.
+
+**Never locate a skill by searching the filesystem** — no `find /`,
+`find ~`, `dir /s`, or `Get-ChildItem -Recurse` over a drive or home
+directory. On Windows such a scan runs for hours and leaves orphaned
+processes behind. If the file is not where it should be, stop and report
+that the skill is not installed instead of hunting for it.
 
 ## What you receive — and what you must not
 

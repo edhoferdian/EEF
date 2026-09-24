@@ -21,23 +21,12 @@ from lib_skills import REPO_ROOT, load_skills
 
 DEST = REPO_ROOT / "CATALOG.md"
 
-# Hand-tuned agents whose name doesn't match a skill folder 1:1 (the 9
-# split/reused agents documented in README.md's "Agent orchestration"
-# section) — mapped here so the table can still point at the skill(s) they
-# actually serve, instead of a bare "no matching skill folder". Source of
-# truth for this list is README.md's own prose; update this dict if that
-# section changes rather than letting the two silently diverge.
-AGENT_SKILL_ALIASES: dict[str, list[str]] = {
-    "code-reviewer-edho-ferdian": ["code-review-edho-ferdian"],
-    "code-critic-edho-ferdian": ["code-review-edho-ferdian", "security-review-edho-ferdian"],
-    "gan-generator-edho-ferdian": ["gan-harness-edho-ferdian"],
-    "gan-evaluator-edho-ferdian": ["gan-harness-edho-ferdian"],
-    "opensource-sanitizer-edho-ferdian": ["opensource-release-edho-ferdian"],
-    "research-worker-edho-ferdian": ["research-ops-edho-ferdian"],
-    "research-fact-checker-edho-ferdian": ["research-ops-edho-ferdian"],
-    "click-path-tracer-edho-ferdian": ["click-path-audit-edho-ferdian"],
-    "spec-mining-worker-edho-ferdian": ["spec-mining-edho-ferdian"],
-}
+# Agents whose name doesn't match a skill folder 1:1 (the split/reused
+# agents documented in README.md's "Agent orchestration" section), derived
+# from each AGENT.md's own `skills:` frontmatter so the table points at the
+# skill(s) they actually serve without a second hand-kept list to drift.
+def agent_skill_aliases(agents) -> dict[str, list[str]]:
+    return {a.name: list(a.skills) for a in agents if a.skills and list(a.skills) != [a.name]}
 
 HEADER_TEMPLATE = """\
 # EEF Skill & Agent Catalog
@@ -114,11 +103,12 @@ def build_content() -> str:
     skills = load_skills()
     agents = load_agents()
     agent_by_name = {a.name: a for a in agents}
+    aliases = agent_skill_aliases(agents)
 
-    # Reverse of AGENT_SKILL_ALIASES, so a skill with a differently-named
+    # Reverse of the alias map, so a skill with a differently-named
     # (or additionally reused) agent still shows it in the Skills table.
     extra_agents_by_skill: dict[str, list[str]] = {}
-    for agent_name, skill_names in AGENT_SKILL_ALIASES.items():
+    for agent_name, skill_names in aliases.items():
         for skill_name in skill_names:
             extra_agents_by_skill.setdefault(skill_name, []).append(agent_name)
 
@@ -143,9 +133,9 @@ def build_content() -> str:
         skill_dir = REPO_ROOT / "skills" / a.name
         if skill_dir.exists():
             skill_cell = f"[`{a.name}`](skills/{a.name}/SKILL.md)"
-        elif a.name in AGENT_SKILL_ALIASES:
+        elif a.name in aliases:
             skill_cell = ", ".join(
-                f"[`{name}`](skills/{name}/SKILL.md)" for name in AGENT_SKILL_ALIASES[a.name]
+                f"[`{name}`](skills/{name}/SKILL.md)" for name in aliases[a.name]
             )
         else:
             skill_cell = "— (see README.md's Agent orchestration section)"

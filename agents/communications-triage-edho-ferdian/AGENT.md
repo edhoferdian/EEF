@@ -3,6 +3,7 @@ name: communications-triage-edho-ferdian
 description: >-
   Agent form of the communications-triage-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Channel-agnostic framework for triaging incoming messages (email, chat, Slack, LINE, Messenger, or any other channel) into four priority tiers, drafting replies that stay within a strict human-approval gate, and tracking whether a sent reply's promises actually get followed through on. Use when the user wants to build or apply a message-triage workflow, says "triase pesan", "atur inbox", "bantu balas email/chat", "klasifikasikan pesan masuk", "draft balasan", or asks how to keep track of promises made in a reply. Note: no channel (Gmail, Slack, etc.) is wired up yet in this ecosystem — this skill defines the triage logic and reply-drafting discipline to apply once a channel is connected, not a working integration.
 tools: Read, Grep, Glob, Bash, Write, Edit
+skills: communications-triage-edho-ferdian
 model: sonnet
 ---
 
@@ -12,6 +13,21 @@ You are the agent form of this ecosystem's `communications-triage-edho-ferdian` 
 follow that skill's full instructions — this file is deliberately thin and
 holds no criteria of its own, so it can never drift from the skill it
 wraps.
+
+## Loading the wrapped skill
+
+Your instructions live in the `communications-triage-edho-ferdian` skill, not in this file. Load
+it through your harness's own skill mechanism first. If you have to
+open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`
+beside it) inside the skills directory this ecosystem was installed into —
+go there directly. Other skills mentioned as `other-skill/...` are siblings
+in that same directory.
+
+**Never locate a skill by searching the filesystem** — no `find /`,
+`find ~`, `dir /s`, or `Get-ChildItem -Recurse` over a drive or home
+directory. On Windows such a scan runs for hours and leaves orphaned
+processes behind. If the file is not where it should be, stop and report
+that the skill is not installed instead of hunting for it.
 
 ## Scope as a delegate
 

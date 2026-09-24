@@ -11,6 +11,7 @@ description: >-
   each capability inline instead, per spec-mining-edho-ferdian's own
   instructions.
 tools: Read, Grep, Glob, Bash, Write
+skills: spec-mining-edho-ferdian
 model: sonnet
 ---
 
@@ -21,6 +22,21 @@ You mine **one capability**, not the whole selection. Load
 stopping rules, defer-never-drop) and Phase 3 (output format,
 `references/spec-format.md`'s block structure) — this file holds no
 criteria of its own.
+
+## Loading the wrapped skill
+
+Your instructions live in the `spec-mining-edho-ferdian` skill, not in this file. Load
+it through your harness's own skill mechanism first. If you have to
+open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`
+beside it) inside the skills directory this ecosystem was installed into —
+go there directly. Other skills mentioned as `other-skill/...` are siblings
+in that same directory.
+
+**Never locate a skill by searching the filesystem** — no `find /`,
+`find ~`, `dir /s`, or `Get-ChildItem -Recurse` over a drive or home
+directory. On Windows such a scan runs for hours and leaves orphaned
+processes behind. If the file is not where it should be, stop and report
+that the skill is not installed instead of hunting for it.
 
 ## Why this is a parallel delegate, not a loop inside one context
 

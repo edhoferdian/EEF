@@ -106,11 +106,60 @@ def check_broken_references(errors: list[str]) -> None:
                     errors.append(f"{rel}:{i}: references/{ref_name} does not exist anywhere in skills/*/references/")
 
 
+AGENTS_DIR = REPO_ROOT / "agents"
+AGENT_SKILLS_RE = re.compile(r"^skills:\s*(.+)$", re.MULTILINE)
+LOADING_SECTION_HEADING = "## Loading the wrapped skill"
+# A skill or agent that tells a model to search from a drive or home root
+# spawns scans that run for hours on Windows (2026-09-24: piled-up find.exe
+# processes hunting for SKILL.md). Scoped searches (`find . -name`,
+# `find src/ ...`) are fine; only root-level sweeps are flagged.
+FS_WIDE_SEARCH_RE = re.compile(
+    r"find\s+(/|~|\$HOME|C:)(\s|$)|Get-ChildItem\b[^\n]*-Recurse[^\n]*\b[A-Z]:\\?(\s|$)|dir\s+/s\s+[A-Z]:\\?",
+    re.IGNORECASE,
+)
+
+
+def check_agents(errors: list[str]) -> None:
+    for agent_md in sorted(AGENTS_DIR.glob("*/AGENT.md")):
+        rel = agent_md.relative_to(REPO_ROOT)
+        content = agent_md.read_text(encoding="utf-8")
+        m = FRONTMATTER_RE.search(content)
+        if not m:
+            errors.append(f"{rel}: no valid --- frontmatter block found")
+            continue
+        skills_m = AGENT_SKILLS_RE.search(m.group(1))
+        if not skills_m:
+            errors.append(f"{rel}: missing `skills:` naming the skill(s) this agent wraps")
+        else:
+            for name in (s.strip() for s in skills_m.group(1).split(",")):
+                if not (SKILLS_DIR / name / "SKILL.md").exists():
+                    errors.append(f"{rel}: `skills:` names {name}, which has no skills/{name}/SKILL.md")
+        if LOADING_SECTION_HEADING not in content:
+            errors.append(f"{rel}: missing \"{LOADING_SECTION_HEADING}\" section (see generate_agent_stubs.py)")
+
+
+def check_filesystem_wide_search(errors: list[str]) -> None:
+    files = list(SKILLS_DIR.rglob("*.md")) + list(AGENTS_DIR.glob("*/AGENT.md"))
+    for md_file in sorted(files):
+        rel = md_file.relative_to(REPO_ROOT)
+        in_loading_section = False
+        for i, line in enumerate(md_file.read_text(encoding="utf-8").splitlines(), 1):
+            # The loading section names these commands to forbid them.
+            if line.startswith("## "):
+                in_loading_section = line.strip() == LOADING_SECTION_HEADING
+            if in_loading_section:
+                continue
+            if FS_WIDE_SEARCH_RE.search(line):
+                errors.append(f"{rel}:{i}: filesystem-wide search from a drive/home root — scope it to a known directory")
+
+
 def main() -> int:
     errors: list[str] = []
     check_frontmatter_and_description(errors)
     check_ecc_mentions(errors)
     check_broken_references(errors)
+    check_agents(errors)
+    check_filesystem_wide_search(errors)
 
     if errors:
         print(f"FAILED — {len(errors)} issue(s):\n")

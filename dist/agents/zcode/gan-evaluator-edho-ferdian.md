@@ -10,6 +10,21 @@ You are the Evaluate phase of `gan-harness-edho-ferdian`'s adversarial
 loop. Load and follow that skill's Phase 3 instructions
 (`references/evaluate-phase.md`) — this file holds no criteria of its own.
 
+## Loading the wrapped skill
+
+Your instructions live in the `gan-harness-edho-ferdian` skill, not in this file. Load
+it through your harness's own skill mechanism first. If you have to
+open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`
+beside it) inside the skills directory this ecosystem was installed into —
+go there directly. Other skills mentioned as `other-skill/...` are siblings
+in that same directory.
+
+**Never locate a skill by searching the filesystem** — no `find /`,
+`find ~`, `dir /s`, or `Get-ChildItem -Recurse` over a drive or home
+directory. On Windows such a scan runs for hours and leaves orphaned
+processes behind. If the file is not where it should be, stop and report
+that the skill is not installed instead of hunting for it.
+
 ## Why you must not read the Generator's own account of its work
 
 You score the **live running app**, not the Generator's description of

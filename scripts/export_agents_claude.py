@@ -3,11 +3,12 @@
 agents/, in Claude Code's own native subagent format (frontmatter: name,
 description, tools, model; body: system prompt).
 
-This is a straight 1:1 mapping — Claude Code's subagent format IS the
-canonical agents/*/AGENT.md format this ecosystem writes agents in, so no
-transformation is needed beyond copying frontmatter fields and body
-verbatim. Unlike skills/, which need per-harness reshaping, an AGENT.md
-*is* a .claude/agents/*.md file already; this script only relocates it.
+Nearly a 1:1 mapping — Claude Code's subagent format IS the canonical
+agents/*/AGENT.md format this ecosystem writes agents in. The only
+reshaping is Claude-specific: the canonical comma-separated `skills:`
+becomes a YAML list (which Claude Code preloads), `Skill` is added to
+tools, and a short install-location note is appended to the body. See
+CLAUDE_LOCATION_NOTE below for why.
 
 Usage:
     python scripts/export_agents_claude.py            # write .claude/agents/*.md
@@ -21,16 +22,50 @@ from lib_agents import REPO_ROOT, Agent, load_agents
 DEST_DIR = REPO_ROOT / ".claude" / "agents"
 
 
+# Claude Code-only additions, kept out of the canonical AGENT.md so other
+# harnesses' exports never inherit them:
+#   - `skills:` preloads each wrapped skill's full SKILL.md into the
+#     subagent's context at startup, so it never has to locate the file.
+#     Before this existed, subagents told to "load the skill" had no path
+#     and no Skill tool, and fell back to `find / -name SKILL.md` — on
+#     Windows that scanned the whole drive for hours per delegation.
+#   - `Skill` in tools lets the subagent load the *other* skills its
+#     wrapped skill cross-references, instead of hunting for them on disk.
+#   - CLAUDE_LOCATION_NOTE gives the concrete install paths for the
+#     references/ files a preloaded SKILL.md points at.
+CLAUDE_LOCATION_NOTE = """\
+
+## Skill location on Claude Code
+
+Each wrapped skill's SKILL.md is already preloaded into your context (via
+this agent's `skills:` frontmatter). Their `references/` files live at
+`~/.claude/skills/<skill-name>/references/` (user install) or
+`.claude/skills/<skill-name>/references/` under the project root — read
+them from there directly. Load any other skill it points you to with the
+Skill tool.
+"""
+
+
+def claude_tools(agent: Agent) -> str:
+    tools = [t.strip() for t in agent.tools.split(",") if t.strip()]
+    if agent.skills and "Skill" not in tools:
+        tools.append("Skill")
+    return ", ".join(tools)
+
+
 def agent_md_content(agent: Agent) -> str:
+    skills_yaml = "".join(f"  - {s}\n" for s in agent.skills)
     frontmatter = (
         "---\n"
         f"name: {agent.name}\n"
         f"description: {agent.description}\n"
-        f"tools: {agent.tools}\n"
-        f"model: {agent.model}\n"
+        f"tools: {claude_tools(agent)}\n"
+        + (f"skills:\n{skills_yaml}" if agent.skills else "")
+        + f"model: {agent.model}\n"
         "---\n\n"
     )
-    return frontmatter + agent.body + "\n"
+    note = CLAUDE_LOCATION_NOTE if agent.skills else ""
+    return frontmatter + agent.body + "\n" + note
 
 
 def target_path(agent: Agent):

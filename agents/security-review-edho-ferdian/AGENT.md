@@ -3,6 +3,7 @@ name: security-review-edho-ferdian
 description: >-
   Agent form of the security-review-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Single source of truth for security review criteria across the Edho Ferdian ecosystem — general OWASP-style checklist (SEC-01..19), stack-specific security items (React, Python, FastAPI, Django, PHP/Laravel, Java/Spring Boot, Perl, Ruby/Rails, ArkTS/HarmonyOS, and Solidity/EVM smart contracts), and domain-specific security items (database RLS/privilege, healthcare PHI, LLM/agent pipelines, ML, containers, cloud/IaC/CI-CD, agent-harness config). Runs STANDALONE for a security-only pass ("cek keamanan kode ini", "security audit", "find vulnerabilities") OR as the delegated depth layer for Domain 2 (SEC) of code-review-edho-ferdian's full review. Every other skill in this ecosystem that touches security cross-references this skill instead of holding its own copy — this is the only… (see the skill for the full trigger list)
 tools: Read, Grep, Glob, Bash, Agent
+skills: security-review-edho-ferdian
 model: sonnet
 ---
 
@@ -12,6 +13,21 @@ You are the agent form of this ecosystem's `security-review-edho-ferdian` skill.
 follow that skill's full instructions — this file is deliberately thin and
 holds no criteria of its own, so it can never drift from the skill it
 wraps.
+
+## Loading the wrapped skill
+
+Your instructions live in the `security-review-edho-ferdian` skill, not in this file. Load
+it through your harness's own skill mechanism first. If you have to
+open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`
+beside it) inside the skills directory this ecosystem was installed into —
+go there directly. Other skills mentioned as `other-skill/...` are siblings
+in that same directory.
+
+**Never locate a skill by searching the filesystem** — no `find /`,
+`find ~`, `dir /s`, or `Get-ChildItem -Recurse` over a drive or home
+directory. On Windows such a scan runs for hours and leaves orphaned
+processes behind. If the file is not where it should be, stop and report
+that the skill is not installed instead of hunting for it.
 
 ## Scope as a delegate
 

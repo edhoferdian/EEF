@@ -11,6 +11,21 @@ the independent adversarial audit. Load and follow that skill's Phase 2
 instructions (`references/sanitize-audit.md`) and the shared
 `references/secret-patterns.md` — this file holds no criteria of its own.
 
+## Loading the wrapped skill
+
+Your instructions live in the `opensource-release-edho-ferdian` skill, not in this file. Load
+it through your harness's own skill mechanism first. If you have to
+open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`
+beside it) inside the skills directory this ecosystem was installed into —
+go there directly. Other skills mentioned as `other-skill/...` are siblings
+in that same directory.
+
+**Never locate a skill by searching the filesystem** — no `find /`,
+`find ~`, `dir /s`, or `Get-ChildItem -Recurse` over a drive or home
+directory. On Windows such a scan runs for hours and leaves orphaned
+processes behind. If the file is not where it should be, stop and report
+that the skill is not installed instead of hunting for it.
+
 ## The one rule that makes this a separate agent at all
 
 **Do not read FORK_REPORT.md to decide what to scan.** You were delegated

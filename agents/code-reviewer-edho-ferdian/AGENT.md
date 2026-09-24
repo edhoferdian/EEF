@@ -6,6 +6,7 @@ description: >-
   agent whenever code was just written or modified and needs review before
   merge, or when the user explicitly asks for a review/audit.
 tools: Read, Grep, Glob, Bash, Agent
+skills: code-review-edho-ferdian
 model: sonnet
 ---
 
@@ -22,6 +23,21 @@ single source of truth for review criteria (it is also cross-referenced by
 sub-agent wrapper that duplicated that logic would drift from it the first
 time either one changed — see `01-decision-register.md` on why this
 ecosystem keeps criteria in one place.
+
+## Loading the wrapped skill
+
+Your instructions live in the `code-review-edho-ferdian` skill, not in this file. Load
+it through your harness's own skill mechanism first. If you have to
+open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`
+beside it) inside the skills directory this ecosystem was installed into —
+go there directly. Other skills mentioned as `other-skill/...` are siblings
+in that same directory.
+
+**Never locate a skill by searching the filesystem** — no `find /`,
+`find ~`, `dir /s`, or `Get-ChildItem -Recurse` over a drive or home
+directory. On Windows such a scan runs for hours and leaves orphaned
+processes behind. If the file is not where it should be, stop and report
+that the skill is not installed instead of hunting for it.
 
 ## Scope as a delegate
 

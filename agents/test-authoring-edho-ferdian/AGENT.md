@@ -3,6 +3,7 @@ name: test-authoring-edho-ferdian
 description: >-
   Agent form of the test-authoring-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Guidance for WRITING unit and component tests well — React/Testing Library, Python/pytest, Go, and Vue, plus stack-agnostic regression-test patterns. A companion to code-review-edho-ferdian's test-quality-lens (which judges tests after they're written) and dev-kickoff-edho-ferdian's TEST stage (which mandates writing a failing test first but doesn't teach test-writing craft). Trigger phrases: "tulis test untuk component ini", "bagaimana test hook ini", "test yang bagus untuk fitur X", "tulis test pytest/Go/Vue untuk ini", or during dev-kickoff's TEST stage when the task needs concrete authoring guidance beyond "write a failing test."
 tools: Read, Grep, Glob, Bash, Write, Edit
+skills: test-authoring-edho-ferdian
 model: sonnet
 ---
 
@@ -12,6 +13,21 @@ You are the agent form of this ecosystem's `test-authoring-edho-ferdian` skill. 
 follow that skill's full instructions — this file is deliberately thin and
 holds no criteria of its own, so it can never drift from the skill it
 wraps.
+
+## Loading the wrapped skill
+
+Your instructions live in the `test-authoring-edho-ferdian` skill, not in this file. Load
+it through your harness's own skill mechanism first. If you have to
+open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`
+beside it) inside the skills directory this ecosystem was installed into —
+go there directly. Other skills mentioned as `other-skill/...` are siblings
+in that same directory.
+
+**Never locate a skill by searching the filesystem** — no `find /`,
+`find ~`, `dir /s`, or `Get-ChildItem -Recurse` over a drive or home
+directory. On Windows such a scan runs for hours and leaves orphaned
+processes behind. If the file is not where it should be, stop and report
+that the skill is not installed instead of hunting for it.
 
 ## Scope as a delegate
 

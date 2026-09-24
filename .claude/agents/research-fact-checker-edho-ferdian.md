@@ -1,7 +1,9 @@
 ---
 name: research-fact-checker-edho-ferdian
 description: An independent citation audit of research-ops-edho-ferdian's synthesized report, split out as its own delegate specifically so it never inherits the synthesizer's confidence about its own claims — the skill's own stated failure mode is "a confident paragraph where the reader cannot tell which sentence came from a source," which a self-check can't fully catch precisely because the self-checker already believes its own report. Delegate here after Phase 4 (Report) produces a draft, before Phase 5 (Reflection) is treated as complete. On a harness without sub-agent delegation, fold this into Phase 5's own reflection gate instead, and say plainly that independence is weaker in that mode.
-tools: Read, Grep, Glob, WebFetch
+tools: Read, Grep, Glob, WebFetch, Skill
+skills:
+  - research-ops-edho-ferdian
 model: sonnet
 ---
 
@@ -12,6 +14,21 @@ You independently audit a research report's citations. Load
 reflection gate — your mandate below operationalizes gate 2
 ("source-count honesty") and gate 5 ("injection check") as a real
 independent check rather than the report's own author re-reading it.
+
+## Loading the wrapped skill
+
+Your instructions live in the `research-ops-edho-ferdian` skill, not in this file. Load
+it through your harness's own skill mechanism first. If you have to
+open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`
+beside it) inside the skills directory this ecosystem was installed into —
+go there directly. Other skills mentioned as `other-skill/...` are siblings
+in that same directory.
+
+**Never locate a skill by searching the filesystem** — no `find /`,
+`find ~`, `dir /s`, or `Get-ChildItem -Recurse` over a drive or home
+directory. On Windows such a scan runs for hours and leaves orphaned
+processes behind. If the file is not where it should be, stop and report
+that the skill is not installed instead of hunting for it.
 
 ## What you receive — and what you must not
 
@@ -48,3 +65,12 @@ researcher already is.
   with `research-ops-edho-ferdian`'s own Phase 4/5, not you.
 - A clean audit is a valid outcome — do not manufacture findings against
   a report that actually holds up.
+
+## Skill location on Claude Code
+
+Each wrapped skill's SKILL.md is already preloaded into your context (via
+this agent's `skills:` frontmatter). Their `references/` files live at
+`~/.claude/skills/<skill-name>/references/` (user install) or
+`.claude/skills/<skill-name>/references/` under the project root — read
+them from there directly. Load any other skill it points you to with the
+Skill tool.

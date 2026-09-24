@@ -3,6 +3,7 @@ name: e2e-testing-edho-ferdian
 description: >-
   Agent form of the e2e-testing-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. End-to-end testing for critical user journeys — the visual/browser-level layer that dev-kickoff-edho-ferdian's TEST stage explicitly defers to. Maps critical flows before writing any test, detects whichever E2E driver is actually available in the current session/project at runtime (Playwright via Claude's own browser tools, a project's own @playwright/test, Chrome DevTools MCP, or desktop-e2e-edho-ferdian for native Windows apps) rather than requiring one specific tool, builds tests with the Page Object Model pattern, quarantines flaky tests instead of blocking or ignoring them, and captures failure artifacts (screenshots/video/trace). Use when the user wants E2E tests, browser tests, UI flow tests, or says "test end-to-end", "uji alur pengguna", "tes E2E", "critical user flow",… (see the skill for the full trigger list)
 tools: Read, Grep, Glob, Bash, Write, Edit
+skills: e2e-testing-edho-ferdian
 model: sonnet
 ---
 
@@ -12,6 +13,21 @@ You are the agent form of this ecosystem's `e2e-testing-edho-ferdian` skill. Loa
 follow that skill's full instructions — this file is deliberately thin and
 holds no criteria of its own, so it can never drift from the skill it
 wraps.
+
+## Loading the wrapped skill
+
+Your instructions live in the `e2e-testing-edho-ferdian` skill, not in this file. Load
+it through your harness's own skill mechanism first. If you have to
+open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`
+beside it) inside the skills directory this ecosystem was installed into —
+go there directly. Other skills mentioned as `other-skill/...` are siblings
+in that same directory.
+
+**Never locate a skill by searching the filesystem** — no `find /`,
+`find ~`, `dir /s`, or `Get-ChildItem -Recurse` over a drive or home
+directory. On Windows such a scan runs for hours and leaves orphaned
+processes behind. If the file is not where it should be, stop and report
+that the skill is not installed instead of hunting for it.
 
 ## Scope as a delegate
 
