@@ -88,6 +88,16 @@ If step 2 cannot be written, that is the answer: do not run it.
 "skip the checks", and it is exactly what an agent under time pressure
 reaches for.
 
+**Runaway searches are destructive too** — of time and of the machine. A
+recursive search starting at a filesystem, drive, or home root (`find /`,
+`find ~`, `rg x /`, `Get-ChildItem -Recurse C:\`, `dir /s C:\`) never <!-- fs-search-ok: names the banned forms -->
+needs the three-step justification above: it is simply refused. On Windows
+it runs for hours and outlives the tool call as an orphaned process — this
+ecosystem's own agent wrappers once spawned six `find.exe` scans hunting for
+a `SKILL.md`, some alive for ten hours. Search a known directory instead;
+if the target has no known location, ask. The Claude Code binding is
+`hooks/block-fs-wide-search.js` in this skill (see the appendix).
+
 Never build a shell command by interpolating a string. Pass the executable
 and its arguments as separate entries with `shell: false` — string
 interpolation is how a filename with a space or a quote becomes an
@@ -181,6 +191,18 @@ mechanical binding for Claude Code specifically — `PreToolUse` for gates
 1-3, `Stop` for gate 4 — including hookify rule-file syntax
 (`.claude/hookify.<rule-name>.local.md`) for the pattern-matching gates.
 Nothing above depends on this appendix existing.
+
+One gate ships ready-made: `hooks/block-fs-wide-search.js` (Node, no
+dependencies) denies root-level recursive searches for Gate 2 and fails
+open on anything it cannot parse. Copy it to `~/.claude/hooks/` and add to
+`~/.claude/settings.json`:
+
+```json
+"PreToolUse": [{
+  "matcher": "Bash|PowerShell",
+  "hooks": [{ "type": "command", "command": "node \"<home>/.claude/hooks/block-fs-wide-search.js\"", "timeout": 10 }]
+}]
+```
 
 ## Growth path
 

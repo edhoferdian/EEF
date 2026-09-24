@@ -6,7 +6,7 @@ This file closes decision-register debt **D-005**: until now, the *floor*
 this ecosystem's code-quality reviews stood on — immutability, KISS/DRY/
 YAGNI, size limits, naming, comment discipline — was not owned by this
 ecosystem at all. It was inherited silently from a file that lives outside
-this repo: `~/.claude/rules/ecc/common/coding-style.md`, installed globally
+this repo: `~/.claude/rules/ecc/common/coding-style.md`, installed globally <!-- d034-ok: historical mention, not a live pointer -->
 at the user level. That file in turn is a compressed pointer to further
 upstream coding-standards material.
 
@@ -28,7 +28,7 @@ restatement (see §10). Going forward, `review-checklist.md`'s CQ codes cite
 *this* file as their baseline, not the external rule.
 
 If that global rules install is ever uninstalled, this file — not
-`~/.claude/rules/ecc/common/coding-style.md` — is the ground truth for what
+`~/.claude/rules/ecc/common/coding-style.md` — is the ground truth for what <!-- d034-ok: historical mention, not a live pointer -->
 "clean code" means in this ecosystem's reviews.
 
 ---

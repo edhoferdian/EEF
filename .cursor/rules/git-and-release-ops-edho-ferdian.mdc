@@ -9,7 +9,7 @@ alwaysApply: false
 ## Why this skill exists (D-005)
 
 Until now this ecosystem's git conventions came from the installed global
-harness rules (`~/.claude/rules/ecc/common/git-workflow.md`). That is a live
+harness rules (`~/.claude/rules/ecc/common/git-workflow.md`). That is a live <!-- d034-ok: historical mention, not a live pointer -->
 dependency on the harness this ecosystem is decommissioning. This skill is
 the native replacement.
 

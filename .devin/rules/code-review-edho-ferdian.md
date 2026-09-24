@@ -49,7 +49,7 @@ Domain 1 (Code Quality) checks findings against this ecosystem's own
 baseline conventions — immutability, KISS/DRY/YAGNI, size limits, naming,
 comment discipline — in **`references/baseline-conventions.md`**. That file
 is this ecosystem's native replacement for the previously-inherited
-global rule (`~/.claude/rules/ecc/common/coding-style.md`); read it once per
+global rule (`~/.claude/rules/ecc/common/coding-style.md`); read it once per <!-- d034-ok: historical mention, not a live pointer -->
 Domain 1 pass rather than relying on that external file.
 
 ```
@@ -192,6 +192,5 @@ for deletion in Phase 3, not a finding.
 
 **Merge across domains before Phase 2, not after.** Independent domains
 routinely flag the same line for different reasons. Key the merge on the
-**normalized evidence snippet** — the offending code — not on the finding's
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/code-review-edho-ferdian/SKILL.md` for complete instructions.

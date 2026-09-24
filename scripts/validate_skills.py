@@ -21,6 +21,13 @@ Checks (all must pass):
    deliberately narrower than a full cross-skill-reference audit (which
    needs human judgment on prose context) — it only fails on names that
    don't exist anywhere in the repo, which is unambiguous.
+5. Agents (D-055) — every agents/*/AGENT.md names its wrapped skill(s) in
+   `skills:` and carries the "Loading the wrapped skill" section.
+6. No filesystem-wide searches (D-055) — no skill/agent line tells a model
+   to search from a drive or home root (`<!-- fs-search-ok -->` exempts a
+   line that names the banned form on purpose).
+7. No live pointers into the external rules tree (D-034) — historical
+   mentions carry `<!-- d034-ok -->`.
 
 What this deliberately does NOT check (left to periodic manual
 skill-audit-edho-ferdian runs, since they need human judgment and are
@@ -147,10 +154,28 @@ def check_filesystem_wide_search(errors: list[str]) -> None:
             # The loading section names these commands to forbid them.
             if line.startswith("## "):
                 in_loading_section = line.strip() == LOADING_SECTION_HEADING
-            if in_loading_section:
+            # Elsewhere, a line that names a banned form on purpose carries
+            # an explicit `<!-- fs-search-ok -->` marker.
+            if in_loading_section or "fs-search-ok" in line:
                 continue
             if FS_WIDE_SEARCH_RE.search(line):
                 errors.append(f"{rel}:{i}: filesystem-wide search from a drive/home root — scope it to a known directory")
+
+
+# D-034: a pointer into the globally installed external rules tree is a
+# live dependency on the harness this ecosystem is decommissioning (D-005).
+# Historical mentions carry an explicit `<!-- d034-ok -->` marker.
+EXTERNAL_RULES_RE = re.compile(r"\.claude/rules/ecc\b")
+
+
+def check_external_rule_pointers(errors: list[str]) -> None:
+    for md_file in sorted(SKILLS_DIR.rglob("*.md")):
+        rel = md_file.relative_to(REPO_ROOT)
+        if rel.parts[1] in ECC_EXEMPT_SKILLS:
+            continue
+        for i, line in enumerate(md_file.read_text(encoding="utf-8").splitlines(), 1):
+            if EXTERNAL_RULES_RE.search(line) and "d034-ok" not in line:
+                errors.append(f"{rel}:{i}: live pointer into ~/.claude/rules/ecc (D-034) — restate natively or mark historical")
 
 
 def main() -> int:
@@ -160,6 +185,7 @@ def main() -> int:
     check_broken_references(errors)
     check_agents(errors)
     check_filesystem_wide_search(errors)
+    check_external_rule_pointers(errors)
 
     if errors:
         print(f"FAILED — {len(errors)} issue(s):\n")
