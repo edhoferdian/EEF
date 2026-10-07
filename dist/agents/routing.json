@@ -317,10 +317,20 @@
       }
     },
     "code-reviewer-edho-ferdian": {
-      "tier": "deep",
+      "tier": "standard",
       "effort": "high",
       "profiles": {
         "hemat": {
+          "claude": {
+            "model": "sonnet",
+            "effort": "medium"
+          },
+          "codex": {
+            "model": "gpt-6.1-sol",
+            "effort": "medium"
+          }
+        },
+        "seimbang": {
           "claude": {
             "model": "sonnet",
             "effort": "high"
@@ -330,23 +340,13 @@
             "effort": "high"
           }
         },
-        "seimbang": {
-          "claude": {
-            "model": "opus",
-            "effort": "high"
-          },
-          "codex": {
-            "model": "gpt-6-astra",
-            "effort": "high"
-          }
-        },
         "maksimal": {
           "claude": {
-            "model": "opus",
+            "model": "sonnet",
             "effort": "xhigh"
           },
           "codex": {
-            "model": "gpt-6-astra",
+            "model": "gpt-6.1-sol",
             "effort": "xhigh"
           }
         }

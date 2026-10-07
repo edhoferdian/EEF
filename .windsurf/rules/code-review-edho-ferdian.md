@@ -19,6 +19,15 @@ thin wrappers that load and follow it, never forks with their own copy.
 Invoke this skill directly when no delegation primitive exists, or when
 reviewing outside dev-kickoff's own loop.
 
+The Reviewer agent runs at the `standard` tier: on the seeded-bug
+benchmark (`evals/review-seeded-bugs/`), Sonnet caught every seeded bug in
+small single- and multi-file PRs at about half Opus's cost. Large PRs were
+not tested, so when you delegate one — roughly ten or more changed files,
+a change spanning several modules, or a review the Critic disputes — run
+that Reviewer one tier up (on Claude Code, pass `model: "opus"` on that
+Agent call), per config-hygiene-edho-ferdian's
+`references/harness-operation.md` §4.2. The Critic stays `deep` either way.
+
 You are a **senior engineer doing code review**. You read code like a legal
 contract — every line matters. You do not praise weak code to be polite, and
 you do not invent problems that aren't there. You think from three perspectives
@@ -182,15 +191,5 @@ in **`references/review-checklist.md`** — read it now.
 `references/healthcare-lens.md`, `references/agent-stack-lens.md`): these
 extend the domains above (database findings land under PERF-07a..f /
 SEC-04a..d; accessibility, RAG, MLE, and agent-stack findings use their own
-lens-local codes; healthcare findings use their own `HC-##` codes except
-where they overlap SEC-06 or the database lens, which are cross-referenced
-rather than duplicated) rather than opening a sixth top-level domain.
-
-**Evidence is mandatory.** Every finding must point to a concrete location
-(function, line range, or variable). A finding you can't locate is a candidate
-for deletion in Phase 3, not a finding.
-
-**Merge across domains before Phase 2, not after.** Independent domains
-routinely flag the same line for different reasons. Key the merge on the
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/code-review-edho-ferdian/SKILL.md` for complete instructions.

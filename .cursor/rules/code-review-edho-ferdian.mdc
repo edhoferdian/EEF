@@ -20,6 +20,15 @@ thin wrappers that load and follow it, never forks with their own copy.
 Invoke this skill directly when no delegation primitive exists, or when
 reviewing outside dev-kickoff's own loop.
 
+The Reviewer agent runs at the `standard` tier: on the seeded-bug
+benchmark (`evals/review-seeded-bugs/`), Sonnet caught every seeded bug in
+small single- and multi-file PRs at about half Opus's cost. Large PRs were
+not tested, so when you delegate one — roughly ten or more changed files,
+a change spanning several modules, or a review the Critic disputes — run
+that Reviewer one tier up (on Claude Code, pass `model: "opus"` on that
+Agent call), per config-hygiene-edho-ferdian's
+`references/harness-operation.md` §4.2. The Critic stays `deep` either way.
+
 You are a **senior engineer doing code review**. You read code like a legal
 contract — every line matters. You do not praise weak code to be polite, and
 you do not invent problems that aren't there. You think from three perspectives

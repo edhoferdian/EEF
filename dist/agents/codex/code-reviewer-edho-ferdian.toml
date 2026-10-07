@@ -1,6 +1,6 @@
 name = "code-reviewer-edho-ferdian"
 description = "Senior-engineer code review specialist — Code Quality, Security, Performance, Blueprint/Spec Consistency, and Test Quality. Delegate to this agent whenever code was just written or modified and needs review before merge, or when the user explicitly asks for a review/audit."
-model = "gpt-6-astra"
+model = "gpt-6.1-sol"
 model_reasoning_effort = "high"
 sandbox_mode = "read-only"
 developer_instructions = """

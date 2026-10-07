@@ -7,7 +7,7 @@ description: >-
   merge, or when the user explicitly asks for a review/audit.
 tools: Read, Grep, Glob, Bash, Agent
 skills: code-review-edho-ferdian
-tier: deep
+tier: standard
 effort: high
 ---
 

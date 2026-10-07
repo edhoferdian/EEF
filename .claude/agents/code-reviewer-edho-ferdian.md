@@ -4,7 +4,7 @@ description: Senior-engineer code review specialist — Code Quality, Security, 
 tools: Read, Grep, Glob, Bash, Agent, Skill
 skills:
   - code-review-edho-ferdian
-model: opus
+model: sonnet
 effort: high
 ---
 
