@@ -241,6 +241,29 @@ explicitly in a prompt ("consult the advisor before you declare this done")
 when a step matters — there is no setting that forces a call.
 `CLAUDE_CODE_DISABLE_ADVISOR_TOOL=1` turns it off entirely.
 
+### 4.4 Re-tiering from evidence
+
+The initial tiers are a hypothesis. To test it, log every subagent run and
+read the trend:
+
+1. Install `hooks/log-subagent-run.js` from this skill: copy it to
+   `~/.claude/hooks/` and register it under `hooks.SubagentStop` (no
+   matcher) with `node "<home>/.claude/hooks/log-subagent-run.js"`. It
+   appends agent, model actually used, duration and tokens to
+   `~/.claude/eef/subagent-runs.jsonl` — sizes only, never prompt or reply
+   content, and nothing leaves the machine.
+2. After a few weeks of real use, run
+   `node <this skill>/scripts/subagent-report.js` (`--days 30`, `--json`).
+   Per agent it shows how often the agent ran on a stronger model than its
+   installed default (an escalation, §4.2) or was re-run in the same
+   session.
+3. Act on it as a human decision: an agent escalated or re-run in roughly a
+   third of its runs belongs one tier up. A standard agent with a long clean
+   record is a candidate for light — **only** if its mistakes are loud. The
+   report never suggests lowering a deep agent: it is deep because its
+   mistakes are quiet, and a clean log is what quiet mistakes look like.
+   Change the agent's `tier:` in `AGENT.md`, never a model name.
+
 ## 5. Context budget
 
 Reserve the last ~20% of the context window. Past that point the failure
