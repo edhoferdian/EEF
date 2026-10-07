@@ -1,0 +1,4 @@
+{
+  "compilerOptions": { "strict": true, "target": "ES2022", "module": "commonjs", "outDir": "dist" },
+  "include": ["src"]
+}

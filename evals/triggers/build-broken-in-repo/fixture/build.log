@@ -1,0 +1,7 @@
+$ npm run build
+> tsc -p .
+src/api.ts:4:9 - error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+
+4   const base: string = process.env.API_BASE;
+          ~~~~
+Found 1 error in src/api.ts:4
