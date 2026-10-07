@@ -41,3 +41,21 @@ The `*-in-repo` variants of the five failing cases test (1): same request,
 but the code lives in workspace files (seeded by `scaffold.sh`) and the
 prompt names the path. If they fire, the skills work as used in practice;
 if they still don't, the descriptions need strengthening.
+
+## Run 2 (2026-10-08) — in-repo variants, cut short by the plan usage limit
+
+`--case "*-in-repo" --scaffold`, $1.20. The Pro plan's usage limit was hit
+mid-run, so only part of it is valid:
+
+| Case | Fired | Valid? |
+|---|---|---|
+| build-broken-in-repo | 2/2 (inline: 1/2) | yes |
+| not-on-google-in-repo | 2/2 (inline: 0/2) | yes — the skill fired before one run hit the limit |
+| commit-and-rebase-in-repo | 0/2 | yes — still not firing |
+| review-before-merge-in-repo | 0/2 | **no** — both runs hit the usage limit |
+| simplify-nesting-in-repo | 0/2 | **no** — both runs hit the usage limit |
+
+So far: build-fix and seo-audit fire once the code lives in files (prompt
+shape), while git-and-release-ops does not fire either way (its description
+needs strengthening). code-review and code-simplification remain untested
+in-repo — rerun those two after the limit resets.
