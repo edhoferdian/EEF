@@ -20,13 +20,43 @@ const os = require("os");
 const PKG_ROOT = path.resolve(__dirname, "..");
 const SKILLS_DIR = path.join(PKG_ROOT, "skills");
 const AGENTS_DIST_DIR = path.join(PKG_ROOT, "dist", "agents");
+const PKG_VERSION = require(path.join(PKG_ROOT, "package.json")).version;
+
+/**
+ * Ready-made Claude Code hooks this package ships, keyed by their --only
+ * name. Registration shape verified against code.claude.com/docs/en/hooks
+ * (2026-10-08): hooks.<Event> is an array of {matcher?, hooks: [{type:
+ * "command", command}]} groups; an omitted matcher fires on every
+ * occurrence, and "Bash|PowerShell" is an exact-name list, not a regex.
+ */
+const HOOKS = {
+  "fs-guard": {
+    file: "block-fs-wide-search.js",
+    src: path.join(SKILLS_DIR, "safe-execution-edho-ferdian", "hooks", "block-fs-wide-search.js"),
+    event: "PreToolUse",
+    matcher: "Bash|PowerShell",
+    timeout: 10, // same as the manual setup in safe-execution-edho-ferdian's appendix
+  },
+  telemetry: {
+    file: "log-subagent-run.js",
+    src: path.join(SKILLS_DIR, "config-hygiene-edho-ferdian", "hooks", "log-subagent-run.js"),
+    event: "SubagentStop",
+  },
+};
+
+const claudeDir = () => path.join(os.homedir(), ".claude");
+const claudeSkillsDir = () => process.env.CLAUDE_SKILLS_DIR || path.join(claudeDir(), "skills");
+const claudeAgentsDir = () => process.env.CLAUDE_AGENTS_DIR || path.join(claudeDir(), "agents");
+const claudeRulesDir = () => process.env.CLAUDE_RULES_DIR || path.join(claudeDir(), "rules", "eef");
+const claudeHooksDir = () => process.env.CLAUDE_HOOKS_DIR || path.join(claudeDir(), "hooks");
+const claudeSettingsFile = () => process.env.CLAUDE_SETTINGS_FILE || path.join(claudeDir(), "settings.json");
 
 const TARGETS = {
   claude: {
     label: "Claude Code",
     scope: "global (or $CLAUDE_SKILLS_DIR)",
     install(skillNames) {
-      const destRoot = process.env.CLAUDE_SKILLS_DIR || path.join(os.homedir(), ".claude", "skills");
+      const destRoot = claudeSkillsDir();
       fs.mkdirSync(destRoot, { recursive: true });
       const names = skillNames.length ? skillNames : listSkillNames();
       let count = 0;
@@ -132,7 +162,7 @@ const TARGETS = {
     label: "Claude Code sub-agents (agents/*/AGENT.md roster; --profile picks the model mix)",
     scope: "global (or $CLAUDE_AGENTS_DIR)",
     install(_skillNames, opts) {
-      const destRoot = process.env.CLAUDE_AGENTS_DIR || path.join(os.homedir(), ".claude", "agents");
+      const destRoot = claudeAgentsDir();
       const route = profileRoute(opts, "claude");
       if (route === undefined) return;
       copyAgentFiles(path.join(PKG_ROOT, ".claude", "agents"), destRoot, ".md", route && withClaudeModel(route));
@@ -157,8 +187,23 @@ const TARGETS = {
     label: "Claude Code always-on rules (rules/*.md, loaded every session)",
     scope: "global (or $CLAUDE_RULES_DIR)",
     install() {
-      const destRoot = process.env.CLAUDE_RULES_DIR || path.join(os.homedir(), ".claude", "rules", "eef");
+      const destRoot = claudeRulesDir();
       copyDirInto(path.join(PKG_ROOT, "rules"), destRoot);
+    },
+  },
+
+  "claude-hooks": {
+    label: "Claude Code hooks (fs-guard: blocks root-wide searches; telemetry: logs subagent runs) — registered in settings.json, other keys untouched; --only picks one",
+    scope: "global (or $CLAUDE_HOOKS_DIR + $CLAUDE_SETTINGS_FILE)",
+    install(_skillNames, opts) {
+      const names = opts.only ? [opts.only] : Object.keys(HOOKS);
+      const unknown = names.filter((n) => !HOOKS[n]);
+      if (unknown.length) {
+        console.error(`Unknown hook '${unknown[0]}'. Valid --only values: ${Object.keys(HOOKS).join(", ")}`);
+        process.exitCode = 2;
+        return;
+      }
+      mergeClaudeHooks(names, claudeHooksDir(), claudeSettingsFile());
     },
   },
 
@@ -476,6 +521,270 @@ function mergeOpencodeAgents(destRoot, tierModels) {
   console.log(`\nDone. ${count} agent(s) merged into ${configPath} (other keys in that file untouched).`);
 }
 
+/** The command a hook is registered with; forward slashes work in bash and PowerShell alike. */
+const hookCommand = (hooksDir, hook) => `node "${path.join(hooksDir, hook.file).replace(/\\/g, "/")}"`;
+
+/**
+ * Read a settings.json as an object: {} when absent, null (after reporting)
+ * when unparsable or not an object — the caller must then leave it alone.
+ */
+function readSettings(settingsPath) {
+  if (!fs.existsSync(settingsPath)) return {};
+  try {
+    const settings = JSON.parse(fs.readFileSync(settingsPath, "utf8"));
+    if (settings && typeof settings === "object" && !Array.isArray(settings)) return settings;
+    throw new Error("top level is not a JSON object");
+  } catch (err) {
+    console.error(`Error: ${settingsPath} exists but is not valid settings JSON — refusing to touch it.`);
+    console.error(`Fix or remove it, then re-run. (${err.message})`);
+    return null;
+  }
+}
+
+/**
+ * Every command handler registered for a hook's event whose command names
+ * the hook's file, with the group's matcher — hand registrations count too,
+ * so a hook someone already wired up by hand is never added a second time.
+ */
+function findHookRegistrations(settings, hook) {
+  const groups = settings.hooks && Array.isArray(settings.hooks[hook.event]) ? settings.hooks[hook.event] : [];
+  const found = [];
+  for (const group of groups) {
+    if (!group || !Array.isArray(group.hooks)) continue;
+    for (const handler of group.hooks) {
+      if (handler && typeof handler.command === "string" && handler.command.replace(/\\/g, "/").includes(hook.file)) {
+        found.push({ command: handler.command, matcher: group.matcher });
+      }
+    }
+  }
+  return found;
+}
+
+/**
+ * Copy the selected hooks into hooksDir and register each in settingsPath,
+ * touching nothing else in that file (same posture as mergeOpencodeAgents:
+ * an unparsable file is refused, never rewritten). A hook already
+ * registered — by this installer or by hand — is reported, not duplicated
+ * or edited. The file is backed up before the first change to it.
+ */
+function mergeClaudeHooks(names, hooksDir, settingsPath) {
+  const settings = readSettings(settingsPath);
+  if (settings === null) {
+    process.exitCode = 1;
+    return;
+  }
+  const hooksKey = settings.hooks === undefined ? {} : settings.hooks;
+  if (!hooksKey || typeof hooksKey !== "object" || Array.isArray(hooksKey)) {
+    console.error(`Error: "hooks" in ${settingsPath} is not an object — refusing to touch it.`);
+    process.exitCode = 1;
+    return;
+  }
+  for (const name of names) {
+    const event = hooksKey[HOOKS[name].event];
+    if (event !== undefined && !Array.isArray(event)) {
+      console.error(`Error: "hooks.${HOOKS[name].event}" in ${settingsPath} is not an array — refusing to touch it.`);
+      process.exitCode = 1;
+      return;
+    }
+  }
+
+  fs.mkdirSync(hooksDir, { recursive: true });
+  const added = [];
+  for (const name of names) {
+    const hook = HOOKS[name];
+    const dest = path.join(hooksDir, hook.file);
+    const shipped = fs.readFileSync(hook.src, "utf8");
+    const before = fs.existsSync(dest) ? fs.readFileSync(dest, "utf8") : null;
+    fs.writeFileSync(dest, shipped, "utf8");
+    const fileState = before === null ? "Installed" : before === shipped ? "Unchanged" : "Updated";
+    console.log(`${fileState} hook file: ${name} -> ${dest}`);
+
+    const command = hookCommand(hooksDir, hook);
+    const existing = findHookRegistrations({ hooks: hooksKey }, hook);
+    if (existing.some((r) => r.command === command)) {
+      console.log(`Already registered: ${name} (${hook.event})`);
+    } else if (existing.length) {
+      console.log(`Already registered: ${name} (${hook.event}) as \`${existing[0].command}\` — left as is`);
+    } else {
+      const group = { ...(hook.matcher ? { matcher: hook.matcher } : {}), hooks: [{ type: "command", command, ...(hook.timeout ? { timeout: hook.timeout } : {}) }] };
+      hooksKey[hook.event] = [...(hooksKey[hook.event] || []), group];
+      added.push(name);
+      console.log(`Added registration: ${name} (${hook.event}${hook.matcher ? `, matcher "${hook.matcher}"` : ""})`);
+    }
+  }
+
+  if (!added.length) {
+    console.log(`\nDone. ${settingsPath} already had every selected hook — not rewritten.`);
+    return;
+  }
+  if (fs.existsSync(settingsPath)) {
+    fs.copyFileSync(settingsPath, `${settingsPath}.eef-backup`);
+    console.log(`Backup: ${settingsPath}.eef-backup`);
+  }
+  fs.mkdirSync(path.dirname(settingsPath), { recursive: true });
+  fs.writeFileSync(settingsPath, JSON.stringify({ ...settings, hooks: hooksKey }, null, 2) + "\n", "utf8");
+  console.log(`\nDone. ${added.length} hook(s) registered in ${settingsPath} (other keys untouched). Restart Claude Code to load them.`);
+}
+
+const normalizeEol = (s) => s.replace(/\r\n/g, "\n");
+
+/** Split an agent file into its model/effort values and the rest (model lines removed). */
+function splitAgentModel(content) {
+  const text = normalizeEol(content);
+  const end = text.indexOf("\n---", 4) + 1;
+  const frontmatter = text.slice(0, end);
+  const field = (key) => {
+    const m = frontmatter.match(new RegExp(`^${key}: (.*)$`, "m"));
+    return m ? m[1].trim() : null;
+  };
+  const rest = frontmatter.replace(/^(model|effort): .*\n/gm, "") + text.slice(end);
+  return { model: field("model"), effort: field("effort"), rest };
+}
+
+/**
+ * Compare one shipped directory of files against an install location.
+ * Returns {present, same, differs, missing} name lists over the shipped files.
+ */
+function compareFiles(shippedPaths, destDir, compare) {
+  const result = { present: [], same: [], differs: [], missing: [] };
+  for (const [name, src] of shippedPaths) {
+    const dest = path.join(destDir, name);
+    if (!fs.existsSync(dest)) {
+      result.missing.push(name);
+      continue;
+    }
+    result.present.push(name);
+    const equal = compare ? compare(src, dest) : normalizeEol(fs.readFileSync(src, "utf8")) === normalizeEol(fs.readFileSync(dest, "utf8"));
+    (equal ? result.same : result.differs).push(name);
+  }
+  return result;
+}
+
+/**
+ * eef-install doctor — read-only report of what this package has installed
+ * for Claude Code, and whether it still matches this version. Exits 1 only
+ * on clear breakage (an unparsable settings.json, a registered hook whose
+ * file is gone); stale or partial installs are reported, not failed.
+ */
+function doctor() {
+  let broken = 0;
+  const say = (line) => console.log(line);
+  const shortList = (names) => (names.length > 5 ? `${names.slice(0, 5).join(", ")}, … (+${names.length - 5})` : names.join(", "));
+  say(`eef-install doctor — package version ${PKG_VERSION}\n`);
+
+  // Skills: compare each SKILL.md (the rest of a skill's folder moves with it).
+  const skillsDir = claudeSkillsDir();
+  const skills = compareFiles(
+    listSkillNames().map((n) => [path.join(n, "SKILL.md"), path.join(SKILLS_DIR, n, "SKILL.md")]),
+    skillsDir
+  );
+  const skillName = (p) => p.split(path.sep)[0];
+  say(`Skills (--target claude) — ${skillsDir}`);
+  if (!skills.present.length) {
+    say("  not installed");
+  } else {
+    say(`  ${skills.present.length}/${listSkillNames().length} installed, ${skills.same.length} match this version`);
+    if (skills.differs.length) say(`  differ (older EEF version, or edited locally): ${shortList(skills.differs.map(skillName))}`);
+    if (skills.missing.length) say(`  missing: ${shortList(skills.missing.map(skillName))}`);
+  }
+
+  // Agents: compare without model/effort (those are the profile's), then infer the profile.
+  const agentsDir = claudeAgentsDir();
+  const agentsSrc = path.join(PKG_ROOT, ".claude", "agents");
+  const agentFiles = fs.readdirSync(agentsSrc).filter((f) => f.endsWith(".md")).sort();
+  const agents = compareFiles(
+    agentFiles.map((f) => [f, path.join(agentsSrc, f)]),
+    agentsDir,
+    (src, dest) => splitAgentModel(fs.readFileSync(src, "utf8")).rest === splitAgentModel(fs.readFileSync(dest, "utf8")).rest
+  );
+  say(`\nAgents (--target claude-agents) — ${agentsDir}`);
+  if (!agents.present.length) {
+    say("  not installed");
+  } else {
+    say(`  ${agents.present.length}/${agentFiles.length} installed, ${agents.same.length} match this version`);
+    if (agents.differs.length) say(`  differ (older EEF version, or edited locally): ${shortList(agents.differs.map((f) => f.slice(0, -3)))}`);
+    if (agents.missing.length) say(`  missing (new in this version?): ${shortList(agents.missing.map((f) => f.slice(0, -3)))}`);
+    const routing = loadRouting();
+    const installed = agents.present
+      .map((f) => [f.slice(0, -3), splitAgentModel(fs.readFileSync(path.join(agentsDir, f), "utf8"))])
+      .filter(([name]) => routing.agents[name]);
+    const matching = routing.profiles.filter((p) =>
+      installed.every(([name, got]) => {
+        const want = routing.agents[name].profiles[p].claude;
+        return got.model === want.model && got.effort === (want.effort || null);
+      })
+    );
+    say(
+      matching.length
+        ? `  model profile: ${matching.join(" / ")}${matching.includes(routing.default_profile) ? " (default)" : ""}`
+        : "  model profile: custom (--models override, or model lines edited by hand)"
+    );
+  }
+
+  // Rules.
+  const rulesDir = claudeRulesDir();
+  const rulesSrc = path.join(PKG_ROOT, "rules");
+  const rules = compareFiles(
+    fs.readdirSync(rulesSrc).filter((f) => f.endsWith(".md")).sort().map((f) => [f, path.join(rulesSrc, f)]),
+    rulesDir
+  );
+  say(`\nRules (--target claude-rules) — ${rulesDir}`);
+  if (!rules.present.length) {
+    say("  not installed");
+  } else {
+    say(`  ${rules.present.length}/${rules.present.length + rules.missing.length} installed, ${rules.same.length} match this version`);
+    if (rules.differs.length) say(`  differ: ${rules.differs.join(", ")}`);
+    if (rules.missing.length) say(`  missing: ${rules.missing.join(", ")}`);
+  }
+
+  // Hooks: file on disk, and registration in settings.json.
+  const hooksDir = claudeHooksDir();
+  const settingsPath = claudeSettingsFile();
+  say(`\nHooks (--target claude-hooks) — ${hooksDir}, registered in ${settingsPath}`);
+  const settings = readSettings(settingsPath);
+  if (settings === null) broken++;
+  for (const [name, hook] of Object.entries(HOOKS)) {
+    const dest = path.join(hooksDir, hook.file);
+    const fileState = !fs.existsSync(dest)
+      ? "file missing"
+      : normalizeEol(fs.readFileSync(dest, "utf8")) === normalizeEol(fs.readFileSync(hook.src, "utf8"))
+        ? "file matches this version"
+        : "file differs (older EEF version, or edited locally)";
+    let regState = "registration unknown (settings.json unreadable)";
+    if (settings !== null) {
+      const regs = findHookRegistrations(settings, hook);
+      if (!regs.length) {
+        regState = "not registered";
+      } else {
+        const missingTargets = regs.filter((r) => !hookTargetExists(r.command, hook.file));
+        regState = `registered under ${hook.event}`;
+        if (missingTargets.length) {
+          regState += ` — BROKEN: \`${missingTargets[0].command}\` points at a file that does not exist`;
+          broken++;
+        }
+      }
+    }
+    say(`  ${name} (${hook.file}): ${fileState}; ${regState}`);
+  }
+
+  say(broken ? `\n${broken} problem(s) need fixing (marked above).` : "\nNo breakage found.");
+  if (broken) process.exitCode = 1;
+}
+
+/** Does the path a registered hook command names (…/<file>, ~ and $HOME expanded) exist? */
+function hookTargetExists(command, file) {
+  const normalized = command.replace(/\\/g, "/");
+  const match = normalized.match(new RegExp(`["']?([^"'\\s]*${file.replace(/\./g, "\\.")})`));
+  if (!match) return true; // cannot tell — do not call it broken
+  const home = os.homedir().replace(/\\/g, "/");
+  const target = match[1].replace(/^~(?=\/)/, home).replace(/^\$\{?HOME\}?(?=\/)/, home).replace(/^%USERPROFILE%(?=\/)/i, home);
+  if (/\$|%/.test(target)) return true; // other variables: cannot resolve here
+  // Git Bash style /c/Users/... is what Node on Windows calls C:/Users/...
+  const native = process.platform === "win32" ? target.replace(/^\/([a-z])\//i, "$1:/") : target;
+  if (!path.isAbsolute(native)) return true; // relative to an unknown cwd
+  return fs.existsSync(native);
+}
+
 function printHelp() {
   console.log(`eef-install — install Ekosistem Edho Ferdian's skills
 
@@ -484,6 +793,8 @@ Usage:
   eef-install <skill> [<skill> ...]    Install only these skills for Claude Code
   eef-install --list                   List all installable skill names
   eef-install --target <name>          Install for a different harness (see below)
+  eef-install doctor                   Report what is installed for Claude Code and
+                                       whether it matches this version (read-only)
   eef-install --help                   Show this message
 
 Targets (--target):
@@ -499,6 +810,15 @@ Env vars:
   CLAUDE_RULES_DIR    Install location for --target claude-rules (default: ~/.claude/rules/eef)
   ZCODE_AGENTS_DIR    Install location for --target zcode-agents (default: ~/.zcode/agents)
   CODEX_AGENTS_DIR    Install location for --target codex-agents (default: .codex/agents)
+  CLAUDE_HOOKS_DIR    Install location for --target claude-hooks (default: ~/.claude/hooks)
+  CLAUDE_SETTINGS_FILE  settings.json the hooks are registered in (default: ~/.claude/settings.json)
+
+Hooks (--target claude-hooks):
+  --only <name>       install one hook: fs-guard (PreToolUse, blocks recursive searches
+                      from / ~ or a drive root) | telemetry (SubagentStop, logs each
+                      subagent run to ~/.claude/eef/subagent-runs.jsonl). Default: both.
+                      Existing settings.json keys are kept; a hook already registered
+                      (even by hand) is never added twice; an unparsable file is refused.
 
 Model routing (sub-agent targets) — each agent has a tier (light/standard/deep):
   --profile <name>    claude-agents, codex-agents: hemat | seimbang (default) | maksimal
@@ -516,6 +836,8 @@ Examples:
   eef-install --target claude-agents --profile hemat
   eef-install --target codex-agents --global
   eef-install --target opencode-agents --models ./eef-models.json
+  eef-install --target claude-hooks --only fs-guard
+  eef-install doctor
 `);
 }
 
@@ -529,6 +851,11 @@ function main() {
 
   if (args.includes("--list")) {
     for (const name of listSkillNames()) console.log(name);
+    return;
+  }
+
+  if (args[0] === "doctor") {
+    doctor();
     return;
   }
 
@@ -546,8 +873,13 @@ function main() {
     const i = args.indexOf(flag);
     return i !== -1 ? args[i + 1] : undefined;
   };
-  const opts = { global: args.includes("--global"), profile: valueOf("--profile"), models: valueOf("--models") };
-  const valueFlags = ["--target", "--profile", "--models"];
+  const opts = {
+    global: args.includes("--global"),
+    profile: valueOf("--profile"),
+    models: valueOf("--models"),
+    only: valueOf("--only"),
+  };
+  const valueFlags = ["--target", "--profile", "--models", "--only"];
   const skillNames = args.filter((a, i) => {
     if (a.startsWith("-")) return false;
     if (i > 0 && valueFlags.includes(args[i - 1])) return false;
@@ -558,6 +890,9 @@ function main() {
   }
   if (opts.models && !["claude-agents", "codex-agents", "opencode-agents", "zcode-agents"].includes(targetName)) {
     console.warn(`Note: --models only applies to the *-agents targets; ignored for '${targetName}'.`);
+  }
+  if (opts.only && targetName !== "claude-hooks") {
+    console.warn(`Note: --only only applies to claude-hooks; ignored for '${targetName}'.`);
   }
 
   target.install(skillNames, opts);

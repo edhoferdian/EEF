@@ -141,6 +141,49 @@ jobs:
           ZCODE_AGENTS_DIR=/tmp/eef-cli-test-zcode-agents node "$GITHUB_WORKSPACE/bin/eef.js" --target zcode-agents
           test -f /tmp/eef-cli-test-zcode-agents/code-reviewer-edho-ferdian.md
           test -f /tmp/eef-cli-test-zcode-agents/my-own-agent.md
+      - name: install target=claude-hooks merges into settings.json without clobbering or duplicating
+        run: |
+          d=/tmp/eef-cli-test-claude-hooks
+          mkdir -p $d
+          export CLAUDE_HOOKS_DIR=$d/hooks CLAUDE_SETTINGS_FILE=$d/settings.json
+          echo '{"model":"opus","permissions":{"allow":["Bash(ls:*)"]},"hooks":{"PreToolUse":[{"matcher":"Edit","hooks":[{"type":"command","command":"echo mine"}]}]}}' > $d/settings.json
+          node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks --only fs-guard
+          node -e "const c=require('$d/settings.json'); if(c.hooks.SubagentStop) throw new Error('--only fs-guard also added telemetry');"
+          node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks
+          node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks
+          node -e "
+            const c=require('$d/settings.json');
+            if(c.model!=='opus'||c.permissions.allow[0]!=='Bash(ls:*)') throw new Error('clobbered other keys');
+            const pre=c.hooks.PreToolUse;
+            if(pre[0].hooks[0].command!=='echo mine') throw new Error('clobbered existing hook');
+            if(pre.length!==2||pre[1].matcher!=='Bash|PowerShell') throw new Error('fs-guard missing or duplicated: '+JSON.stringify(pre));
+            if(c.hooks.SubagentStop.length!==1||'matcher' in c.hooks.SubagentStop[0]) throw new Error('telemetry missing or duplicated');
+          "
+          test -f $d/hooks/block-fs-wide-search.js
+          test -f $d/hooks/log-subagent-run.js
+          cmd=$(node -e "console.log(require('$d/settings.json').hooks.PreToolUse[1].hooks[0].command)")
+          echo '{"tool_name":"Bash","tool_input":{"command":"find / -name x"}}' | bash -c "$cmd" | grep -q '"permissionDecision":"deny"'
+          if node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks --only no-such-hook; then exit 1; fi
+          echo '{ not json' > $d/settings.json
+          if node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks; then exit 1; fi
+          test "$(cat $d/settings.json)" = '{ not json'
+      - name: doctor reports installed targets, model profile, and fails only on breakage
+        run: |
+          d=/tmp/eef-cli-test-doctor
+          export CLAUDE_SKILLS_DIR=$d/skills CLAUDE_AGENTS_DIR=$d/agents CLAUDE_RULES_DIR=$d/rules CLAUDE_HOOKS_DIR=$d/hooks CLAUDE_SETTINGS_FILE=$d/settings.json
+          node "$GITHUB_WORKSPACE/bin/eef.js" doctor | grep -q "not installed"
+          node "$GITHUB_WORKSPACE/bin/eef.js" > /dev/null
+          node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents --profile maksimal > /dev/null
+          node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-rules > /dev/null
+          node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks > /dev/null
+          out=$(node "$GITHUB_WORKSPACE/bin/eef.js" doctor)
+          echo "$out"
+          echo "$out" | grep -q "model profile: maksimal"
+          echo "$out" | grep -q "No breakage found."
+          echo "local edit" >> $d/agents/code-reviewer-edho-ferdian.md
+          node "$GITHUB_WORKSPACE/bin/eef.js" doctor | grep -q "differ (older EEF version, or edited locally): code-reviewer-edho-ferdian"
+          rm $d/hooks/log-subagent-run.js
+          if node "$GITHUB_WORKSPACE/bin/eef.js" doctor; then exit 1; fi
 
   plugin-validate:
     name: Claude Code plugin manifest
