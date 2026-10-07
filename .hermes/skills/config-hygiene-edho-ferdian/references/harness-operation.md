@@ -246,9 +246,12 @@ when a step matters — there is no setting that forces a call.
 The initial tiers are a hypothesis. To test it, log every subagent run and
 read the trend:
 
-1. Install `hooks/log-subagent-run.js` from this skill: copy it to
-   `~/.claude/hooks/` and register it under `hooks.SubagentStop` (no
-   matcher) with `node "<home>/.claude/hooks/log-subagent-run.js"`. It
+1. Install `hooks/log-subagent-run.js` from this skill with
+   `npx eef-install --target claude-hooks --only telemetry` (or by hand:
+   copy it to `~/.claude/hooks/` and register it under
+   `hooks.SubagentStop`, no matcher, with
+   `node "<home>/.claude/hooks/log-subagent-run.js"`); `npx eef-install
+   doctor` confirms it is registered. It
    appends agent, model actually used, duration and tokens to
    `~/.claude/eef/subagent-runs.jsonl` — sizes only, never prompt or reply
    content, and nothing leaves the machine.

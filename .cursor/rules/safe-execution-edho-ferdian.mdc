@@ -187,8 +187,12 @@ Nothing above depends on this appendix existing.
 
 One gate ships ready-made: `hooks/block-fs-wide-search.js` (Node, no
 dependencies) denies root-level recursive searches for Gate 2 and fails
-open on anything it cannot parse. Copy it to `~/.claude/hooks/` and add to
-`~/.claude/settings.json`:
+open on anything it cannot parse. Install it with
+`npx eef-install --target claude-hooks --only fs-guard`, which copies it to
+`~/.claude/hooks/` and adds the registration below to
+`~/.claude/settings.json` without touching anything else there (never twice,
+and never into a file it cannot parse); `npx eef-install doctor` then
+confirms it is registered. To do it by hand instead, copy the file and add:
 
 ```json
 "PreToolUse": [{
