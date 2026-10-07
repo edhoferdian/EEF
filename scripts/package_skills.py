@@ -22,23 +22,25 @@ DIST_DIR = REPO_ROOT / "dist"
 # because it was rebuilt on a different day.
 FIXED_DATE_TIME = (1980, 1, 1, 0, 0, 0)
 
-TEXT_SUFFIXES = {".md", ".txt", ".json", ".yml", ".yaml"}
-
-
 def read_normalized(f: Path) -> bytes:
-    """Read a file's bytes with line endings normalized to LF.
+    """Read a file's bytes with CRLF line endings normalized to LF.
 
     Git checkouts on Windows can produce CRLF line endings for text files
     (autocrlf) while Linux/CI checkouts keep LF, even though the committed
-    source is identical. Binary-ish files (anything not in TEXT_SUFFIXES)
-    are read as-is, unmodified.
+    source is identical. Text is detected by content — valid UTF-8 with no
+    NUL byte — not by a suffix allowlist: the old allowlist (.md/.txt/.json/
+    .yml/.yaml) missed the .sql and .js files skills now ship, so a Windows
+    checkout reported three untouched skills as stale. Binary files are
+    read as-is, unmodified.
     """
-    if f.suffix.lower() in TEXT_SUFFIXES:
-        # newline=None enables universal-newlines mode: \r\n and \r both
-        # become \n on read, regardless of platform or git checkout config.
-        text = f.read_text(encoding="utf-8", newline=None)
-        return text.encode("utf-8")
-    return f.read_bytes()
+    raw = f.read_bytes()
+    if b"\0" in raw:
+        return raw
+    try:
+        raw.decode("utf-8")
+    except UnicodeDecodeError:
+        return raw
+    return raw.replace(b"\r\n", b"\n")
 
 
 def build_manifest(skill_dir: Path) -> dict[str, bytes]:
