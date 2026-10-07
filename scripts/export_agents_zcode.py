@@ -4,7 +4,8 @@ agents/, in ZCode's own native Subagent format.
 
 Confirmed against a real file ZCode itself wrote (not guessed from source
 alone): the user created one subagent through ZCode's own "New Agent"
-dialog, and the resulting ~/.zcode/agents/test.md was:
+dialog, and the resulting ~/.zcode/agents/test.md was (verbatim — the
+last line is the body, i.e. the system prompt typed into that dialog):
 
     ---
     name: "test"
