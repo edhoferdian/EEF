@@ -38,6 +38,8 @@ run_check export_agents_claude
 run_check export_agents_opencode
 run_check export_agents_hermes
 run_check export_agents_zcode
+run_check export_agents_codex
+run_check export_agents_routing
 
 if [ "$FAIL" -ne 0 ]; then
   echo ""

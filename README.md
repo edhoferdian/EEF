@@ -175,7 +175,8 @@ A second, newer layer alongside `skills/` — for the harnesses that support
 callable mid-task) rather than only single-agent instructions:
 
 - **[`agents/`](agents/)** — canonical agent definitions (`AGENT.md`:
-  `name`/`description`/`tools`/`model` frontmatter + a system-prompt body).
+  `name`/`description`/`tools`/`skills`/`tier`/`effort` frontmatter + a
+  system-prompt body).
   Each agent stays thin on purpose — it delegates to the matching
   `-edho-ferdian` skill for actual review/task criteria rather than
   duplicating them, so the two layers can't drift apart.
@@ -189,12 +190,32 @@ callable mid-task) rather than only single-agent instructions:
   Reflection/Critique-Correction Loop), and the two fan-outs referenced
   below (`research-fanout`, `production-readiness-fanout`).
 
-**`model:` is Claude Code-only.** Its value ("sonnet", "opus", ...) is a
-Claude Code-specific alias — every other harness's generator deliberately
-omits the field so the agent inherits that harness's own default model,
-instead of failing to resolve an alias it doesn't recognize (reproduced by
-hand against ZCode before this policy existed: setting `model: "sonnet"`
-there made the agent fail to load).
+**Model routing: each agent declares a tier, not a model.** An agent's
+`tier:` is `light`, `standard` or `deep`, chosen by one question: *if this
+agent is wrong, is the mistake loud or quiet?* Loud mistakes (a broken
+link, a linter that won't run) tolerate a cheap model; quiet ones (a review
+that misses a bug, a plausible-but-wrong synthesis) do not. `effort:`
+(`low`…`xhigh`) tunes depth inside a tier, often a cheaper lever than a
+bigger model. [`agents/model-profiles.json`](agents/model-profiles.json)
+maps tiers to each harness's models under three cost profiles:
+
+| Profile | deep | standard | light |
+|---|---|---|---|
+| `hemat` | Sonnet / gpt-6.1-sol | Sonnet / gpt-6.1-sol, effort −1 | Haiku / gpt-6-luna |
+| `seimbang` (default) | Opus / gpt-6-astra | Sonnet / gpt-6.1-sol | Haiku / gpt-6-luna |
+| `maksimal` | Opus / gpt-6-astra, effort +1 | Sonnet / gpt-6.1-sol, effort +1 | Sonnet / gpt-6.1-sol |
+
+(Claude Code / Codex.) Claude Code and Codex get model names from the
+profile; OpenCode and ZCode model IDs are provider-specific, so those get
+none unless you pass your own per tier with `--models` — a guessed alias
+is what once made ZCode fail to load an agent. `--models` works on Claude
+Code and Codex too, overriding the profile's model per tier: Claude's
+aliases (`haiku`/`sonnet`/`opus`) always point at the newest model, but
+Codex names change, so a renamed model can be swapped in without waiting
+for an EEF release. CI fails if any agent lacks
+a valid tier/effort, names a harness model directly, or a checker agent
+(critic, evaluator, fact-checker, sanitizer) ranks below the agent it
+checks.
 
 Sub-agent delegation is **not** a cross-tool standard the way `SKILL.md` is
 — every harness that has it defines the format itself, so this layer is
@@ -203,13 +224,24 @@ generated per harness like `skills/` is, not copied verbatim. Install with
 
 ```bash
 npx eef-install --target claude-agents      # ~/.claude/agents/ (or $CLAUDE_AGENTS_DIR)
+npx eef-install --target codex-agents       # ./.codex/agents/ (--global for ~/.codex/agents)
 npx eef-install --target opencode-agents    # merges into ./opencode.json ($schema/mcp/etc untouched, --global for ~/.config/opencode)
 npx eef-install --target zcode-agents       # adds to ~/.zcode/agents/, your own agents there untouched
+
+npx eef-install --target claude-agents --profile hemat              # pick a cost profile (Claude Code, Codex)
+npx eef-install --target opencode-agents --models ./eef-models.json # your own model ID per tier (required for OpenCode/ZCode, optional override elsewhere)
 ```
 
 - **[.claude/agents/](.claude/agents/)** — Claude Code's own native
   subagent format; a straight 1:1 mapping since `AGENT.md` already *is*
   that format. Regenerate: `python scripts/export_agents_claude.py`.
+- **dist/agents/codex/** — one `.toml` per agent in Codex's custom-agent
+  format (`name`, `description`, `model`, `model_reasoning_effort`,
+  `sandbox_mode`, `developer_instructions`). Codex rejects a file with any
+  key it doesn't know, so only those keys are emitted; agents with no
+  write tools get `sandbox_mode = "read-only"`. The wrapped skills come
+  from `eef-install --target openclaw` (`.agents/skills/`, which Codex
+  reads). Regenerate: `python scripts/export_agents_codex.py`.
 - **dist/agents/opencode/** — a `{name}.agent.json` fragment + prompt file
   per agent, for OpenCode's `agent.<name>` block in `opencode.json`.
   `eef-install --target opencode-agents` merges the `"agent"` key in

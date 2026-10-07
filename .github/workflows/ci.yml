@@ -71,6 +71,10 @@ jobs:
         run: python scripts/export_agents_hermes.py --check
       - name: Check dist/agents/zcode/ is up to date
         run: python scripts/export_agents_zcode.py --check
+      - name: Check dist/agents/codex/ is up to date
+        run: python scripts/export_agents_codex.py --check
+      - name: Check dist/agents/routing.json is up to date
+        run: python scripts/export_agents_routing.py --check
 
   npm-cli-smoke-test:
     name: eef-install CLI smoke test
@@ -108,6 +112,19 @@ jobs:
           mkdir -p /tmp/eef-cli-test-claude-agents
           CLAUDE_AGENTS_DIR=/tmp/eef-cli-test-claude-agents node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents
           test -f /tmp/eef-cli-test-claude-agents/code-reviewer-edho-ferdian.md
+      - name: install target=claude-agents --profile rewrites model/effort (D-060)
+        run: |
+          d=/tmp/eef-cli-test-claude-profile
+          CLAUDE_AGENTS_DIR=$d node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents --profile hemat
+          grep -qx "model: sonnet" $d/code-reviewer-edho-ferdian.md
+          test "$(grep -c '^effort:' $d/dev-kickoff-edho-ferdian.md)" -eq 1
+          grep -qx "effort: medium" $d/dev-kickoff-edho-ferdian.md
+          if node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents --profile no-such-profile; then exit 1; fi
+      - name: install target=codex-agents writes parseable TOML with the profile's models
+        run: |
+          d=/tmp/eef-cli-test-codex-agents
+          CODEX_AGENTS_DIR=$d node "$GITHUB_WORKSPACE/bin/eef.js" --target codex-agents --profile maksimal
+          python3 -c "import tomllib,glob,sys; fs=glob.glob('$d/*.toml'); assert len(fs)==len(glob.glob('$GITHUB_WORKSPACE/agents/*/AGENT.md')); d=tomllib.load(open('$d/code-reviewer-edho-ferdian.toml','rb')); assert d['model_reasoning_effort']=='xhigh', d"
       - name: install target=opencode-agents merges without clobbering existing config
         run: |
           mkdir -p /tmp/eef-cli-test-opencode-agents
