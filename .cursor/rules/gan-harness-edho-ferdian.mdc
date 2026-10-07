@@ -91,7 +91,10 @@ the `gan-generator-edho-ferdian` agent for each round rather than running
 it inline — see "Why phases are separate agents" below for why this
 matters more here than it does for a typical review delegation. On a
 harness with no delegation primitive, run the phase inline instead, per
-the instructions below.
+the instructions below. If the Evaluator's score stops improving for two
+rounds on the same issue, run the next Generate round one tier up instead
+of repeating the same attempt — config-hygiene-edho-ferdian's
+`references/harness-operation.md` §4.2.
 
 Build fast, commit per
 iteration, keep a dev server running, read the Evaluator's feedback file

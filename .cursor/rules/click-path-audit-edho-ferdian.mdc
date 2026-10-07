@@ -41,7 +41,10 @@ partial one. This is worth the delegation overhead at whole-app scale
 (potentially dozens of touchpoints, each independent to trace once the
 map exists) but not for the smaller scopes above — trace those inline.
 On a harness with no delegation primitive, trace every touchpoint inline
-regardless of scope, per Step 2 below.
+regardless of scope, per Step 2 below. When a tracer's report doesn't hold
+up against the map (it cites a handler or a store action that isn't
+there), re-run that one screen one tier up rather than the whole fan-out —
+config-hygiene-edho-ferdian's `references/harness-operation.md` §4.2.
 
 ## Step 1 — Build the side-effect map (mandatory, always first)
 

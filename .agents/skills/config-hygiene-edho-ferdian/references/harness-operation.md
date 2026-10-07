@@ -180,6 +180,41 @@ day a real architecture decision arrives, and nothing will tell you. Treat
 the pairing of *default model* and *thinking budget* as a single setting with
 two positions — routine and deep — and move both together.
 
+This ecosystem's own agents apply the table above per agent: each
+`AGENT.md` declares a `tier:` (light/standard/deep) and an `effort:`, and
+`agents/model-profiles.json` maps tiers to each harness's models (D-060).
+
+### 4.2 Escalating a delegated step
+
+A tier is a default, not a ceiling. The orchestrator — not the delegate —
+decides when one item needs more, because a cheaper model rarely knows when
+it is wrong: the mistakes worth escalating are the ones it reports with
+confidence. So escalate on a signal the orchestrator can observe:
+
+| Signal the orchestrator sees | Action |
+|---|---|
+| The output fails a check you can run — a cited source doesn't say what was claimed, a traced path isn't in the code, the test still fails | Re-run that item one tier up |
+| The work turned out wider than the brief — more files than expected, a cross-module interaction | Re-run one tier up, with the wider scope stated |
+| Two delegates disagree on the same input | Re-run the disputed item one tier up; never average the answers |
+| The output is a decision (which approach), not an artifact | It belonged at deep tier — re-run it there |
+
+Rules: escalate the failing item, never the whole fan-out; one step at a
+time (light → standard → deep); at most once per item per run — if the
+deep run fails too, stop and report it rather than looping; and name every
+escalation in the final report ("re-ran tracer for checkout at deep: first
+pass cited a handler that does not exist").
+
+How, per harness:
+
+- **Claude Code:** pass `model` on that one Agent call (`sonnet`, `opus`).
+  A per-call model outranks the agent's own frontmatter.
+- **Codex:** an agent file's `model` is applied *after* a spawn-time model,
+  so the same agent cannot be escalated per call. Run the item yourself in
+  the orchestrator's context, or spawn the default agent with the stronger
+  model and the agent's instructions.
+- **No per-call model (OpenCode, ZCode, Hermes):** run the item inline in
+  the orchestrator.
+
 ## 5. Context budget
 
 Reserve the last ~20% of the context window. Past that point the failure

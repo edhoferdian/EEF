@@ -75,6 +75,11 @@ you escalate and why.
    and is strictly slower for the same depth. On a harness with no
    delegation primitive, work through them yourself in this phase as
    described below. Full recipe: `workflows/research-fanout-edho-ferdian.md`.
+   Workers run on the cheapest tier: when one worker's findings fail your
+   check (a source that doesn't say what was claimed, two workers
+   contradicting each other), re-run that sub-question one tier up rather
+   than the whole fan-out — config-hygiene-edho-ferdian's
+   `references/harness-operation.md` §4.2.
 2. **Two to three keyword variations per sub-question.** Mix general
    phrasing with the vocabulary practitioners actually use.
 3. **Source priority:** primary/official (vendor docs, specs, filings,
