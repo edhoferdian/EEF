@@ -4,6 +4,14 @@ on:
   release:
     types: [published]
 
+# Authentication: npm trusted publishing (OIDC). The npm CLI tries OIDC
+# first and falls back to NODE_AUTH_TOKEN only when OIDC is unavailable, so
+# the NPM_TOKEN secret below is a migration fallback. Once a release has
+# published through OIDC: on npmjs.com set the package's Publishing access
+# to "Require two-factor authentication and disallow tokens", revoke the
+# automation token, delete the NPM_TOKEN secret, and drop the env line.
+# Provenance is generated automatically for a public repo and package.
+
 jobs:
   publish:
     name: npm publish
@@ -13,10 +21,16 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          # Trusted publishing needs Node >= 22.14 and npm >= 11.5.1.
+          node-version: "24"
           registry-url: "https://registry.npmjs.org"
+      - name: Ensure an npm that supports trusted publishing
+        run: npm install -g npm@^11.5.1
       - name: Verify package.json version matches the release tag
         run: |
           tag="${GITHUB_REF_NAME#v}"
@@ -25,6 +39,23 @@ jobs:
             echo "Release tag v$tag does not match package.json version $pkg — fix one of them and re-run."
             exit 1
           fi
+      # Never publish what CI would reject: the same validation and
+      # cross-harness sync checks as ci.yml, run against the tagged commit.
+      - name: Install PyYAML (frontmatter validation, as in ci.yml)
+        run: pip install pyyaml
+      - name: Validate skills and agents
+        run: python scripts/validate_skills.py
+      - name: Check every generated export is in sync
+        run: |
+          for s in package_skills sync_metadata export_agents_md generate_catalog export_cursor \
+                   export_windsurf export_cline export_copilot export_kiro export_gemini_md \
+                   export_hermes export_openclaw export_zcode export_agents_claude \
+                   export_agents_opencode export_agents_hermes export_agents_zcode \
+                   export_agents_codex export_agents_routing; do
+            python "scripts/$s.py" --check
+          done
+      - name: Installer runs
+        run: node bin/eef.js --help > /dev/null
       - name: npm publish
         run: npm publish --provenance --access public
         env:
