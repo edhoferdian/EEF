@@ -1,0 +1,90 @@
+{
+  "_doc": "One entry per case file. `anchors` are substrings that each appear on exactly one line of the case; a finding counts as catching the seeded bug when its line is within `tolerance` lines of any anchor line. `bug: null` marks a clean control: no seeded bug, used to count false positives. run.py checks every anchor resolves to exactly one line before running anything.",
+  "tolerance": 2,
+  "cases": {
+    "01-paginate.js": {
+      "category": "off-by-one",
+      "bug": "slice() end is exclusive, so `end = start + pageSize - 1` drops the last item of every page.",
+      "anchors": ["const end = start + pageSize - 1;", "items: items.slice(start, end),"]
+    },
+    "02-user_search.py": {
+      "category": "sql-injection",
+      "bug": "name_prefix is interpolated into the SQL string with an f-string instead of being bound as a parameter.",
+      "anchors": ["f\"WHERE display_name LIKE '{name_prefix}%' \""]
+    },
+    "03-notes-router.ts": {
+      "category": "broken-access-control",
+      "bug": "PUT /notes/:id never checks note.ownerId against req.user.id (GET does), so any signed-in user can overwrite anyone's note.",
+      "anchors": ["  if (!note) {", "  const updated = await db.note.update({"]
+    },
+    "04-wallet.py": {
+      "category": "race-condition",
+      "bug": "Read-check-write on the balance with no row lock (with_for_update) or atomic update: concurrent withdrawals can both pass the check and overdraw.",
+      "anchors": ["select(Account).where(Account.id == account_id)", "    if account.balance < amount:", "    account.balance = account.balance - amount"]
+    },
+    "05-sync-contacts.js": {
+      "category": "async-misuse",
+      "bug": "forEach does not await async callbacks: the function returns 0 before any upsert finishes, and upsert errors become unhandled rejections.",
+      "anchors": ["  contacts.forEach(async (c) => {", "  return stored;"]
+    },
+    "06-export_reports.py": {
+      "category": "resource-leak",
+      "bug": "The file is opened before the empty-rows check, so `continue` leaks the handle (and leaves an empty file); any exception while writing leaks it too — no `with` block.",
+      "anchors": ["handle = open(path, \"w\", newline=\"\", encoding=\"utf-8\")", "            continue"]
+    },
+    "07-discount.ts": {
+      "category": "boundary",
+      "bug": "The spec says 65 or older, but `age > 65` excludes customers who are exactly 65.",
+      "anchors": ["  if (age > 65) {"]
+    },
+    "08-analytics_events.py": {
+      "category": "mutable-default",
+      "bug": "`tags: list[str] = []` is shared across calls and mutated by append, so every default-tagged event accumulates more `source:web` tags (and the caller's list is mutated too).",
+      "anchors": ["def build_event(name: str, payload: dict, tags: list[str] = []) -> dict:", "    tags.append(\"source:web\")"]
+    },
+    "09-auth-middleware.js": {
+      "category": "auth-bypass",
+      "bug": "jwt.decode() does not verify the signature; anyone can forge a token. SECRET is loaded but never used — this must be jwt.verify(token, SECRET).",
+      "anchors": ["  const claims = jwt.decode(token);"]
+    },
+    "10-job_progress.py": {
+      "category": "arithmetic",
+      "bug": "Integer division happens before multiplying by 100, so any unfinished job reports 0%.",
+      "anchors": ["    percent = job.done_items // job.total_items * 100"]
+    },
+    "11-capture-order.ts": {
+      "category": "swallowed-error",
+      "bug": "A failed payment capture is only logged; execution continues and the order is marked paid and sent to fulfillment without the money being captured.",
+      "anchors": ["    logger.warn({ err, orderId }, \"capture failed\");", "  await orders.update(orderId, { status: \"paid\", paidAt: new Date() });"]
+    },
+    "12-downloads.py": {
+      "category": "path-traversal",
+      "bug": "filename comes from the URL (<path:...> allows slashes) and is joined without normalizing or checking it stays inside user_dir, so ../ reads other users' files or any file; an absolute path also discards user_dir entirely.",
+      "anchors": ["    path = os.path.join(user_dir, filename)"]
+    },
+    "13-settings-tabs.js": {
+      "category": "closure-capture",
+      "bug": "`var i` is function-scoped: every click handler sees the final i (tabs.length), so panels[i] is undefined and clicking throws.",
+      "anchors": ["  for (var i = 0; i < tabs.length; i++) {", "      panels[i].removeAttribute(\"hidden\");"]
+    },
+    "14-ttl_cache.py": {
+      "category": "mutation-during-iteration",
+      "bug": "Deleting from the dict while iterating over .items() raises RuntimeError (dictionary changed size during iteration) as soon as an entry has expired.",
+      "anchors": ["            for key, (expires_at, _) in self._data.items():", "                    del self._data[key]"]
+    },
+    "15-shipping-label.ts": {
+      "category": "null-dereference",
+      "bug": "address is optional (new accounts lack it) but the non-null assertion destructures it unconditionally — TypeError at runtime for new accounts.",
+      "anchors": ["  const { city, country } = user.address!;"]
+    },
+    "16-cors.js": {
+      "category": "cors-misconfiguration",
+      "bug": "endsWith(\"example.com\") also matches attacker origins like https://evil-example.com, and credentials are allowed, so a malicious site can make credentialed cross-origin reads.",
+      "anchors": ["  if (origin && origin.endsWith(ALLOWED_ROOT)) {"]
+    },
+    "17-audit-page.js": { "category": "control", "bug": null, "anchors": [] },
+    "18-user_lookup.py": { "category": "control", "bug": null, "anchors": [] },
+    "19-transfer.py": { "category": "control", "bug": null, "anchors": [] },
+    "20-get-json.ts": { "category": "control", "bug": null, "anchors": [] }
+  }
+}
