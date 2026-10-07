@@ -6,3 +6,6 @@ project-memory/
 __pycache__/
 *.pyc
 node_modules/
+
+# claude plugin eval output
+evals/results/
