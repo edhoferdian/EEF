@@ -215,6 +215,32 @@ How, per harness:
 - **No per-call model (OpenCode, ZCode, Hermes):** run the item inline in
   the orchestrator.
 
+### 4.3 The advisor tool (Claude Code)
+
+The advisor pairs the working model with a stronger one it consults
+mid-task — before committing to an approach, when an error keeps
+recurring, before declaring done. Enable it with `/advisor opus`, the
+`advisorModel` setting, or `claude --advisor opus` for one session.
+Subagents inherit it, each checked against its own model: Haiku can call
+an Opus or Sonnet advisor but cannot be one, and an advisor must rank at or
+above the model it advises.
+
+Where it fits: long multi-step work where most turns are routine but the
+plan decides the outcome — and it pairs well with the `hemat` profile
+(deep agents on Sonnet, Opus as the advisor). Where it does not: as a
+replacement for tier routing or for a checker agent. The working model
+decides when to ask, and a quiet mistake is precisely the one it does not
+ask about; a separate critic, evaluator, or fact-checker still runs
+regardless of what the author thought.
+
+Limits to check before relying on it: experimental; Anthropic API only (not
+Bedrock, Vertex, Foundry, or a gateway that rewrites requests); off when
+feature-flag fetching is disabled (e.g. `DISABLE_TELEMETRY`); each call
+re-reads the whole transcript uncached at the advisor's rates. Ask for it
+explicitly in a prompt ("consult the advisor before you declare this done")
+when a step matters — there is no setting that forces a call.
+`CLAUDE_CODE_DISABLE_ADVISOR_TOOL=1` turns it off entirely.
+
 ## 5. Context budget
 
 Reserve the last ~20% of the context window. Past that point the failure
