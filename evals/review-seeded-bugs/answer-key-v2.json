@@ -1,0 +1,97 @@
+{
+  "_doc": "v2: each case is a folder = one PR. `changed` is the file the PR adds or modifies; every other file is existing context. The seeded bug is in `file` and is only visible with that context. A finding catches it when it names `file`, sits within `tolerance` lines of an anchor line, AND its summary contains at least one of `keywords` (case-insensitive) — so a nearby finding about something else does not count. `bug: null` marks a clean control. run.py checks every anchor resolves to exactly one line of `file`.",
+  "tolerance": 3,
+  "cases": {
+    "01-refunds": {
+      "changed": "billing/refunds.py",
+      "file": "billing/refunds.py",
+      "category": "spec-violation",
+      "bug": "The cap ignores refunds already issued: it checks amount against charge.amount, not charge.amount - charge.refunded_total, so repeated partial refunds exceed the captured amount (docs/REFUNDS.md, models.refunded_total).",
+      "anchors": ["    if amount > charge.amount:"],
+      "keywords": ["refunded_total", "already refunded", "prior refund", "previous refund", "earlier refund", "cumulative", "total refunded", "partial refunds", "multiple refunds", "repeated"]
+    },
+    "02-report-cache": {
+      "changed": "src/reports-service.ts",
+      "file": "src/reports-service.ts",
+      "category": "cross-tenant-leak",
+      "bug": "The cache key uses only reportId, which tenancy.ts says repeats across tenants, in a keyspace cache.ts says is shared: one tenant is served another tenant's cached report.",
+      "anchors": ["  return remember(`report-summary:${ref.reportId}`, 300, async () => {"],
+      "keywords": ["tenant"]
+    },
+    "03-phone": {
+      "changed": "accounts/phone.py",
+      "file": "accounts/phone.py",
+      "category": "broken-caller-contract",
+      "bug": "normalize_phone returns None for invalid input, but its caller signup.py relies on ValueError to report the field error; an invalid phone now reaches User.create(phone=None) on a NOT NULL, UNIQUE login column.",
+      "anchors": ["        return None"],
+      "keywords": ["valueerror", "sign_up", "signup", "caller", "user.create", "not null", "null=false"]
+    },
+    "04-recipe-slug": {
+      "changed": "src/slug.js",
+      "file": "src/slug.js",
+      "category": "behaviour-vs-test",
+      "bug": "Non-ASCII letters are stripped instead of transliterated: 'Crème Brûlée' becomes 'cr-me-br-l-e', failing test/slug.test.js, which expects 'creme-brulee'.",
+      "anchors": ["    .replace(/[^a-z0-9]+/g, \"-\")"],
+      "keywords": ["accent", "diacritic", "unicode", "normaliz", "nfd", "nfkd", "crème", "creme", "jalape", "non-ascii", "transliter"]
+    },
+    "05-exports": {
+      "changed": "src/routes/export.ts",
+      "file": "src/routes/export.ts",
+      "category": "missing-authorization",
+      "bug": "/export is mounted with requireAuth only (app.ts), not requireAdmin, so every signed-in user can download every user's email via /export/all-users.csv.",
+      "anchors": ["exportRouter.get(\"/all-users.csv\", async (_req, res) => {"],
+      "keywords": ["admin", "authoriz", "any signed-in", "any authenticated", "every signed-in", "any logged-in", "privilege", "every user"]
+    },
+    "06-invoice-numbers": {
+      "changed": "invoicing/numbers.py",
+      "file": "invoicing/numbers.py",
+      "category": "concurrency-uniqueness",
+      "bug": "MAX(number)+1 with no lock, sequence or unique constraint (models.py) while 8 workers create invoices in parallel (INVOICING.md): two workers read the same max and issue a duplicate number.",
+      "anchors": ["        select(func.max(Invoice.number)).where(Invoice.number.like(prefix + \"%\"))", "    seq = int(last.split(\"-\")[1]) + 1 if last else 1"],
+      "keywords": ["concurren", "race", "duplicate", "parallel", "unique", "lock", "same number"]
+    },
+    "07-shipping-quotes": {
+      "changed": "src/shipping.ts",
+      "file": "src/shipping.ts",
+      "category": "unit-mismatch",
+      "bug": "config.shipping.timeout is in seconds (config.ts) but HttpClient's timeoutMs is milliseconds (http-client.ts): every quote request aborts after 10 ms.",
+      "anchors": ["  timeoutMs: config.shipping.timeout,"],
+      "keywords": ["millisecond", "seconds", "unit", "10 ms", "10ms", " ms"]
+    },
+    "08-charges": {
+      "changed": "payments/charges.py",
+      "file": "payments/charges.py",
+      "category": "non-idempotent-retry",
+      "bug": "A non-idempotent POST /charges is wrapped in with_retries, which retries on any exception including timeouts that may have succeeded (provider-api.md), with no Idempotency-Key: customers can be charged twice.",
+      "anchors": ["    return with_retries(call)", "            headers={\"Authorization\": f\"Bearer {api_key}\"},"],
+      "keywords": ["idempot", "double", "duplicate", "twice", "charged again", "multiple charges"]
+    },
+    "09-order-events": {
+      "changed": "orders/events.py",
+      "file": "orders/events.py",
+      "category": "breaking-contract",
+      "bug": "The event renames amount_cents to amount; the accounting consumer reads event[\"amount_cents\"] and docs/EVENTS.md v1 specifies amount_cents, so every paid order now raises KeyError in accounting.",
+      "anchors": ["        \"amount\": order.total_cents,"],
+      "keywords": ["amount_cents", "consumer", "contract", "breaking", "keyerror", "schema", "accounting"]
+    },
+    "10-author-page": {
+      "changed": "blog/author_page.py",
+      "file": "blog/author_page.py",
+      "category": "missed-soft-delete",
+      "bug": "The query does not filter deleted_at IS NULL, unlike feed.py; posts are soft-deleted (models.py), so deleted posts show on public author pages.",
+      "anchors": ["        .where(Post.author_id == author_id, Post.published_at.is_not(None))"],
+      "keywords": ["deleted_at", "soft-delete", "soft delete", "deleted post", "soft-deleted", "deleted"]
+    },
+    "11-daily-revenue": {
+      "changed": "reports/daily.py",
+      "file": "reports/daily.py",
+      "category": "timezone",
+      "bug": "Timestamps are stored as naive UTC and 'today' means the Jakarta day (settings.py), but the start of day is computed from the server's local datetime.now(), so the window is shifted by the UTC offset.",
+      "anchors": ["    start = datetime.combine(datetime.now().date(), time.min)"],
+      "keywords": ["utc", "timezone", "time zone", "jakarta", "asia/", "local time", "tz"]
+    },
+    "12-invoice-cache": { "changed": "src/invoice-service.ts", "file": null, "category": "control", "bug": null, "anchors": [], "keywords": [] },
+    "13-refund-events": { "changed": "orders/events.py", "file": null, "category": "control", "bug": null, "anchors": [], "keywords": [] },
+    "14-post-comments": { "changed": "blog/thread.py", "file": null, "category": "control", "bug": null, "anchors": [], "keywords": [] }
+  }
+}
