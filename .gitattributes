@@ -1,0 +1,15 @@
+# Deterministic line endings: LF in the index AND the working tree on every
+# OS, regardless of core.autocrlf. Mixed CRLF/LF checkouts on Windows once
+# made package_skills.py flag untouched skills as stale and made an
+# installer regex silently miss CRLF frontmatter.
+* text=auto eol=lf
+
+# Packaged skill exports are zip archives — never touch their bytes.
+*.skill binary
+*.zip   binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.pdf   binary
