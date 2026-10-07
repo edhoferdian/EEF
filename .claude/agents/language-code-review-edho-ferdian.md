@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Skill
 skills:
   - language-code-review-edho-ferdian
 model: sonnet
+effort: high
 ---
 
 # language-code-review-edho-ferdian (Agent)

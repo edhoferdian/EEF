@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - data-layer-patterns-edho-ferdian
 model: sonnet
+effort: high
 ---
 
 # data-layer-patterns-edho-ferdian (Agent)

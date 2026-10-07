@@ -4,7 +4,7 @@ description: Agent form of the code-quality-tooling-edho-ferdian skill, same tri
 tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - code-quality-tooling-edho-ferdian
-model: sonnet
+model: haiku
 ---
 
 # code-quality-tooling-edho-ferdian (Agent)

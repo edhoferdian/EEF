@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - container-ops-edho-ferdian
 model: sonnet
+effort: medium
 ---
 
 # container-ops-edho-ferdian (Agent)

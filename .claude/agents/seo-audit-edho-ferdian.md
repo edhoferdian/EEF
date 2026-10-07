@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, WebFetch, Write, Edit, Agent, Skill
 skills:
   - seo-audit-edho-ferdian
 model: sonnet
+effort: medium
 ---
 
 # seo-audit-edho-ferdian (Agent)

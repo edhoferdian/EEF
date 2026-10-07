@@ -5,7 +5,8 @@ tools: Read, Grep, Glob, Bash, Skill
 skills:
   - code-review-edho-ferdian
   - security-review-edho-ferdian
-model: sonnet
+model: opus
+effort: high
 ---
 
 # Code Critic (Agent B)

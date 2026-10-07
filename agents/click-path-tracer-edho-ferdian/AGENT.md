@@ -11,7 +11,8 @@ description: >-
   instructions.
 tools: Read, Grep, Glob, Bash
 skills: click-path-audit-edho-ferdian
-model: sonnet
+tier: standard
+effort: medium
 ---
 
 # Click-Path Tracer (Agent)

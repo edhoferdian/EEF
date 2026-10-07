@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - networking-ops-edho-ferdian
 model: sonnet
+effort: high
 ---
 
 # networking-ops-edho-ferdian (Agent)

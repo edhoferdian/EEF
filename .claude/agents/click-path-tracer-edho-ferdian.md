@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Skill
 skills:
   - click-path-audit-edho-ferdian
 model: sonnet
+effort: medium
 ---
 
 # Click-Path Tracer (Agent)

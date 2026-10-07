@@ -4,7 +4,8 @@ description: >-
   Agent form of the api-design-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Design and evolve API boundaries and contracts — REST resource naming, status-code semantics, pagination strategy, versioning policy, and the discipline of treating one contract artifact (OpenAPI/schema) as authoritative so client and server never drift. A design-time activity, distinct from system-design-edho-ferdian (broader architectural trade-offs) and code-review-edho-ferdian (reviewing an already-written endpoint). Trigger phrases: "desain API untuk fitur ini", "bagaimana struktur endpoint yang baik", "API contract berubah, bagaimana handle-nya", "REST vs apa", or when starting a new API surface.
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: api-design-edho-ferdian
-model: sonnet
+tier: standard
+effort: high
 ---
 
 # api-design-edho-ferdian (Agent)

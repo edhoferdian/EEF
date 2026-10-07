@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - frontend-engineering-edho-ferdian
 model: sonnet
+effort: medium
 ---
 
 # frontend-engineering-edho-ferdian (Agent)

@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, WebSearch, WebFetch, Write, Agent, Skill
 skills:
   - research-ops-edho-ferdian
 model: sonnet
+effort: high
 ---
 
 # research-ops-edho-ferdian (Agent)

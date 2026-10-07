@@ -12,7 +12,8 @@ description: >-
   instructions.
 tools: Read, Grep, Glob, Bash, Write
 skills: spec-mining-edho-ferdian
-model: sonnet
+tier: standard
+effort: high
 ---
 
 # Spec Mining Worker (Agent)

@@ -4,7 +4,8 @@ description: >-
   Agent form of the deployment-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Getting a build to production and keeping it healthy — release strategy (rolling / blue-green / canary), CI/CD pipeline gates, health checks and Kubernetes probes, environment config and rollback, a production-readiness ship/block verdict, operator dashboards, and post-deploy watching. Starts where container-ops-edho-ferdian stops (image built, compose working). Trigger phrases: "deploy ini gimana", "bikin pipeline CI/CD", "rollback", "manifest kubernetes", "siap rilis belum", "pantau setelah deploy", "bikin dashboard monitoring".
 tools: Read, Grep, Glob, Bash, Write, Edit, Agent
 skills: deployment-ops-edho-ferdian
-model: sonnet
+tier: standard
+effort: high
 ---
 
 # deployment-ops-edho-ferdian (Agent)

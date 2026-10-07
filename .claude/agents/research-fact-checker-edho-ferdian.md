@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, WebFetch, Skill
 skills:
   - research-ops-edho-ferdian
 model: sonnet
+effort: high
 ---
 
 # Research Fact-Checker (Agent)

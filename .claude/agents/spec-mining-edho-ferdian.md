@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Agent, Skill
 skills:
   - spec-mining-edho-ferdian
 model: sonnet
+effort: medium
 ---
 
 # spec-mining-edho-ferdian (Agent)

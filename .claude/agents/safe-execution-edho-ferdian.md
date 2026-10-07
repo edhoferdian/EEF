@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - safe-execution-edho-ferdian
 model: sonnet
+effort: medium
 ---
 
 # safe-execution-edho-ferdian (Agent)

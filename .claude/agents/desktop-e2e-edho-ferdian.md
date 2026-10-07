@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - desktop-e2e-edho-ferdian
 model: sonnet
+effort: medium
 ---
 
 # desktop-e2e-edho-ferdian (Agent)

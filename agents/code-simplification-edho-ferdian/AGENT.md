@@ -4,7 +4,8 @@ description: >-
   Agent form of the code-simplification-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Behavior-preserving refactoring workflow that actively rewrites code for clarity — extracting overlong functions, flattening deep nesting into guard clauses, consolidating duplicated logic, AND removing over- engineered/"just in case" abstractions — always gated on a passing test suite (or a characterization test written first) so behavior never changes. Use whenever the user wants code actually SIMPLIFIED or REFACTORED, not just reviewed: "sederhanakan kode ini", "refactor biar lebih rapi", "kode ini terlalu kompleks", "kurangi nesting-nya", "pisahkan fungsi ini jadi beberapa", "clean up this function", "simplify this code", "reduce complexity", "ini over-engineered". A read-only finding about the same issues (CQ-01/CQ-04/CQ-04b in `review-checklist.md`) is… (see the skill for the full trigger list)
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: code-simplification-edho-ferdian
-model: sonnet
+tier: standard
+effort: medium
 ---
 
 # code-simplification-edho-ferdian (Agent)

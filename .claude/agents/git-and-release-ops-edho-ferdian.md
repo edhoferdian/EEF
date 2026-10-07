@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - git-and-release-ops-edho-ferdian
 model: sonnet
+effort: medium
 ---
 
 # git-and-release-ops-edho-ferdian (Agent)

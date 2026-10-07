@@ -9,7 +9,8 @@ description: >-
   gan-harness-edho-ferdian's own instructions.
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: gan-harness-edho-ferdian
-model: sonnet
+tier: standard
+effort: medium
 ---
 
 # GAN Generator (Agent)

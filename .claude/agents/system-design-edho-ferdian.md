@@ -4,7 +4,8 @@ description: Agent form of the system-design-edho-ferdian skill, same triggers â
 tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - system-design-edho-ferdian
-model: sonnet
+model: opus
+effort: high
 ---
 
 # system-design-edho-ferdian (Agent)

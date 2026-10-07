@@ -4,7 +4,8 @@ description: >-
   Agent form of the safe-execution-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Mechanical gates around agent execution, as a complement to this ecosystem's reasoning gates: a pre-action fact-forcing gate that demands concrete investigation before the first edit to a file, a destructive- command guard, a write-scope freeze for autonomous or parallel agent runs, and a stop-gate that blocks "done" until the memory files were actually touched. Use when running agents autonomously or in parallel, when working against production, or when the user says "jangan sampai kehapus", "agent-nya nulis di luar scope", "pastiin dia ngecek dulu".
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: safe-execution-edho-ferdian
-model: sonnet
+tier: standard
+effort: medium
 ---
 
 # safe-execution-edho-ferdian (Agent)

@@ -7,7 +7,8 @@ description: >-
   merge, or when the user explicitly asks for a review/audit.
 tools: Read, Grep, Glob, Bash, Agent
 skills: code-review-edho-ferdian
-model: sonnet
+tier: deep
+effort: high
 ---
 
 # Code Reviewer — Edho Ferdian Mode

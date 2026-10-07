@@ -4,7 +4,7 @@ description: Agent form of the communications-triage-edho-ferdian skill, same tr
 tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - communications-triage-edho-ferdian
-model: sonnet
+model: haiku
 ---
 
 # communications-triage-edho-ferdian (Agent)

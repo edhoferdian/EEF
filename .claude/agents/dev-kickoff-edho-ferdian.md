@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - dev-kickoff-edho-ferdian
 model: sonnet
+effort: high
 ---
 
 # dev-kickoff-edho-ferdian (Agent)

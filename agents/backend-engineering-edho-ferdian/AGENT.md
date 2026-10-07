@@ -4,7 +4,8 @@ description: >-
   Agent form of the backend-engineering-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Authoring server-side code between the API contract and the datastore — layering and ports/adapters boundaries, error taxonomy and resilience (typed errors, Result style, retry with backoff, circuit breakers), background jobs and queues, structured logging emission, and adding a new integration that matches the repo's existing connector pattern. The backend counterpart to frontend-engineering-edho-ferdian. Trigger phrases: "struktur service layer", "error handling di backend", "retry/circuit breaker", "background job / queue", "tambah integrasi baru".
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: backend-engineering-edho-ferdian
-model: sonnet
+tier: standard
+effort: medium
 ---
 
 # backend-engineering-edho-ferdian (Agent)

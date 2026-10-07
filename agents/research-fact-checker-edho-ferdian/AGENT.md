@@ -13,7 +13,8 @@ description: >-
   instead, and say plainly that independence is weaker in that mode.
 tools: Read, Grep, Glob, WebFetch
 skills: research-ops-edho-ferdian
-model: sonnet
+tier: standard
+effort: high
 ---
 
 # Research Fact-Checker (Agent)

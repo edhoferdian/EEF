@@ -4,7 +4,8 @@ description: Agent form of the security-review-edho-ferdian skill, same triggers
 tools: Read, Grep, Glob, Bash, Agent, Skill
 skills:
   - security-review-edho-ferdian
-model: sonnet
+model: opus
+effort: high
 ---
 
 # security-review-edho-ferdian (Agent)

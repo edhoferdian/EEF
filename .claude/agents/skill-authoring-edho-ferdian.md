@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - skill-authoring-edho-ferdian
 model: sonnet
+effort: medium
 ---
 
 # skill-authoring-edho-ferdian (Agent)

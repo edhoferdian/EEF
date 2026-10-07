@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - code-simplification-edho-ferdian
 model: sonnet
+effort: medium
 ---
 
 # code-simplification-edho-ferdian (Agent)

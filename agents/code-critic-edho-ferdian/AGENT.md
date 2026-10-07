@@ -16,7 +16,8 @@ description: >-
   mode.
 tools: Read, Grep, Glob, Bash
 skills: code-review-edho-ferdian, security-review-edho-ferdian
-model: sonnet
+tier: deep
+effort: high
 ---
 
 # Code Critic (Agent B)

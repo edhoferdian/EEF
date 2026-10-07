@@ -4,7 +4,7 @@ description: One parallel research sub-agent for a single sub-question out of re
 tools: Read, Grep, Glob, Bash, WebSearch, WebFetch, Skill
 skills:
   - research-ops-edho-ferdian
-model: sonnet
+model: haiku
 ---
 
 # Research Worker (Agent)

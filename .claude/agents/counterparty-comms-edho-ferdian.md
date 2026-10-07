@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - counterparty-comms-edho-ferdian
 model: sonnet
+effort: high
 ---
 
 # counterparty-comms-edho-ferdian (Agent)

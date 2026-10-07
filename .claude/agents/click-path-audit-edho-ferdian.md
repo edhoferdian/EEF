@@ -4,7 +4,8 @@ description: Agent form of the click-path-audit-edho-ferdian skill, same trigger
 tools: Read, Grep, Glob, Bash, Agent, Skill
 skills:
   - click-path-audit-edho-ferdian
-model: sonnet
+model: opus
+effort: high
 ---
 
 # click-path-audit-edho-ferdian (Agent)

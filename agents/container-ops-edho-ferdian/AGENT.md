@@ -4,7 +4,8 @@ description: >-
   Agent form of the container-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Container setup, docker-compose design, multi-stage build optimization, and debugging guidance. Security-specific container concerns live in security-review-edho-ferdian instead. Trigger phrases: "setup Docker untuk project ini", "docker-compose untuk dev environment", "container ini lambat/besar", "debug container yang crash".
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: container-ops-edho-ferdian
-model: sonnet
+tier: standard
+effort: medium
 ---
 
 # container-ops-edho-ferdian (Agent)

@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - billing-ops-edho-ferdian
 model: sonnet
+effort: high
 ---
 
 # billing-ops-edho-ferdian (Agent)

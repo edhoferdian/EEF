@@ -19,14 +19,14 @@ last line is the body, i.e. the system prompt typed into that dialog):
 Cross-checked against ZCode's packed app resources (app.asar), whose parser
 builds `{agent: {name, description, systemPrompt: <body>, ...color?,
 ...model?, ...thoughtLevel?}}` — confirming `model` is a real frontmatter
-key when set. This script deliberately never sets it: AGENT.md's `model:`
-value ("sonnet", "opus", ...) is a Claude Code-specific alias, and copying
-it verbatim into ZCode's `model` field made ZCode fail to resolve the model
-when the pilot agent was actually invoked there (confirmed by hand — not a
-theoretical concern). Every harness other than Claude Code gets no `model`
-field at all and inherits whatever model ZCode/the harness has configured
-as default, exactly like leaving that field blank in ZCode's own "New
-Agent" dialog. `tools` was NOT found written into any real file — ZCode's
+key when set. This script deliberately never sets it: copying a Claude
+Code alias ("sonnet", "opus", ...) into ZCode's `model` field made ZCode
+fail to resolve the model when the pilot agent was actually invoked there
+(confirmed by hand — not a theoretical concern), and AGENT.md now carries
+only a harness-neutral `tier:` (D-060). The shipped file has no `model`
+and inherits ZCode's configured default, exactly like leaving that field
+blank in ZCode's own "New Agent" dialog; `eef-install --target zcode-agents
+--models <file>` adds the consumer's own per-tier model IDs at install time. `tools` was NOT found written into any real file — ZCode's
 tool-scoping is inheritAllTools/selectedTools/preservedTools, a materially
 different shape from Claude Code's flat `tools:` list, so this script does
 not attempt to map it either; every generated agent inherits all tools by

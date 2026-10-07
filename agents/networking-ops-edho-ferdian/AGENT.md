@@ -4,7 +4,8 @@ description: >-
   Agent form of the networking-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Networking skill covering five modes — reviewing a router/switch config for security and correctness, designing a network (homelab or enterprise/multi-site), diagnosing a live symptom via a read-only OSI-layer methodology, running device commands and change windows safely (Cisco IOS-flavoured), and homelab build-out (remote access, local DNS, Netmiko automation with preflight validation). Use whenever the user pastes a config to review ("cek config Cisco ini", "audit ACL ini"), wants a network designed or segmented ("rancang jaringan homelab", "design VLAN segmentation"), is troubleshooting connectivity/DNS/routing/BGP symptoms ("kenapa internet lambat", "site can't reach site"), needs to run or script a device change ("push this ACL via SSH", "automate this across 40… (see the skill for the full trigger list)
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: networking-ops-edho-ferdian
-model: sonnet
+tier: standard
+effort: high
 ---
 
 # networking-ops-edho-ferdian (Agent)

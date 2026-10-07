@@ -20,11 +20,11 @@ Glob, Bash) — matching the code-reviewer-edho-ferdian pilot's own
 reasoning: a delegated reviewer that CAN'T write anything is a stronger
 isolation guarantee than one that merely shouldn't.
 
-model: is always "sonnet" here (Claude Code-only field — every other
-harness's generator already omits it, see export_agents_opencode.py /
-export_agents_zcode.py / export_agents_hermes.py). Matches the pilot;
-bumping a specific agent to "opus" later is a deliberate one-line edit,
-not something this generator should guess per skill.
+tier:/effort: are always "standard"/"medium" here (D-060) — never a model
+name; agents/model-profiles.json maps tiers to each harness's models.
+Moving a new agent to "light" or "deep" is a deliberate edit made after
+asking "is a wrong answer from it loud or quiet?", not something this
+generator should guess per skill.
 
 This script only creates AGENT.md for skills that don't have one yet — it
 never overwrites an existing, possibly hand-tuned agent definition. Run it
@@ -137,7 +137,8 @@ description: >-
   {description}
 tools: {tools}
 skills: {skill.name}
-model: sonnet
+tier: standard
+effort: medium
 ---
 
 # {skill.name} (Agent)

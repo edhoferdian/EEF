@@ -4,7 +4,8 @@ description: Agent form of the legal-ops-edho-ferdian skill, same triggers — d
 tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - legal-ops-edho-ferdian
-model: sonnet
+model: opus
+effort: high
 ---
 
 # legal-ops-edho-ferdian (Agent)

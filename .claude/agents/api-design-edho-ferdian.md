@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - api-design-edho-ferdian
 model: sonnet
+effort: high
 ---
 
 # api-design-edho-ferdian (Agent)

@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 """Generate .claude/agents/*.md — one file per canonical agent under
 agents/, in Claude Code's own native subagent format (frontmatter: name,
-description, tools, model; body: system prompt).
+description, tools, skills, model, effort; body: system prompt).
 
 Nearly a 1:1 mapping — Claude Code's subagent format IS the canonical
 agents/*/AGENT.md format this ecosystem writes agents in. The only
 reshaping is Claude-specific: the canonical comma-separated `skills:`
 becomes a YAML list (which Claude Code preloads), `Skill` is added to
-tools, and a short install-location note is appended to the body. See
-CLAUDE_LOCATION_NOTE below for why.
+tools, a short install-location note is appended to the body (see
+CLAUDE_LOCATION_NOTE below for why), and the harness-neutral `tier`/`effort`
+pair becomes Claude Code's `model`/`effort` through the default profile in
+agents/model-profiles.json (D-060). `eef-install --profile` rewrites those
+two lines at install time for the other profiles.
 
 Usage:
     python scripts/export_agents_claude.py            # write .claude/agents/*.md
@@ -17,7 +20,7 @@ Usage:
 import argparse
 import sys
 
-from lib_agents import REPO_ROOT, Agent, load_agents
+from lib_agents import REPO_ROOT, Agent, load_agents, load_profiles, resolve_model
 
 DEST_DIR = REPO_ROOT / ".claude" / "agents"
 
@@ -53,16 +56,18 @@ def claude_tools(agent: Agent) -> str:
     return ", ".join(tools)
 
 
-def agent_md_content(agent: Agent) -> str:
+def agent_md_content(agent: Agent, profiles: dict) -> str:
     skills_yaml = "".join(f"  - {s}\n" for s in agent.skills)
+    model, effort = resolve_model(agent, "claude", profiles)
     frontmatter = (
         "---\n"
         f"name: {agent.name}\n"
         f"description: {agent.description}\n"
         f"tools: {claude_tools(agent)}\n"
         + (f"skills:\n{skills_yaml}" if agent.skills else "")
-        + f"model: {agent.model}\n"
-        "---\n\n"
+        + f"model: {model}\n"
+        + (f"effort: {effort}\n" if effort else "")
+        + "---\n\n"
     )
     note = CLAUDE_LOCATION_NOTE if agent.skills else ""
     return frontmatter + agent.body + "\n" + note
@@ -73,7 +78,8 @@ def target_path(agent: Agent):
 
 
 def build_all() -> dict:
-    return {target_path(a): agent_md_content(a) for a in load_agents()}
+    profiles = load_profiles()
+    return {target_path(a): agent_md_content(a, profiles) for a in load_agents()}
 
 
 def main() -> int:

@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - dead-code-cleanup-edho-ferdian
 model: sonnet
+effort: medium
 ---
 
 # dead-code-cleanup-edho-ferdian (Agent)

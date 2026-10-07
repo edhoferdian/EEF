@@ -28,6 +28,9 @@ Checks (all must pass):
    line that names the banned form on purpose).
 7. No live pointers into the external rules tree (D-034) — historical
    mentions carry `<!-- d034-ok -->`.
+8. Model routing (D-060) — every agent declares a valid `tier:`/`effort:`
+   and no harness-specific `model:`; agents/model-profiles.json maps every
+   tier on every harness; a checker agent never ranks below what it checks.
 
 What this deliberately does NOT check (left to periodic manual
 skill-audit-edho-ferdian runs, since they need human judgment and are
@@ -35,6 +38,7 @@ prone to false positives in CI): staleness of provenance dates,
 description vagueness/redundancy, absolute local paths, secret-shaped
 strings. See skills/skill-audit-edho-ferdian/ for those.
 """
+import json
 import re
 import sys
 from pathlib import Path
@@ -203,6 +207,84 @@ def check_rules(errors: list[str]) -> None:
                 errors.append(f"{rel}:{i}: filesystem-wide search from a drive/home root")
 
 
+PROFILES_PATH = AGENTS_DIR / "model-profiles.json"
+AGENT_TIER_RE = re.compile(r"^tier:\s*(.+)$", re.MULTILINE)
+AGENT_EFFORT_RE = re.compile(r"^effort:\s*(.+)$", re.MULTILINE)
+AGENT_MODEL_RE = re.compile(r"^model:", re.MULTILINE)
+# (checker, checked): an agent whose job is to catch another agent's
+# mistakes must rank at least as high (tier first, then effort) — a weaker
+# checker waves through exactly the plausible-but-wrong output it exists
+# to catch (D-060).
+CHECKER_PAIRS = [
+    ("code-critic-edho-ferdian", "code-reviewer-edho-ferdian"),
+    ("gan-evaluator-edho-ferdian", "gan-generator-edho-ferdian"),
+    ("research-fact-checker-edho-ferdian", "research-ops-edho-ferdian"),
+    ("research-fact-checker-edho-ferdian", "research-worker-edho-ferdian"),
+    ("opensource-sanitizer-edho-ferdian", "opensource-release-edho-ferdian"),
+    ("click-path-audit-edho-ferdian", "click-path-tracer-edho-ferdian"),
+]
+
+
+def check_model_profiles(errors: list[str]) -> dict | None:
+    """agents/model-profiles.json is complete: every profile maps every
+    tier to a model on every harness, and its ladders are well-formed."""
+    rel = PROFILES_PATH.relative_to(REPO_ROOT)
+    try:
+        profiles = json.loads(PROFILES_PATH.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as err:
+        errors.append(f"{rel}: unreadable ({err})")
+        return None
+    levels = profiles.get("effort_levels", [])
+    if profiles.get("default_profile") not in profiles.get("profiles", {}):
+        errors.append(f"{rel}: default_profile names no profile")
+    for name, profile in profiles.get("profiles", {}).items():
+        for tier in profiles.get("tiers", []):
+            entry = profile.get(tier)
+            if not isinstance(entry, dict):
+                errors.append(f"{rel}: profile {name} has no `{tier}` tier")
+                continue
+            if not isinstance(entry.get("effort_shift"), int):
+                errors.append(f"{rel}: profile {name}.{tier} needs an integer effort_shift")
+            for harness in profiles.get("harnesses", []):
+                if not entry.get(harness):
+                    errors.append(f"{rel}: profile {name}.{tier} has no {harness} model")
+    for harness, limits in profiles.get("model_limits", {}).items():
+        for model, ceiling in limits.items():
+            if ceiling is not None and ceiling not in levels:
+                errors.append(f"{rel}: model_limits.{harness}.{model} = {ceiling!r} is not an effort level")
+    return profiles
+
+
+def check_agent_routing(errors: list[str]) -> None:
+    """Every agent declares a valid tier/effort and no harness model name,
+    and every checker ranks at or above the agent it checks (D-060)."""
+    profiles = check_model_profiles(errors)
+    if profiles is None:
+        return
+    tiers, levels = profiles["tiers"], profiles["effort_levels"]
+    rank = {}
+    for agent_md in sorted(AGENTS_DIR.glob("*/AGENT.md")):
+        rel = agent_md.relative_to(REPO_ROOT)
+        m = FRONTMATTER_RE.search(agent_md.read_text(encoding="utf-8"))
+        if not m:
+            continue  # reported by check_agents
+        fm = m.group(1)
+        tier_m, effort_m = AGENT_TIER_RE.search(fm), AGENT_EFFORT_RE.search(fm)
+        tier = tier_m.group(1).strip() if tier_m else None
+        effort = effort_m.group(1).strip() if effort_m else None
+        if tier not in tiers:
+            errors.append(f"{rel}: `tier:` must be one of {', '.join(tiers)} (got {tier!r})")
+        if effort not in levels:
+            errors.append(f"{rel}: `effort:` must be one of {', '.join(levels)} (got {effort!r})")
+        if AGENT_MODEL_RE.search(fm):
+            errors.append(f"{rel}: `model:` is harness-specific — declare `tier:`/`effort:` and map it in model-profiles.json")
+        if tier in tiers and effort in levels:
+            rank[agent_md.parent.name] = (tiers.index(tier), levels.index(effort))
+    for checker, checked in CHECKER_PAIRS:
+        if checker in rank and checked in rank and rank[checker] < rank[checked]:
+            errors.append(f"agents/{checker}: ranks below agents/{checked}, which it checks — raise its tier/effort")
+
+
 def main() -> int:
     errors: list[str] = []
     check_rules(errors)
@@ -210,6 +292,7 @@ def main() -> int:
     check_ecc_mentions(errors)
     check_broken_references(errors)
     check_agents(errors)
+    check_agent_routing(errors)
     check_filesystem_wide_search(errors)
     check_external_rule_pointers(errors)
 

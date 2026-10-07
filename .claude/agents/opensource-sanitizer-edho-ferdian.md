@@ -4,7 +4,8 @@ description: The Phase 2 independent adversarial audit of opensource-release-edh
 tools: Read, Grep, Glob, Bash, Write, Skill
 skills:
   - opensource-release-edho-ferdian
-model: sonnet
+model: opus
+effort: high
 ---
 
 # Open-Source Sanitizer (Agent)

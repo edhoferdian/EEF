@@ -4,7 +4,8 @@ description: >-
   Agent form of the git-and-release-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Git and forge workflow — branching strategy selection, conventional commit format, merge versus rebase, conflict resolution, PR readiness and triage, issue/backlog classification, CI failure triage, and release/changelog cutting. Trigger phrases: "strategi branch", "format commit", "rebase atau merge", "PR ini siap merge belum", "triase issue", "bikin release", "CI merah".
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: git-and-release-ops-edho-ferdian
-model: sonnet
+tier: standard
+effort: medium
 ---
 
 # git-and-release-ops-edho-ferdian (Agent)

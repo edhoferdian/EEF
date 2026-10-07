@@ -16,12 +16,13 @@ consumer's own opencode.json by `eef-install --target opencode-agents`
   - dist/agents/opencode/<name>.agent.json    the `agent.<name>` block,
     referencing the prompt file by its OpenCode-relative path
 
-No `model` field is ever emitted here: AGENT.md's `model:` value is a
-Claude Code-specific alias ("sonnet", "opus", ...) that OpenCode's model
-registry doesn't recognize — every harness other than Claude Code inherits
-its own default model instead of getting a value it can't resolve (the
-same failure this policy prevents was reproduced by hand against ZCode,
-see export_agents_zcode.py).
+No `model` field is ever emitted here: AGENT.md carries only a
+harness-neutral `tier:` (D-060), and OpenCode model IDs are
+provider-specific, so EEF cannot know which ones a consumer has — a guessed
+alias is exactly what made ZCode fail to resolve the model (see
+export_agents_zcode.py). Without a model the agent inherits OpenCode's own
+default; `eef-install --target opencode-agents --models <file>` adds the
+consumer's own per-tier model IDs at install time.
 
 Usage:
     python scripts/export_agents_opencode.py            # write dist/agents/opencode/*

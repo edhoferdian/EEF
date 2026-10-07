@@ -4,7 +4,7 @@ description: Agent form of the docs-sync-edho-ferdian skill, same triggers — d
 tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - docs-sync-edho-ferdian
-model: sonnet
+model: haiku
 ---
 
 # docs-sync-edho-ferdian (Agent)

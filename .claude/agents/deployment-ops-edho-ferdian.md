@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Agent, Skill
 skills:
   - deployment-ops-edho-ferdian
 model: sonnet
+effort: high
 ---
 
 # deployment-ops-edho-ferdian (Agent)

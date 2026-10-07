@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Skill
 skills:
   - skill-audit-edho-ferdian
 model: sonnet
+effort: medium
 ---
 
 # skill-audit-edho-ferdian (Agent)

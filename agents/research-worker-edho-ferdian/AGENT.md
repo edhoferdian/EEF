@@ -11,7 +11,8 @@ description: >-
   instructions.
 tools: Read, Grep, Glob, Bash, WebSearch, WebFetch
 skills: research-ops-edho-ferdian
-model: sonnet
+tier: light
+effort: low
 ---
 
 # Research Worker (Agent)

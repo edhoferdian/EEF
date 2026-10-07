@@ -11,7 +11,8 @@ description: >-
   available, same honesty rule as the evaluation-mode field.
 tools: Read, Grep, Glob, Bash, Write
 skills: gan-harness-edho-ferdian
-model: sonnet
+tier: standard
+effort: high
 ---
 
 # GAN Evaluator (Agent)

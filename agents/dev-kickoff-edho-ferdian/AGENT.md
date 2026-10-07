@@ -4,7 +4,8 @@ description: >-
   Agent form of the dev-kickoff-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Kickoff and execute a development project from ANY specification or planning documents — PRD, SRS, SDD, UIX Flow, WBS, tech spec, RFC, ADRs, OpenAPI/schema files, Jira/Linear/Notion exports, GitHub issues, or a detailed README. Classifies docs by role, cross-validates them, extracts a binding Project Decision Register, generates an Execution Context Pack (CLAUDE.md, AGENTS.md, .cursorrules) plus a project-fit agent roster and project-memory files, then builds task-by-task through Plan, Test, Implement, Review, Verify, Remember, Improve — auto-invoking this ecosystem's other skills at each stage as needed, with Reflection gates, Critique-Correction on high-risk tasks, and Session Snapshots. Use whenever the user wants to build from specs, or says "mulai proyek", "kickoff", "eksekusi… (see the skill for the full trigger list)
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: dev-kickoff-edho-ferdian
-model: sonnet
+tier: standard
+effort: high
 ---
 
 # dev-kickoff-edho-ferdian (Agent)

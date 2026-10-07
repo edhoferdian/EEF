@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - video-style-edho-ferdian
 model: sonnet
+effort: medium
 ---
 
 # video-style-edho-ferdian (Agent)

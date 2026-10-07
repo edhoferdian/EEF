@@ -12,7 +12,8 @@ description: >-
   that mode.
 tools: Read, Grep, Glob, Bash, Write
 skills: opensource-release-edho-ferdian
-model: sonnet
+tier: deep
+effort: high
 ---
 
 # Open-Source Sanitizer (Agent)

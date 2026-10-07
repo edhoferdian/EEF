@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - gan-harness-edho-ferdian
 model: sonnet
+effort: medium
 ---
 
 # GAN Generator (Agent)

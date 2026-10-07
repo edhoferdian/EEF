@@ -4,7 +4,8 @@ description: Agent form of the gan-harness-edho-ferdian skill, same triggers —
 tools: Read, Grep, Glob, Bash, Write, Edit, Agent, Skill
 skills:
   - gan-harness-edho-ferdian
-model: sonnet
+model: opus
+effort: high
 ---
 
 # gan-harness-edho-ferdian (Agent)

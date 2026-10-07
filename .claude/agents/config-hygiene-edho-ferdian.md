@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - config-hygiene-edho-ferdian
 model: sonnet
+effort: medium
 ---
 
 # config-hygiene-edho-ferdian (Agent)

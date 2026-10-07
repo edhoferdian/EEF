@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - marketing-edho-ferdian
 model: sonnet
+effort: medium
 ---
 
 # marketing-edho-ferdian (Agent)
