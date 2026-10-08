@@ -9,7 +9,10 @@ description: >-
   list). Use whenever a review touches a specific language/framework and the
   generic checklist isn't enough — "review kode Go/Python/React ini", "audit
   Django models", "cek FastAPI endpoint ini", or when the user names a stack
-  while asking for review. Loads only the lens file(s) matching the detected
+  while asking for review. Load it for any review of code in a named
+  framework, even one or two files: its per-stack lenses carry the
+  framework misconfigurations and ORM query traps that a generic read of
+  the code misses. Loads only the lens file(s) matching the detected
   stack. Inherits Reflection and Critique-Correction gates from
   code-review-edho-ferdian.
 ---

@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Measure-then-fix performance workflow — runs real profiling/measurement tooling (Lighthouse, bundle analyzers, heap-snapshot diffing, Node/browser profilers, DB EXPLAIN) to get a baseline, diagnoses against Core Web Vitals budgets and algorithmic-complexity patterns, applies a fix, then re-measures the delta against the budget. Use this whenever the user wants a performance problem actually diagnosed and fixed with real numbers — \"app terasa lambat\", \"kenapa lemot\", \"optimize performance\", \"reduce bundle size\", \"find memory leak\", \"Lighthouse audit\", \"why is this slow\" — not for a static read-time performance guess (see the scope note below for the boundary with code-review-edho-ferdian's PERF domain)."
+description: "Measure-then-fix performance workflow — runs real profiling/measurement tooling (Lighthouse, bundle analyzers, heap-snapshot diffing, Node/browser profilers, DB EXPLAIN) to get a baseline, diagnoses against Core Web Vitals budgets and algorithmic-complexity patterns, applies a fix, then re-measures the delta against the budget. Use this whenever someone reports that something is slow — a page, endpoint, query, build or job — and wants it diagnosed or fixed, even when the slow code is already open and the cause looks obvious from reading it: the obvious suspect is often not where the time goes, and the baseline-then-re-measure loop is what proves a fix worked. Triggers: \"app terasa lambat\", \"kenapa lemot\", \"lama banget kebukanya\", \"optimize performance\", \"reduce bundle size\", \"find memory leak\", \"Lighthouse audit\", \"why is this slow\". Not for flagging code nobody reported as slow — that is code review (see the scope note below for the boundary with code-review-edho-ferdian's PERF domain)."
 ---
 
 # Performance Audit — Edho Ferdian Mode (Skill Edition)
@@ -226,14 +226,5 @@ as `code-review-edho-ferdian`'s saved report.
    design, unless asked.
 4. **Say when a tool isn't available** rather than inventing a plausible
    number; mark confidence accordingly.
-5. **Language routing** as defined above.
-6. **Save the report file** at the end, same as the review skill.
-
----
-
-## Additional references
-
-This skill's ported content is JS/React/Next-biased (matches Edho's current
-stack — `references/web-frontend.md`). Backend/API latency and throughput
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/performance-audit-edho-ferdian/SKILL.md` for complete instructions.
