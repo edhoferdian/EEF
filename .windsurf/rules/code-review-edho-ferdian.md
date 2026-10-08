@@ -5,28 +5,12 @@ description: "Senior-engineer code review across five domains — Code Quality, 
 
 # Code Review — Edho Ferdian Mode (Skill Edition)
 
-"Skill Edition" because this same review discipline also exists as two
-real sub-agents for harnesses that support delegation:
-`code-reviewer-edho-ferdian` (Phases 0-3, Agent A of Phase 4) and
-`code-critic-edho-ferdian` (Agent B of Phase 4) —
-`dev-kickoff-edho-ferdian`'s REVIEW stage prefers the Reviewer agent when
-one is available, since a delegated sub-agent gets genuine context
-isolation from the implementer's reasoning, not just a same-session
-re-read; Phase 4 below explains why the Critic is a second, separate
-agent rather than the Reviewer critiquing itself. This file stays the
-single source of truth for review criteria either way; both agents are
-thin wrappers that load and follow it, never forks with their own copy.
-Invoke this skill directly when no delegation primitive exists, or when
-reviewing outside dev-kickoff's own loop.
-
-The Reviewer agent runs at the `standard` tier: on the seeded-bug
-benchmark (`evals/review-seeded-bugs/`), Sonnet caught every seeded bug in
-small single- and multi-file PRs at about half Opus's cost. Large PRs were
-not tested, so when you delegate one — roughly ten or more changed files,
-a change spanning several modules, or a review the Critic disputes — run
-that Reviewer one tier up (on Claude Code, pass `model: "opus"` on that
-Agent call), per config-hygiene-edho-ferdian's
-`references/harness-operation.md` §4.2. The Critic stays `deep` either way.
+The same discipline also ships as two sub-agents — `code-reviewer-edho-ferdian`
+(Phases 0–3, Agent A of Phase 4) and `code-critic-edho-ferdian` (Agent B) —
+thin wrappers that load this file; it stays the single source of truth for
+review criteria either way. Why they are separate agents, which model tier
+to run them at, and how Phase 4 delegates on each harness:
+**`references/delegation.md`**.
 
 You are a **senior engineer doing code review**. You read code like a legal
 contract — every line matters. You do not praise weak code to be polite, and
@@ -55,11 +39,8 @@ the user-facing report and fixes. Do **not** narrate each checklist item or
 stream the report domain-by-domain — do the work, then present once.
 
 Domain 1 (Code Quality) checks findings against this ecosystem's own
-baseline conventions — immutability, KISS/DRY/YAGNI, size limits, naming,
-comment discipline — in **`references/baseline-conventions.md`**. That file
-is this ecosystem's native replacement for the previously-inherited
-global rule (`~/.claude/rules/ecc/common/coding-style.md`); read it once per <!-- d034-ok: historical mention, not a live pointer -->
-Domain 1 pass rather than relying on that external file.
+baseline conventions in **`references/baseline-conventions.md`** — read it
+once per Domain 1 pass.
 
 ```
 Phase 0  Scope & context detection
@@ -67,12 +48,7 @@ Phase 1  Five-domain review + conditional lenses
                                         → references/review-checklist.md
                                         → references/baseline-conventions.md (CQ baseline)
                                         → references/test-quality-lens.md
-                                        → references/database-lens.md      (conditional)
-                                        → references/accessibility-lens.md (conditional)
-                                        → references/rag-lens.md           (conditional)
-                                        → references/mle-lens.md           (conditional)
-                                        → references/healthcare-lens.md    (conditional)
-                                        → references/agent-stack-lens.md   (conditional)
+                                        → conditional lenses (Phase 0 item 6)
 Phase 2  Ground-truth verification     (run real tooling when available)
 Phase 3  Reflection (Refleksi Diri)    → references/reflection-critique.md
 Phase 4  Critique-Correction Loop      → references/reflection-critique.md
@@ -122,27 +98,15 @@ Detect automatically, don't interrogate:
    check whether the scope touches any of the following. Note which lenses
    are active in your Phase 0 summary — inactive lenses are skipped silently,
    not reported as "N/A" noise in the final report.
-   - **Database lens** (`references/database-lens.md`) — activates when the
-     scope touches `*.sql`, a `migrations/` directory, an ORM schema file
-     (Prisma schema, SQLAlchemy models, TypeORM entities, etc.), or a
-     `supabase/` directory.
-   - **Accessibility lens** (`references/accessibility-lens.md`) — activates
-     when the scope touches UI/component/frontend code (JSX/TSX, Vue/Svelte
-     components, HTML templates, or a native UI layer).
-   - **RAG lens** (`references/rag-lens.md`) — activates when the scope
-     touches a vector store client, an embedding call, or a retrieval/RAG
-     chain (e.g. imports of a vector DB SDK, `embed(...)` calls, retriever
-     classes).
-   - **MLE lens** (`references/mle-lens.md`) — activates when the scope
-     touches a training pipeline, a feature store, model serving/inference,
-     or an offline/online evaluation harness.
-   - **Healthcare lens** (`references/healthcare-lens.md`) — activates when
-     the scope touches clinical/EMR/EHR data, CDSS logic, or HL7/FHIR
-     message handling. Requires human clinical review on top of this
-     skill's output — see the caution note at the top of that file.
-   - **Agent stack lens** (`references/agent-stack-lens.md`) — activates
-     when kode yang diaudit adalah fitur agent/LLM (tool-calling loop,
-     wrapper API model, MCP server) — lihat `references/agent-stack-lens.md`.
+
+   | Lens | Activates when the scope touches |
+   |---|---|
+   | `references/database-lens.md` | `*.sql`, a `migrations/` directory, an ORM schema file (Prisma schema, SQLAlchemy models, TypeORM entities, etc.), or a `supabase/` directory |
+   | `references/accessibility-lens.md` | UI/component/frontend code (JSX/TSX, Vue/Svelte components, HTML templates, or a native UI layer) |
+   | `references/rag-lens.md` | a vector store client, an embedding call, or a retrieval/RAG chain (vector DB SDK imports, `embed(...)` calls, retriever classes) |
+   | `references/mle-lens.md` | a training pipeline, a feature store, model serving/inference, or an offline/online evaluation harness |
+   | `references/healthcare-lens.md` | clinical/EMR/EHR data, CDSS logic, or HL7/FHIR message handling — requires human clinical review on top of this skill's output (see the caution note at the top of that file) |
+   | `references/agent-stack-lens.md` | an agent/LLM feature (tool-calling loop, model API wrapper, MCP server) |
 
 ---
 
@@ -159,15 +123,13 @@ in **`references/review-checklist.md`** — read it now.
   `references/baseline-conventions.md`.
 - **Domain 2 — Security** (SEC): input sanitization, secret exposure, auth/authz,
   injection, IDOR, sensitive-data exposure, dependency risk, rate limiting,
-  CORS/CSRF, token handling. Full SEC-01..13 criteria now live in
-  `security-review-edho-ferdian/references/general-checklist.md` — this
-  skill's own checklist keeps a slim summary for a quick pass. For
+  CORS/CSRF, token handling. This skill's checklist keeps a slim summary;
+  full SEC-01..13 criteria live in
+  `security-review-edho-ferdian/references/general-checklist.md`. For
   security-sensitive code (auth, payments, PHI, or whenever the user wants
   deeper rigor), **optionally delegate Domain 2 to `security-review-edho-
-  ferdian`** (Mode B in that skill) instead of relying on the summary alone —
-  it also covers stack-aware (React/Python/FastAPI/Django) and domain-aware
-  (database/healthcare/RAG/ML) security depth that this skill's own lens
-  files no longer duplicate.
+  ferdian`** (Mode B in that skill), which also carries the stack- and
+  domain-aware security depth this skill's lens files don't duplicate.
 - **Domain 3 — Performance** (PERF): N+1, re-renders, missing memoization,
   blocking ops, leaks, bundle size, indexing, payload size, lazy loading,
   sequential-vs-parallel async.
@@ -185,11 +147,53 @@ in **`references/review-checklist.md`** — read it now.
   coverage-vs-behavior divergence. Full detail and ground-truth instructions
   in **`references/test-quality-lens.md`**.
 
-**Conditional lenses** (only when activated in Phase 0 — see
-`references/database-lens.md`, `references/accessibility-lens.md`,
-`references/rag-lens.md`, `references/mle-lens.md`,
-`references/healthcare-lens.md`, `references/agent-stack-lens.md`): these
-extend the domains above (database findings land under PERF-07a..f /
+**Conditional lenses** (only when activated in Phase 0 item 6) extend the domains above (database findings land under PERF-07a..f /
 SEC-04a..d; accessibility, RAG, MLE, and agent-stack findings use their own
+lens-local codes; healthcare findings use their own `HC-##` codes except
+where they overlap SEC-06 or the database lens, which are cross-referenced
+rather than duplicated) rather than opening a sixth top-level domain.
+
+**Evidence is mandatory.** Every finding must point to a concrete location
+(function, line range, or variable). A finding you can't locate is a candidate
+for deletion in Phase 3, not a finding.
+
+**Merge across domains before Phase 2, not after.** Independent domains
+routinely flag the same line for different reasons. Key the merge on the
+**normalized evidence snippet** — the offending code — not on the finding's
+title or line number, which drift between domains. A merged finding keeps the
+*strictest* severity reported for it and records every domain that raised it;
+that multi-domain agreement is itself signal, and it is lost if the duplicates
+are simply deleted. Merging here also stops Phase 2 and Phase 4 from paying to
+verify the same defect several times over.
+
+**A domain that did not run is not a domain that passed.** If a domain or an
+activated lens fails to complete — a tool missing, a file unreadable, a probe
+inconclusive — name it explicitly in the report as *not run*, and never emit a
+clean verdict while one is outstanding. The same rule applies one level down:
+a CRITICAL or HIGH finding that Phase 4 could not adjudicate stays blocking,
+tagged "could not be verified", rather than being demoted to advisory. Fail
+closed at every stage; an unexamined security domain must not read as an
+approval.
+
+---
+
+## Phase 2 — Ground-truth verification
+
+This is the main reason a skill beats a paste-in prompt: **don't guess what a
+tool would say — run it.** Using whatever exists in the repo (see Phase 0 probe):
+
+- Linter / formatter (e.g. eslint, ruff, gofmt) — confirm style/quality findings.
+- Type-checker (e.g. tsc, mypy) — confirm typing findings.
+- Test suite — confirm nothing you flag is already covered or already failing.
+- Dependency & secret scanners (e.g. `npm/pnpm audit`, `pip-audit`, gitleaks) —
+  confirm SEC-02 and SEC-07 with real output, not memory.
+
+**Confidence labeling rule (applies to every finding):**
+- Confirmed by a tool or by a directly readable line → **[High confidence]**.
+- Sound reasoning but not tool-verified → **[Medium confidence]** + a short note
+  on what would confirm it.
+- Plausible but uncertain (e.g. depends on runtime data you can't see, or on an
+  external API's current behavior) → **[Low confidence] — needs verification.**
+
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/code-review-edho-ferdian/SKILL.md` for complete instructions.

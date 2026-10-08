@@ -17,23 +17,6 @@ description: >-
 
 # Build Fix — Edho Ferdian Mode (Skill Edition)
 
-## Provenance
-
-This `SKILL.md`'s orchestration (the phase loop, loop guard, anti-suppression
-Reflection gate, escalation routing) is original scaffolding for this
-ecosystem, not a direct port. The per-stack diagnostic lenses it routes to
-were built one stack at a time: `references/django-python.md`, and
-`references/javascript-typescript.md` (merging both JS build-error and
-React-specific diagnostics into one file — see that file's own opening line
-for why), came first. `references/go.md` and `references/rust.md` were added
-later — both are **FOLD-M**: plausible, medium-depth content with no
-evidence yet of an active Go or Rust project in Edho's workspace, unlike the
-JS/TS and Django/Python lenses which back real work already in this
-ecosystem. The stacks listed under "Stacks built (FOLD-M, ahead of trigger)"
-at the bottom carry the same FOLD-M status for the same reason — built
-ahead of any evidence of an active project in that stack, not withheld
-pending one.
-
 You are a **build error resolution specialist**. Your only mandate is to get
 a failing build, compile step, dependency install, or startup command back to
 green — with the smallest diff that honestly fixes the root cause. You are
@@ -77,34 +60,31 @@ Phase 6  Report
 ### Phase 0 — Stack & toolchain detection
 
 Detect before doing anything else. Look for the strongest signal first
-(lockfiles/config over folder names): `package.json` + a bundler config
-(Next.js/Vite/Rsbuild/CRA/webpack/Parcel/Bun) → JavaScript/TypeScript;
-`manage.py` + `requirements.txt`/`pyproject.toml`/Django in
-`INSTALLED_APPS` → Django/Python; `go.mod` at repo root → Go; `Cargo.toml`
-at repo root → Rust. See "Stacks built" at the bottom for the remaining
-twelve stacks (PHP/Laravel, Java/Spring, Quarkus, Kotlin, Swift, mobile
-cross-platform, .NET, C++, PyTorch) and their detect signals. If the stack
-genuinely doesn't match any shipped reference, say so plainly and apply the
-cross-cutting rules on this page generically rather than guessing
-stack-specific fixes you can't verify.
+(lockfiles/config over folder names), then load the matching lens below. If
+the stack genuinely doesn't match any shipped reference, say so plainly and
+apply the cross-cutting rules on this page generically rather than guessing
+stack-specific fixes you can't verify. Every lens except JS/TS and
+Django/Python is **FOLD-M** — plausible, medium-depth, not yet field-proven;
+per-stack history and provenance live in `references/lens-status.md` (open
+it when adding a stack or auditing a lens, not on a normal fix).
 
-- JavaScript/TypeScript (Node, any bundler): **`references/javascript-typescript.md`**
-- Django/Python: **`references/django-python.md`**
-- Go (any module with `go.mod`): **`references/go.md`** (FOLD-M — see Provenance above)
-- Rust (any crate with `Cargo.toml`): **`references/rust.md`** (FOLD-M — see Provenance above)
-- PHP/Laravel (`composer.json` has `laravel/framework`): **`references/laravel.md`** (FOLD-M)
-- Java/Spring + Quarkus (`pom.xml`/`build.gradle*` has `spring-boot` or `quarkus`): **`references/java-spring.md`** (FOLD-M, Quarkus as internal sub-section)
-- Kotlin (any `.kt`/`.kts`, or `build.gradle.kts`): **`references/kotlin.md`** (FOLD-M)
-- Swift (`Package.swift`, `.xcodeproj`/`.xcworkspace`): **`references/swift.md`** (FOLD-M — ground-truth verification not possible on Windows, say so)
-- React Native (`package.json` has `react-native`): **`references/react-native.md`** (FOLD-M)
-- Flutter (`pubspec.yaml` has `flutter`): **`references/flutter.md`** (FOLD-M)
-- Android / Compose Multiplatform (`AndroidManifest.xml`, or Gradle Android/Compose plugin): **`references/android.md`** (FOLD-M — also covers Compose Multiplatform and KMP build failures, no separate file)
-- .NET (`.csproj`/`.fsproj`/`.sln`): **`references/dotnet.md`** (FOLD-M, covers C# and F#)
-- C++ (`CMakeLists.txt`, or `.cpp`/`.hpp`): **`references/cpp.md`** (FOLD-M)
-- PyTorch (`torch` import/dependency): **`references/pytorch.md`** (FOLD-M, narrow runtime-mechanics scope only)
-- ArkTS/HarmonyOS (`oh-package.json5`/`module.json5` at repo root, or `.ets` files): **`references/arkts.md`** (FOLD-M)
-- Perl (`.pl`/`.pm`/`.t` files, or `cpanfile`/`Makefile.PL`): **`references/perl.md`** (FOLD-M)
-- Ruby/Rails (`Gemfile` present): **`references/ruby.md`** (FOLD-M, general-knowledge diagnostic tables beyond the ground-truth commands — see Provenance in the file)
+- JavaScript/TypeScript (`package.json` + a bundler config — Next.js/Vite/Rsbuild/CRA/webpack/Parcel/Bun): **`references/javascript-typescript.md`**
+- Django/Python (`manage.py` + `requirements.txt`/`pyproject.toml`/Django in `INSTALLED_APPS`): **`references/django-python.md`**
+- Go (any module with `go.mod`): **`references/go.md`**
+- Rust (any crate with `Cargo.toml`): **`references/rust.md`**
+- PHP/Laravel (`composer.json` has `laravel/framework`): **`references/laravel.md`**
+- Java/Spring + Quarkus (`pom.xml`/`build.gradle*` has `spring-boot` or `quarkus`): **`references/java-spring.md`** (Quarkus as internal sub-section)
+- Kotlin (any `.kt`/`.kts`, or `build.gradle.kts`): **`references/kotlin.md`**
+- Swift (`Package.swift`, `.xcodeproj`/`.xcworkspace`): **`references/swift.md`** (ground-truth verification not possible on Windows, say so)
+- React Native (`package.json` has `react-native`): **`references/react-native.md`**
+- Flutter (`pubspec.yaml` has `flutter`): **`references/flutter.md`**
+- Android / Compose Multiplatform (`AndroidManifest.xml`, or Gradle Android/Compose plugin): **`references/android.md`** (also covers Compose Multiplatform and KMP build failures, no separate file)
+- .NET (`.csproj`/`.fsproj`/`.sln`): **`references/dotnet.md`** (covers C# and F#)
+- C++ (`CMakeLists.txt`, or `.cpp`/`.hpp`): **`references/cpp.md`**
+- PyTorch (`torch` import/dependency): **`references/pytorch.md`** (narrow runtime-mechanics scope only)
+- ArkTS/HarmonyOS (`oh-package.json5`/`module.json5` at repo root, or `.ets` files): **`references/arkts.md`**
+- Perl (`.pl`/`.pm`/`.t` files, or `cpanfile`/`Makefile.PL`): **`references/perl.md`**
+- Ruby/Rails (`Gemfile` present): **`references/ruby.md`** (general-knowledge diagnostic tables beyond the ground-truth commands — see Provenance in the file)
 
 ### Phase 1 — Reproduce
 
@@ -258,69 +238,3 @@ datang dari beberapa kategori (env, dependency, konfigurasi, kode, toolchain)
 tebakan pertama; kegagalan berulang yang sudah "diperbaiki" sebelumnya →
 perlakukan perbaikan sebelumnya sebagai bukti bahwa akar masalahnya belum
 tersentuh, bukan sebagai titik awal.
-
-## Stacks built (FOLD-M, ahead of trigger)
-
-The original 34-item DEFER backlog gated every stack below on "a real
-project in that stack appears." That gate assumed a single-user,
-personally-curated ecosystem; now that this ecosystem is distributed to many
-users, waiting for Edho's own projects to justify porting well-documented,
-industry-standard diagnostic content no longer makes sense — every stack
-below was built out now instead. This is the
-error-resolution half of the same backlog `language-code-review-edho-ferdian`
-tracks for review; the two skills' files cover the same stacks but not the
-same depth, since a build-fix lens only needs a diagnostic-command table +
-error category map, not full idiom/security coverage.
-
-- **PHP/Laravel** — `references/laravel.md`: Composer dependency-resolution
-  failures, Artisan migration errors, PHPUnit/Pest bootstrap failures,
-  config/route/view cache staleness, queue/scheduler startup problems.
-  Security-side content
-  stays in `security-review-edho-ferdian/references/language-specific.md`
-  §"PHP / Laravel" — out of this skill's scope regardless.
-- **Java/Spring + Quarkus** — `references/java-spring.md`: Maven/Gradle
-  dependency resolution, Java compiler errors, Spring context/bean-wiring
-  failures, with a `## Quarkus` sub-section for build-time augmentation
-  failures (~85% overlap with Spring Boot).
-- **Kotlin** — `references/kotlin.md`: Gradle Kotlin DSL configuration
-  errors, Kotlin compiler and coroutine/Flow compile-time errors, KMP target
-  build failures (expect/actual mismatches, native toolchain gaps).
-- **Swift/Apple** — `references/swift.md`: Xcode/`swift build` type-checker
-  errors, Swift 6 strict-concurrency-checking failures, SPM dependency
-  resolution, code-signing/Xcode-project failures. Ground-truth
-  verification of a Swift build is structurally impossible on Edho's own
-  Windows 10 machine (no Swift toolchain runs there) — a future session
-  using this lens must say so explicitly, not imply it re-ran the build.
-- **Mobile cross-platform** — `references/react-native.md` (Metro bundler,
-  native module linking — built first per the cheapest-transfer-from-React
-  reasoning), `references/flutter.md` (Flutter/Dart build and pub dependency
-  errors), `references/android.md` (Gradle/AGP errors — also covers
-  Compose Multiplatform and KMP build failures; no separate
-  compose-multiplatform build-fix file, since those failures are Gradle/AGP/
-  KMP-plugin failures underneath, already covered there).
-- **.NET** — `references/dotnet.md`: MSBuild/`dotnet` CLI compiler errors
-  (CS/FS codes), NuGet resolution failures (NU codes), SDK/MSBuild errors
-  (NETSDK/MSB codes), xUnit/NUnit bootstrap failures, for both C# and F#.
-- **C++** — `references/cpp.md`: CMake configuration errors,
-  compiler/template-instantiation errors, linker errors, compiler-toolchain
-  mismatches (GCC/Clang/MSVC).
-- **PyTorch** — `references/pytorch.md`: tensor shape mismatches,
-  device-placement errors, CUDA OOM, AMP/mixed-precision failures, DataLoader
-  worker crashes, with a handoff back to the review lens for issues that run
-  without error but are still wrong.
-- **ArkTS/HarmonyOS** — `references/arkts.md`: hvigor/DevEco build
-  failures, ArkTS syntax-constraint compile errors, OHPM dependency
-  resolution, `module.json5` config errors.
-- **Perl** — `references/perl.md`: `perl -c` syntax errors, `cpanm`/`cpan`
-  dependency-resolution failures, `prove`/Test2 bootstrap failures, with
-  anti-suppression reminders (never strip `-T`, never `cpanm -n`
-  permanently). The earlier "skipped permanently" call was reversed
-  2026-09-09 after fuller diagnostic content for this stack was located and
-  built out.
-- **Ruby / Rails** — `references/ruby.md`: Bundler/RubyGems resolution
-  failures, `ruby -c` syntax errors, RSpec/Minitest bootstrap failures,
-  Rails-startup failures. Ground-truth commands are sourced from
-  `rules/ruby/hooks.md`; the diagnostic-command tables beyond that are
-  general Ruby-ecosystem knowledge, not sourced from a dedicated reference —
-  no dedicated Ruby build-resolver reference ever existed. Say so if asked,
-  don't imply deeper sourced provenance than this has.

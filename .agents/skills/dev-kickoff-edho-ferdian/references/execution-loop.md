@@ -171,9 +171,33 @@ options and a recommendation, wait for approval, record it in
 
 ## Stage 4 — REVIEW (fresh context)
 
-The reviewer must not reuse the implementer's reasoning. If subagents are
-available, run the review as a separate agent; otherwise role-play it
-deliberately and say which you did.
+The reviewer must not reuse the implementer's reasoning, so prefer real
+isolation over merely framing it as "fresh-context":
+
+- **Harness with sub-agent delegation** (Claude Code's `Agent` tool,
+  OpenCode's agent block, ...) → delegate to the `code-reviewer-edho-ferdian`
+  agent (`agents/code-reviewer-edho-ferdian/AGENT.md`) — a genuinely separate
+  context that never saw the implementer's own reasoning, not just a fresh
+  read of the same session.
+- **No delegation primitive** → invoke the `code-review-edho-ferdian` skill
+  directly (still a fresh pass, just without hard context isolation — see
+  that skill's own SKILL.md for the caveat this implies), and say which mode
+  you used.
+- Either path also loads `language-code-review-edho-ferdian`'s stack lens for
+  idiom-specific findings; a HIGH-RISK task also delegates to
+  `security-review-edho-ferdian` (its own agent, or the skill directly with
+  no delegation primitive).
+
+**Who runs the Critique-Correction Loop for a HIGH-RISK task.** **On Claude
+Code**, `code-reviewer-edho-ferdian` already handles it itself (its `tools:`
+includes `Agent`, confirmed nested-delegation-capable per Claude Code's own
+docs) — it delegates to `code-critic-edho-ferdian` and performs Correction on
+its own, so dev-kickoff just waits for the final revised report. **On any
+other harness**, dev-kickoff makes both delegations itself: after the
+Reviewer's draft comes back, delegate separately to
+`code-critic-edho-ferdian` (Agent B), passing it the code and the Reviewer's
+draft report only — never the Reviewer's own reasoning — then feed the
+critique back to the Reviewer for Correction.
 
 Review targets, in order: does it meet the acceptance criteria · does it
 violate any PDR decision, non-goal, or domain rule · how does it fail or get

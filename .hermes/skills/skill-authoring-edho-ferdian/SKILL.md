@@ -134,91 +134,23 @@ audit needs to look at.
 
 ## §6 — Packaging for distribution (`dist/*.skill`)
 
-Adapted per D-023 (R8) — this ecosystem produces `.skill` archives in `dist/`
-for manual upload (Claude.ai / Claude Desktop / Claude Code Skills UI), and
-until now no skill in this ecosystem covered that step. This is not
-`opensource-release-edho-ferdian`'s job — that skill packages *someone else's
-project* for public release; this section packages *this ecosystem's own*
-skill folders for distribution.
-
-### When to package
-
-Package a skill into `dist/*.skill` whenever `skills/<name>/` changes and
-the change is going to be committed — CI (`.github/workflows/ci.yml`,
-`dist-sync` job) fails the build if `dist/` drifts from `skills/`, so
-"stale and unpublished" is no longer just a convention to remember, it's an
-enforced gate. Packaging is not automatic on every keystroke — run it as
-the last step before committing, same as running a formatter.
-
-### Pre-package validation
-
-`scripts/validate_skills.py` runs this automatically (also enforced in CI
-as the `validate` job) — run it yourself before packaging rather than
-waiting for CI to catch it:
-
-```bash
-python scripts/validate_skills.py
-```
-
-It checks: valid frontmatter with non-empty `name`/`description`,
-description length ≤1024 chars (the harness display limit this ecosystem
-was bitten by twice), no "ECC" mentions outside the one deliberate
-exception (`config-hygiene-edho-ferdian`), and no reference to a
-`references/*.md` file that doesn't exist anywhere in the repo. It does
-**not** check absolute local paths (`C:\Users\...`, `/home/...`) or leaked
-secrets — those need human judgment to avoid false positives in CI, so
-they stay part of a manual `skill-audit-edho-ferdian` pass, not this
-automated gate.
-
-### Packaging
-
-```bash
-python scripts/package_skills.py            # all 38 skills
-python scripts/package_skills.py <name>      # just one
-python scripts/package_skills.py --check     # dry run — exit 1 if stale, same check CI runs
-```
-
-This is the only way `dist/*.skill` should be produced now — it writes
-forward-slash paths (a `.skill` zipped with Windows-style backslash paths
-can fail to install correctly on non-Windows systems) and a fixed internal
-timestamp, so re-running it produces byte-identical output and CI's
-`--check` diff is meaningful. Don't hand-zip a skill folder; the archive
-root must be the skill's own files with no wrapping folder, which the
-script already guarantees.
-
-### Drift check
-
-CI enforces this now (`dist-sync` job runs `package_skills.py --check` on
-every push/PR) — a PR that changes `skills/` without repackaging `dist/`
-fails CI rather than silently shipping a stale archive.
-
-### What this section does not cover
-
-Publishing the packaged skill anywhere (a marketplace, a shared drive, a
-repo release) is a separate, explicit-permission action — this section only
-covers producing a correct local archive.
+Packages *this ecosystem's own* skill folders for manual upload (Claude.ai /
+Claude Desktop / Claude Code Skills UI) — not `opensource-release-edho-
+ferdian`'s job. Whenever `skills/<name>/` changes and is about to be
+committed: run `python scripts/validate_skills.py`, then
+`python scripts/package_skills.py` (all skills, or `<name>` for one;
+`--check` is the dry run CI's `dist-sync` job uses). Never hand-zip a skill
+folder. Publishing the archive anywhere is a separate, explicit-permission
+action. What the validator does and doesn't check, and why the script is
+the only packaging path: **`references/packaging.md`**.
 
 ## §7 — Language routing (canonical contract — all skills point here)
 
-Promoted per R3/D-023 (this is §4 applied to itself): 14 skills carried 5+
-mutually inconsistent headings/wordings for the same convention — plain
-`## Language routing`, `(fixed — never ask)`, `(fixed — matches
-code-review-edho-ferdian's contract)`, `(fixed — matches the rest of this
-ecosystem)`, and `dev-kickoff-edho-ferdian`'s richer `(v2.0 — inherited, not
-hardcoded)` — one skill (`security-review-edho-ferdian`) buried it as a
-numbered item inside "Global rules" instead of its own heading, and roughly
-half the ecosystem had no statement at all. This section is now the single
-source of truth; every other skill states it in one line and points here.
-
-**Scope — what this governs, and what it does not.** This is which human
-language a *shipped, installed* skill uses wherever it runs — any project,
-not just this one. It is a different document from this repo's own
-`CLAUDE.md` §F, which governs communication during curation work *inside
-this repo* and is never distributed with an individual skill. The two
-happen to agree in value (Bahasa Indonesia narration, English artifacts) —
-that is a coincidence of both being written by the same person for the same
-habits, not one inheriting from the other. Do not merge them or delete
-either one thinking it is a duplicate.
+The single source of truth for which human language a *shipped, installed*
+skill uses wherever it runs. It is not this repo's own `CLAUDE.md` §F (which
+governs curation work inside this repo) — the two agree in value but are
+separate documents; don't merge or delete either. Why this was promoted and
+the full scope note: **`references/contract-history.md`**.
 
 **The base rule (fixed, never ask):**
 1. Narration, explanations, questions, and reports to the user → **Bahasa
@@ -308,17 +240,13 @@ declares.
   official docs directly; if that also fails, answer from training
   knowledge but say explicitly it is unverified and may be stale. Never
   silently answer as if it were confirmed current.
-- **No local caching of fetched docs.** Caching would recreate exactly the
-  maintenance burden this ecosystem already rejected for ECC and Salak — a
-  local copy that quietly goes stale. Query live, every time it's needed.
+- **No local caching of fetched docs** — a local copy quietly goes stale,
+  the same burden this ecosystem rejected for ECC and Salak. Query live.
 
-**Rate limits.** The anonymous/no-key MCP connection is rate-limited. A free
-API key from context7.com/dashboard raises the limit substantially. Add it
-by reconfiguring the existing registration: `claude mcp remove context7`
-then `claude mcp add context7 -- npx -y @upstash/context7-mcp@latest
---api-key <key>` (or set the `CONTEXT7_API_KEY` env var on the same
-command instead of the flag). Key issuance and MCP reconfiguration is a
-manual user action — the executor never stores or performs this unattended.
+**Rate limits.** The anonymous/no-key connection is rate-limited; a free
+Context7 API key raises the limit. Adding one is a manual user action — the
+executor never stores a key or reconfigures the MCP server unattended.
+Setup steps: **`references/contract-history.md`**.
 
 **Standard form for every other skill** (one heading, one sentence, pointing
 here — same convention as §7/§8):
@@ -347,17 +275,13 @@ that already name it below.
    directly to the user's current request. If it doesn't, it's a separate
    task — mention it, don't fold it in silently.
 
-**This is a default, not an absolute** — a skill with its own stricter or
-more specific version of this rule for its own context keeps that version
-(e.g. `build-fix-edho-ferdian`'s Phase 3 "never touch unrelated code, even
-a one-line obvious improvement" is this same rule sharpened for the
-build-fix moment specifically, where scope discipline matters more than
-usual because a broken build is not the time to also be reviewing style).
-Skills that already flag a violation of this rule as a review-time finding
+**This is a default, not an absolute** — a skill with its own stricter
+version keeps it (e.g. `build-fix-edho-ferdian`'s Phase 3 "never touch
+unrelated code, even a one-line obvious improvement" sharpens it for the
+build-fix moment). Skills that flag violations at review time
 (`code-review-edho-ferdian`'s BC-08 "scope creep", `dev-kickoff-edho-
-ferdian`'s "silent scope creep" anti-pattern) keep doing that — this
-section is the authoring-time default those two catch violations of,
-not a replacement for either.
+ferdian`'s "silent scope creep" anti-pattern) keep doing so — this section
+is the authoring-time default they catch violations of.
 
 **Standard form for every other skill** (one heading, one sentence, pointing
 here — same convention as §7/§8/§9):
@@ -368,47 +292,7 @@ this skill's specific moment, per the build-fix example above).
 
 ## Provenance
 
-Consolidated into one skill per D-009. Every install-specific path
-(a global scripts directory, marketplace assumptions, the `results.json`
-cache location) was replaced with this repo's own `skills/` tree.
-
-§6 (packaging) added 2026-09-06 per D-023 (R8 audit finding: no skill in
-this ecosystem covered `dist/*.skill` packaging). Native to this ecosystem,
-not adapted from an external source.
-
-§7 (language routing canonical contract) added 2026-09-06 per D-023 (R3
-audit finding), executed under D-035 override. Native to this ecosystem,
-consolidated from the 14 skill-local variants it replaces rather than
-adapted from an external source.
-
-§8 (development loop convention) added 2026-09-09 per explicit user
-request that the ecosystem's skills auto-invoke each other and that
-`dev-kickoff-edho-ferdian`'s Plan-Test-Implement-Review-Verify-Remember
-cycle gain a seventh, closing stage (Improve). Native to this ecosystem —
-points to `dev-kickoff-edho-ferdian`'s `references/execution-loop.md` v3.0
-as the canonical implementation rather than restating it.
-
-§9 (external docs lookup / Context7) added 2026-09-11 per D-044, discussed
-and agreed with the user in-session. Native to this ecosystem — Context7
-was already connected as a live MCP server and referenced narrowly inside
-`api-design-edho-ferdian/references/mcp-tool-surface.md`; this section
-promotes that pattern to a canonical contract so the other authoring-time
-skills (`frontend-engineering-edho-ferdian`,
-`backend-engineering-edho-ferdian`, `build-fix-edho-ferdian`) point to one
-definition instead of each restating it.
-
-§10 (surgical changes canonical contract) added 2026-09-17, adapted from
-`multica-ai/andrej-karpathy-skills`'s `karpathy-guidelines` skill (fetched
-2026-09-17, MIT-licensed per that skill's own frontmatter) at the user's
-request to integrate it into this ecosystem. Checked first per this
-skill's own §1: 3 of that source's 4 principles ("Think Before Coding",
-"Simplicity First", "Goal-Driven Execution") were already covered —
-respectively by `safe-execution-edho-ferdian` Gate 1, `code-simplification-
-edho-ferdian`, and `dev-kickoff-edho-ferdian`'s execution loop — so nothing
-was ported for those three; porting them would have been exactly the
-"twelfth variant of something that already exists" failure mode this
-section warns against. Only the 4th principle ("Surgical Changes") had no
-existing general statement — it was scattered as build-fix-specific
-guidance and as two after-the-fact review findings, never as a stated
-authoring-time default — so that's the only piece promoted here, phrased
-generically rather than copied verbatim from the source's wording.
+Consolidated into one skill per D-009; install-specific paths were replaced
+with this repo's own `skills/` tree. When and why each of §6–§10 was added,
+including §10's external source and what was deliberately not ported:
+**`references/contract-history.md`**.
