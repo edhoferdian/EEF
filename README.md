@@ -602,11 +602,24 @@ For maintainers cutting a new version:
    Actions tab) — never tag a commit CI hasn't verified.
 4. `git tag vX.Y.Z <commit>` (matching `package.json`'s version exactly) and
    `git push origin vX.Y.Z`.
-5. `gh release create vX.Y.Z --notes "..."` — publishing the GitHub Release
-   automatically triggers **[.github/workflows/publish.yml](.github/workflows/publish.yml)**,
-   which runs `npm publish` for you (it also refuses to publish if the tag
-   and `package.json` version don't match, as a last-resort guard). Requires
-   an `NPM_TOKEN` repo secret configured once (`gh secret set NPM_TOKEN`).
+5. `python scripts/generate_changelog.py --notes > notes.md` writes the
+   release notes from the conventional commits since the previous tag;
+   edit them if a summary helps, then
+   `gh release create vX.Y.Z --notes-file notes.md`. Publishing the GitHub
+   Release automatically triggers **[.github/workflows/publish.yml](.github/workflows/publish.yml)**,
+   which runs the CI checks and `npm publish` for you (it also refuses to
+   publish if the tag and `package.json` version don't match, as a
+   last-resort guard).
+6. `python scripts/generate_changelog.py` regenerates `CHANGELOG.md` with
+   the new tag; commit it.
+
+   **Authentication: npm trusted publishing (OIDC).** Configure it once on
+   npmjs.com (package settings → Trusted Publisher → GitHub Actions:
+   `edhoferdian` / `EEF` / `publish.yml`). Until that is done, publishing
+   falls back to the `NPM_TOKEN` repo secret; once a release has gone out
+   through OIDC, set "Require two-factor authentication and disallow
+   tokens", revoke the token and delete the secret. The notes below apply
+   to the token fallback only.
 
    **The token must specifically be an npm Classic Token of type
    `Automation`.** Verified the hard way on the v1.17.1 test release: a
