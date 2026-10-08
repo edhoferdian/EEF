@@ -89,6 +89,18 @@ V2_PROMPT = (
     "the line, and a severity."
 )
 
+V3_PROMPT = (
+    "This working directory is a repository with one pull request applied. The "
+    "PR adds or modifies these {count} files:\n{changed}\n"
+    "Every other file is existing code and documentation already on the main "
+    "branch, there as context. Modules that are imported but not present exist "
+    "and are simply not shown. Review the whole PR using the "
+    "code-review-edho-ferdian skill, reading the other files as you need. There "
+    "are no other files, specs or tests beyond these, so do not ask for them. "
+    "Report every issue you would raise on this PR, each with the file it is in "
+    "(path relative to the working directory), the line, and a severity."
+)
+
 CORPORA = {
     "v1": {
         "cases_dir": HERE / "cases",
@@ -104,7 +116,23 @@ CORPORA = {
         "prompt": V2_PROMPT,
         "with_file": True,
     },
+    # A case folder holds only the PR's files; run_one lays them over
+    # cases-v3/_bases/<base>/ so 8 large PRs share two base projects.
+    "v3": {
+        "cases_dir": HERE / "cases-v3",
+        "key": HERE / "answer-key-v3.json",
+        "results": HERE / "results-v3",
+        "prompt": V3_PROMPT,
+        "with_file": True,
+    },
 }
+
+
+def render_prompt(corpus: dict, case: dict) -> str:
+    changed = case["changed"]
+    if isinstance(changed, list):
+        return corpus["prompt"].format(count=len(changed), changed="\n".join(f"- `{c}`" for c in changed))
+    return corpus["prompt"].format(changed=changed)
 
 
 def findings_schema(with_file: bool) -> dict:
@@ -137,7 +165,8 @@ def claude_bin() -> str:
 def load_key(corpus: dict) -> dict:
     """Load the answer key and resolve every anchor to its line, failing on
     a missing or ambiguous anchor. v1 cases are files; v2 cases are folders
-    and name the changed file and the file holding the bug."""
+    and name the changed file and the file holding the bug; v3 cases name a
+    base project and a list of changed files, all in the case folder."""
     key = json.loads(corpus["key"].read_text(encoding="utf-8"))
     cases_dir = corpus["cases_dir"]
     for name, case in key["cases"].items():
@@ -145,8 +174,11 @@ def load_key(corpus: dict) -> dict:
         case.setdefault("file", name if case["bug"] else None)
         case.setdefault("keywords", [])
         root = cases_dir / name
-        if not (root / case["changed"] if root.is_dir() else root).exists():
-            sys.exit(f"answer-key: {name} names changed file {case['changed']!r}, which does not exist")
+        if "base" in case and not (cases_dir / "_bases" / case["base"]).is_dir():
+            sys.exit(f"answer-key: {name} names base {case['base']!r}, which does not exist")
+        for changed in case["changed"] if isinstance(case["changed"], list) else [case["changed"]]:
+            if not (root / changed if root.is_dir() else root).exists():
+                sys.exit(f"answer-key: {name} names changed file {changed!r}, which does not exist")
         case["anchor_lines"] = []
         if case["bug"]:
             bug_path = root / case["file"] if root.is_dir() else root
@@ -158,7 +190,7 @@ def load_key(corpus: dict) -> dict:
                 case["anchor_lines"].append(hits[0])
             if not case["anchor_lines"]:
                 sys.exit(f"answer-key: bug case {name} has no anchors")
-    missing = {p.name for p in cases_dir.iterdir()} - set(key["cases"])
+    missing = {p.name for p in cases_dir.iterdir() if not p.name.startswith("_")} - set(key["cases"])
     if missing:
         sys.exit(f"answer-key: no entry for {sorted(missing)}")
     return key
@@ -168,12 +200,14 @@ def run_one(exe: str, corpus: dict, config: str, name: str, case: dict, budget: 
     model, effort = CONFIGS[config]
     src = corpus["cases_dir"] / name
     with tempfile.TemporaryDirectory(prefix="eef-review-bench-") as work:
+        if "base" in case:
+            shutil.copytree(corpus["cases_dir"] / "_bases" / case["base"], work, dirs_exist_ok=True)
         if src.is_dir():
             shutil.copytree(src, work, dirs_exist_ok=True)
         else:
             shutil.copy(src, Path(work) / name)
         cmd = [
-            exe, "-p", corpus["prompt"].format(changed=case["changed"]),
+            exe, "-p", render_prompt(corpus, case),
             "--model", model,
             "--effort", effort,
             "--output-format", "json",

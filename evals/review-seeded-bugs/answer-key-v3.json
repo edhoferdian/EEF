@@ -1,0 +1,223 @@
+{
+  "_doc": "v3: each case is a large PR on a shared base project (cases-v3/_bases/<base>/); the case folder holds only the files the PR adds or changes, copied over the base. `changed` lists them in the order the prompt gives; the seeded bug is in `file`, hidden among benign changes, and recognisable only with context from files the PR does not touch. Catch rule as v2: right file, within `tolerance` lines of an anchor, and a keyword in the summary.",
+  "tolerance": 3,
+  "cases": {
+    "v3-01-gift-wrap": {
+      "base": "shop-api",
+      "changed": [
+        "package.json",
+        "src/auth.ts",
+        "src/config.ts",
+        "src/money.ts",
+        "src/routes/admin.ts",
+        "src/routes/products.ts",
+        "src/routes/users.ts",
+        "src/services/email.ts",
+        "src/services/inventory.ts",
+        "src/services/payments.ts",
+        "src/services/pricing.ts",
+        "test/pricing.test.ts"
+      ],
+      "file": "src/services/pricing.ts",
+      "category": "unit-convention",
+      "bug": "Gift wrap is added as 2.5 — dollars — to amounts that ARCHITECTURE.md and money.ts define as integer cents: a $2.50 fee becomes 2.5 cents and the total is no longer an integer.",
+      "anchors": [
+        "  const giftWrap = options.giftWrap ? 2.5 : 0;"
+      ],
+      "keywords": [
+        "cent",
+        "250",
+        "dollar",
+        "float",
+        "integer",
+        "2.5"
+      ]
+    },
+    "v3-02-profile-fields": {
+      "base": "shop-api",
+      "changed": [
+        "package.json",
+        "src/auth.ts",
+        "src/config.ts",
+        "src/money.ts",
+        "src/routes/admin.ts",
+        "src/routes/products.ts",
+        "src/routes/users.ts",
+        "src/services/email.ts",
+        "src/services/inventory.ts",
+        "src/services/payments.ts",
+        "test/pricing.test.ts"
+      ],
+      "file": "src/routes/users.ts",
+      "category": "privilege-escalation",
+      "bug": "\"role\" is in the self-service editable list, so any signed-in user can PATCH /users/me with role=admin; ARCHITECTURE.md says role changes only through the admin route.",
+      "anchors": [
+        "const EDITABLE = [\"name\", \"phone\", \"marketingOptIn\", \"role\"] as const;"
+      ],
+      "keywords": [
+        "role",
+        "privilege",
+        "escalat",
+        "admin"
+      ]
+    },
+    "v3-03-decline-fast": {
+      "base": "shop-api",
+      "changed": [
+        "package.json",
+        "src/auth.ts",
+        "src/config.ts",
+        "src/money.ts",
+        "src/routes/admin.ts",
+        "src/routes/orders.ts",
+        "src/routes/products.ts",
+        "src/routes/users.ts",
+        "src/services/email.ts",
+        "src/services/inventory.ts",
+        "src/services/payments.ts",
+        "test/pricing.test.ts"
+      ],
+      "file": "src/routes/orders.ts",
+      "category": "flow-order",
+      "bug": "The card is now charged before stock is reserved; when reserve then throws OutOfStock the customer is charged with no order and no refund. ARCHITECTURE.md forbids charging before reserving.",
+      "anchors": [
+        "    await payments.charge(req.user.id, priced.total);",
+        "    await inventory.reserve(items);"
+      ],
+      "keywords": [
+        "reserve",
+        "refund",
+        "stock",
+        "out of stock",
+        "outofstock",
+        "before"
+      ]
+    },
+    "v3-04-line-tax": {
+      "base": "billing-svc",
+      "changed": [
+        "app/api/admin.py",
+        "app/api/invoices.py",
+        "app/auth.py",
+        "app/config.py",
+        "app/services/discounts.py",
+        "app/services/invoices.py",
+        "app/services/notifications.py",
+        "app/services/reminders.py",
+        "pyproject.toml",
+        "tests/test_discounts.py",
+        "tests/test_reminders.py"
+      ],
+      "file": "app/services/invoices.py",
+      "category": "convention-vs-test",
+      "bug": "Tax is now summed per line; CONVENTIONS.md requires it once on the subtotal, and tests/test_tax.py (0.03 vs 0.02) fails.",
+      "anchors": [
+        "    tax = sum((tax_for(line.amount) for line in line_items), Decimal(\"0\"))"
+      ],
+      "keywords": [
+        "per line",
+        "per-line",
+        "subtotal",
+        "test_tax",
+        "rounding",
+        "once"
+      ]
+    },
+    "v3-05-notification-log": {
+      "base": "billing-svc",
+      "changed": [
+        "app/api/admin.py",
+        "app/api/invoices.py",
+        "app/auth.py",
+        "app/config.py",
+        "app/services/discounts.py",
+        "app/services/notifications.py",
+        "app/services/reminders.py",
+        "pyproject.toml",
+        "tests/test_discounts.py",
+        "tests/test_reminders.py"
+      ],
+      "file": "app/services/notifications.py",
+      "category": "pii-logging",
+      "bug": "The invoice-issued log line now writes the customer's name and email; CONVENTIONS.md forbids logging personal data (ids only), and the previous line logged customer_id.",
+      "anchors": [
+        "    log.info(\"invoice issued to %s <%s> invoice_id=%s\", customer.name, customer.email, invoice.id)"
+      ],
+      "keywords": [
+        "pii",
+        "personal",
+        "email",
+        "name",
+        "log"
+      ]
+    },
+    "v3-06-customer-search": {
+      "base": "billing-svc",
+      "changed": [
+        "app/api/admin.py",
+        "app/api/customers.py",
+        "app/api/invoices.py",
+        "app/auth.py",
+        "app/config.py",
+        "app/services/discounts.py",
+        "app/services/notifications.py",
+        "app/services/reminders.py",
+        "pyproject.toml",
+        "tests/test_discounts.py",
+        "tests/test_reminders.py"
+      ],
+      "file": "app/api/customers.py",
+      "category": "missing-tenant-scope",
+      "bug": "The new search has no account_id filter, unlike every other query and against CONVENTIONS.md: any account can search and read other accounts' customers and emails.",
+      "anchors": [
+        "        rows = s.query(Customer).filter(Customer.name.ilike(f\"%{q}%\")).order_by(Customer.name).limit(25)"
+      ],
+      "keywords": [
+        "account",
+        "tenant",
+        "current_account"
+      ]
+    },
+    "v3-07-catalog-search": {
+      "base": "shop-api",
+      "changed": [
+        "package.json",
+        "src/auth.ts",
+        "src/config.ts",
+        "src/money.ts",
+        "src/routes/admin.ts",
+        "src/routes/products.ts",
+        "src/routes/users.ts",
+        "src/services/email.ts",
+        "src/services/inventory.ts",
+        "src/services/payments.ts",
+        "test/pricing.test.ts"
+      ],
+      "file": null,
+      "category": "control",
+      "bug": null,
+      "anchors": [],
+      "keywords": []
+    },
+    "v3-08-invoice-detail": {
+      "base": "billing-svc",
+      "changed": [
+        "app/api/admin.py",
+        "app/api/invoices.py",
+        "app/auth.py",
+        "app/config.py",
+        "app/services/discounts.py",
+        "app/services/notifications.py",
+        "app/services/reminders.py",
+        "pyproject.toml",
+        "tests/test_discounts.py",
+        "tests/test_reminders.py"
+      ],
+      "file": null,
+      "category": "control",
+      "bug": null,
+      "anchors": [],
+      "keywords": []
+    }
+  }
+}

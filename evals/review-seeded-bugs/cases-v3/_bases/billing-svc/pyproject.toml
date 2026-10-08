@@ -1,0 +1,5 @@
+[project]
+name = "billing-svc"
+version = "0.4.0"
+requires-python = ">=3.11"
+dependencies = ["flask>=3", "sqlalchemy>=2", "psycopg[binary]>=3"]
