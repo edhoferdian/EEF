@@ -1,7 +1,7 @@
 # Light-tier benchmark — research-worker and docs-sync
 
-D-060 runs four agents at `tier: light` (Haiku 4.5 under every profile but
-`maksimal`) on the argument that their mistakes are loud — easy to spot,
+D-060 runs four agents at `tier: light` (the `haiku` alias under every
+profile but `maksimal`; it resolved to `claude-haiku-5-5` in these runs) on the argument that their mistakes are loud — easy to spot,
 cheap to retry. That was never measured. This benchmark measures it for
 the two agents where a wrong answer is *least* obviously loud:
 
@@ -54,7 +54,8 @@ hand check.
 
 Each run is a fresh temp directory holding only that case, with:
 
-- `--model haiku` (no `--effort`: Haiku 4.5 rejects it) or
+- `--model haiku` (no `--effort`, as `model-profiles.json` omits it for
+  haiku) or
   `--model sonnet --effort medium|low`;
 - `--append-system-prompt` = the agent's own `AGENT.md` body, so the model
   sees what the real delegate sees; the wrapped skill loads through the

@@ -6,7 +6,7 @@
       "trap": "outdated figure: a 2024 limits page and a 2025 blog say 100/min; a 2026 changelog raised it to 250.",
       "checks": [
         {"id": "limit-250", "kind": "fact", "match": ["\\b250\\b"], "source": ["changelog.md"]},
-        {"id": "not-100", "kind": "trap", "wrong": ["\\b100\\b"], "unless": ["\\b250\\b"]}
+        {"id": "not-100", "kind": "trap", "wrong": ["\\b100\\b"], "unless": ["\\b250\\b", "supersed|predat|outdated|stale|earlier|2024|2025"]}
       ]
     },
     "r02-upload-size": {
@@ -62,7 +62,7 @@
       "question": "Which Node.js versions does the latest Marlin CLI 3.x release support?",
       "trap": "outdated figure: the 3.0 README says Node 18 and 20; 3.2.0 added 22, 3.4.0 dropped 18 and added 24.",
       "checks": [
-        {"id": "node-20-22-24", "kind": "fact", "match": ["\\b20\\b", "\\b22\\b", "\\b24\\b"], "source": ["CHANGELOG.md"]},
+        {"id": "node-20-22-24", "kind": "fact", "labels": ["SOURCED", "INFERENCE"], "match": ["\\b20\\b", "\\b22\\b", "\\b24\\b"], "source": ["CHANGELOG.md"]},
         {"id": "not-node-18", "kind": "trap", "wrong": ["(support|runs? on|compatible|works).{0,40}\\b18\\b"], "unless": ["\\bnot\\b|\\bno\\b|n't|dropped|removed|end.of.life|eol|until|before|3\\.0|3\\.[0-3]\\b|earlier|previous|longer"]}
       ]
     },

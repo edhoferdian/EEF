@@ -1,0 +1,180 @@
+{
+  "haiku": {
+    "runs": 8,
+    "invalid_runs": 0,
+    "cost_usd": 0.0556,
+    "cost_per_case_usd": 0.0069,
+    "wall_s": 162.6,
+    "rows": [
+      {
+        "case": "d01-tally",
+        "valid": true,
+        "cost_usd": 0.008067189999999998,
+        "found": {
+          "renamed-function": true
+        },
+        "extra": []
+      },
+      {
+        "case": "d02-shrink",
+        "valid": true,
+        "cost_usd": 0.00717397,
+        "found": {
+          "removed-flag": true
+        },
+        "extra": [
+          "README.md:13 --format <fmt> default is 'keep' (original format is preserved). -> bin/shrink.js passes format undefined when --format is absent; src/compress.js:6 then runs img.jpeg({ quality }), so eve",
+          "README.md:18 Example 'shrink photos/*.jpg --format webp -q 70 -o compressed' implies WebP output files. -> bin/shrink.js:23 names each destination with path.basename(file), so the original extension is kept (e.g. compressed/pho",
+          "README.md:12 -q, --quality <n> accepts 1-100. -> bin/shrink.js:24 does Number(values.quality) with no range check, so out-of-range values and non-numeric input (NaN) are"
+        ]
+      },
+      {
+        "case": "d03-pinger",
+        "valid": true,
+        "cost_usd": 0.006570740000000001,
+        "found": {
+          "wrong-config-path": true,
+          "broken-link": true
+        },
+        "extra": []
+      },
+      {
+        "case": "d04-notify",
+        "valid": true,
+        "cost_usd": 0.006086360000000001,
+        "found": {
+          "stale-snippet": true
+        },
+        "extra": []
+      },
+      {
+        "case": "d05-ledgerly",
+        "valid": true,
+        "cost_usd": 0.007377080000000001,
+        "found": {
+          "moved-module": true,
+          "removed-export": true
+        },
+        "extra": []
+      },
+      {
+        "case": "d06-hookrelay",
+        "valid": true,
+        "cost_usd": 0.0061817,
+        "found": {
+          "wrong-default-port": true
+        },
+        "extra": []
+      },
+      {
+        "case": "c07-logslice",
+        "valid": true,
+        "cost_usd": 0.00756567,
+        "found": {},
+        "extra": [
+          "README.md:7 Usage shows a `logslice` command: `logslice <file> --since 2026-10-01T08:00 [--until ...] [-n 100] [-v]`. -> The repo defines no `logslice` console script. There is no pyproject.toml, setup.py, or setup.cfg, so nothing installs s"
+        ]
+      },
+      {
+        "case": "c08-shelf",
+        "valid": true,
+        "cost_usd": 0.00655809,
+        "found": {},
+        "extra": []
+      }
+    ],
+    "drifts_found": 8,
+    "drifts": 8,
+    "extra_on_drift_cases": 3,
+    "control_false_alarms": 1,
+    "missed": []
+  },
+  "sonnet-medium": {
+    "runs": 8,
+    "invalid_runs": 0,
+    "cost_usd": 0.8295,
+    "cost_per_case_usd": 0.1037,
+    "wall_s": 104.5,
+    "rows": [
+      {
+        "case": "d01-tally",
+        "valid": true,
+        "cost_usd": 0.1143492,
+        "found": {
+          "renamed-function": true
+        },
+        "extra": []
+      },
+      {
+        "case": "d02-shrink",
+        "valid": true,
+        "cost_usd": 0.10049459999999999,
+        "found": {
+          "removed-flag": true
+        },
+        "extra": [
+          "README.md:13 `--format <fmt>` defaults to \"keep\", meaning the input format is kept unless a conversion is requested -> bin/shrink.js:12 gives `format` no default, so it is undefined when omitted. In src/compress.js:6, an undefined format f"
+        ]
+      },
+      {
+        "case": "d03-pinger",
+        "valid": true,
+        "cost_usd": 0.1152868,
+        "found": {
+          "wrong-config-path": true,
+          "broken-link": true
+        },
+        "extra": []
+      },
+      {
+        "case": "d04-notify",
+        "valid": true,
+        "cost_usd": 0.09446180000000001,
+        "found": {
+          "stale-snippet": true
+        },
+        "extra": []
+      },
+      {
+        "case": "d05-ledgerly",
+        "valid": true,
+        "cost_usd": 0.1027612,
+        "found": {
+          "moved-module": true,
+          "removed-export": true
+        },
+        "extra": [
+          "docs/CODEMAPS/billing.md:7 subscription.ts \"Starts, renews and cancels customer subscriptions.\" -> src/billing/subscription.ts only exports startSubscription and cancelSubscription. There is no renew function or renewal"
+        ]
+      },
+      {
+        "case": "d06-hookrelay",
+        "valid": true,
+        "cost_usd": 0.096744,
+        "found": {
+          "wrong-default-port": true
+        },
+        "extra": []
+      },
+      {
+        "case": "c07-logslice",
+        "valid": true,
+        "cost_usd": 0.10711439999999998,
+        "found": {},
+        "extra": []
+      },
+      {
+        "case": "c08-shelf",
+        "valid": true,
+        "cost_usd": 0.0983058,
+        "found": {},
+        "extra": []
+      }
+    ],
+    "drifts_found": 8,
+    "drifts": 8,
+    "extra_on_drift_cases": 2,
+    "control_false_alarms": 0,
+    "missed": []
+  }
+}
