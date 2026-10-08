@@ -94,7 +94,7 @@ def main() -> int:
             ok = False
             continue
         dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_text(content, encoding="utf-8")
+        dest.write_text(content, encoding="utf-8", newline="\n")
         print(f"Wrote: {dest.relative_to(REPO_ROOT)}")
 
     if DEST_DIR.is_dir():

@@ -98,7 +98,7 @@ def main() -> int:
         print("STALE: AGENTS.md does not match skills/ — run: python scripts/export_agents_md.py")
         return 1
 
-    DEST.write_text(wanted, encoding="utf-8")
+    DEST.write_text(wanted, encoding="utf-8", newline="\n")
     print(f"Wrote AGENTS.md ({len(load_skills())} skills).")
     return 0
 

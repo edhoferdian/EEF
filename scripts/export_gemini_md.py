@@ -52,7 +52,7 @@ def main() -> int:
         print("STALE: GEMINI.md does not match AGENTS.md — run: python scripts/export_gemini_md.py")
         return 1
 
-    DEST.write_text(wanted, encoding="utf-8")
+    DEST.write_text(wanted, encoding="utf-8", newline="\n")
     print("Wrote GEMINI.md.")
     return 0
 

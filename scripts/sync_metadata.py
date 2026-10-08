@@ -91,7 +91,7 @@ def main() -> int:
         return 1
 
     for path, new_text in stale:
-        path.write_text(new_text, encoding="utf-8")
+        path.write_text(new_text, encoding="utf-8", newline="\n")
         print(f"Updated {path.relative_to(REPO_ROOT)}.")
     return 0
 

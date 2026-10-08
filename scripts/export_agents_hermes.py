@@ -132,7 +132,7 @@ def main() -> int:
         return 1
 
     dest.parent.mkdir(parents=True, exist_ok=True)
-    dest.write_text(content, encoding="utf-8")
+    dest.write_text(content, encoding="utf-8", newline="\n")
     print(f"Wrote: {dest} ({len(agents)} agent(s))")
     return 0
 

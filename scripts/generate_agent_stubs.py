@@ -167,7 +167,7 @@ def main() -> int:
             skipped += 1
             continue
         dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_text(build_agent_md(skill), encoding="utf-8")
+        dest.write_text(build_agent_md(skill), encoding="utf-8", newline="\n")
         print(f"Created: {dest.relative_to(AGENTS_DIR.parent)}")
         created += 1
 

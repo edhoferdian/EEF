@@ -152,7 +152,7 @@ def main() -> int:
         return 1
 
     DEST.parent.mkdir(parents=True, exist_ok=True)
-    DEST.write_text(wanted, encoding="utf-8")
+    DEST.write_text(wanted, encoding="utf-8", newline="\n")
     print(f"Wrote .github/copilot-instructions.md ({len(load_skills())} skills).")
     return 0
 

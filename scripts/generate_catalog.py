@@ -160,7 +160,7 @@ def main() -> int:
         print("STALE: CATALOG.md does not match skills/agents — run: python scripts/generate_catalog.py")
         return 1
 
-    DEST.write_text(wanted, encoding="utf-8")
+    DEST.write_text(wanted, encoding="utf-8", newline="\n")
     print(f"Wrote CATALOG.md ({len(load_skills())} skills, {len(load_agents())} agents).")
     return 0
 

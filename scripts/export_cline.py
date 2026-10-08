@@ -142,7 +142,7 @@ def main() -> int:
         return 1
 
     DEST_DIR.mkdir(parents=True, exist_ok=True)
-    DEST.write_text(wanted, encoding="utf-8")
+    DEST.write_text(wanted, encoding="utf-8", newline="\n")
     print(f"Wrote: {DEST.relative_to(REPO_ROOT)} ({len(load_skills())} skills).")
     return 0
 
