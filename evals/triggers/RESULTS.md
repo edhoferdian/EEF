@@ -189,3 +189,38 @@ excludes reviews of code nobody reported slow rather than reported
 slowness with the code in hand.
 
 Spent across runs 5-6: about $10 of the $12 approved.
+
+## Run 7 (2026-10-09) — a different change for the last two misses, $0.77
+
+Same flags, one `--case` per invocation, one skill at a time, against a
+$1.20 approval.
+
+| Skill (case) | Change | Before | After | Kept? |
+|---|---|---|---|---|
+| performance-audit (slow-report-in-repo) | boundary reworded | 0/2 | 2/2 | yes (0c8c5a2) |
+| seo-audit (not-on-google) | framed around the report | 0/2 | 0/2 | no — reverted |
+| seo-audit (not-on-google) | framed as diagnosing missing pages | 0/2 | 0/2 | no — reverted |
+
+performance-audit: the description used to exclude "a static read-time
+performance guess". It now excludes flagging code nobody reported as
+slow. It says to load the skill for reported slowness even when the slow
+code is open and the cause looks obvious, because the obvious suspect is
+often not where the time goes. This turned 0/2 into 2/2. With
+language-code-review fixed in run 6, 37 of 38 skills now fire on their
+case.
+
+seo-audit: two new angles, neither the quick-request sentence. The first
+led with the deliverable: an audit report whose findings are ranked on
+the indexing-impact ladder, built from any signal including snippets
+pasted into chat. The second recast the skill from "an SEO audit
+workflow" to diagnosing why pages do not show up in Google, from pasted
+snippets, a repo or a URL. Both got 0/2. In a kept trace, the skill was
+listed in the session. Claude still answered in one turn, and the answer
+was right: the canonical pointing at the homepage first, then the sitemap
+on the staging host, then the `onclick`-only product links, each with a
+fix. So with the evidence pasted inline, Claude judges the skill
+unnecessary whatever the description says. The in-repo variant fires
+(run 2), and that is how a real audit arrives. After four reverted
+description changes on two fixtures, the inline case looks like a
+limit of description-based triggering, not a wording problem. It stays
+as a known miss.
