@@ -20,13 +20,22 @@ Invoke this skill directly when no delegation primitive exists, or when
 reviewing outside dev-kickoff's own loop.
 
 The Reviewer agent runs at the `standard` tier: on the seeded-bug
-benchmark (`evals/review-seeded-bugs/`), Sonnet caught every seeded bug in
-small single- and multi-file PRs at about half Opus's cost. Large PRs were
-not tested, so when you delegate one — roughly ten or more changed files,
-a change spanning several modules, or a review the Critic disputes — run
-that Reviewer one tier up (on Claude Code, pass `model: "opus"` on that
-Agent call), per config-hygiene-edho-ferdian's
-`references/harness-operation.md` §4.2. The Critic stays `deep` either way.
+benchmark (`evals/review-seeded-bugs/`), Sonnet caught every seeded bug
+Opus did — single-file, multi-file needing context, and PRs of 10-12
+changed files — at about half the cost (D-061, D-062). Run that Reviewer
+one tier up (on Claude Code, pass `model: "opus"` on that Agent call; per
+config-hygiene-edho-ferdian's `references/harness-operation.md` §4.2) when
+any of these holds:
+
+- **About 20 or more changed files carry logic.** Count only files whose
+  behaviour changes: leave out generated files, the same mechanical edit
+  repeated across many files, renames and pure formatting. A 50-file
+  find-and-replace is an easy review; file count alone is not risk.
+- **Behaviour changes in three or more separate modules or services** in
+  one PR.
+- **The Critic disputes the review.**
+
+The Critic stays `deep` either way.
 
 ## Phase 4 implementation per harness
 
