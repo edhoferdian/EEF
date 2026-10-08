@@ -4,26 +4,30 @@
     python scripts/release.py 1.21.0 --summary "what this release is about"
     python scripts/release.py 1.21.0 --dry-run     # checks and plan only
 
-Runs, in order, and stops at the first step that fails:
+main only accepts commits that passed CI (.github/rulesets/main.json), so
+everything lands through pull requests. In order, stopping at the first
+step that fails:
 
  1. preconditions — on main, clean tree, not behind origin/main, the new
     version is higher than package.json's, the tag does not exist yet;
- 2. bump — package.json/package-lock.json (npm version) and the Claude Code
-    plugin version in .claude-plugin/ by the same kind of bump (major,
-    minor or patch);
- 3. checks — validate_skills.py, every `run_check` script listed in
+ 2. checks — validate_skills.py, every `run_check` script listed in
     .husky/pre-commit (so the two lists cannot drift apart), the
-    per-session context budget, and `node --check bin/eef.js`;
- 4. commit the bump and push main;
- 5. wait for CI on that exact commit and require it green;
- 6. create the GitHub release from that commit, with notes from
-    generate_changelog.py --notes — publishing it triggers publish.yml;
- 7. wait for the publish workflow and report whether npm authenticated
+    benchmark-record check, the per-session context budget, and
+    `node --check bin/eef.js`;
+ 3. bump on branch release/vX.Y.Z — package.json/package-lock.json (npm
+    version) and the Claude Code plugin version in .claude-plugin/ by the
+    same kind of bump (major, minor or patch) — re-run the checks, push,
+    open a PR, wait for CI on it, squash-merge it;
+ 4. create the GitHub release on the commit that landed on main (its full
+    SHA), with notes from generate_changelog.py --notes — publishing it
+    triggers publish.yml;
+ 5. wait for the publish workflow and report whether npm authenticated
     through trusted publishing (OIDC) or fell back to NPM_TOKEN;
- 8. regenerate CHANGELOG.md with the new tag, commit and push it.
+ 6. regenerate CHANGELOG.md with the new tag and land it through a PR the
+    same way.
 
-Every step that writes or publishes is skipped with --dry-run. Needs git,
-gh (authenticated), npm, node and python on PATH.
+--dry-run runs steps 1-2 and prints the plan. Needs git, gh
+(authenticated), npm, node and python on PATH.
 """
 import argparse
 import json
@@ -39,13 +43,11 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 PLUGIN_FILES = [REPO / ".claude-plugin" / "plugin.json", REPO / ".claude-plugin" / "marketplace.json"]
 CONTEXT_BUDGET = "13500"  # keep equal to ci.yml's measure_context.py --budget
+CHILD_ENV = {**os.environ, "PYTHONIOENCODING": "utf-8"}  # Windows Python defaults to cp1252 output
 
 
 class ReleaseError(Exception):
     pass
-
-
-CHILD_ENV = {**os.environ, "PYTHONIOENCODING": "utf-8"}  # Windows Python defaults to cp1252 output
 
 
 def run(*cmd: str, capture: bool = True) -> str:
@@ -107,6 +109,7 @@ def run_checks() -> None:
     run("python", "scripts/validate_skills.py")
     for name in check_scripts():
         run("python", f"scripts/{name}.py", "--check")
+    run("python", "evals/review-seeded-bugs/run.py", "--check-records")
     run("python", "scripts/measure_context.py", "--budget", CONTEXT_BUDGET)
     run("node", "--check", "bin/eef.js")
 
@@ -137,6 +140,30 @@ def wait_for_run(workflow: str, *, commit: str | None = None, timeout_s: int = 1
     return run_id
 
 
+def land_through_pr(branch: str, paths: list[str], subject: str, body: str) -> str:
+    """Commit `paths` on a new branch from main, open a PR, wait for its
+    CI, squash-merge it, and return the full SHA that landed on main."""
+    run("git", "switch", "-q", "-c", branch)
+    try:
+        run("git", "add", *paths)
+        run("git", "commit", "-q", "-m", subject, "-m", body)
+        head = run("git", "rev-parse", "HEAD")
+        run("git", "push", "-q", "-u", "origin", branch)
+        url = run("gh", "pr", "create", "--base", "main", "--head", branch, "--title", subject, "--body", body)
+        print(f"   {url}")
+        wait_for_run("ci.yml", commit=head)
+        run("gh", "pr", "merge", branch, "--squash", "--delete-branch", "--subject", subject)
+    finally:
+        run("git", "switch", "-q", "main")
+    run("git", "pull", "-q", "--ff-only", "origin", "main")
+    run("git", "branch", "-q", "-D", branch)
+    landed = run("git", "rev-parse", "HEAD")
+    if run("git", "rev-parse", "origin/main") != landed:
+        raise ReleaseError("local main does not match origin/main after the merge")
+    print(f"   merged as {landed[:7]}")
+    return landed
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("version", help="new version, e.g. 1.21.0")
@@ -154,8 +181,11 @@ def main() -> int:
             raise ReleaseError("working tree is not clean — commit or stash first")
         run("git", "fetch", "-q", "--tags", "origin")
         behind = int(run("git", "rev-list", "--count", "main..origin/main"))
+        ahead = int(run("git", "rev-list", "--count", "origin/main..main"))
         if behind:
             raise ReleaseError(f"main is {behind} commit(s) behind origin/main — another session pushed; integrate it first")
+        if ahead:
+            raise ReleaseError(f"main has {ahead} commit(s) not on origin/main — land them through a PR first")
         if run("git", "tag", "--list", tag):
             raise ReleaseError(f"tag {tag} already exists")
         current = json.loads((REPO / "package.json").read_text(encoding="utf-8"))["version"]
@@ -165,43 +195,37 @@ def main() -> int:
         run("gh", "auth", "status")
         print(f"   npm {current} -> {new} ({kind}); plugin {old_plugin} -> {new_plugin}")
 
-        step("2-3. Checks (before any change)")
+        step("2. Checks (before any change)")
         run_checks()
-        print("   validate_skills, every pre-commit export check, context budget, eef.js: all green")
+        print("   validate_skills, every pre-commit export check, benchmark records, context budget, eef.js: all green")
 
         if args.dry_run:
-            print(f"\nDry run: would bump, commit, push, wait for CI, release {tag}, watch publish, regenerate CHANGELOG.md.")
+            print(f"\nDry run: would bump on release/{tag} through a PR, release {tag}, watch publish, "
+                  f"and land CHANGELOG.md through a second PR.")
             return 0
 
-        step("2. Bump versions")
+        step("3. Bump through a PR")
         run("npm", "version", new, "--no-git-tag-version")
         set_plugin_version(old_plugin, new_plugin)
         run_checks()  # sync_metadata and friends must still pass on the bumped tree
-
-        step("4. Commit and push")
         subject = f"chore: bump version to {new}" + (f" ({args.summary})" if args.summary else "")
-        run("git", "add", "package.json", "package-lock.json", *[str(p.relative_to(REPO)) for p in PLUGIN_FILES])
-        run("git", "commit", "-q", "-m", subject, "-m",
-            f"npm {current} -> {new} and the Claude Code plugin {old_plugin} -> {new_plugin}.")
-        sha = run("git", "rev-parse", "HEAD")
-        run("git", "push", "-q", "origin", "main")
-        print(f"   pushed {sha[:7]}")
+        landed = land_through_pr(
+            f"release/{tag}",
+            ["package.json", "package-lock.json", *[str(p.relative_to(REPO)) for p in PLUGIN_FILES]],
+            subject,
+            f"npm {current} -> {new} and the Claude Code plugin {old_plugin} -> {new_plugin}.",
+        )
+        if json.loads(run("git", "show", f"{landed}:package.json"))["version"] != new:
+            raise ReleaseError(f"the merged commit {landed[:7]} does not carry version {new}")
 
-        step("5. CI on the release commit")
-        wait_for_run("ci.yml", commit=sha)
-        print("   CI green")
-
-        step("6. GitHub release")
-        run("git", "fetch", "-q", "origin")
-        if run("git", "rev-parse", "origin/main") != sha:
-            raise ReleaseError("origin/main moved after the push — release that commit by hand after checking what landed")
+        step("4. GitHub release")
         notes = run("python", "scripts/generate_changelog.py", "--notes")
         with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False, encoding="utf-8") as fh:
             fh.write(notes + "\n")
-        url = run("gh", "release", "create", tag, "--target", "main", "--title", tag, "--notes-file", fh.name)
+        url = run("gh", "release", "create", tag, "--target", landed, "--title", tag, "--notes-file", fh.name)
         print(f"   {url}")
 
-        step("7. npm publish (publish.yml)")
+        step("5. npm publish (publish.yml)")
         publish_id = wait_for_run("publish.yml")
         log = run("gh", "run", "view", publish_id, "--log")
         if f"+ eef-install@{new}" not in log:
@@ -210,13 +234,12 @@ def main() -> int:
         print(f"   published eef-install@{new} — authenticated via "
               f"{'NPM_TOKEN fallback (trusted publishing not used)' if via_token else 'trusted publishing (OIDC)'}")
 
-        step("8. CHANGELOG.md")
+        step("6. CHANGELOG.md through a PR")
         run("git", "fetch", "-q", "--tags", "origin")
         run("python", "scripts/generate_changelog.py")
         if run("git", "status", "--porcelain", "CHANGELOG.md"):
-            run("git", "commit", "-q", "-m", f"docs: regenerate CHANGELOG.md for {tag}", "--", "CHANGELOG.md")
-            run("git", "push", "-q", "origin", "main")
-            print("   committed and pushed")
+            land_through_pr(f"docs/changelog-{tag}", ["CHANGELOG.md"], f"docs: regenerate CHANGELOG.md for {tag}",
+                            "Generated by scripts/generate_changelog.py after the release.")
         print(f"\nReleased {tag}. npm may take a few minutes to show it (`npm view eef-install version`).")
         if not via_token:
             print("Trusted publishing works: on npmjs.com set 'Require two-factor authentication and disallow tokens', "

@@ -591,9 +591,10 @@ fits your team.
 ## Releasing
 
 For maintainers cutting a new version: `python scripts/release.py X.Y.Z
---summary "..."` runs every step below in order and stops at the first
-failure (`--dry-run` runs only the preconditions and checks). The steps,
-if you need to do one by hand:
+--summary "..."` runs every step below in order — the bump and the
+CHANGELOG each through their own PR — and stops at the first failure
+(`--dry-run` runs only the preconditions and checks). The steps, if you
+need to do one by hand:
 
 1. Bump `version` in `package.json` (SemVer — MINOR for a new skill/feature,
    PATCH for a fix, per this ecosystem's own bump rules).
