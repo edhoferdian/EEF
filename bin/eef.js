@@ -319,7 +319,7 @@ function profileRoute(opts, harness) {
     if (!agent) return null;
     const resolved = agent.profiles[profile][harness];
     const model = tierModels && tierModels(name);
-    // A profile model that takes no effort (Haiku) leaves resolved.effort
+    // A profile model that takes no effort (e.g. Haiku 4.5) leaves resolved.effort
     // null; a substitute that does take one falls back to the agent's own.
     const effort = resolved.effort || agent.effort;
     return model ? { model, effort: clampEffort(routing, harness, model, effort) } : resolved;

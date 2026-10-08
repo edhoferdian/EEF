@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - code-quality-tooling-edho-ferdian
 model: haiku
+effort: low
 ---
 
 # code-quality-tooling-edho-ferdian (Agent)

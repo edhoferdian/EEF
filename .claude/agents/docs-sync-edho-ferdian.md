@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - docs-sync-edho-ferdian
 model: haiku
+effort: low
 ---
 
 # docs-sync-edho-ferdian (Agent)

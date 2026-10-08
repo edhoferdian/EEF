@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, WebSearch, WebFetch, Skill
 skills:
   - research-ops-edho-ferdian
 model: haiku
+effort: low
 ---
 
 # Research Worker (Agent)

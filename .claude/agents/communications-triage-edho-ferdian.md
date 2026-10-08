@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - communications-triage-edho-ferdian
 model: haiku
+effort: low
 ---
 
 # communications-triage-edho-ferdian (Agent)

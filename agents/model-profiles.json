@@ -1,13 +1,13 @@
 {
   "_doc": "Tier -> model mapping per cost profile and harness (D-060). AGENT.md carries only an abstract `tier` (light|standard|deep) and `effort` (low|medium|high|xhigh); this file is the one place that turns them into harness model names. Exporters write the default profile; `eef-install --profile <name>` picks another at install time. Model names drift fast: re-verify when bumping `verified` — for Codex, `codex debug models` prints the real catalog (slugs and supported efforts), which is more reliable than the docs pages.",
-  "verified": "2026-10-08",
+  "verified": "2026-10-09",
   "default_profile": "seimbang",
   "tiers": ["light", "standard", "deep"],
   "effort_levels": ["low", "medium", "high", "xhigh"],
   "harnesses": ["claude", "codex"],
-  "_model_limits_doc": "Highest effort a model accepts. null = the model takes no effort setting at all, so the field is omitted (Haiku 4.5 rejects effort). A model not listed accepts the full effort_levels range.",
+  "_model_limits_doc": "Highest effort a model accepts. null = the model takes no effort setting at all, so the field is omitted (Haiku 4.5 rejects effort, so its pinned id stays null). A model not listed accepts the full effort_levels range — the `haiku` alias now resolves to Haiku 5.5, which takes low..max, so it is not listed (checked 2026-10-09 with Claude Code 2.1.293).",
   "model_limits": {
-    "claude": { "haiku": null, "claude-haiku-4-5": null },
+    "claude": { "claude-haiku-4-5": null },
     "codex": {}
   },
   "_profiles_doc": "effort_shift moves each agent's own effort up or down the effort_levels ladder (clamped), so a profile changes spend without rewriting AGENT.md.",
