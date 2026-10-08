@@ -4,7 +4,12 @@ description: >-
   Git and forge workflow — branching strategy selection, conventional commit
   format, merge versus rebase, conflict resolution, PR readiness and triage,
   issue/backlog classification, CI failure triage, and release/changelog
-  cutting. Trigger phrases: "strategi branch", "format commit", "rebase atau
+  cutting. Load it for every git or release question, even a quick one such
+  as "what should this commit message be" or "rebase or merge?": it carries
+  this ecosystem's binding conventions (conventional-commit types and
+  subjects, branch before committing on the default branch, never rewrite
+  shared history), which a general answer gets wrong. Trigger phrases:
+  "strategi branch", "format commit", "commit message-nya apa", "rebase atau
   merge", "PR ini siap merge belum", "triase issue", "bikin release",
   "CI merah".
 ---
