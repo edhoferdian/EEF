@@ -2,6 +2,39 @@
 
 Generated from conventional commits by `scripts/generate_changelog.py` — do not edit by hand.
 
+## [v1.21.0](https://github.com/edhoferdian/EEF/releases/tag/v1.21.0) — 2026-10-09
+
+### Features
+
+- **scripts:** cut a release in one command with release.py ([cb388fc](https://github.com/edhoferdian/EEF/commit/cb388fc))
+- **evals:** add light-tier benchmark for research-worker and docs-sync ([3143568](https://github.com/edhoferdian/EEF/commit/3143568))
+- **evals:** make benchmark records append-only and land work through PRs ([c861edd](https://github.com/edhoferdian/EEF/commit/c861edd))
+- **scripts:** land release bump and changelog through PRs ([bbc4a70](https://github.com/edhoferdian/EEF/commit/bbc4a70))
+
+### Fixes
+
+- **scripts:** write generated files with LF on every platform ([b8d6708](https://github.com/edhoferdian/EEF/commit/b8d6708))
+- **scripts:** read release.py child output as UTF-8 on Windows ([c94866d](https://github.com/edhoferdian/EEF/commit/c94866d))
+- **skills:** make language-code-review load for a framework review of a few files ([c32cb2f](https://github.com/edhoferdian/EEF/commit/c32cb2f))
+- **agents:** let the haiku alias take effort now that it is Haiku 5.5 ([91976b1](https://github.com/edhoferdian/EEF/commit/91976b1))
+- **skills:** make performance-audit load when reported slowness comes with the code ([0c8c5a2](https://github.com/edhoferdian/EEF/commit/0c8c5a2))
+
+### Documentation
+
+- regenerate CHANGELOG.md for v1.20.1 ([e109a96](https://github.com/edhoferdian/EEF/commit/e109a96))
+- **evals:** record the light-tier run - keep research-worker and docs-sync light ([28e14ef](https://github.com/edhoferdian/EEF/commit/28e14ef))
+
+### Tests and evals
+
+- **evals:** cover all 38 skills with trigger cases and near-miss checks ([bec585d](https://github.com/edhoferdian/EEF/commit/bec585d))
+- **evals:** record the coverage trigger run (spend limit hit) ([3a82ac8](https://github.com/edhoferdian/EEF/commit/3a82ac8))
+- **evals:** record coverage re-runs and the three description fixes ([eaf60e1](https://github.com/edhoferdian/EEF/commit/eaf60e1))
+- **evals:** record run 7 â€” performance-audit fires, seo-audit inline stays a known miss ([d2567a2](https://github.com/edhoferdian/EEF/commit/d2567a2))
+
+### Maintenance
+
+- bump version to 1.21.0 (tier routing benchmarks, append-only records, PR-based releases) ([5540918](https://github.com/edhoferdian/EEF/commit/5540918))
+
 ## [v1.20.1](https://github.com/edhoferdian/EEF/releases/tag/v1.20.1) — 2026-10-08
 
 ### Features
