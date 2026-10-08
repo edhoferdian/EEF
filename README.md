@@ -619,37 +619,24 @@ need to do one by hand:
 6. `python scripts/generate_changelog.py` regenerates `CHANGELOG.md` with
    the new tag; commit it on a branch and land it through a PR like step 3.
 
-   **Authentication: npm trusted publishing (OIDC).** Configure it once on
-   npmjs.com (package settings → Trusted Publisher → GitHub Actions:
-   `edhoferdian` / `EEF` / `publish.yml`). Until that is done, publishing
-   falls back to the `NPM_TOKEN` repo secret; once a release has gone out
-   through OIDC, set "Require two-factor authentication and disallow
-   tokens", revoke the token and delete the secret. The notes below apply
-   to the token fallback only.
+   **Authentication: npm trusted publishing (OIDC) only.** The trusted
+   publisher is configured on npmjs.com (package settings → Trusted
+   Publisher → GitHub Actions: `edhoferdian` / `EEF` / `publish.yml`), the
+   package's Publishing access disallows tokens, and there is no
+   `NPM_TOKEN` secret. If `publish.yml` fails to authenticate, check that
+   trusted-publisher entry (workflow file name, repository) and the job's
+   `id-token: write` permission — do not add a token back.
 
-   **The token must specifically be an npm Classic Token of type
-   `Automation`.** Verified the hard way on the v1.17.1 test release: a
-   Granular Access Token with "Read and write" permission still gets
-   `npm error code E404` (npm hides the real reason — insufficient
-   publish permission — behind a 404 to avoid leaking package existence),
-   and a Classic Token of type `Publish` gets `npm error code EOTP`
-   ("This operation requires a one-time password") because it's still
-   subject to the account's 2FA-for-publish setting. Only `Automation`
-   is explicitly exempted from that OTP requirement, which is the entire
-   point of using it in CI. If `publish.yml` fails with either error, the
-   fix is regenerating the token as `Automation`, not touching the
-   workflow file.
-
-**Branch protection (proposed, not yet applied).** `main` has no ruleset
-today, so nothing yet blocks a direct push or a force push.
-[`.github/rulesets/main.json`](.github/rulesets/main.json) is the proposed
-one: no force pushes or deletion of `main`, and every CI job must pass on
-a commit that is up to date with `main` before it lands. It has no bypass
-actors on purpose — every Claude Code session pushes with the
-maintainer's own credentials, so a maintainer bypass would be a bypass for
-all of them. Apply it with
+**Branch protection (active since 2026-10-09).**
+[`.github/rulesets/main.json`](.github/rulesets/main.json) is applied to
+`main` as ruleset "main: CI green, no force push": no force pushes or
+deletion of `main`, and every CI job must pass on a commit that is up to
+date with `main` before it lands. It has no bypass actors on purpose —
+every Claude Code session pushes with the maintainer's own credentials, so
+a maintainer bypass would be a bypass for all of them. To re-create it
+(e.g. on a fork), run
 `gh api --method POST repos/edhoferdian/EEF/rulesets --input .github/rulesets/main.json`.
-Once it is active:
+In effect:
 
 - A direct `git push origin main` is rejected, because CI only runs on
   pushes to `main` and on PRs, so a commit can only pass the required
