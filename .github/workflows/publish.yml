@@ -4,13 +4,11 @@ on:
   release:
     types: [published]
 
-# Authentication: npm trusted publishing (OIDC). The npm CLI tries OIDC
-# first and falls back to NODE_AUTH_TOKEN only when OIDC is unavailable, so
-# the NPM_TOKEN secret below is a migration fallback. Once a release has
-# published through OIDC: on npmjs.com set the package's Publishing access
-# to "Require two-factor authentication and disallow tokens", revoke the
-# automation token, delete the NPM_TOKEN secret, and drop the env line.
-# Provenance is generated automatically for a public repo and package.
+# Authentication: npm trusted publishing (OIDC) only. The package's
+# Publishing access on npmjs.com disallows tokens and the NPM_TOKEN secret
+# is gone (verified 2026-10-09: a re-run with an empty NODE_AUTH_TOKEN got
+# past authentication). Provenance is generated automatically for a public
+# repo and package.
 
 jobs:
   publish:
@@ -59,4 +57,6 @@ jobs:
       - name: npm publish
         run: npm publish --provenance --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # Empty, not setup-node's placeholder token, so npm authenticates
+          # through OIDC — the configuration verified on 2026-10-09.
+          NODE_AUTH_TOKEN: ""
