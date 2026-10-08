@@ -83,3 +83,23 @@ build-fix and seo-audit fire once the code lives in files (run 2), so they
 were left unchanged. Lesson for every skill description: name the reason to
 load the skill — what it carries that a direct answer would miss — not just
 trigger phrases.
+
+## Run 4 (2026-10-08) — build-fix and seo-audit, $1.21
+
+Pasting a build error inline is how most build questions arrive, so the
+inline misses mattered for build-fix and seo-audit too. Both descriptions
+got the same "load it even for one pasted X, because…" sentence.
+
+| Case | Before | After |
+|---|---|---|
+| build-broken (inline) | 1/2 | 2/2 |
+| build-broken-in-repo | 2/2 | 2/2 |
+| not-on-google (inline) | 0/2 | 0/2 |
+| not-on-google-in-repo | 2/2 | 1/2 |
+
+The build-fix change is kept. The seo-audit change showed no gain (and
+one fewer in-repo hit, within the noise of two runs), so it was reverted
+except for a fix to "Cross-references", which a line break had split at
+its hyphen. With robots.txt `Disallow: /` pasted, the answer is obvious and
+Claude gives it directly; the case may need a less self-evident fixture
+rather than a stronger description.

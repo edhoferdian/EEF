@@ -8,9 +8,9 @@ description: >-
   report with fix priority. Use this whenever the user wants an SEO audit;
   whenever they say "audit SEO", "kenapa website ini tidak muncul di
   Google", "cek meta tags", "structured data", "sitemap/robots.txt", "cek
-  SEO", "SEO check" — or when reviewing any public-facing web project. Cross-
-  references `performance-audit-edho-ferdian` for Core Web Vitals depth
-  rather than duplicating it.
+  SEO", "SEO check" — or when reviewing any public-facing web project.
+  Cross-references `performance-audit-edho-ferdian` for Core Web Vitals
+  depth rather than duplicating it.
 ---
 
 # SEO Audit — Edho Ferdian Mode

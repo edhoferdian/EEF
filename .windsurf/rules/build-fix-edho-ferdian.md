@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Diagnose and fix build, compile, dependency, and runtime-startup failures with minimal surgical diffs — never refactors, never architectural changes, always verified green. Auto-detects the stack from project files (JS/TS, Python/Django, Go, Rust, PHP/Laravel, Java/Spring, Quarkus, Kotlin, Swift, React Native, Flutter, Android, .NET, C++, PyTorch, ArkTS, Perl, Ruby, and more) and loads the matching diagnostic lens. Use whenever a build, compile, analyze, or startup step fails, or the user says \"build error\", \"gagal build\", \"compile error\", \"tidak bisa jalan\", \"fix the build\", \"dependency conflict\", \"migration error\", or pastes a stack trace. Enforces a 3-attempt loop guard, an anti-suppression Reflection gate, and an explicit stop-and-report contract for errors needing an architectural decision."
+description: "Diagnose and fix build, compile, dependency, and runtime-startup failures with minimal surgical diffs — never refactors, never architectural changes, always verified green. Auto-detects the stack from project files (JS/TS, Python/Django, Go, Rust, PHP/Laravel, Java/Spring, Quarkus, Kotlin, Swift, React Native, Flutter, Android, .NET, C++, PyTorch, ArkTS, Perl, Ruby, and more) and loads the matching diagnostic lens. Load it whenever a build, compile, analyze, or startup step fails, even for a single pasted error: its anti-suppression gate is what stops the quick \"fix\" (a cast, a ts-ignore, a disabled check) that hides an error instead of fixing it. Triggers: \"build error\", \"gagal build\", \"build-nya gagal\", \"compile error\", \"tidak bisa jalan\", \"fix the build\", \"dependency conflict\", \"migration error\", or a pasted stack trace. Enforces a 3-attempt loop guard and a stop-and-report contract for errors needing an architectural decision."
 ---
 
 # Build Fix — Edho Ferdian Mode (Skill Edition)
@@ -209,7 +209,5 @@ di gejala terukur dan terdokumentasi):
    mengizinkan kesalahan itu lolos sampai ke build/produksi. "Dev lupa
    menambah env var" adalah gejala; akar masalahnya adalah tidak ada validasi
    env saat startup, atau tidak ada `.env.example` yang di-cek CI.
-2. **Fix-mu setara "lebih hati-hati lain kali".** Menambah komentar,
-   memperbarui README, atau berjanji lebih teliti adalah bentuk terlemah —
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/build-fix-edho-ferdian/SKILL.md` for complete instructions.
