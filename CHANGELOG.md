@@ -2,6 +2,22 @@
 
 Generated from conventional commits by `scripts/generate_changelog.py` — do not edit by hand.
 
+## [v1.20.1](https://github.com/edhoferdian/EEF/releases/tag/v1.20.1) — 2026-10-08
+
+### Features
+
+- **code-review:** escalate the reviewer on logic changes, not file count (D-062) ([ace8d41](https://github.com/edhoferdian/EEF/commit/ace8d41))
+- **evals:** add a v4 corpus of 22-26-file logic PRs to test D-062 ([2420fb5](https://github.com/edhoferdian/EEF/commit/2420fb5))
+
+### Documentation
+
+- regenerate CHANGELOG.md for v1.20.0 ([f415aae](https://github.com/edhoferdian/EEF/commit/f415aae))
+- **evals:** record the v4 run â€” first tier difference, D-062 holds ([8eed781](https://github.com/edhoferdian/EEF/commit/8eed781))
+
+### Maintenance
+
+- bump version to 1.20.1 (reviewer escalation on logic changes, D-062) ([02ad356](https://github.com/edhoferdian/EEF/commit/02ad356))
+
 ## [v1.20.0](https://github.com/edhoferdian/EEF/releases/tag/v1.20.0) — 2026-10-08
 
 ### Features
