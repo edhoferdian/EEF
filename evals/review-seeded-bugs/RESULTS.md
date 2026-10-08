@@ -58,4 +58,4 @@ n=16.
    automatically, not only by line distance.
 
 Raw per-run output is git-ignored under `results/raw/`; per-case rows are
-in `results/scores.json`.
+in the record `results/runs/20261008T052250Z-full-run.json`.

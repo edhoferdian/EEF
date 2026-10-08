@@ -6,6 +6,11 @@
 # but scoped to only run when skills/, agents/ or the generators changed
 # (agents/ was once missing here, so agent edits could reach CI unsynced).
 
+# Benchmark records under evals/review-seeded-bugs/results*/runs/ are
+# append-only: e072dc1 (2026-10-08) overwrote the committed 60-run v1
+# summary with a one-run spot check. Refuse a commit that edits or deletes one.
+python evals/review-seeded-bugs/run.py --check-records || exit 1
+
 STAGED=$(git diff --cached --name-only -- 'skills/' 'agents/' 'scripts/' 'rules/')
 if [ -z "$STAGED" ]; then
   exit 0

@@ -73,4 +73,5 @@ The evidence now supports a narrower claim than "review needs Opus":
    without guessing.
 
 Raw per-run output is git-ignored under `results-v2/raw/`; per-case rows,
-including near-but-off-topic findings, are in `results-v2/scores.json`.
+including near-but-off-topic findings, are in the record
+`results-v2/runs/20261007T224753Z-full-run.json`.

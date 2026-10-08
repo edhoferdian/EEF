@@ -33,23 +33,35 @@ servers. Raw output lands in <results>/raw/<config>/<case>.json; an
 existing file is reused, so an interrupted run resumes where it stopped,
 and the runner stops at the first failed run without saving it.
 
+Every scoring pass writes a new record, <results>/runs/<UTC time>-<label>.json,
+holding the configs, cases, git commit, claude version and scores. A record
+is never overwritten, so a partial run or a spot check on another machine
+adds a file instead of replacing a committed result. Committed records are
+append-only: --check-records fails if one is modified or deleted (CI and
+the pre-commit hook run it).
+
 Every real run spends model usage. --dry-run validates the corpus and
 prints the plan without calling a model.
 
 Usage:
     python run.py --dry-run                                   # v1 (default)
     python run.py --corpus v2 --dry-run
-    python run.py --corpus v2 --cases 01-refunds              # pilot
-    python run.py --corpus v2                                 # everything not yet run
-    python run.py --corpus v2 --score-only                    # rescore saved runs
+    python run.py --corpus v2 --cases 01-refunds --label pilot
+    python run.py --corpus v2 --label full-run                # everything not yet run
+    python run.py --corpus v2 --score-only --label rescore    # rescore saved runs
+    python run.py --check-records                             # staged changes keep records append-only
+    python run.py --check-records origin/main                 # this branch vs main
 """
 import argparse
+import itertools
 import json
+import re
 import shutil
 import subprocess
 import sys
 import tempfile
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -61,6 +73,10 @@ CONFIGS = {
 }
 
 STRONG = {"critical", "high"}
+
+LABEL = re.compile(r"^[a-z0-9][a-z0-9-]{0,47}$")
+# A record path as git prints it, relative to the repository root.
+RECORD_PATH = re.compile(r"(^|/)results[^/]*/runs/[^/]+\.json$")
 
 FINDING_PROPS = {
     "line": {"type": "integer", "description": "1-based line in the file the finding is about"},
@@ -325,6 +341,77 @@ def score(corpus: dict, key: dict) -> dict:
     return report
 
 
+def git_out(*args: str) -> str | None:
+    proc = subprocess.run(["git", *args], cwd=HERE, capture_output=True, text=True)
+    return proc.stdout.strip() if proc.returncode == 0 else None
+
+
+def claude_version() -> str | None:
+    """The CLI version, or None where claude is not installed (a rescore
+    needs no model)."""
+    if not shutil.which("claude"):
+        return None
+    proc = subprocess.run([claude_bin(), "--version"], capture_output=True, text=True, encoding="utf-8")
+    if proc.returncode != 0:
+        return None
+    return proc.stdout.strip() or None
+
+
+def write_record(corpus_name: str, corpus: dict, key: dict, report: dict, label: str) -> Path:
+    """Write this scoring pass as a new record and return its path. The
+    file is created exclusively: an existing record is never replaced, a
+    same-second name collision gets a numeric suffix."""
+    now = datetime.now(timezone.utc)
+    record = {
+        "record_version": 1,
+        "corpus": corpus_name,
+        "label": label,
+        "created_utc": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "git_sha": git_out("rev-parse", "HEAD"),
+        "git_dirty": bool(git_out("status", "--porcelain", "--untracked-files=no")),
+        "claude_version": claude_version(),
+        "tolerance": key["tolerance"],
+        "configs": {c: dict(zip(("model", "effort"), CONFIGS[c])) for c, r in report.items() if r["runs"]},
+        "cases": sorted({row["case"] for r in report.values() for row in r["rows"]}),
+        "scores": report,
+    }
+    runs = corpus["results"] / "runs"
+    runs.mkdir(parents=True, exist_ok=True)
+    stem = f"{now.strftime('%Y%m%dT%H%M%SZ')}-{label}"
+    for n in itertools.count(1):
+        path = runs / (f"{stem}.json" if n == 1 else f"{stem}-{n}.json")
+        try:
+            with path.open("x", encoding="utf-8") as fh:
+                fh.write(json.dumps(record, indent=2) + "\n")
+            return path
+        except FileExistsError:
+            continue
+
+
+def check_records(base: str) -> int:
+    """Fail if a committed record is modified or deleted. With no base,
+    check the staged changes (pre-commit); with one, check HEAD against
+    its merge base with that ref (CI)."""
+    cmd = ["diff", "--name-status", "--no-renames"]
+    cmd += [f"{base}...HEAD"] if base else ["--cached"]
+    out = git_out(*cmd, "--", ".")
+    if out is None:
+        print(f"check-records: `git {' '.join(cmd)}` failed (is {base or 'the index'} reachable?)")
+        return 1
+    bad = []
+    for line in out.splitlines():
+        status, _, path = line.partition("\t")
+        if RECORD_PATH.search(path) and status != "A":
+            bad.append(f"{status}\t{path}")
+    if bad:
+        print("check-records: committed benchmark records are append-only; these change or remove one:")
+        print("\n".join(f"  {b}" for b in bad))
+        print("Write a new record with run.py --label instead.")
+        return 1
+    print("check-records: OK, benchmark records are only added")
+    return 0
+
+
 def print_table(report: dict) -> None:
     print("\n| config | recall | recall@high | control FP (high+) | control medium | cost (est.) | $/case | invalid |")
     print("|---|---|---|---|---|---|---|---|")
@@ -347,7 +434,21 @@ def main() -> int:
     parser.add_argument("--budget-per-run", type=float, default=3.0, help="--max-budget-usd cap per run")
     parser.add_argument("--dry-run", action="store_true", help="validate and print the plan; no model calls")
     parser.add_argument("--score-only", action="store_true", help="rescore saved runs; no model calls")
+    parser.add_argument("--label", help="name for this pass's record, e.g. full-run or spot-check "
+                        "(lowercase letters, digits, hyphens); required unless --dry-run")
+    parser.add_argument("--check-records", nargs="?", const="", metavar="BASE",
+                        help="fail if a committed record is modified or deleted: in the staged "
+                             "changes, or in HEAD against BASE; nothing else runs")
     args = parser.parse_args()
+
+    if args.check_records is not None:
+        return check_records(args.check_records)
+    if not args.dry_run:
+        # Checked before any model call, so a long run cannot end unrecorded.
+        if not args.label:
+            parser.error("--label is required: every scoring pass writes a new record")
+        if not LABEL.match(args.label):
+            parser.error(f"--label {args.label!r}: use lowercase letters, digits and hyphens")
 
     corpus = CORPORA[args.corpus]
     key = load_key(corpus)
@@ -385,10 +486,12 @@ def main() -> int:
             print(f"{status}, ${raw.get('total_cost_usd') or 0:.3f}, {raw['_meta']['wall_s']}s")
 
     report = score(corpus, key)
-    scores_path = corpus["results"] / "scores.json"
-    scores_path.parent.mkdir(parents=True, exist_ok=True)
-    scores_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
     print_table(report)
+    if not any(r["runs"] for r in report.values()):
+        print(f"\nno saved runs under {raw_dir.relative_to(HERE).as_posix()}/ — no record written")
+        return 1
+    path = write_record(args.corpus, corpus, key, report, args.label)
+    print(f"\nrecord: {path.relative_to(HERE).as_posix()}")
     return 0
 
 
