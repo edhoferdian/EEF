@@ -2,6 +2,40 @@
 
 Generated from conventional commits by `scripts/generate_changelog.py` — do not edit by hand.
 
+## [v1.20.0](https://github.com/edhoferdian/EEF/releases/tag/v1.20.0) — 2026-10-08
+
+### Features
+
+- **install:** add eef-install update for stale Claude Code installs ([3c8d1ec](https://github.com/edhoferdian/EEF/commit/3c8d1ec))
+- **scripts:** generate CHANGELOG.md and release notes from commits ([8b79054](https://github.com/edhoferdian/EEF/commit/8b79054))
+- **evals:** add a v3 corpus of large PRs for the reviewer threshold ([2f98eb1](https://github.com/edhoferdian/EEF/commit/2f98eb1))
+
+### Fixes
+
+- **skills:** make code-review and code-simplification load for quick requests ([5f27ab9](https://github.com/edhoferdian/EEF/commit/5f27ab9))
+- **skills:** make build-fix load for a single pasted build error ([9e23bb7](https://github.com/edhoferdian/EEF/commit/9e23bb7))
+- **agents:** verify Codex models against Codex's own catalog ([ee9fd83](https://github.com/edhoferdian/EEF/commit/ee9fd83))
+- **evals:** remove real bugs from the v3 base project, score PR files only ([a78ba36](https://github.com/edhoferdian/EEF/commit/a78ba36))
+- **evals:** restore the full v1 benchmark scores ([e364fbc](https://github.com/edhoferdian/EEF/commit/e364fbc))
+
+### Performance
+
+- **skills:** trim the five largest SKILL.md files (~6.6k tokens across them) ([7fa2ff3](https://github.com/edhoferdian/EEF/commit/7fa2ff3))
+- **code-review:** keep PR Review Mode inline, compacted ([e072dc1](https://github.com/edhoferdian/EEF/commit/e072dc1))
+
+### Documentation
+
+- **evals:** record the v3 large-PR benchmark run ([78cad77](https://github.com/edhoferdian/EEF/commit/78cad77))
+- **evals:** correct findings-per-case figures in RESULTS-v3 ([2825400](https://github.com/edhoferdian/EEF/commit/2825400))
+
+### Tests and evals
+
+- **evals:** record review benchmark after the SKILL.md trim â€” no regression ([5bb49f8](https://github.com/edhoferdian/EEF/commit/5bb49f8))
+
+### Maintenance
+
+- bump version to 1.20.0 (eef-install update, changelog, trigger fixes, large-PR benchmark) ([5f71e63](https://github.com/edhoferdian/EEF/commit/5f71e63))
+
 ## [v1.19.0](https://github.com/edhoferdian/EEF/releases/tag/v1.19.0) — 2026-10-08
 
 ### Features
