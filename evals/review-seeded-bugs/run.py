@@ -125,6 +125,15 @@ CORPORA = {
         "prompt": V3_PROMPT,
         "with_file": True,
     },
+    # Same layout as v3, but PRs of 22-26 changed files that each carry
+    # logic — the size D-062 sets the reviewer's escalation trigger at.
+    "v4": {
+        "cases_dir": HERE / "cases-v4",
+        "key": HERE / "answer-key-v4.json",
+        "results": HERE / "results-v4",
+        "prompt": V3_PROMPT,
+        "with_file": True,
+    },
 }
 
 

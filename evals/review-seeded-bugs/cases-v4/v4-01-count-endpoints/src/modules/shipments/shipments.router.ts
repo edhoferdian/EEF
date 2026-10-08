@@ -1,0 +1,30 @@
+import { Router } from "express";
+import { page } from "../../pagination";
+import { shipmentService } from "./shipments.service";
+
+export const shipmentRouter = Router();
+
+shipmentRouter.get("/", async (req, res) => {
+  res.json(await shipmentService.list(req.store.id, page(req.query)));
+});
+
+const STATUSES = ["pending", "shipped", "delivered"];
+
+shipmentRouter.get("/status/:status", async (req, res) => {
+  if (!STATUSES.includes(req.params.status)) return res.status(400).json({ error: "unknown status" });
+  res.json(await shipmentService.byStatus(req.store.id, req.params.status, page(req.query)));
+});
+
+shipmentRouter.get("/:id", async (req, res) => {
+  const row = await shipmentService.get(req.store.id, req.params.id);
+  if (!row) return res.status(404).json({ error: "not found" });
+  res.json(row);
+});
+
+shipmentRouter.post("/", async (req, res) => {
+  const { trackingNo } = req.body ?? {};
+  if (typeof trackingNo !== "string" || !trackingNo.trim() || trackingNo.length > 200) {
+    return res.status(400).json({ error: "trackingNo must be 1-200 characters" });
+  }
+  res.status(201).json(await shipmentService.create(req.store.id, { trackingNo: trackingNo.trim() }));
+});
