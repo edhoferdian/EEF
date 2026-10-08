@@ -146,3 +146,46 @@ as `onclick`). Claude still answered in one turn without a skill, so the
 miss is not about the answer being obvious. language-code-review was
 skipped on a Django REST Framework review with the files in the workspace:
 Claude read the files and reviewed them itself.
+
+## Run 6 (2026-10-09) — invalidated cases re-run, then one fix at a time
+
+Same flags, one `--case` per invocation. The eleven cases the spend limit
+invalidated in run 5 ($3.40):
+
+| Case | Expected skill (near-miss) | Fired |
+|---|---|---|
+| payment-retry-in-repo | backend-engineering | 2/2 |
+| prototype-loop | gan-harness | 2/2 |
+| react-dashboard-structure | frontend-engineering | 2/2 |
+| research-compare | research-ops (not marketing) | 2/2, near-miss held |
+| review-before-merge | code-review (not language-code-review) | 2/2, near-miss held |
+| save-button-in-repo | click-path-audit | 2/2 |
+| slow-office-network | networking-ops | 2/2 |
+| stale-readme-in-repo | docs-sync | 2/2 |
+| supplier-group-bot | counterparty-comms | 2/2 |
+| wpf-cashier-test | desktop-e2e | 2/2 |
+| **slow-report-in-repo** | performance-audit | **0/2** |
+
+So 35 of 38 skills fire on their case and every near-miss check holds.
+The three misses each got the proven fix — a sentence saying to load the
+skill even for a quick request, and why — one at a time ($1.09 in total):
+
+| Skill (case) | Before | After | Kept? |
+|---|---|---|---|
+| language-code-review (django-review-in-repo) | 0/2 | 2/4 | yes (c32cb2f) — a gain, but a small one |
+| seo-audit (not-on-google, new fixture) | 0/2 | 0/2 | no — reverted |
+| performance-audit (slow-report-in-repo) | 0/2 | 0/2 | no — reverted |
+
+The language-code-review sentence was run four times because one hit in
+two runs could not be told from noise. seo-audit has now failed the same
+fix on two fixtures, a blatant one and a subtle one, so the fixture was
+not the problem: with HTML pasted into the chat, Claude answers in one
+turn every time. performance-audit has a different likely cause: its own
+description says it is "not for a static read-time performance guess",
+and with a 9-line function in hand Claude makes exactly that guess
+instead of measuring. Both need a different change than the quick-request
+sentence — for performance-audit, probably rewording that boundary so it
+excludes reviews of code nobody reported slow rather than reported
+slowness with the code in hand.
+
+Spent across runs 5-6: about $10 of the $12 approved.
