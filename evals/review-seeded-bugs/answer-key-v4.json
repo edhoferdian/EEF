@@ -160,10 +160,9 @@
       ],
       "keywords": [
         "dollar",
-        "cent",
-        "mincents",
         "rule 4",
-        "money"
+        "in cents",
+        "mincents"
       ]
     },
     "v4-05-tighter-validation": {
