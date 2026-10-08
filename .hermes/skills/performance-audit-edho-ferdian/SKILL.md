@@ -5,12 +5,17 @@ description: >-
   tooling (Lighthouse, bundle analyzers, heap-snapshot diffing, Node/browser
   profilers, DB EXPLAIN) to get a baseline, diagnoses against Core Web Vitals
   budgets and algorithmic-complexity patterns, applies a fix, then
-  re-measures the delta against the budget. Use this whenever the user wants
-  a performance problem actually diagnosed and fixed with real numbers —
-  "app terasa lambat", "kenapa lemot", "optimize performance", "reduce bundle
-  size", "find memory leak", "Lighthouse audit", "why is this slow" — not for
-  a static read-time performance guess (see the scope note below for the
-  boundary with code-review-edho-ferdian's PERF domain).
+  re-measures the delta against the budget. Use this whenever someone
+  reports that something is slow — a page, endpoint, query, build or job —
+  and wants it diagnosed or fixed, even when the slow code is already open
+  and the cause looks obvious from reading it: the obvious suspect is often
+  not where the time goes, and the baseline-then-re-measure loop is what
+  proves a fix worked. Triggers: "app terasa lambat", "kenapa lemot",
+  "lama banget kebukanya", "optimize performance", "reduce bundle size",
+  "find memory leak", "Lighthouse audit", "why is this slow". Not for
+  flagging code nobody reported as slow — that is code review (see the
+  scope note below for the boundary with code-review-edho-ferdian's PERF
+  domain).
 ---
 
 # Performance Audit — Edho Ferdian Mode (Skill Edition)
