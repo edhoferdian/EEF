@@ -13,6 +13,9 @@ ordersRouter.post("/", async (req, res) => {
   if (!Array.isArray(items) || items.length === 0 || items.length > config.maxItemsPerOrder) {
     return res.status(400).json({ error: "1 to 50 items required" });
   }
+  if (!items.every((i) => typeof i?.productId === "string" && Number.isInteger(i?.qty) && i.qty > 0)) {
+    return res.status(400).json({ error: "each item needs a productId and a positive whole qty" });
+  }
   const priced = await quote(items);
   // Decline fast: don't hold stock for a card that won't go through.
   try {

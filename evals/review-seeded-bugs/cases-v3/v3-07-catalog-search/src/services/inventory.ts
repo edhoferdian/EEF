@@ -4,10 +4,12 @@ export class OutOfStock extends Error {}
 
 export interface Reservation {
   id: string;
+  items: { productId: string; qty: number }[];
 }
 
 export const inventory = {
   async reserve(items: { productId: string; qty: number }[]): Promise<Reservation> {
+    if (!items.every((i) => Number.isInteger(i.qty) && i.qty > 0)) throw new RangeError("qty must be a positive integer");
     return db.$transaction(async (tx) => {
       for (const item of items) {
         const updated = await tx.stock.updateMany({
@@ -20,7 +22,12 @@ export const inventory = {
     });
   },
   async release(reservation: Reservation): Promise<void> {
-    await db.reservation.delete({ where: { id: reservation.id } });
+    await db.$transaction(async (tx) => {
+      for (const item of reservation.items) {
+        await tx.stock.update({ where: { productId: item.productId }, data: { available: { increment: item.qty } } });
+      }
+      await tx.reservation.delete({ where: { id: reservation.id } });
+    });
   },
   async available(productId: string): Promise<number> {
     const stock = await db.stock.findUnique({ where: { productId } });

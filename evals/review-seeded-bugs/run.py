@@ -287,8 +287,14 @@ def score(corpus: dict, key: dict) -> dict:
                 # Near the bug but without a keyword: kept for a hand check,
                 # since a keyword list can miss an unusual but correct wording.
                 row["near_no_keyword"] = [f.get("summary", "")[:200] for f, near, ok in judged if near and not ok]
-                row["strong_findings"] = sum(f.get("severity") in STRONG for f in found)
-                row["medium_findings"] = sum(f.get("severity") == "medium" for f in found)
+                # A v3 PR touches a list of files over a larger base project:
+                # a finding about a file the PR does not touch is not a
+                # finding about the PR, so it cannot be a false positive on it.
+                on_pr = found
+                if isinstance(case["changed"], list):
+                    on_pr = [f for f in found if any(same_file(f.get("file"), c) for c in case["changed"])]
+                row["strong_findings"] = sum(f.get("severity") in STRONG for f in on_pr)
+                row["medium_findings"] = sum(f.get("severity") == "medium" for f in on_pr)
             rows.append(row)
         bug_rows = [r for r in rows if r["bug"] and r["valid"]]
         ctl_rows = [r for r in rows if not r["bug"] and r["valid"]]
