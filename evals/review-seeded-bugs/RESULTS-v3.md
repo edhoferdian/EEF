@@ -13,9 +13,9 @@ file the PR does not touch, hidden among benign changes.
 
 | Config | Recall | Recall@high | Control FP (high+, PR files) | Control medium | Findings / case | $ / case |
 |---|---|---|---|---|---|---|
-| opus-high | 6/6 | 6/6 | 0 | 5 | 11.4 | $0.366 |
-| sonnet-high | 6/6 | 6/6 | 0 | 3 | 11.1 | $0.193 |
-| sonnet-medium | 6/6 | 6/6 | 1 | 4 | 9.8 | $0.167 |
+| opus-high | 6/6 | 6/6 | 0 | 5 | 11.0 | $0.366 |
+| sonnet-high | 6/6 | 6/6 | 0 | 3 | 12.0 | $0.193 |
+| sonnet-medium | 6/6 | 6/6 | 1 | 4 | 10.1 | $0.167 |
 
 All 18 catches were read by hand; each names the seeded bug and the
 untouched document that makes it a bug ("ARCHITECTURE.md requires reserve,
