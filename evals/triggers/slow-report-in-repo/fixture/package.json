@@ -1,0 +1,6 @@
+{
+  "name": "admin-dashboard",
+  "version": "2.1.0",
+  "type": "module",
+  "scripts": { "start": "node server.js" }
+}

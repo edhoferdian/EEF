@@ -1,0 +1,5 @@
+{
+  "name": "sync-stok",
+  "version": "1.2.0",
+  "bin": { "sync-stok": "index.js" }
+}
