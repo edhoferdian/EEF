@@ -1,0 +1,31 @@
+{
+  "name": "main: CI green, no force push",
+  "target": "branch",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "include": ["~DEFAULT_BRANCH"],
+      "exclude": []
+    }
+  },
+  "bypass_actors": [],
+  "rules": [
+    { "type": "non_fast_forward" },
+    { "type": "deletion" },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "strict_required_status_checks_policy": true,
+        "do_not_enforce_on_create": false,
+        "required_status_checks": [
+          { "context": "Validate skills", "integration_id": 15368 },
+          { "context": "Benchmark records are append-only", "integration_id": 15368 },
+          { "context": "dist/*.skill matches skills/", "integration_id": 15368 },
+          { "context": "Cross-harness exports match skills/", "integration_id": 15368 },
+          { "context": "eef-install CLI smoke test", "integration_id": 15368 },
+          { "context": "Claude Code plugin manifest", "integration_id": 15368 }
+        ]
+      }
+    }
+  ]
+}

@@ -23,6 +23,22 @@ jobs:
         # in the same PR that explains what the new context buys.
         run: python scripts/measure_context.py --budget 13500
 
+  bench-records:
+    name: Benchmark records are append-only
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The diff against the push's or PR's base needs that history.
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: No committed evals/*/results*/runs/ record is modified or deleted
+        env:
+          BASE: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || github.event.before }}
+        run: python evals/review-seeded-bugs/run.py --check-records "$BASE"
+
   dist-sync:
     name: dist/*.skill matches skills/
     runs-on: ubuntu-latest

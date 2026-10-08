@@ -29,5 +29,6 @@ can show a loss of catches but not a gain. PR Review Mode is not exercised
 by either corpus; that path was kept inline in `SKILL.md` (commit
 `e072dc1`) rather than moved, so it carries no new risk.
 
-`results/scores.json` and `results-v2/scores.json` keep the original
+The records `results/runs/20261008T052250Z-full-run.json` and
+`results-v2/runs/20261007T224753Z-full-run.json` keep the original
 three-configuration baselines; this run's raw output is not committed.

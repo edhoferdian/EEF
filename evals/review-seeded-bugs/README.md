@@ -52,15 +52,27 @@ Scoring, with a tolerance of ±2 lines around any anchor:
 
 ```bash
 python run.py --dry-run                                         # validate, show the plan, no model calls
-python run.py --configs sonnet-medium --cases 04-wallet.py      # one run
-python run.py                                                   # everything not yet run
-python run.py --score-only                                      # rescore saved runs
+python run.py --configs sonnet-medium --cases 04-wallet.py --label spot-check   # one run
+python run.py --label full-run                                  # everything not yet run
+python run.py --score-only --label rescore                      # rescore saved runs
 ```
 
 Raw output is saved per run under `results/raw/` (git-ignored) and reused,
-so an interrupted run resumes. `results/scores.json` and `RESULTS.md` are
-the committed outcome. Every real run spends model usage — check the plan
-with `--dry-run` first.
+so an interrupted run resumes. Every scoring pass, including `--score-only`,
+writes a new record, `results/runs/<UTC time>-<label>.json`, with the
+configs, cases, git commit, claude version and scores; `--label` is
+required and an existing record is never overwritten. The records and
+`RESULTS*.md` are the committed outcome, and a `RESULTS*.md` cites the
+record it reports by file name. Every real run spends model usage — check
+the plan with `--dry-run` first.
+
+Records are append-only. A record is the outcome of whatever raw files
+were on the machine that scored them, so a partial run or a spot check is
+just another record under its own label, never a replacement for a full
+run. `python run.py --check-records` (run by the pre-commit hook on staged
+changes) and `--check-records <base>` (run by CI against the base of the
+push or PR) fail if a committed record is modified or deleted; a
+correction is a new record, with the reason in its `RESULTS*.md`.
 
 ## Limits
 

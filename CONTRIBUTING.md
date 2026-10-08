@@ -58,6 +58,34 @@ CI here — every `export_*.py` script has a `--check` flag that mirrors
 what CI runs, so `python scripts/export_cursor.py --check` (etc.) tells you
 before you push whether something drifted.
 
+## Parallel sessions and agents
+
+This repo is often worked on by several Claude Code sessions (or other
+agents) at once, local and cloud. On 2026-10-08 a cloud session pushed
+straight to `main` while a local session had unpushed work: the local work
+had to be rebased, and one cloud commit overwrote a committed benchmark
+summary with a one-run spot check. The rules below exist so that cannot
+happen silently again; they apply to humans and agents alike.
+
+- **Work on a branch, land through a PR.** Every session works on its own
+  branch (a worktree per session, when local) and opens a PR to `main`.
+  Never push to `main` directly, even for a one-line fix or a release
+  bump — a PR is where CI runs against current `main`.
+- **Never force-push `main`**, and never force-push another session's
+  branch. Rebase or merge `main` into your own branch to catch up.
+- **Bring your branch up to date before merging.** If `main` moved since
+  your branch was cut, merge or rebase it in and let CI run again: green
+  CI on an old base says nothing about the combination.
+- **Benchmark records are append-only.** A scoring pass of
+  `evals/review-seeded-bugs/run.py` writes a new
+  `results*/runs/<UTC time>-<label>.json`; commit it under an honest label
+  (`spot-check`, `full-run`, ...) and never edit or delete a committed
+  one — the pre-commit hook and CI reject it. See
+  [`evals/review-seeded-bugs/README.md`](evals/review-seeded-bugs/README.md).
+- **Generated files are regenerated, not hand-merged.** On a conflict in
+  `AGENTS.md`, `CATALOG.md`, `dist/` or another export, take either side
+  and re-run the generator (`python scripts/<generator>.py`).
+
 ## Adding a new cross-harness adapter
 
 If you want to add support for a coding agent this repo doesn't cover yet:

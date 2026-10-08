@@ -601,10 +601,12 @@ if you need to do one by hand:
    wherever it's quoted in `package.json`, `bin/eef.js`, and both
    `.claude-plugin/*.json` manifests, so a version bump can't leave one of
    them stale (a real bug found and fixed 2026-09-16).
-3. Commit, push to `main`, confirm CI is green (`gh run list` or the
-   Actions tab) — never tag a commit CI hasn't verified.
-4. `git tag vX.Y.Z <commit>` (matching `package.json`'s version exactly) and
-   `git push origin vX.Y.Z`.
+3. Commit on a branch (`release/vX.Y.Z`), open a PR to `main`, let CI go
+   green and merge it — never tag a commit CI hasn't verified.
+4. `git fetch origin` and tag the commit that landed on `main` — with a
+   squash or rebase merge that is a new commit, not the one on the PR
+   branch (`git log origin/main -1`): `git tag vX.Y.Z <commit>` (matching
+   `package.json`'s version exactly) and `git push origin vX.Y.Z`.
 5. `python scripts/generate_changelog.py --notes > notes.md` writes the
    release notes from the conventional commits since the previous tag;
    edit them if a summary helps, then
@@ -614,7 +616,7 @@ if you need to do one by hand:
    publish if the tag and `package.json` version don't match, as a
    last-resort guard).
 6. `python scripts/generate_changelog.py` regenerates `CHANGELOG.md` with
-   the new tag; commit it.
+   the new tag; commit it on a branch and land it through a PR like step 3.
 
    **Authentication: npm trusted publishing (OIDC).** Configure it once on
    npmjs.com (package settings → Trusted Publisher → GitHub Actions:
@@ -637,15 +639,36 @@ if you need to do one by hand:
    fix is regenerating the token as `Automation`, not touching the
    workflow file.
 
-No CI job currently blocks a direct push to `main` on a failing check (this
-repo has no branch-protection rule requiring it) — treat "check CI after
-every push" in step 3 as a hard habit, not optional, until/unless that
-changes.
+**Branch protection (proposed, not yet applied).** `main` has no ruleset
+today, so nothing yet blocks a direct push or a force push.
+[`.github/rulesets/main.json`](.github/rulesets/main.json) is the proposed
+one: no force pushes or deletion of `main`, and every CI job must pass on
+a commit that is up to date with `main` before it lands. It has no bypass
+actors on purpose — every Claude Code session pushes with the
+maintainer's own credentials, so a maintainer bypass would be a bypass for
+all of them. Apply it with
+`gh api --method POST repos/edhoferdian/EEF/rulesets --input .github/rulesets/main.json`.
+Once it is active:
+
+- A direct `git push origin main` is rejected, because CI only runs on
+  pushes to `main` and on PRs, so a commit can only pass the required
+  checks through a PR. Steps 3 and 6 above already go through PRs.
+- A PR whose branch is behind `main` must be updated (merge or rebase
+  `main` into it) and pass CI again before it can merge, so two sessions
+  cannot land changes that were each tested only against an older `main`.
+- Tags, `gh release create` and
+  [publish.yml](.github/workflows/publish.yml) are unaffected: the
+  ruleset covers the `main` branch only, and publishing runs on the
+  release event against the tagged commit.
+- A required check renamed or added in `ci.yml` must be updated in the
+  ruleset too (`gh api --method PUT repos/edhoferdian/EEF/rulesets/<id> --input .github/rulesets/main.json`),
+  or every PR waits forever for a check that no longer reports.
 
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow and required
-checks. Everyone participating is expected to follow the
+checks, including how parallel agent sessions share this repo (each on its
+own branch, landing through a PR). Everyone participating is expected to follow the
 [Code of Conduct](CODE_OF_CONDUCT.md). Found a security issue? See
 [SECURITY.md](SECURITY.md) instead of opening a public issue.
 

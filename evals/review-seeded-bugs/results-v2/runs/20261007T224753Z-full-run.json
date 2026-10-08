@@ -1,0 +1,658 @@
+{
+  "record_version": 1,
+  "corpus": "v2",
+  "label": "full-run",
+  "created_utc": "2026-10-07T22:47:53Z",
+  "git_sha": "16877cb60f948c46c6afc93ce2bc1d6eddf7a3ba",
+  "git_dirty": null,
+  "claude_version": null,
+  "backfilled_from": "evals/review-seeded-bugs/results-v2/scores.json at 16877cb; created_utc is that commit's time, git_sha the commit that recorded it; claude_version was not captured",
+  "tolerance": 3,
+  "configs": {
+    "opus-high": {
+      "model": "opus",
+      "effort": "high"
+    },
+    "sonnet-high": {
+      "model": "sonnet",
+      "effort": "high"
+    },
+    "sonnet-medium": {
+      "model": "sonnet",
+      "effort": "medium"
+    }
+  },
+  "cases": [
+    "01-refunds",
+    "02-report-cache",
+    "03-phone",
+    "04-recipe-slug",
+    "05-exports",
+    "06-invoice-numbers",
+    "07-shipping-quotes",
+    "08-charges",
+    "09-order-events",
+    "10-author-page",
+    "11-daily-revenue",
+    "12-invoice-cache",
+    "13-refund-events",
+    "14-post-comments"
+  ],
+  "scores": {
+    "opus-high": {
+      "runs": 14,
+      "invalid_runs": 0,
+      "bug_cases": 11,
+      "caught": 11,
+      "caught_high": 11,
+      "control_cases": 3,
+      "control_strong_fp": 0,
+      "control_medium": 3,
+      "cost_usd": 3.4287,
+      "cost_per_case_usd": 0.2449,
+      "wall_s": 343.8,
+      "missed": [],
+      "rows": [
+        {
+          "case": "01-refunds",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.24190720000000004,
+          "findings": 5,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [],
+          "strong_findings": 2,
+          "medium_findings": 2
+        },
+        {
+          "case": "02-report-cache",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.2422424,
+          "findings": 4,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "Magic number TTL `300`; extract to a named constant (e.g. REPORT_SUMMARY_TTL_SECONDS) to document intent."
+          ],
+          "strong_findings": 1,
+          "medium_findings": 0
+        },
+        {
+          "case": "03-phone",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.25525200000000003,
+          "findings": 7,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "The international dialing prefix '00' is handled as a national trunk '0'. Input '0062812345678' becomes '62' + '062812345678', which yields '+62062812345678'. That is a wrong but valid-length number, ",
+            "Input with no trunk '0' and no country code (e.g. '812345678', a common way to type an Indonesian mobile number) is accepted as-is and becomes '+812345678', which reads as country code 81 (Japan). The",
+            "The only validity check is total length 8-15, counted after the country code is added. For example, '0123456' becomes '+62123456' and passes, even though it is far too short for an Indonesian subscrib"
+          ],
+          "strong_findings": 1,
+          "medium_findings": 3
+        },
+        {
+          "case": "04-recipe-slug",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.2464362,
+          "findings": 5,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "Some titles produce an empty slug: titles written entirely in another script (\"\u5bff\u53f8\", \"\u0411\u043e\u0440\u0449\") or made only of symbols (\"!!!\") come out as \"\". If slugs are used as URLs, all such recipes would share an e",
+            "String(title) turns a missing title into the slugs \"null\" or \"undefined\", which look like real slugs. Throw or return a clear empty value instead."
+          ],
+          "strong_findings": 1,
+          "medium_findings": 1
+        },
+        {
+          "case": "05-exports",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.2399274,
+          "findings": 7,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "db.user.findMany has no take/limit or pagination, so the whole users table is loaded into memory and turned into one CSV string per request. As the table grows this uses more memory and blocks the eve",
+            "Neither CSV response sets a Content-Disposition attachment header (for example res.attachment('my-orders.csv')), so browsers may show the CSV inline instead of downloading it. Responses that contain P"
+          ],
+          "strong_findings": 1,
+          "medium_findings": 3
+        },
+        {
+          "case": "06-invoice-numbers",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.247407,
+          "findings": 6,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [],
+          "strong_findings": 2,
+          "medium_findings": 1
+        },
+        {
+          "case": "07-shipping-quotes",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.2728062,
+          "findings": 4,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "postcode is not validated (empty/whitespace strings are forwarded to the provider), inconsistent with the weightKg boundary check on the next line."
+          ],
+          "strong_findings": 1,
+          "medium_findings": 1
+        },
+        {
+          "case": "08-charges",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.24584219999999998,
+          "findings": 6,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [],
+          "strong_findings": 2,
+          "medium_findings": 1
+        },
+        {
+          "case": "09-order-events",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.23675059999999998,
+          "findings": 3,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "paid_at is set to the time the event is published (datetime.now) rather than the order's actual payment time; delayed or retried publishes record the wrong payment timestamp for revenue booking."
+          ],
+          "strong_findings": 1,
+          "medium_findings": 0
+        },
+        {
+          "case": "10-author-page",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.23083520000000002,
+          "findings": 3,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "[Medium confidence, depends on the actual migrations/DB] This filters on author_id and sorts by published_at, but models.py declares no index on author_id. Many databases, including PostgreSQL, don't "
+          ],
+          "strong_findings": 1,
+          "medium_findings": 0
+        },
+        {
+          "case": "11-daily-revenue",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.2386938,
+          "findings": 6,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "The `session` parameter has no type annotation. Annotate it as `sqlalchemy.orm.Session` so callers and the type checker know what is expected.",
+            "The sum includes every Order row whatever its state. If the Order model has a status (for example cancelled, refunded or unpaid), the dashboard revenue will be overstated. The Order model isn't includ"
+          ],
+          "strong_findings": 1,
+          "medium_findings": 1
+        },
+        {
+          "case": "12-invoice-cache",
+          "bug": false,
+          "valid": true,
+          "cost_usd": 0.241473,
+          "findings": 4,
+          "caught": false,
+          "caught_high": false,
+          "near_no_keyword": [],
+          "strong_findings": 0,
+          "medium_findings": 1
+        },
+        {
+          "case": "13-refund-events",
+          "bug": false,
+          "valid": true,
+          "cost_usd": 0.2527426,
+          "findings": 6,
+          "caught": false,
+          "caught_high": false,
+          "near_no_keyword": [],
+          "strong_findings": 0,
+          "medium_findings": 2
+        },
+        {
+          "case": "14-post-comments",
+          "bug": false,
+          "valid": true,
+          "cost_usd": 0.23637199999999997,
+          "findings": 3,
+          "caught": false,
+          "caught_high": false,
+          "near_no_keyword": [],
+          "strong_findings": 0,
+          "medium_findings": 0
+        }
+      ]
+    },
+    "sonnet-high": {
+      "runs": 14,
+      "invalid_runs": 0,
+      "bug_cases": 11,
+      "caught": 11,
+      "caught_high": 11,
+      "control_cases": 3,
+      "control_strong_fp": 0,
+      "control_medium": 2,
+      "cost_usd": 1.9941,
+      "cost_per_case_usd": 0.1424,
+      "wall_s": 365.9,
+      "missed": [],
+      "rows": [
+        {
+          "case": "01-refunds",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.14375680000000002,
+          "findings": 8,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "docs/REFUNDS.md requires every refund to be recorded on the charge so support can see its history. The code only adds to a running total, with no per-refund amount, time or gateway reference, so indiv",
+            "refund mutates its charge argument in place (+=) as a hidden side effect, which makes the race and consistency problems hard to fix. Return updated state or a refund record, or persist inside a transa",
+            "Window check relies on captured_at being timezone-aware UTC, which is only a comment in models.py and is not enforced. A naive datetime raises TypeError at the subtraction instead of RefundRejected. T"
+          ],
+          "strong_findings": 3,
+          "medium_findings": 3
+        },
+        {
+          "case": "02-report-cache",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.136172,
+          "findings": 2,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [],
+          "strong_findings": 1,
+          "medium_findings": 1
+        },
+        {
+          "case": "03-phone",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.1357116,
+          "findings": 7,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "Input with an international `00` prefix (e.g. '0062 812 3456 789') starts with '0', so it becomes '62' + '062812...' = '+62062812...'. This is a wrong number that still passes the 8\u201315 length check. H",
+            "Any number without a leading '0' is treated as already international, even when the user typed no '+'. For example, a national-format '812 3456 789' becomes '+8123456789', which is a Japan (+81) numbe",
+            "The only validity check is a length of 8\u201315 digits. Country-specific rules are not applied, and the lower bound is arbitrary, so numbers that are clearly invalid for Indonesia pass. Since the number i"
+          ],
+          "strong_findings": 1,
+          "medium_findings": 3
+        },
+        {
+          "case": "04-recipe-slug",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.1283336,
+          "findings": 5,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "String(title) converts null/undefined into the valid-looking slugs 'null'/'undefined', so a missing title silently becomes a real URL. Should throw or return empty.",
+            "No maximum slug length; very long titles produce very long slugs that may exceed URL or DB column limits. Consider truncation (re-trimming trailing '-') or document the limit."
+          ],
+          "strong_findings": 1,
+          "medium_findings": 2
+        },
+        {
+          "case": "05-exports",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.18033100000000002,
+          "findings": 10,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "Possible CSV/formula injection: user-controlled fields (name, email, order text) are written to CSV without visible neutralisation of leading =, +, -, @ (also line 16). Low confidence because the toCs",
+            "Bulk-export endpoints (lines 7 and 12) have no rate limiting and no audit logging. Exfiltration can't be throttled or detected, and there is no record of who exported what. Add a rate limit and log th",
+            "No Content-Disposition: attachment filename header and no explicit charset on the CSV responses (also line 16). Browsers may render the CSV inline, and non-ASCII names can be mangled in Excel. Set the"
+          ],
+          "strong_findings": 4,
+          "medium_findings": 3
+        },
+        {
+          "case": "06-invoice-numbers",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.1678826,
+          "findings": 6,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "LIKE 'YYYY-%' with MAX may not use the plain btree index (collation or text_pattern_ops dependent), so each call may scan a year's invoices inside the contended section. Prefer a range predicate or a ",
+            "Year is taken from the caller-supplied `today`, so callers must use a consistent timezone. Workers disagreeing near New Year could put invoices in different years."
+          ],
+          "strong_findings": 1,
+          "medium_findings": 0
+        },
+        {
+          "case": "07-shipping-quotes",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.13440259999999998,
+          "findings": 3,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [],
+          "strong_findings": 1,
+          "medium_findings": 0
+        },
+        {
+          "case": "08-charges",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.14680539999999997,
+          "findings": 7,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "`with_retries(call)` uses the default policy, which retries every `Exception`. That includes the `HTTPError` from `resp.raise_for_status()` on non-retryable 4xx responses: card declined, 401/403 bad k",
+            "`raise_for_status()` surfaces provider failures as a raw `requests.HTTPError`. The provider's error body (decline code or reason) is lost, and callers cannot tell a decline from an outage from an unkn",
+            "The 10s timeout is applied per attempt, so with 3 attempts and backoff a single call can block for about 31s. That is long for a request-path payment call. The timeout and retry budget are not configu"
+          ],
+          "strong_findings": 2,
+          "medium_findings": 2
+        },
+        {
+          "case": "09-order-events",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.1197664,
+          "findings": 1,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [],
+          "strong_findings": 1,
+          "medium_findings": 0
+        },
+        {
+          "case": "10-author-page",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.11918579999999998,
+          "findings": 3,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "`order_by(published_at.desc())` has no tie-breaker. Posts with equal `published_at` can come back in nondeterministic order, which matters if pagination is added later. Consider `Post.id.desc()` as a "
+          ],
+          "strong_findings": 1,
+          "medium_findings": 0
+        },
+        {
+          "case": "11-daily-revenue",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.11723219999999998,
+          "findings": 2,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [],
+          "strong_findings": 1,
+          "medium_findings": 0
+        },
+        {
+          "case": "12-invoice-cache",
+          "bug": false,
+          "valid": true,
+          "cost_usd": 0.16417179999999998,
+          "findings": 5,
+          "caught": false,
+          "caught_high": false,
+          "near_no_keyword": [],
+          "strong_findings": 0,
+          "medium_findings": 0
+        },
+        {
+          "case": "13-refund-events",
+          "bug": false,
+          "valid": true,
+          "cost_usd": 0.17908480000000002,
+          "findings": 4,
+          "caught": false,
+          "caught_high": false,
+          "near_no_keyword": [],
+          "strong_findings": 0,
+          "medium_findings": 2
+        },
+        {
+          "case": "14-post-comments",
+          "bug": false,
+          "valid": true,
+          "cost_usd": 0.12127620000000001,
+          "findings": 1,
+          "caught": false,
+          "caught_high": false,
+          "near_no_keyword": [],
+          "strong_findings": 0,
+          "medium_findings": 0
+        }
+      ]
+    },
+    "sonnet-medium": {
+      "runs": 14,
+      "invalid_runs": 0,
+      "bug_cases": 11,
+      "caught": 11,
+      "caught_high": 11,
+      "control_cases": 3,
+      "control_strong_fp": 0,
+      "control_medium": 0,
+      "cost_usd": 1.6837,
+      "cost_per_case_usd": 0.1203,
+      "wall_s": 226.3,
+      "missed": [],
+      "rows": [
+        {
+          "case": "01-refunds",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.1184612,
+          "findings": 5,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "The window check uses '>' on a timedelta, so a refund at exactly 180 days is still allowed. That matches 'within 180 days', but the boundary is untested. A naive captured_at would raise TypeError. The"
+          ],
+          "strong_findings": 2,
+          "medium_findings": 1
+        },
+        {
+          "case": "02-report-cache",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.11449799999999999,
+          "findings": 1,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [],
+          "strong_findings": 1,
+          "medium_findings": 0
+        },
+        {
+          "case": "03-phone",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.1396678,
+          "findings": 7,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "Only a single leading 0 is handled. '00' international prefix (0062812...) becomes +62062812... and '+62 0812...' becomes 620812..., so wrong numbers pass the length check and are stored silently.",
+            "Validation is only an 8-15 digit length check. Junk digit strings are accepted as unique login identifiers. The minimum of 8 includes the country code, so very short subscriber numbers pass. Use real ",
+            "default_country is not validated. A value such as '+62' or non-digits yields garbage output, and the docstring does not say it must be digits only."
+          ],
+          "strong_findings": 1,
+          "medium_findings": 3
+        },
+        {
+          "case": "04-recipe-slug",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.1196072,
+          "findings": 5,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "`String(title)` silently coerces null, undefined and objects into \"null\", \"undefined\" and \"[object object]\" slugs, which hides caller bugs. Validate the input type, or at least reject nullish values. ",
+            "Slugs are not unique. Two recipes with titles like \"Beef Stew\" and \"Beef  Stew!\" collide, and there is no length cap. The caller must handle uniqueness and length, and neither is documented. Confidenc"
+          ],
+          "strong_findings": 1,
+          "medium_findings": 1
+        },
+        {
+          "case": "05-exports",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.1250866,
+          "findings": 8,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [],
+          "strong_findings": 1,
+          "medium_findings": 4
+        },
+        {
+          "case": "06-invoice-numbers",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.11966939999999998,
+          "findings": 6,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "The sequence is parsed with last.split('-')[1] and int(). A malformed or legacy number under the same prefix raises ValueError or IndexError. The function also assumes the year-prefix format, so it is"
+          ],
+          "strong_findings": 2,
+          "medium_findings": 1
+        },
+        {
+          "case": "07-shipping-quotes",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.11821380000000001,
+          "findings": 3,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [],
+          "strong_findings": 1,
+          "medium_findings": 0
+        },
+        {
+          "case": "08-charges",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.12070819999999999,
+          "findings": 6,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "The raw requests exception propagates, and its message includes the URL. Callers get no domain-specific error and cannot tell 'declined' from 'unknown outcome after timeout'. Consider typed errors so ",
+            "The API key is passed as a function argument on every call. It could end up in logs or tracebacks, and retries re-raise exceptions that carry request context. The base URL is hardcoded as a constant i"
+          ],
+          "strong_findings": 1,
+          "medium_findings": 1
+        },
+        {
+          "case": "09-order-events",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.11474639999999998,
+          "findings": 2,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [],
+          "strong_findings": 1,
+          "medium_findings": 0
+        },
+        {
+          "case": "10-author-page",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.117838,
+          "findings": 3,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "order_by uses only published_at.desc(). Posts with equal timestamps have no stable order, so a limit-based query can return an inconsistent set. Add Post.id.desc() as a tie-breaker. Medium confidence."
+          ],
+          "strong_findings": 1,
+          "medium_findings": 0
+        },
+        {
+          "case": "11-daily-revenue",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.12244779999999998,
+          "findings": 2,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "The query has only a lower bound (created_at >= start) and no upper bound. Future-dated orders or reuse for a past day would be over-counted; add created_at < start + 1 day."
+          ],
+          "strong_findings": 1,
+          "medium_findings": 0
+        },
+        {
+          "case": "12-invoice-cache",
+          "bug": false,
+          "valid": true,
+          "cost_usd": 0.11797239999999999,
+          "findings": 2,
+          "caught": false,
+          "caught_high": false,
+          "near_no_keyword": [],
+          "strong_findings": 0,
+          "medium_findings": 0
+        },
+        {
+          "case": "13-refund-events",
+          "bug": false,
+          "valid": true,
+          "cost_usd": 0.118572,
+          "findings": 2,
+          "caught": false,
+          "caught_high": false,
+          "near_no_keyword": [],
+          "strong_findings": 0,
+          "medium_findings": 0
+        },
+        {
+          "case": "14-post-comments",
+          "bug": false,
+          "valid": true,
+          "cost_usd": 0.11621079999999999,
+          "findings": 1,
+          "caught": false,
+          "caught_high": false,
+          "near_no_keyword": [],
+          "strong_findings": 0,
+          "medium_findings": 0
+        }
+      ]
+    }
+  }
+}
