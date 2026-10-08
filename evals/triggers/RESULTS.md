@@ -59,3 +59,27 @@ So far: build-fix and seo-audit fire once the code lives in files (prompt
 shape), while git-and-release-ops does not fire either way (its description
 needs strengthening). code-review and code-simplification remain untested
 in-repo — rerun those two after the limit resets.
+
+## Run 3 (2026-10-08) — after strengthening three descriptions
+
+The misses that stayed after the in-repo check were description problems:
+the descriptions already listed the user's exact phrases, but gave Claude
+no reason to load a skill for a quick request, so it answered by itself.
+git-and-release-ops (86f7826), then code-review and code-simplification
+now say to load the skill even for a quick request, and *why* — the
+binding conventions or the safety gate it carries. $2.0 in total.
+
+| Case | Before | After |
+|---|---|---|
+| commit-and-rebase | 0/2 | 2/2 |
+| commit-and-rebase-in-repo | 0/2 | 2/2 |
+| review-before-merge | 0/2 | 2/2 |
+| review-before-merge-in-repo | 0/2 | 2/2 |
+| review-pr-english | 0/2 | 1/2 |
+| simplify-nesting | 0/2 | 2/2 |
+| simplify-nesting-in-repo | 0/2 | 2/2 |
+
+build-fix and seo-audit fire once the code lives in files (run 2), so they
+were left unchanged. Lesson for every skill description: name the reason to
+load the skill — what it carries that a direct answer would miss — not just
+trigger phrases.

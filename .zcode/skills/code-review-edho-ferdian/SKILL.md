@@ -4,16 +4,16 @@ description: >-
   Senior-engineer code review across five domains — Code Quality, Security,
   Performance, Blueprint/Spec Consistency, and Test Quality — plus
   conditional lenses auto-detected from scope (database, accessibility,
-  RAG, ML, healthcare, agent/LLM — see Phase 0 below for the full list).
-  Produces an evidence-backed findings report with confidence-labeled
-  severities and an adaptive fix. Use whenever the user wants code
-  reviewed, audited, or checked before merge/deploy: "review this",
-  "audit", "cek kode", "review PR", "is this production-ready", "find
-  bugs/security issues" — even without the word "review". Includes
-  Reflection and a Critique-Correction Loop to suppress false positives. If
-  the request is entirely about security ("security audit", "cek keamanan
-  kode ini"), route to `security-review-edho-ferdian` instead — that skill
-  is the single source of truth for security review criteria.
+  RAG, ML, healthcare, agent/LLM). Produces an evidence-backed findings
+  report with confidence-labeled severities and an adaptive fix. Load it
+  whenever code is to be reviewed or checked before merge/deploy, even a
+  short snippet or a quick "is this OK?": its checklist and false-positive
+  gate catch what an unaided read misses, and its severity scale is what
+  this ecosystem reports with. Triggers: "review this", "audit", "cek
+  kode", "cek dulu sebelum merge", "ada yang salah gak", "review PR", "is
+  this production-ready", "find bugs" — even without the word "review". If
+  the request is only about security ("cek keamanan kode ini"), use
+  `security-review-edho-ferdian` instead.
 ---
 
 # Code Review — Edho Ferdian Mode (Skill Edition)
