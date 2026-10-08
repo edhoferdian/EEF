@@ -27,6 +27,7 @@ gh (authenticated), npm, node and python on PATH.
 """
 import argparse
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -44,9 +45,13 @@ class ReleaseError(Exception):
     pass
 
 
+CHILD_ENV = {**os.environ, "PYTHONIOENCODING": "utf-8"}  # Windows Python defaults to cp1252 output
+
+
 def run(*cmd: str, capture: bool = True) -> str:
     exe = shutil.which(cmd[0]) or cmd[0]
-    proc = subprocess.run([exe, *cmd[1:]], cwd=REPO, capture_output=capture, text=True, encoding="utf-8")
+    proc = subprocess.run([exe, *cmd[1:]], cwd=REPO, capture_output=capture, text=True, encoding="utf-8",
+                          errors="replace", env=CHILD_ENV)
     if proc.returncode != 0:
         detail = (proc.stderr or proc.stdout or "").strip() if capture else ""
         raise ReleaseError(f"`{' '.join(cmd)}` failed (exit {proc.returncode}). {detail[-800:]}")
@@ -124,7 +129,8 @@ def wait_for_run(workflow: str, *, commit: str | None = None, timeout_s: int = 1
             time.sleep(10)
     print(f"   waiting for {workflow} run {run_id} ...", flush=True)
     watch = subprocess.run([shutil.which("gh") or "gh", "run", "watch", run_id, "--exit-status"],
-                           cwd=REPO, capture_output=True, text=True, timeout=timeout_s)
+                           cwd=REPO, capture_output=True, text=True, encoding="utf-8", errors="replace",
+                           timeout=timeout_s)
     conclusion = run("gh", "run", "view", run_id, "--json", "conclusion", "--jq", ".conclusion")
     if watch.returncode != 0 or conclusion != "success":
         raise ReleaseError(f"{workflow} run {run_id} ended {conclusion or 'unsuccessfully'} — see `gh run view {run_id} --log-failed`")
