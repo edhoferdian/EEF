@@ -125,6 +125,18 @@ jobs:
           test "$(grep -c '^effort:' $d/dev-kickoff-edho-ferdian.md)" -eq 1
           grep -qx "effort: medium" $d/dev-kickoff-edho-ferdian.md
           if node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents --profile no-such-profile; then exit 1; fi
+      - name: update replaces only stale items and keeps each agent's model
+        run: |
+          d=/tmp/eef-cli-test-update
+          export CLAUDE_AGENTS_DIR=$d/agents CLAUDE_SKILLS_DIR=$d/skills CLAUDE_RULES_DIR=$d/rules CLAUDE_HOOKS_DIR=$d/hooks
+          node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents --profile hemat
+          echo "stale" >> $d/agents/build-fix-edho-ferdian.md
+          rm $d/agents/video-style-edho-ferdian.md
+          node "$GITHUB_WORKSPACE/bin/eef.js" update
+          ! grep -q stale $d/agents/build-fix-edho-ferdian.md
+          grep -qx "effort: low" $d/agents/video-style-edho-ferdian.md
+          test ! -e $d/skills
+          node "$GITHUB_WORKSPACE/bin/eef.js" update | grep -q "already matches"
       - name: install target=codex-agents writes parseable TOML with the profile's models
         run: |
           d=/tmp/eef-cli-test-codex-agents

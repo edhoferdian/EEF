@@ -771,6 +771,108 @@ function doctor() {
   if (broken) process.exitCode = 1;
 }
 
+/**
+ * eef-install update — bring an existing Claude Code install up to this
+ * version, touching only what is already there: skills, agents and rules
+ * that differ from this package are replaced, items new in this version
+ * are added to a group that is already installed, and hook files are
+ * refreshed. Nothing is installed from scratch and settings.json is never
+ * written. Each agent keeps the model/effort lines it has now, so a
+ * profile or a --models override survives; a new agent takes the profile
+ * the others match (the default when they match none). "Differs" can mean
+ * a local edit, which update overwrites — --dry-run lists the plan first.
+ */
+function update(opts) {
+  const dry = opts.dryRun;
+  const act = dry ? "Would update" : "Updated";
+  let changed = 0;
+  console.log(`eef-install update — package version ${PKG_VERSION}${dry ? " (dry run: nothing is written)" : ""}\n`);
+
+  // Skills: whole folders, since a skill's references/ move with its SKILL.md.
+  const skillsDir = claudeSkillsDir();
+  const skills = compareFiles(
+    listSkillNames().map((n) => [path.join(n, "SKILL.md"), path.join(SKILLS_DIR, n, "SKILL.md")]),
+    skillsDir
+  );
+  const skillNames = skills.present.length ? [...skills.differs, ...skills.missing].map((p) => p.split(path.sep)[0]) : [];
+  for (const name of skillNames) {
+    console.log(`${act} skill: ${name}`);
+    if (!dry) {
+      const dest = path.join(skillsDir, name);
+      fs.rmSync(dest, { recursive: true, force: true });
+      fs.cpSync(path.join(SKILLS_DIR, name), dest, { recursive: true });
+    }
+    changed++;
+  }
+
+  // Agents: replace the body, keep each installed file's own model/effort.
+  const agentsDir = claudeAgentsDir();
+  const agentsSrc = path.join(PKG_ROOT, ".claude", "agents");
+  const agentFiles = fs.readdirSync(agentsSrc).filter((f) => f.endsWith(".md")).sort();
+  const agents = compareFiles(
+    agentFiles.map((f) => [f, path.join(agentsSrc, f)]),
+    agentsDir,
+    (src, dest) => splitAgentModel(fs.readFileSync(src, "utf8")).rest === splitAgentModel(fs.readFileSync(dest, "utf8")).rest
+  );
+  if (agents.present.length) {
+    const routing = loadRouting();
+    const installed = Object.fromEntries(
+      agents.present.map((f) => [f.slice(0, -3), splitAgentModel(fs.readFileSync(path.join(agentsDir, f), "utf8"))])
+    );
+    // The profile most installed agents match: one hand-edited agent must
+    // not push the newcomers onto the default profile.
+    const matches = (p) =>
+      Object.entries(installed).filter(([name, got]) => {
+        const want = routing.agents[name] && routing.agents[name].profiles[p].claude;
+        return want && got.model === want.model && got.effort === (want.effort || null);
+      }).length;
+    const best = Math.max(...routing.profiles.map(matches));
+    const profile = best > 0 ? routing.profiles.find((p) => matches(p) === best) : routing.default_profile;
+    const keepModel = withClaudeModel((name) =>
+      installed[name] && installed[name].model
+        ? { model: installed[name].model, effort: installed[name].effort }
+        : routing.agents[name] && routing.agents[name].profiles[profile].claude
+    );
+    for (const file of [...agents.differs, ...agents.missing]) {
+      const name = file.slice(0, -3);
+      console.log(`${act} agent: ${name}${installed[name] ? "" : ` (new, profile ${profile})`}`);
+      if (!dry) fs.writeFileSync(path.join(agentsDir, file), keepModel(name, fs.readFileSync(path.join(agentsSrc, file), "utf8")), "utf8");
+      changed++;
+    }
+  }
+
+  // Rules.
+  const rulesDir = claudeRulesDir();
+  const rulesSrc = path.join(PKG_ROOT, "rules");
+  const rules = compareFiles(
+    fs.readdirSync(rulesSrc).filter((f) => f.endsWith(".md")).sort().map((f) => [f, path.join(rulesSrc, f)]),
+    rulesDir
+  );
+  if (rules.present.length) {
+    for (const file of [...rules.differs, ...rules.missing]) {
+      console.log(`${act} rule: ${file}`);
+      if (!dry) fs.copyFileSync(path.join(rulesSrc, file), path.join(rulesDir, file));
+      changed++;
+    }
+  }
+
+  // Hooks: refresh files already installed; registrations are left alone.
+  for (const [name, hook] of Object.entries(HOOKS)) {
+    const dest = path.join(claudeHooksDir(), hook.file);
+    if (!fs.existsSync(dest)) continue;
+    if (normalizeEol(fs.readFileSync(dest, "utf8")) === normalizeEol(fs.readFileSync(hook.src, "utf8"))) continue;
+    console.log(`${act} hook file: ${name} (${hook.file})`);
+    if (!dry) fs.copyFileSync(hook.src, dest);
+    changed++;
+  }
+
+  console.log(
+    changed
+      ? `\n${dry ? "Would update" : "Updated"} ${changed} item(s).${dry ? " Run without --dry-run to apply." : " Restart Claude Code to load them."}`
+      : "\nEverything installed already matches this version."
+  );
+}
+
 /** Does the path a registered hook command names (…/<file>, ~ and $HOME expanded) exist? */
 function hookTargetExists(command, file) {
   const normalized = command.replace(/\\/g, "/");
@@ -795,6 +897,9 @@ Usage:
   eef-install --target <name>          Install for a different harness (see below)
   eef-install doctor                   Report what is installed for Claude Code and
                                        whether it matches this version (read-only)
+  eef-install update [--dry-run]       Bring an existing Claude Code install up to this
+                                       version: only what is installed and differs is
+                                       replaced; agents keep their model/effort
   eef-install --help                   Show this message
 
 Targets (--target):
@@ -838,6 +943,7 @@ Examples:
   eef-install --target opencode-agents --models ./eef-models.json
   eef-install --target claude-hooks --only fs-guard
   eef-install doctor
+  eef-install update --dry-run
 `);
 }
 
@@ -856,6 +962,11 @@ function main() {
 
   if (args[0] === "doctor") {
     doctor();
+    return;
+  }
+
+  if (args[0] === "update") {
+    update({ dryRun: args.includes("--dry-run") });
     return;
   }
 

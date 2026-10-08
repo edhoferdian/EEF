@@ -35,6 +35,7 @@ npx eef-install --target agents-md          # AGENTS.md into the current project
 npx eef-install --target gemini-md          # GEMINI.md into the current project
 npx eef-install --target claude-hooks       # Claude Code hooks into ~/.claude/hooks/, registered in ~/.claude/settings.json
 npx eef-install doctor                      # read-only: what's installed for Claude Code, and is it current?
+npx eef-install update                      # bring that install up to this version (--dry-run first to see the plan)
 npx eef-install --list                      # list all skill names
 npx eef-install --help
 ```
@@ -54,6 +55,15 @@ version, whether each hook is registered, and which model profile the
 installed agents match. It changes nothing, and exits non-zero only on real
 breakage (an unparsable `settings.json`, or a registered hook whose file is
 gone). It reads the same `CLAUDE_*_DIR` overrides as the installs.
+
+`eef-install update` acts on what doctor reports: skills, agents and rules
+that are installed but differ from this version are replaced, items new in
+this version join a group that is already installed, and installed hook
+files are refreshed. It never installs a group from scratch and never
+writes `settings.json`. Each agent keeps the `model`/`effort` it has now, so
+a `--profile` or `--models` choice survives; a new agent takes the profile
+most installed agents match. A file you edited locally also counts as
+"differs" and is overwritten — run `update --dry-run` first to see the plan.
 
 The package bundles the actual skill content (see
 [`package.json`](package.json)'s `files` list) — no separate git clone, no
