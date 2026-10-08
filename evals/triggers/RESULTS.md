@@ -103,3 +103,46 @@ except for a fix to "Cross-references", which a line break had split at
 its hyphen. With robots.txt `Disallow: /` pasted, the answer is obvious and
 Claude gives it directly; the case may need a less self-evident fixture
 rather than a stronger description.
+
+## Run 5 (2026-10-08) — coverage batch, cut short by the monthly spend limit
+
+`claude plugin eval . --tag coverage --runs 2 --ablation none --model sonnet
+--scaffold --trust-plugin --no-publish --max-cost-usd 12`, Claude Code
+2.1.293, 29 cases × 2 runs (25 new cases, so every one of the 38 skills
+now has one, plus four changed ones), $5.50. The account's monthly spend
+limit was hit at the 18th case; every later run errored on its first turn.
+
+| Case | Expected skill (near-miss that must not fire) | Fired |
+|---|---|---|
+| checkout-flow-test | e2e-testing (not desktop-e2e) | 2/2, near-miss held |
+| claude-config-cleanup | config-hygiene (not skill-audit) | 2/2, near-miss held |
+| comment-api-design | api-design | 2/2 |
+| deploy-with-rollback | deployment-ops (not container-ops) | 2/2, near-miss held |
+| docker-compose-dev | container-ops (not deployment-ops) | 2/2, near-miss held |
+| double-charged | billing-ops | 2/2 |
+| inbox-triage | communications-triage | 2/2 |
+| kickoff-from-prd-in-repo | dev-kickoff | 2/2 |
+| launch-positioning | marketing | 2/2 |
+| legacy-rules-in-repo | spec-mining | 2/2 |
+| lint-setup-in-repo | code-quality-tooling | 2/2 |
+| match-video-look | video-style | 2/2 |
+| nda-many-partners | legal-ops | 2/2 |
+| new-skill-request | skill-authoring (not skill-audit) | 2/2, near-miss held |
+| open-source-in-repo | opensource-release | 2/2 |
+| overnight-agents | safe-execution | 2/2 (one run then hit the limit) |
+| **django-review-in-repo** | language-code-review | **0/2** |
+| **not-on-google** (new fixture) | seo-audit | **0/2** |
+
+Not valid (limit hit, no tool call possible): payment-retry-in-repo,
+prototype-loop, react-dashboard-structure, research-compare,
+review-before-merge, save-button-in-repo, slow-office-network,
+slow-report-in-repo, stale-readme-in-repo, supplier-group-bot,
+wpf-cashier-test.
+
+The seo-audit inline case no longer pastes `Disallow: /`; it pastes a shop
+whose product pages are missing for several subtler reasons (canonical to
+the homepage, sitemap on the staging host, product links that exist only
+as `onclick`). Claude still answered in one turn without a skill, so the
+miss is not about the answer being obvious. language-code-review was
+skipped on a Django REST Framework review with the files in the workspace:
+Claude read the files and reviewed them itself.
