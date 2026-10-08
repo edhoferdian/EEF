@@ -1,0 +1,7 @@
+{
+  "name": "shrink-cli",
+  "version": "4.1.0",
+  "type": "module",
+  "bin": { "shrink": "bin/shrink.js" },
+  "dependencies": { "sharp": "^0.34.0" }
+}

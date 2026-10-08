@@ -1,0 +1,48 @@
+{
+  "_doc": "docs-sync suite. Each case is a folder = one small repo. `drifts` lists the seeded places where a doc disagrees with the code; an empty list marks a clean control. A reported item finds a drift when it names `doc`, sits within `tolerance` lines of the anchor's line in that doc, AND its claim/reality text contains one of `keywords` (case-insensitive). run.py checks every anchor resolves to exactly one line. Reported items that match no drift are counted as extra (on a drift case) or false alarms (on a control) and are listed for a hand check.",
+  "tolerance": 3,
+  "cases": {
+    "d01-tally": {
+      "drifts": [
+        {"id": "renamed-function", "doc": "README.md", "anchor": "from tally import parse_ledger", "keywords": ["load_ledger", "renamed"],
+         "what": "README imports and calls parse_ledger; the package exports load_ledger (renamed in 2.0)."}
+      ]
+    },
+    "d02-shrink": {
+      "drifts": [
+        {"id": "removed-flag", "doc": "README.md", "anchor": "| `--dry-run` | off |", "keywords": ["dry-run", "dry_run", "dryrun"],
+         "what": "README documents --dry-run; bin/shrink.js's parseArgs has no such option (parseArgs is strict, so it errors)."}
+      ]
+    },
+    "d03-pinger": {
+      "drifts": [
+        {"id": "wrong-config-path", "doc": "README.md", "anchor": "Configuration is read from `config/settings.yaml`", "keywords": ["conf/app.yaml", "app.yaml"],
+         "what": "README says config/settings.yaml; pinger/config.py reads conf/app.yaml."},
+        {"id": "broken-link", "doc": "README.md", "anchor": "[deployment guide](docs/deploy.md)", "keywords": ["deploy.md", "deployment guide", "broken"],
+         "what": "README links docs/deploy.md, which does not exist (only docs/operations.md does)."}
+      ]
+    },
+    "d04-notify": {
+      "drifts": [
+        {"id": "stale-snippet", "doc": "README.md", "anchor": "client.send(\"Build finished\", retries=5)", "keywords": ["max_retries", "retries="],
+         "what": "README calls send(..., retries=5); Client.send takes keyword-only max_retries, so the snippet raises TypeError."}
+      ]
+    },
+    "d05-ledgerly": {
+      "drifts": [
+        {"id": "moved-module", "doc": "docs/CODEMAPS/billing.md", "anchor": "## src/billing/invoice.ts", "keywords": ["invoicing", "moved", "not exist", "doesn't exist", "missing", "no such file", "not found"],
+         "what": "Codemap lists src/billing/invoice.ts; the module lives at src/invoicing/invoice.ts."},
+        {"id": "removed-export", "doc": "docs/CODEMAPS/billing.md", "anchor": "- `exportCsv(range)`", "keywords": ["exportcsv"],
+         "what": "Codemap lists an exportCsv export; invoice.ts exports only createInvoice, voidInvoice and markPaid."}
+      ]
+    },
+    "d06-hookrelay": {
+      "drifts": [
+        {"id": "wrong-default-port", "doc": "README.md", "anchor": "The server listens on port 8080 by default", "keywords": ["3000"],
+         "what": "README says the default port is 8080; server.js defaults to 3000."}
+      ]
+    },
+    "c07-logslice": {"drifts": []},
+    "c08-shelf": {"drifts": []}
+  }
+}

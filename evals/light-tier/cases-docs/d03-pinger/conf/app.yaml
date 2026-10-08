@@ -1,0 +1,3 @@
+webhook: https://hooks.example.com/abc
+targets:
+  - url: https://example.com/health
