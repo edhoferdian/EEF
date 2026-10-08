@@ -156,7 +156,8 @@ def land_through_pr(branch: str, paths: list[str], subject: str, body: str) -> s
     finally:
         run("git", "switch", "-q", "main")
     run("git", "pull", "-q", "--ff-only", "origin", "main")
-    run("git", "branch", "-q", "-D", branch)
+    if run("git", "branch", "--list", branch):  # gh pr merge --delete-branch usually removed it already
+        run("git", "branch", "-q", "-D", branch)
     landed = run("git", "rev-parse", "HEAD")
     if run("git", "rev-parse", "origin/main") != landed:
         raise ReleaseError("local main does not match origin/main after the merge")
