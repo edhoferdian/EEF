@@ -1,0 +1,6 @@
+{
+  "name": "hookrelay",
+  "version": "1.6.0",
+  "type": "module",
+  "scripts": { "start": "node server.js" }
+}
