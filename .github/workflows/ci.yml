@@ -18,9 +18,10 @@ jobs:
       - name: Frontmatter, description length, ECC-mention guard, broken refs
         run: python scripts/validate_skills.py
       - name: Per-session context cost stays within budget
-        # ~16.7k est. tokens on 2026-10-08. Raise the budget deliberately,
+        # ~12.1k est. tokens on 2026-10-08 (16.7k before agent descriptions
+        # stopped restating their skill). Raise the budget deliberately,
         # in the same PR that explains what the new context buys.
-        run: python scripts/measure_context.py --budget 18000
+        run: python scripts/measure_context.py --budget 13500
 
   dist-sync:
     name: dist/*.skill matches skills/

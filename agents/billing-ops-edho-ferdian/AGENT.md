@@ -1,7 +1,12 @@
 ---
 name: billing-ops-edho-ferdian
 description: >-
-  Agent form of the billing-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Diagnosing and handling billing/subscription operations — classifying customer billing incidents (duplicate subscriptions, multi-seat vs accidental duplicate, failed checkout, missing self-serve controls, broken product), separating customer impact from code-backed product truth, and routing pricing/entitlement claims through verification before they're repeated. Diagnosis-only for financial actions: refunds, credits, and cancellations require the user's explicit go-ahead before execution. Trigger phrases: "pelanggan minta refund", "subscription ganda", "checkout gagal", "kenapa dia kena tagih dua kali", "billing portal rusak", "apakah per-seat billing beneran jalan di kode".
+  Agent form of the billing-ops-edho-ferdian skill, same triggers — delegate
+  here when the task justifies isolated or parallel execution; a small task
+  should use the skill directly instead. Diagnosing and handling
+  billing/subscription operations — classifying customer billing incidents
+  (duplicate subscriptions, multi-seat vs accidental duplicate, failed
+  checkout, missing self-serve….
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: billing-ops-edho-ferdian
 tier: standard

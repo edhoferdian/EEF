@@ -1,6 +1,6 @@
 ---
 name: "opensource-release-edho-ferdian"
-description: "Agent form of the opensource-release-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Fork, sanitize, and package a project for open-source release in three phases — extract secrets into .env.example rather than deleting them, run an independent adversarial audit that never trusts the fork phase's own report (PASS/FAIL/PASS-WITH-WARNINGS, hard-gates packaging on FAIL), then generate CLAUDE.md/README/LICENSE/CONTRIBUTING/issue-templates. Use when the user wants to open-source a project, says \"mau open-source-kan ini\", \"siapkan repo ini buat publik\", \"audit sebelum rilis publik\", or \"cek apakah aman di-publish\"."
+description: "Agent form of the opensource-release-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Fork, sanitize, and package a project for open-source release in three phases — extract secrets into .env.example rather than deleting them, run an independent adversarial audit that never trusts the…."
 injectAgentsMd: true
 ---
 

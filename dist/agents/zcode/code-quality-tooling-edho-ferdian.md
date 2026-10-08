@@ -1,6 +1,6 @@
 ---
 name: "code-quality-tooling-edho-ferdian"
-description: "Agent form of the code-quality-tooling-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Set up and configure the automated code-quality gate around a project — ESLint, Prettier, Husky Git hooks (pre-commit/pre-push), and lint-staged for JS/TS, plus the equivalent tooling for other stacks (Ruff/pre-commit for Python, golangci-lint/lefthook for Go, rustfmt/clippy for Rust). This is authoring/setup guidance for wiring the gate itself, not the code style rules it enforces or the commit-message format it may check. Trigger phrases: \"setup ESLint\", \"tambah Prettier\", \"pasang husky\", \"pre-commit hook\", \"lint-staged\", \"kenapa commit ke-block linter\", \"format on save\", \"enforce lint sebelum push\", \"linter belum ada di project ini\"."
+description: "Agent form of the code-quality-tooling-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Set up and configure the automated code-quality gate around a project — Biome or ESLint+Prettier, Husky Git hooks (pre-commit/pre-push), and lint-staged for JS/TS, plus the equivalent tooling for…."
 injectAgentsMd: true
 ---
 

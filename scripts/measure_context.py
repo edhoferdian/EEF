@@ -25,7 +25,9 @@ from lib_skills import load_skills
 CHARS_PER_TOKEN = 4
 RULES_DIR = REPO_ROOT / "rules"
 # An agent description counts as repeating its skill when this much of the
-# skill's description appears in it verbatim.
+# skill's description *after its first sentence* appears in it verbatim.
+# Agent stubs quote that first sentence on purpose, as a one-line summary
+# (generate_agent_stubs.summarize); copying past it is the duplication.
 REPEAT_PROBE_CHARS = 120
 
 
@@ -34,7 +36,8 @@ def est_tokens(chars: int) -> int:
 
 
 def repeats_skill(agent_desc: str, skill_desc: str) -> bool:
-    probe = " ".join(skill_desc.split())[:REPEAT_PROBE_CHARS]
+    rest = " ".join(skill_desc.split()).split(". ", 1)
+    probe = rest[1][:REPEAT_PROBE_CHARS] if len(rest) == 2 else ""
     return bool(probe) and probe in " ".join(agent_desc.split())
 
 

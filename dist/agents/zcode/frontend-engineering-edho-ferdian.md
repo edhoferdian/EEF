@@ -1,6 +1,6 @@
 ---
 name: "frontend-engineering-edho-ferdian"
-description: "Agent form of the frontend-engineering-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Authoring and configuration guidance for building React/Next.js frontend applications well from the start — component composition patterns, UX/ interaction recipes, and Vite build-tool configuration. A companion to language-code-review-edho-ferdian (which reviews code after it's written) — use this when DESIGNING or WRITING new frontend code, not when reviewing existing code. Trigger phrases: \"bagaimana cara structure component ini\", \"best practice React untuk X\", \"setup Vite untuk Y\", \"bikin animasi/transisi yang smooth\", or when starting a new frontend feature."
+description: "Agent form of the frontend-engineering-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Authoring and configuration guidance for building React/Next.js frontend applications well from the start — component composition, UX/interaction recipes, Vite config, HeroUI setup, and AI-slop…."
 injectAgentsMd: true
 ---
 

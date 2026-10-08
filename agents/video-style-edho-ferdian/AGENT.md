@@ -1,7 +1,12 @@
 ---
 name: video-style-edho-ferdian
 description: >-
-  Agent form of the video-style-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Capture the look and pacing of reference videos as measurements, then reproduce them: distill references into a style pack (colour grade per luminance zone baked to a 3D LUT, cut rhythm as a shot-length distribution, overlay plates, hero stills, a grounded text spec), then generate or gather footage, grade it to the pack, cut it at the measured cadence, composite overlays, and verify the result numerically before handing an editable timeline to Resolve or another NLE. Use when the user says "tiru look video ini", "samakan grading", "bikin video dengan gaya referensi", "capture the vibe", "LUT dari referensi", "cut rhythm", "supplement footage", or wants AI-generated clips cut into a real edit.
+  Agent form of the video-style-edho-ferdian skill, same triggers — delegate
+  here when the task justifies isolated or parallel execution; a small task
+  should use the skill directly instead. Capture the look and pacing of
+  reference videos as measurements, then reproduce them: distill references
+  into a style pack (colour grade per luminance zone baked to a 3D LUT, cut
+  rhythm as a….
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: video-style-edho-ferdian
 tier: standard

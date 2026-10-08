@@ -1,6 +1,6 @@
 ---
 name: legal-ops-edho-ferdian
-description: Agent form of the legal-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Reproducible agreement paperwork for a solo operator or small team: build review drafts of a master/framework agreement (NDA, referral or sourcing fee, non-circumvention, master services) from one template plus a small JSON spec per counterparty, add deals later by Schedule A notice within the executed agreement's authority, and prepare e-signature envelopes by browser automation with calibrated numeric field placement and a hard save-as-draft gate. Not legal advice — output is always a DRAFT for counsel review. Use when the user says "bikin perjanjian dari template", "master agreement", "NDA untuk banyak partner", "siapkan envelope e-sign", "tambah deal ke Schedule A", or "otomasi tanda tangan elektronik".
+description: Agent form of the legal-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Reproducible agreement paperwork for a solo operator or small team: build review drafts of a master/framework agreement (NDA, referral or sourcing fee, non-circumvention, master services) from one….
 tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - legal-ops-edho-ferdian

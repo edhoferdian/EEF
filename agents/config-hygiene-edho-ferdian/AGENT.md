@@ -1,7 +1,12 @@
 ---
 name: config-hygiene-edho-ferdian
 description: >-
-  Agent form of the config-hygiene-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Periodic garbage collection for Edho's own Claude Code environment (`~/.claude`): find redundant, stale, orphaned, or context-expensive items across skills, memory, hooks, permissions, MCP servers, automations and caches, then walk them one by one with a human confirmation and an undo path. Includes the ECC decommissioning track — the concrete checklist for removing the ECC install once its native replacement exists. Use when the user says "bersihin config", "~/.claude berantakan", "kebanyakan skill", "sesi lambat mulai", "audit setup gue", "context cepat penuh", or when a periodic (~30 day) review is due.
+  Agent form of the config-hygiene-edho-ferdian skill, same triggers —
+  delegate here when the task justifies isolated or parallel execution; a
+  small task should use the skill directly instead. Periodic garbage
+  collection for Edho's own Claude Code environment (`~/.claude`): find
+  redundant, stale, orphaned, or context-expensive items across skills,
+  memory, hooks, permissions, MCP servers….
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: config-hygiene-edho-ferdian
 tier: standard

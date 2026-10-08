@@ -1,6 +1,6 @@
 ---
 name: skill-authoring-edho-ferdian
-description: Agent form of the skill-authoring-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Discipline for creating and governing this ecosystem's own skills: search before building (local → marketplace → GitHub → web, with a security vet on anything external), write to a quality bar, measure whether a skill is actually obeyed rather than assuming it, promote recurring cross-skill principles up into rules, and package a finished skill into `dist/*.skill` for manual upload. Use when the user says "bikin skill baru", "ada skill buat X gak", "fork skill ini", "skill gue kepake gak sih", "package skill ini", "mau publish skill ini", "buatkan .skill-nya", or before adding anything to this repo's `skills/` or `dist/`.
+description: Agent form of the skill-authoring-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Discipline for creating and governing this ecosystem's own skills: search before building (local → marketplace → GitHub → web, with a security vet on anything external), write to a quality bar….
 tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - skill-authoring-edho-ferdian

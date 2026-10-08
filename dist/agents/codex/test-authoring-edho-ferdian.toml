@@ -1,5 +1,5 @@
 name = "test-authoring-edho-ferdian"
-description = "Agent form of the test-authoring-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Guidance for WRITING unit and component tests well — React/Testing Library, Python/pytest, Go, and Vue, plus stack-agnostic regression-test patterns. A companion to code-review-edho-ferdian's test-quality-lens (which judges tests after they're written) and dev-kickoff-edho-ferdian's TEST stage (which mandates writing a failing test first but doesn't teach test-writing craft). Trigger phrases: \"tulis test untuk component ini\", \"bagaimana test hook ini\", \"test yang bagus untuk fitur X\", \"tulis test pytest/Go/Vue untuk ini\", or during dev-kickoff's TEST stage when the task needs concrete authoring guidance beyond \"write a failing test.\""
+description = "Agent form of the test-authoring-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Guidance for WRITING unit and component tests well — React/Testing Library, Python/pytest, Go, and Vue, plus stack-agnostic regression-test patterns."
 model = "gpt-6.1-sol"
 model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"

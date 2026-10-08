@@ -1,6 +1,6 @@
 ---
 name: "docs-sync-edho-ferdian"
-description: "Agent form of the docs-sync-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Keep USER-FACING documentation honest against the current codebase — README, docs/CODEMAPS/*, architecture-as-markdown, public API docs. Generates/refreshes codemaps and validates doc freshness (every path exists, every link resolves, every code snippet matches reality, timestamps are current). Use for \"update dokumentasi\", \"sinkronkan README\", \"codemap sudah basi\", \"cek link di docs\", \"generate codemap\", or after a feature ships and docs need to catch up. Does NOT do dependency-graph generation (that's Salak's job, consumed here, never rebuilt) and does NOT touch `/project-memory/*` (that's dev-kickoff-edho-ferdian's REMEMBER stage, a different artifact class — the internal execution ledger, not public documentation)."
+description: "Agent form of the docs-sync-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Keep USER-FACING documentation honest against the current codebase — README, docs/CODEMAPS/*, architecture-as-markdown, public API docs."
 injectAgentsMd: true
 ---
 

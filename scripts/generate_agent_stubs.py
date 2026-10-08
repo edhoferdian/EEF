@@ -66,41 +66,32 @@ def agent_name(skill_name: str) -> str:
     return skill_name
 
 
-# Harness description-length ceiling this ecosystem already enforces for
-# skills (see skill-authoring-edho-ferdian) — several skill descriptions
-# already sit close to it on their own, so the boilerplate prefix below is
-# kept minimal and the copied description is truncated rather than left to
-# silently blow past the limit.
-DESC_LIMIT = 1024
 PREFIX_TEMPLATE = (
     "Agent form of the {name} skill, same triggers — delegate here when the "
     "task justifies isolated or parallel execution; a small task should use "
     "the skill directly instead. "
 )
 
+# The wrapped skill's own description — with its full trigger list — is
+# already in context every session, so the agent carries only a one-line
+# summary of it. Copying the whole description (as stubs did until
+# 2026-10-08) made 33 agents restate ~7k tokens per session that the session
+# had just read on the skill (scripts/measure_context.py).
+SUMMARY_LIMIT = 200
 
-TRUNCATION_SUFFIX = "… (see the skill for the full trigger list)"
+
+def summarize(description: str) -> str:
+    """The skill description's first sentence, cut at a word boundary to
+    SUMMARY_LIMIT characters."""
+    text = " ".join(description.split())
+    first = text.split(". ", 1)[0].rstrip(".")
+    if len(first) > SUMMARY_LIMIT:
+        first = first[:SUMMARY_LIMIT].rsplit(" ", 1)[0].rstrip(",;:—- ") + "…"
+    return first + "."
 
 
 def build_description(skill) -> str:
-    prefix = PREFIX_TEMPLATE.format(name=skill.name)
-    body = skill.description
-    if len(prefix) + len(body) > DESC_LIMIT:
-        budget = DESC_LIMIT - len(prefix) - len(TRUNCATION_SUFFIX)
-        if budget <= 0:
-            # The prefix (or a future longer skill name) alone already
-            # exceeds the limit — no room for any body text at all. Not
-            # reachable by any of the 33 skills today, but truncating to a
-            # negative slice or calling .rsplit on an empty string would
-            # otherwise fail confusingly here instead of with a clear error.
-            raise ValueError(
-                f"{skill.name}: prefix + truncation suffix alone exceed "
-                f"DESC_LIMIT ({DESC_LIMIT}); shorten PREFIX_TEMPLATE or "
-                f"raise DESC_LIMIT before adding a name this long."
-            )
-        truncated = body[:budget].rsplit(" ", 1)[0]
-        body = (truncated or body[:budget]) + TRUNCATION_SUFFIX
-    return prefix + body
+    return PREFIX_TEMPLATE.format(name=skill.name) + summarize(skill.description)
 
 
 # Every agent carries this section (validate_skills.py enforces it). The

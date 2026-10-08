@@ -1,6 +1,6 @@
 ---
 name: research-ops-edho-ferdian
-description: Agent form of the research-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Evidence-first research workflow — classify what kind of research the question actually needs, take the lightest evidence path that answers it, synthesize multiple sources into a cited report, and label every claim by evidence type (sourced fact / user-supplied / inference / recommendation) so a reader can tell what is proven from what is guessed. Use whenever the user says "riset", "cari tahu", "cek fakta", "bandingkan X vs Y", "apa yang terbaru soal", "research this", "deep dive", "investigate", or asks a question whose answer depends on current public information rather than on this repo's own code. For competitor benchmarking and positioning research, use `marketing-edho-ferdian/references/market-and-competitor-research.md` instead — it consumes this skill's evidence method rather than repeating it.
+description: Agent form of the research-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Evidence-first research workflow — classify what kind of research the question actually needs, take the lightest evidence path that answers it, synthesize multiple sources into a cited report, and….
 tools: Read, Grep, Glob, Bash, WebSearch, WebFetch, Write, Agent, Skill
 skills:
   - research-ops-edho-ferdian

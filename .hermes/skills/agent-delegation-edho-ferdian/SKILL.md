@@ -25,7 +25,7 @@ from.
 
 ## api-design-edho-ferdian
 
-**When to delegate here:** Agent form of the api-design-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Design and evolve API boundaries and contracts — REST resource naming, status-code semantics, pagination strategy, versioning policy, and the discipline of treating one contract artifact (OpenAPI/schema) as authoritative so client and server never drift. A design-time activity, distinct from system-design-edho-ferdian (broader architectural trade-offs) and code-review-edho-ferdian (reviewing an already-written endpoint). Trigger phrases: "desain API untuk fitur ini", "bagaimana struktur endpoint yang baik", "API contract berubah, bagaimana handle-nya", "REST vs apa", or when starting a new API surface.
+**When to delegate here:** Agent form of the api-design-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Design and evolve API boundaries and contracts — REST resource naming, status-code semantics, pagination strategy, versioning policy, and the discipline of treating one contract artifact….
 
 ```python
 delegate_task(
@@ -71,7 +71,7 @@ delegate_task(
 
 ## backend-engineering-edho-ferdian
 
-**When to delegate here:** Agent form of the backend-engineering-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Authoring server-side code between the API contract and the datastore — layering and ports/adapters boundaries, error taxonomy and resilience (typed errors, Result style, retry with backoff, circuit breakers), background jobs and queues, structured logging emission, and adding a new integration that matches the repo's existing connector pattern. The backend counterpart to frontend-engineering-edho-ferdian. Trigger phrases: "struktur service layer", "error handling di backend", "retry/circuit breaker", "background job / queue", "tambah integrasi baru".
+**When to delegate here:** Agent form of the backend-engineering-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Authoring server-side code between the API contract and the datastore — layering and ports/adapters boundaries, error taxonomy and resilience (typed errors, Result style, retry with backoff, circuit….
 
 ```python
 delegate_task(
@@ -117,7 +117,7 @@ delegate_task(
 
 ## billing-ops-edho-ferdian
 
-**When to delegate here:** Agent form of the billing-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Diagnosing and handling billing/subscription operations — classifying customer billing incidents (duplicate subscriptions, multi-seat vs accidental duplicate, failed checkout, missing self-serve controls, broken product), separating customer impact from code-backed product truth, and routing pricing/entitlement claims through verification before they're repeated. Diagnosis-only for financial actions: refunds, credits, and cancellations require the user's explicit go-ahead before execution. Trigger phrases: "pelanggan minta refund", "subscription ganda", "checkout gagal", "kenapa dia kena tagih dua kali", "billing portal rusak", "apakah per-seat billing beneran jalan di kode".
+**When to delegate here:** Agent form of the billing-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Diagnosing and handling billing/subscription operations — classifying customer billing incidents (duplicate subscriptions, multi-seat vs accidental duplicate, failed checkout, missing self-serve….
 
 ```python
 delegate_task(
@@ -163,7 +163,7 @@ delegate_task(
 
 ## build-fix-edho-ferdian
 
-**When to delegate here:** Agent form of the build-fix-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Diagnose and fix build, compile, dependency, and runtime-startup failures with minimal surgical diffs — never refactors, never architectural changes, always verified green. Auto-detects the stack from project files (JS/TS, Python/Django, Go, Rust, PHP/Laravel, Java/Spring, Quarkus, Kotlin, Swift, React Native, Flutter, Android, .NET, C++, PyTorch, ArkTS, Perl, Ruby, and more) and loads the matching diagnostic lens. Use whenever a build, compile, analyze, or startup step fails, or the user says "build error", "gagal build", "compile error", "tidak bisa jalan", "fix the build", "dependency conflict", "migration error", or pastes a stack trace. Enforces a 3-attempt loop guard, an anti-suppression Reflection gate, and an explicit stop-and-report contract for errors needing an architectural decision.
+**When to delegate here:** Agent form of the build-fix-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Diagnose and fix build, compile, dependency, and runtime-startup failures with minimal surgical diffs — never refactors, never architectural changes, always verified green.
 
 ```python
 delegate_task(
@@ -209,7 +209,7 @@ delegate_task(
 
 ## click-path-audit-edho-ferdian
 
-**When to delegate here:** Agent form of the click-path-audit-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Trace every user-facing touchpoint (button, toggle, form submit) through its full state-change sequence to find defects that reading code line by line cannot see: handlers whose calls silently undo each other, async races, stale closures, and effects that reset the very state the button just set. Use when a control "does nothing" despite the handler existing and not crashing, after refactoring a shared state store (Zustand/Redux/context/ signals), or before release on critical flows. Trigger phrases: "tombolnya gak jalan", "diklik tapi gak ada yang terjadi", "the button does nothing", "state-nya balik lagi", "sudah dicek semua tapi gak ketemu bug-nya".
+**When to delegate here:** Agent form of the click-path-audit-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Trace every user-facing touchpoint (button, toggle, form submit) through its full state-change sequence to find defects that reading code line by line cannot see: handlers whose calls silently undo….
 
 This agent delegates further on Claude Code (its canonical `tools:` includes `Agent`) — on Hermes, `role="orchestrator"` only takes effect if `delegation.max_spawn_depth` is set to 2 or higher in Hermes' own config; at the default of 1, Hermes silently forces it back to `"leaf"` and this agent must do the sub-delegation's work inline instead. Check with `hermes config get delegation.max_spawn_depth` before relying on nested delegation here.
 
@@ -400,7 +400,7 @@ delegate_task(
 
 ## code-quality-tooling-edho-ferdian
 
-**When to delegate here:** Agent form of the code-quality-tooling-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Set up and configure the automated code-quality gate around a project — ESLint, Prettier, Husky Git hooks (pre-commit/pre-push), and lint-staged for JS/TS, plus the equivalent tooling for other stacks (Ruff/pre-commit for Python, golangci-lint/lefthook for Go, rustfmt/clippy for Rust). This is authoring/setup guidance for wiring the gate itself, not the code style rules it enforces or the commit-message format it may check. Trigger phrases: "setup ESLint", "tambah Prettier", "pasang husky", "pre-commit hook", "lint-staged", "kenapa commit ke-block linter", "format on save", "enforce lint sebelum push", "linter belum ada di project ini".
+**When to delegate here:** Agent form of the code-quality-tooling-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Set up and configure the automated code-quality gate around a project — Biome or ESLint+Prettier, Husky Git hooks (pre-commit/pre-push), and lint-staged for JS/TS, plus the equivalent tooling for….
 
 ```python
 delegate_task(
@@ -526,7 +526,7 @@ delegate_task(
 
 ## code-simplification-edho-ferdian
 
-**When to delegate here:** Agent form of the code-simplification-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Behavior-preserving refactoring workflow that actively rewrites code for clarity — extracting overlong functions, flattening deep nesting into guard clauses, consolidating duplicated logic, AND removing over- engineered/"just in case" abstractions — always gated on a passing test suite (or a characterization test written first) so behavior never changes. Use whenever the user wants code actually SIMPLIFIED or REFACTORED, not just reviewed: "sederhanakan kode ini", "refactor biar lebih rapi", "kode ini terlalu kompleks", "kurangi nesting-nya", "pisahkan fungsi ini jadi beberapa", "clean up this function", "simplify this code", "reduce complexity", "ini over-engineered". A read-only finding about the same issues (CQ-01/CQ-04/CQ-04b in `review-checklist.md`) is… (see the skill for the full trigger list)
+**When to delegate here:** Agent form of the code-simplification-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Behavior-preserving refactoring workflow that actively rewrites code for clarity — extracting overlong functions, flattening deep nesting, consolidating duplicated logic, AND removing over-engineered….
 
 ```python
 delegate_task(
@@ -572,7 +572,7 @@ delegate_task(
 
 ## communications-triage-edho-ferdian
 
-**When to delegate here:** Agent form of the communications-triage-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Channel-agnostic framework for triaging incoming messages (email, chat, Slack, LINE, Messenger, or any other channel) into four priority tiers, drafting replies that stay within a strict human-approval gate, and tracking whether a sent reply's promises actually get followed through on. Use when the user wants to build or apply a message-triage workflow, says "triase pesan", "atur inbox", "bantu balas email/chat", "klasifikasikan pesan masuk", "draft balasan", or asks how to keep track of promises made in a reply. Note: no channel (Gmail, Slack, etc.) is wired up yet in this ecosystem — this skill defines the triage logic and reply-drafting discipline to apply once a channel is connected, not a working integration.
+**When to delegate here:** Agent form of the communications-triage-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Channel-agnostic framework for triaging incoming messages (email, chat, Slack, LINE, Messenger, or any other channel) into four priority tiers, drafting replies that stay within a strict….
 
 ```python
 delegate_task(
@@ -618,7 +618,7 @@ delegate_task(
 
 ## config-hygiene-edho-ferdian
 
-**When to delegate here:** Agent form of the config-hygiene-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Periodic garbage collection for Edho's own Claude Code environment (`~/.claude`): find redundant, stale, orphaned, or context-expensive items across skills, memory, hooks, permissions, MCP servers, automations and caches, then walk them one by one with a human confirmation and an undo path. Includes the ECC decommissioning track — the concrete checklist for removing the ECC install once its native replacement exists. Use when the user says "bersihin config", "~/.claude berantakan", "kebanyakan skill", "sesi lambat mulai", "audit setup gue", "context cepat penuh", or when a periodic (~30 day) review is due.
+**When to delegate here:** Agent form of the config-hygiene-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Periodic garbage collection for Edho's own Claude Code environment (`~/.claude`): find redundant, stale, orphaned, or context-expensive items across skills, memory, hooks, permissions, MCP servers….
 
 ```python
 delegate_task(
@@ -664,7 +664,7 @@ delegate_task(
 
 ## container-ops-edho-ferdian
 
-**When to delegate here:** Agent form of the container-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Container setup, docker-compose design, multi-stage build optimization, and debugging guidance. Security-specific container concerns live in security-review-edho-ferdian instead. Trigger phrases: "setup Docker untuk project ini", "docker-compose untuk dev environment", "container ini lambat/besar", "debug container yang crash".
+**When to delegate here:** Agent form of the container-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Container setup, docker-compose design, multi-stage build optimization, and debugging guidance.
 
 ```python
 delegate_task(
@@ -710,7 +710,7 @@ delegate_task(
 
 ## counterparty-comms-edho-ferdian
 
-**When to delegate here:** Agent form of the counterparty-comms-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Contract for an agent that talks to external counterparties (customers, suppliers, partners) in shared channels, group chats, DMs, or email: who it may speak to and when (audience classification, mention gating, silent observation, no leakage of internal context), and what it may send (every outbound draft filed for operator approval against an exact text hash, stale approvals unable to release rewritten text, one dispatch per approval with a delivery ledger). Use when building or reviewing a bot, desk agent, or auto-reply that sits where outsiders read every message, or when the user says "agent di grup customer", "bot balas supplier", "approval sebelum kirim", "jangan sampai bocor ke klien", "outbound approval".
+**When to delegate here:** Agent form of the counterparty-comms-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Contract for an agent that talks to external counterparties (customers, suppliers, partners) in shared channels, group chats, DMs, or email: who it may speak to and when (audience classification….
 
 ```python
 delegate_task(
@@ -756,7 +756,7 @@ delegate_task(
 
 ## data-layer-patterns-edho-ferdian
 
-**When to delegate here:** Agent form of the data-layer-patterns-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Design and setup guidance for the data layer — Postgres schema design, Prisma ORM patterns, Redis caching/queue patterns, and cross-ORM migration strategy (expand-contract). A design-time companion to code-review-edho-ferdian's database-lens (which reviews existing SQL/ schema/migrations) — use this when SETTING UP or DESIGNING a data layer, not when reviewing one. Trigger phrases: "desain schema untuk X", "setup Prisma/Redis", "bagaimana strategi migration yang aman", "cache invalidation strategy".
+**When to delegate here:** Agent form of the data-layer-patterns-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Design and setup guidance for the data layer — Postgres schema design, Prisma ORM patterns, Redis caching/queue patterns, and cross-ORM migration strategy (expand-contract).
 
 ```python
 delegate_task(
@@ -802,7 +802,7 @@ delegate_task(
 
 ## dead-code-cleanup-edho-ferdian
 
-**When to delegate here:** Agent form of the dead-code-cleanup-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Staged dead-code removal workflow — detect (stack-appropriate tooling: knip/depcheck/ts-prune, vulture/deptry, cargo-udeps, deadcode, ...), classify by removal risk (SAFE/CAREFUL/RISKY), cross-check every "unused" hit against Salak's repo-graph.json reverse-dependency data when available, then delete in ordered categories (deps → exports → files → duplicates) running the test suite between each category. Use this whenever the user wants dead code, unused exports, unused dependencies, or duplicate code actually REMOVED — "bersihkan kode mati", "hapus yang tidak dipakai", "cleanup unused code/deps", "remove dead code", "consolidate duplicates". Not for finding-only review — see the scope note below for the boundary with code-review-edho-ferdian's CQ-07.
+**When to delegate here:** Agent form of the dead-code-cleanup-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Staged dead-code removal workflow — detect (stack-appropriate tooling: knip/depcheck/ts-prune, vulture/deptry, cargo-udeps, deadcode, ...), classify by removal risk (SAFE/CAREFUL/RISKY), cross-check….
 
 ```python
 delegate_task(
@@ -848,7 +848,7 @@ delegate_task(
 
 ## deployment-ops-edho-ferdian
 
-**When to delegate here:** Agent form of the deployment-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Getting a build to production and keeping it healthy — release strategy (rolling / blue-green / canary), CI/CD pipeline gates, health checks and Kubernetes probes, environment config and rollback, a production-readiness ship/block verdict, operator dashboards, and post-deploy watching. Starts where container-ops-edho-ferdian stops (image built, compose working). Trigger phrases: "deploy ini gimana", "bikin pipeline CI/CD", "rollback", "manifest kubernetes", "siap rilis belum", "pantau setelah deploy", "bikin dashboard monitoring".
+**When to delegate here:** Agent form of the deployment-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Getting a build to production and keeping it healthy — release strategy (rolling / blue-green / canary), CI/CD pipeline gates, health checks and Kubernetes probes, environment config and rollback, a….
 
 This agent delegates further on Claude Code (its canonical `tools:` includes `Agent`) — on Hermes, `role="orchestrator"` only takes effect if `delegation.max_spawn_depth` is set to 2 or higher in Hermes' own config; at the default of 1, Hermes silently forces it back to `"leaf"` and this agent must do the sub-delegation's work inline instead. Check with `hermes config get delegation.max_spawn_depth` before relying on nested delegation here.
 
@@ -911,7 +911,7 @@ delegate_task(
 
 ## desktop-e2e-edho-ferdian
 
-**When to delegate here:** Agent form of the desktop-e2e-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. End-to-end testing for Windows native desktop applications (WPF, WinForms, Win32/MFC, Qt 5/6) using pywinauto over the Windows UI Automation API. The native-automation driver that e2e-testing-edho-ferdian's Phase 0 detects as option 4 but has no content behind — journey mapping and the Page Object Model come from there; the pywinauto mechanics live here. Use when the target is a desktop .exe rather than a browser page, when a desktop GUI test suite is being set up or is flaky, or when adding AutomationIds to make an app testable. Trigger phrases: "test aplikasi desktop", "pywinauto", "WPF/WinForms/Qt test", "UI Automation", "test .exe ini".
+**When to delegate here:** Agent form of the desktop-e2e-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. End-to-end testing for Windows native desktop applications (WPF, WinForms, Win32/MFC, Qt 5/6) using pywinauto over the Windows UI Automation API.
 
 ```python
 delegate_task(
@@ -957,7 +957,7 @@ delegate_task(
 
 ## dev-kickoff-edho-ferdian
 
-**When to delegate here:** Agent form of the dev-kickoff-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Kickoff and execute a development project from ANY specification or planning documents — PRD, SRS, SDD, UIX Flow, WBS, tech spec, RFC, ADRs, OpenAPI/schema files, Jira/Linear/Notion exports, GitHub issues, or a detailed README. Classifies docs by role, cross-validates them, extracts a binding Project Decision Register, generates an Execution Context Pack (CLAUDE.md, AGENTS.md, .cursorrules) plus a project-fit agent roster and project-memory files, then builds task-by-task through Plan, Test, Implement, Review, Verify, Remember, Improve — auto-invoking this ecosystem's other skills at each stage as needed, with Reflection gates, Critique-Correction on high-risk tasks, and Session Snapshots. Use whenever the user wants to build from specs, or says "mulai proyek", "kickoff", "eksekusi… (see the skill for the full trigger list)
+**When to delegate here:** Agent form of the dev-kickoff-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Kickoff and execute a development project from ANY specification or planning documents (PRD, SRS, WBS, tech spec, RFC, ADRs, and more — see the Phase 0 role table below for the full list).
 
 ```python
 delegate_task(
@@ -1003,7 +1003,7 @@ delegate_task(
 
 ## docs-sync-edho-ferdian
 
-**When to delegate here:** Agent form of the docs-sync-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Keep USER-FACING documentation honest against the current codebase — README, docs/CODEMAPS/*, architecture-as-markdown, public API docs. Generates/refreshes codemaps and validates doc freshness (every path exists, every link resolves, every code snippet matches reality, timestamps are current). Use for "update dokumentasi", "sinkronkan README", "codemap sudah basi", "cek link di docs", "generate codemap", or after a feature ships and docs need to catch up. Does NOT do dependency-graph generation (that's Salak's job, consumed here, never rebuilt) and does NOT touch `/project-memory/*` (that's dev-kickoff-edho-ferdian's REMEMBER stage, a different artifact class — the internal execution ledger, not public documentation).
+**When to delegate here:** Agent form of the docs-sync-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Keep USER-FACING documentation honest against the current codebase — README, docs/CODEMAPS/*, architecture-as-markdown, public API docs.
 
 ```python
 delegate_task(
@@ -1049,7 +1049,7 @@ delegate_task(
 
 ## e2e-testing-edho-ferdian
 
-**When to delegate here:** Agent form of the e2e-testing-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. End-to-end testing for critical user journeys — the visual/browser-level layer that dev-kickoff-edho-ferdian's TEST stage explicitly defers to. Maps critical flows before writing any test, detects whichever E2E driver is actually available in the current session/project at runtime (Playwright via Claude's own browser tools, a project's own @playwright/test, Chrome DevTools MCP, or desktop-e2e-edho-ferdian for native Windows apps) rather than requiring one specific tool, builds tests with the Page Object Model pattern, quarantines flaky tests instead of blocking or ignoring them, and captures failure artifacts (screenshots/video/trace). Use when the user wants E2E tests, browser tests, UI flow tests, or says "test end-to-end", "uji alur pengguna", "tes E2E", "critical user flow",… (see the skill for the full trigger list)
+**When to delegate here:** Agent form of the e2e-testing-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. End-to-end testing for critical user journeys — the visual/browser-level layer that dev-kickoff-edho-ferdian's TEST stage explicitly defers to.
 
 ```python
 delegate_task(
@@ -1095,7 +1095,7 @@ delegate_task(
 
 ## frontend-engineering-edho-ferdian
 
-**When to delegate here:** Agent form of the frontend-engineering-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Authoring and configuration guidance for building React/Next.js frontend applications well from the start — component composition patterns, UX/ interaction recipes, and Vite build-tool configuration. A companion to language-code-review-edho-ferdian (which reviews code after it's written) — use this when DESIGNING or WRITING new frontend code, not when reviewing existing code. Trigger phrases: "bagaimana cara structure component ini", "best practice React untuk X", "setup Vite untuk Y", "bikin animasi/transisi yang smooth", or when starting a new frontend feature.
+**When to delegate here:** Agent form of the frontend-engineering-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Authoring and configuration guidance for building React/Next.js frontend applications well from the start — component composition, UX/interaction recipes, Vite config, HeroUI setup, and AI-slop….
 
 ```python
 delegate_task(
@@ -1257,7 +1257,7 @@ delegate_task(
 
 ## gan-harness-edho-ferdian
 
-**When to delegate here:** Agent form of the gan-harness-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Rapid, adversarial-loop prototyping and design iteration: a Plan → Generate → Evaluate/iterate cycle where a generator builds a live app and an evaluator drives it in a real browser, scores it against a weighted design rubric, and feeds concrete fixes back until a quality threshold is crossed or a max-iteration cap is hit. The Plan phase never invents scope from a one-line prompt — it pulls features from a real source (dev-kickoff-edho-ferdian's Project Decision Register or spec-mining-edho-ferdian's mined specs), or proposes a small, explicitly unapproved exploratory scope when no spec exists at all. Use when the user wants fast UI/prototype iteration with automated design critique, says "gan-harness", "loop generate-evaluate", "iterate sampai bagus", "buat prototipe cepat lalu… (see the skill for the full trigger list)
+**When to delegate here:** Agent form of the gan-harness-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Rapid, adversarial-loop prototyping and design iteration: a Plan → Generate → Evaluate cycle where a generator builds a live app and an evaluator drives it in a real browser, scores it against a….
 
 This agent delegates further on Claude Code (its canonical `tools:` includes `Agent`) — on Hermes, `role="orchestrator"` only takes effect if `delegation.max_spawn_depth` is set to 2 or higher in Hermes' own config; at the default of 1, Hermes silently forces it back to `"leaf"` and this agent must do the sub-delegation's work inline instead. Check with `hermes config get delegation.max_spawn_depth` before relying on nested delegation here.
 
@@ -1318,7 +1318,7 @@ delegate_task(
 
 ## git-and-release-ops-edho-ferdian
 
-**When to delegate here:** Agent form of the git-and-release-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Git and forge workflow — branching strategy selection, conventional commit format, merge versus rebase, conflict resolution, PR readiness and triage, issue/backlog classification, CI failure triage, and release/changelog cutting. Trigger phrases: "strategi branch", "format commit", "rebase atau merge", "PR ini siap merge belum", "triase issue", "bikin release", "CI merah".
+**When to delegate here:** Agent form of the git-and-release-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Git and forge workflow — branching strategy selection, conventional commit format, merge versus rebase, conflict resolution, PR readiness and triage, issue/backlog classification, CI failure triage….
 
 ```python
 delegate_task(
@@ -1364,7 +1364,7 @@ delegate_task(
 
 ## language-code-review-edho-ferdian
 
-**When to delegate here:** Agent form of the language-code-review-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Language- and framework-specific code review lenses layered on top of the general four-domain review in code-review-edho-ferdian — idioms, framework security misconfigurations, ORM/query correctness, performance traps, and testing conventions, auto-detected from project files across ~20 stacks (React, Python, FastAPI, Django, Go, Rust, Vue, Angular, NestJS, PHP/Laravel, Java/Spring, Quarkus, Kotlin, Swift, React Native, Flutter, Android, .NET, C++, PyTorch, ArkTS, Perl, Ruby, and more). Use whenever a review touches a specific language/framework and the generic checklist isn't enough — "review kode Go/Python/React ini", "audit Django models", "cek FastAPI endpoint ini", "review kode Kotlin/Swift/Ruby ini", or when the user names a stack while asking for review. Loads only… (see the skill for the full trigger list)
+**When to delegate here:** Agent form of the language-code-review-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Language- and framework-specific code review lenses layered on top of the general four-domain review in code-review-edho-ferdian — idioms, framework security misconfigurations, ORM/query correctness….
 
 ```python
 delegate_task(
@@ -1410,7 +1410,7 @@ delegate_task(
 
 ## legal-ops-edho-ferdian
 
-**When to delegate here:** Agent form of the legal-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Reproducible agreement paperwork for a solo operator or small team: build review drafts of a master/framework agreement (NDA, referral or sourcing fee, non-circumvention, master services) from one template plus a small JSON spec per counterparty, add deals later by Schedule A notice within the executed agreement's authority, and prepare e-signature envelopes by browser automation with calibrated numeric field placement and a hard save-as-draft gate. Not legal advice — output is always a DRAFT for counsel review. Use when the user says "bikin perjanjian dari template", "master agreement", "NDA untuk banyak partner", "siapkan envelope e-sign", "tambah deal ke Schedule A", or "otomasi tanda tangan elektronik".
+**When to delegate here:** Agent form of the legal-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Reproducible agreement paperwork for a solo operator or small team: build review drafts of a master/framework agreement (NDA, referral or sourcing fee, non-circumvention, master services) from one….
 
 ```python
 delegate_task(
@@ -1456,7 +1456,7 @@ delegate_task(
 
 ## marketing-edho-ferdian
 
-**When to delegate here:** Agent form of the marketing-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Campaign/positioning strategy, brand-voice definition, landing-page and email copywriting patterns, and a lightweight competitive/market- positioning framework — scoped for a solo developer marketing their own open-source tools or side projects, not a full marketing agency replacement. Use when the user wants to plan a launch, write landing-page or email copy, define a brand voice, or position a product against competitors; whenever they say "marketing", "positioning", "brand voice", "landing page copy", "email sequence", "kampanye", "strategi pemasaran", "gimana cara jual ini", or wants to promote a tool/project they built.
+**When to delegate here:** Agent form of the marketing-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Campaign/positioning strategy, brand-voice definition, landing-page and email copywriting patterns, and a lightweight competitive/market- positioning framework — scoped for a solo developer marketing….
 
 ```python
 delegate_task(
@@ -1502,7 +1502,7 @@ delegate_task(
 
 ## networking-ops-edho-ferdian
 
-**When to delegate here:** Agent form of the networking-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Networking skill covering five modes — reviewing a router/switch config for security and correctness, designing a network (homelab or enterprise/multi-site), diagnosing a live symptom via a read-only OSI-layer methodology, running device commands and change windows safely (Cisco IOS-flavoured), and homelab build-out (remote access, local DNS, Netmiko automation with preflight validation). Use whenever the user pastes a config to review ("cek config Cisco ini", "audit ACL ini"), wants a network designed or segmented ("rancang jaringan homelab", "design VLAN segmentation"), is troubleshooting connectivity/DNS/routing/BGP symptoms ("kenapa internet lambat", "site can't reach site"), needs to run or script a device change ("push this ACL via SSH", "automate this across 40… (see the skill for the full trigger list)
+**When to delegate here:** Agent form of the networking-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Networking skill covering five modes — config review, network design (homelab or enterprise/multi-site), read-only OSI-layer diagnosis, device operations/change windows (Cisco IOS-flavoured), and….
 
 ```python
 delegate_task(
@@ -1548,7 +1548,7 @@ delegate_task(
 
 ## opensource-release-edho-ferdian
 
-**When to delegate here:** Agent form of the opensource-release-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Fork, sanitize, and package a project for open-source release in three phases — extract secrets into .env.example rather than deleting them, run an independent adversarial audit that never trusts the fork phase's own report (PASS/FAIL/PASS-WITH-WARNINGS, hard-gates packaging on FAIL), then generate CLAUDE.md/README/LICENSE/CONTRIBUTING/issue-templates. Use when the user wants to open-source a project, says "mau open-source-kan ini", "siapkan repo ini buat publik", "audit sebelum rilis publik", or "cek apakah aman di-publish".
+**When to delegate here:** Agent form of the opensource-release-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Fork, sanitize, and package a project for open-source release in three phases — extract secrets into .env.example rather than deleting them, run an independent adversarial audit that never trusts the….
 
 This agent delegates further on Claude Code (its canonical `tools:` includes `Agent`) — on Hermes, `role="orchestrator"` only takes effect if `delegation.max_spawn_depth` is set to 2 or higher in Hermes' own config; at the default of 1, Hermes silently forces it back to `"leaf"` and this agent must do the sub-delegation's work inline instead. Check with `hermes config get delegation.max_spawn_depth` before relying on nested delegation here.
 
@@ -1668,7 +1668,7 @@ delegate_task(
 
 ## performance-audit-edho-ferdian
 
-**When to delegate here:** Agent form of the performance-audit-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Measure-then-fix performance workflow — runs real profiling/measurement tooling (Lighthouse, bundle analyzers, heap-snapshot diffing, Node/browser profilers, DB EXPLAIN) to get a baseline, diagnoses against Core Web Vitals budgets and algorithmic-complexity patterns, applies a fix, then re-measures the delta against the budget. Use this whenever the user wants a performance problem actually diagnosed and fixed with real numbers — "app terasa lambat", "kenapa lemot", "optimize performance", "reduce bundle size", "find memory leak", "Lighthouse audit", "why is this slow" — not for a static read-time performance guess (see the scope note below for the boundary with code-review-edho-ferdian's PERF domain).
+**When to delegate here:** Agent form of the performance-audit-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Measure-then-fix performance workflow — runs real profiling/measurement tooling (Lighthouse, bundle analyzers, heap-snapshot diffing, Node/browser profilers, DB EXPLAIN) to get a baseline, diagnoses….
 
 ```python
 delegate_task(
@@ -1785,7 +1785,7 @@ delegate_task(
 
 ## research-ops-edho-ferdian
 
-**When to delegate here:** Agent form of the research-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Evidence-first research workflow — classify what kind of research the question actually needs, take the lightest evidence path that answers it, synthesize multiple sources into a cited report, and label every claim by evidence type (sourced fact / user-supplied / inference / recommendation) so a reader can tell what is proven from what is guessed. Use whenever the user says "riset", "cari tahu", "cek fakta", "bandingkan X vs Y", "apa yang terbaru soal", "research this", "deep dive", "investigate", or asks a question whose answer depends on current public information rather than on this repo's own code. For competitor benchmarking and positioning research, use `marketing-edho-ferdian/references/market-and-competitor-research.md` instead — it consumes this skill's evidence method rather than repeating it.
+**When to delegate here:** Agent form of the research-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Evidence-first research workflow — classify what kind of research the question actually needs, take the lightest evidence path that answers it, synthesize multiple sources into a cited report, and….
 
 This agent delegates further on Claude Code (its canonical `tools:` includes `Agent`) — on Hermes, `role="orchestrator"` only takes effect if `delegation.max_spawn_depth` is set to 2 or higher in Hermes' own config; at the default of 1, Hermes silently forces it back to `"leaf"` and this agent must do the sub-delegation's work inline instead. Check with `hermes config get delegation.max_spawn_depth` before relying on nested delegation here.
 
@@ -1910,7 +1910,7 @@ delegate_task(
 
 ## safe-execution-edho-ferdian
 
-**When to delegate here:** Agent form of the safe-execution-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Mechanical gates around agent execution, as a complement to this ecosystem's reasoning gates: a pre-action fact-forcing gate that demands concrete investigation before the first edit to a file, a destructive- command guard, a write-scope freeze for autonomous or parallel agent runs, and a stop-gate that blocks "done" until the memory files were actually touched. Use when running agents autonomously or in parallel, when working against production, or when the user says "jangan sampai kehapus", "agent-nya nulis di luar scope", "pastiin dia ngecek dulu".
+**When to delegate here:** Agent form of the safe-execution-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Mechanical gates around agent execution, as a complement to this ecosystem's reasoning gates: a pre-action fact-forcing gate that demands concrete investigation before the first edit to a file, a….
 
 ```python
 delegate_task(
@@ -1956,7 +1956,7 @@ delegate_task(
 
 ## security-review-edho-ferdian
 
-**When to delegate here:** Agent form of the security-review-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Single source of truth for security review criteria across the Edho Ferdian ecosystem — general OWASP-style checklist (SEC-01..19), stack-specific security items (React, Python, FastAPI, Django, PHP/Laravel, Java/Spring Boot, Perl, Ruby/Rails, ArkTS/HarmonyOS, and Solidity/EVM smart contracts), and domain-specific security items (database RLS/privilege, healthcare PHI, LLM/agent pipelines, ML, containers, cloud/IaC/CI-CD, agent-harness config). Runs STANDALONE for a security-only pass ("cek keamanan kode ini", "security audit", "find vulnerabilities") OR as the delegated depth layer for Domain 2 (SEC) of code-review-edho-ferdian's full review. Every other skill in this ecosystem that touches security cross-references this skill instead of holding its own copy — this is the only… (see the skill for the full trigger list)
+**When to delegate here:** Agent form of the security-review-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Single source of truth for security review criteria across the Edho Ferdian ecosystem — general OWASP-style checklist (SEC-01..19), plus stack-specific and domain-specific security items (see the….
 
 This agent delegates further on Claude Code (its canonical `tools:` includes `Agent`) — on Hermes, `role="orchestrator"` only takes effect if `delegation.max_spawn_depth` is set to 2 or higher in Hermes' own config; at the default of 1, Hermes silently forces it back to `"leaf"` and this agent must do the sub-delegation's work inline instead. Check with `hermes config get delegation.max_spawn_depth` before relying on nested delegation here.
 
@@ -2014,7 +2014,7 @@ delegate_task(
 
 ## seo-audit-edho-ferdian
 
-**When to delegate here:** Agent form of the seo-audit-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Technical + on-page SEO audit workflow — crawl/gather site signals, check them against a real technical-SEO checklist (crawlability, indexability, structured data, meta tags, sitemap/robots.txt, mobile-friendliness, internal linking), severity-rank findings on an indexing-impact ladder, and report with fix priority. Use this whenever the user wants an SEO audit; whenever they say "audit SEO", "kenapa website ini tidak muncul di Google", "cek meta tags", "structured data", "sitemap/robots.txt", "cek SEO", "SEO check" — or when reviewing any public-facing web project. Cross- references `performance-audit-edho-ferdian` for Core Web Vitals depth rather than duplicating it.
+**When to delegate here:** Agent form of the seo-audit-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Technical + on-page SEO audit workflow — crawl/gather site signals, check them against a real technical-SEO checklist (crawlability, indexability, structured data, meta tags, sitemap/robots.txt….
 
 This agent delegates further on Claude Code (its canonical `tools:` includes `Agent`) — on Hermes, `role="orchestrator"` only takes effect if `delegation.max_spawn_depth` is set to 2 or higher in Hermes' own config; at the default of 1, Hermes silently forces it back to `"leaf"` and this agent must do the sub-delegation's work inline instead. Check with `hermes config get delegation.max_spawn_depth` before relying on nested delegation here.
 
@@ -2070,7 +2070,7 @@ delegate_task(
 
 ## skill-audit-edho-ferdian
 
-**When to delegate here:** Agent form of the skill-audit-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Audit this ecosystem's own `skills/` directory for staleness, redundancy, broken cross-references, and description-quality problems — increasingly important as this ecosystem grows past a dozen interlinked skills. Use when the user says "audit skill saya", "cek skill yang sudah dibuat", "ada yang redundan gak", "skill mana yang basi", or periodically after a batch of new skills is added. Scope is this repo's own `skills/` content and quality only — NOT the `~/.claude` environment/config (that's `config-hygiene-edho-ferdian`), even for overlapping phrasing like "kebanyakan skill" or "audit setup gue".
+**When to delegate here:** Agent form of the skill-audit-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Audit this ecosystem's own `skills/` directory for staleness, redundancy, broken cross-references, and description-quality problems — increasingly important as this ecosystem grows past a dozen….
 
 ```python
 delegate_task(
@@ -2116,7 +2116,7 @@ delegate_task(
 
 ## skill-authoring-edho-ferdian
 
-**When to delegate here:** Agent form of the skill-authoring-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Discipline for creating and governing this ecosystem's own skills: search before building (local → marketplace → GitHub → web, with a security vet on anything external), write to a quality bar, measure whether a skill is actually obeyed rather than assuming it, promote recurring cross-skill principles up into rules, and package a finished skill into `dist/*.skill` for manual upload. Use when the user says "bikin skill baru", "ada skill buat X gak", "fork skill ini", "skill gue kepake gak sih", "package skill ini", "mau publish skill ini", "buatkan .skill-nya", or before adding anything to this repo's `skills/` or `dist/`.
+**When to delegate here:** Agent form of the skill-authoring-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Discipline for creating and governing this ecosystem's own skills: search before building (local → marketplace → GitHub → web, with a security vet on anything external), write to a quality bar….
 
 ```python
 delegate_task(
@@ -2162,7 +2162,7 @@ delegate_task(
 
 ## spec-mining-edho-ferdian
 
-**When to delegate here:** Agent form of the spec-mining-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Extract behavioral specifications from an existing codebase that has no written spec — mining a brownfield repo into a flat list of Requirements (WHEN/THEN) and Invariants (always-true), each anchored to the exact code location that enforces it, with machine-readable metadata (entities, enforced, depends_on) grounded in Salak's dependency graph when that tool is installed. Groups the codebase into capabilities first, then mines them one at a time using a bounded sample-and-expand read strategy — never reading a whole module blindly. Use when entering a project with code but no spec, when dev-kickoff-edho-ferdian Phase 0 reports a missing BEHAVIOR_SPEC role, or when the user says "ekstrak spec", "buat spec dari kode", "dokumentasikan behavior", "reverse-engineer the spec", or "repo… (see the skill for the full trigger list)
+**When to delegate here:** Agent form of the spec-mining-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Extract behavioral specifications from an existing codebase that has no written spec — mining a brownfield repo into a flat list of Requirements (WHEN/THEN) and Invariants (always-true), each….
 
 This agent delegates further on Claude Code (its canonical `tools:` includes `Agent`) — on Hermes, `role="orchestrator"` only takes effect if `delegation.max_spawn_depth` is set to 2 or higher in Hermes' own config; at the default of 1, Hermes silently forces it back to `"leaf"` and this agent must do the sub-delegation's work inline instead. Check with `hermes config get delegation.max_spawn_depth` before relying on nested delegation here.
 
@@ -2282,7 +2282,7 @@ delegate_task(
 
 ## system-design-edho-ferdian
 
-**When to delegate here:** Agent form of the system-design-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Mid-project architectural decision-making — Architecture Decision Records (ADRs), structured trade-off analysis, non-functional-requirements review, and scaling-tier planning for an existing system. Use for "desain arsitektur", "keputusan teknis besar", "bikin ADR", "trade-off antara X dan Y", "should I refactor this to microservices/monolith/event-driven", a scaling or capacity question, or any task from dev-kickoff-edho-ferdian that surfaces an uncovered ARCHITECTURE decision mid-project (not at kickoff — kickoff's own PDR process in Phase 0/1 handles that). Not for restating a single task's plan (that's dev-kickoff's PLAN stage) and not for reviewing code that already exists (that's code-review-edho-ferdian's Blueprint/Consistency domain).
+**When to delegate here:** Agent form of the system-design-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Mid-project architectural decision-making — Architecture Decision Records (ADRs), structured trade-off analysis, non-functional-requirements review, and scaling-tier planning for an existing system.
 
 ```python
 delegate_task(
@@ -2328,7 +2328,7 @@ delegate_task(
 
 ## test-authoring-edho-ferdian
 
-**When to delegate here:** Agent form of the test-authoring-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Guidance for WRITING unit and component tests well — React/Testing Library, Python/pytest, Go, and Vue, plus stack-agnostic regression-test patterns. A companion to code-review-edho-ferdian's test-quality-lens (which judges tests after they're written) and dev-kickoff-edho-ferdian's TEST stage (which mandates writing a failing test first but doesn't teach test-writing craft). Trigger phrases: "tulis test untuk component ini", "bagaimana test hook ini", "test yang bagus untuk fitur X", "tulis test pytest/Go/Vue untuk ini", or during dev-kickoff's TEST stage when the task needs concrete authoring guidance beyond "write a failing test."
+**When to delegate here:** Agent form of the test-authoring-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Guidance for WRITING unit and component tests well — React/Testing Library, Python/pytest, Go, and Vue, plus stack-agnostic regression-test patterns.
 
 ```python
 delegate_task(
@@ -2374,7 +2374,7 @@ delegate_task(
 
 ## video-style-edho-ferdian
 
-**When to delegate here:** Agent form of the video-style-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Capture the look and pacing of reference videos as measurements, then reproduce them: distill references into a style pack (colour grade per luminance zone baked to a 3D LUT, cut rhythm as a shot-length distribution, overlay plates, hero stills, a grounded text spec), then generate or gather footage, grade it to the pack, cut it at the measured cadence, composite overlays, and verify the result numerically before handing an editable timeline to Resolve or another NLE. Use when the user says "tiru look video ini", "samakan grading", "bikin video dengan gaya referensi", "capture the vibe", "LUT dari referensi", "cut rhythm", "supplement footage", or wants AI-generated clips cut into a real edit.
+**When to delegate here:** Agent form of the video-style-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Capture the look and pacing of reference videos as measurements, then reproduce them: distill references into a style pack (colour grade per luminance zone baked to a 3D LUT, cut rhythm as a….
 
 ```python
 delegate_task(

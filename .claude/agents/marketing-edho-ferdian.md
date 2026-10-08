@@ -1,6 +1,6 @@
 ---
 name: marketing-edho-ferdian
-description: Agent form of the marketing-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Campaign/positioning strategy, brand-voice definition, landing-page and email copywriting patterns, and a lightweight competitive/market- positioning framework — scoped for a solo developer marketing their own open-source tools or side projects, not a full marketing agency replacement. Use when the user wants to plan a launch, write landing-page or email copy, define a brand voice, or position a product against competitors; whenever they say "marketing", "positioning", "brand voice", "landing page copy", "email sequence", "kampanye", "strategi pemasaran", "gimana cara jual ini", or wants to promote a tool/project they built.
+description: Agent form of the marketing-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Campaign/positioning strategy, brand-voice definition, landing-page and email copywriting patterns, and a lightweight competitive/market- positioning framework — scoped for a solo developer marketing….
 tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - marketing-edho-ferdian
