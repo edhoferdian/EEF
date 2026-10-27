@@ -42,7 +42,15 @@ const HOOKS = {
     src: path.join(SKILLS_DIR, "config-hygiene-edho-ferdian", "hooks", "log-subagent-run.js"),
     event: "SubagentStop",
   },
+  // Not a hook event: settings.statusLine is a single slot, so it is only
+  // ever filled when empty — an existing status line is the user's.
+  statusline: {
+    file: "statusline-usage.js",
+    src: path.join(SKILLS_DIR, "config-hygiene-edho-ferdian", "hooks", "statusline-usage.js"),
+    event: "statusLine",
+  },
 };
+const isStatusLine = (hook) => hook.event === "statusLine";
 
 const claudeDir = () => path.join(os.homedir(), ".claude");
 const claudeSkillsDir = () => process.env.CLAUDE_SKILLS_DIR || path.join(claudeDir(), "skills");
@@ -193,7 +201,7 @@ const TARGETS = {
   },
 
   "claude-hooks": {
-    label: "Claude Code hooks (fs-guard: blocks root-wide searches, asks before destructive commands; telemetry: logs subagent runs) — registered in settings.json, other keys untouched; --only picks one",
+    label: "Claude Code hooks (fs-guard: blocks root-wide searches, asks before destructive commands; telemetry: logs subagent runs; statusline: quota/context/agents, only if no statusLine is set) — registered in settings.json, other keys untouched; --only picks one",
     scope: "global (or $CLAUDE_HOOKS_DIR + $CLAUDE_SETTINGS_FILE)",
     install(_skillNames, opts) {
       const names = opts.only ? [opts.only] : Object.keys(HOOKS);
@@ -547,6 +555,11 @@ function readSettings(settingsPath) {
  * so a hook someone already wired up by hand is never added a second time.
  */
 function findHookRegistrations(settings, hook) {
+  if (isStatusLine(hook)) {
+    const line = settings.statusLine;
+    const command = line && typeof line.command === "string" ? line.command : null;
+    return command && command.replace(/\\/g, "/").includes(hook.file) ? [{ command }] : [];
+  }
   const groups = settings.hooks && Array.isArray(settings.hooks[hook.event]) ? settings.hooks[hook.event] : [];
   const found = [];
   for (const group of groups) {
@@ -580,6 +593,7 @@ function mergeClaudeHooks(names, hooksDir, settingsPath) {
     return;
   }
   for (const name of names) {
+    if (isStatusLine(HOOKS[name])) continue;
     const event = hooksKey[HOOKS[name].event];
     if (event !== undefined && !Array.isArray(event)) {
       console.error(`Error: "hooks.${HOOKS[name].event}" in ${settingsPath} is not an array — refusing to touch it.`);
@@ -590,6 +604,7 @@ function mergeClaudeHooks(names, hooksDir, settingsPath) {
 
   fs.mkdirSync(hooksDir, { recursive: true });
   const added = [];
+  let statusLine = settings.statusLine;
   for (const name of names) {
     const hook = HOOKS[name];
     const dest = path.join(hooksDir, hook.file);
@@ -600,8 +615,14 @@ function mergeClaudeHooks(names, hooksDir, settingsPath) {
     console.log(`${fileState} hook file: ${name} -> ${dest}`);
 
     const command = hookCommand(hooksDir, hook);
-    const existing = findHookRegistrations({ hooks: hooksKey }, hook);
-    if (existing.some((r) => r.command === command)) {
+    const existing = findHookRegistrations({ hooks: hooksKey, statusLine }, hook);
+    if (isStatusLine(hook) && !existing.length && statusLine !== undefined) {
+      console.log(`Not registered: ${name} — statusLine is already set in ${settingsPath}; left as is (point it at ${dest} yourself to switch)`);
+    } else if (isStatusLine(hook) && !existing.length) {
+      statusLine = { type: "command", command };
+      added.push(name);
+      console.log(`Added registration: ${name} (statusLine)`);
+    } else if (existing.some((r) => r.command === command)) {
       console.log(`Already registered: ${name} (${hook.event})`);
     } else if (existing.length) {
       console.log(`Already registered: ${name} (${hook.event}) as \`${existing[0].command}\` — left as is`);
@@ -622,7 +643,9 @@ function mergeClaudeHooks(names, hooksDir, settingsPath) {
     console.log(`Backup: ${settingsPath}.eef-backup`);
   }
   fs.mkdirSync(path.dirname(settingsPath), { recursive: true });
-  fs.writeFileSync(settingsPath, JSON.stringify({ ...settings, hooks: hooksKey }, null, 2) + "\n", "utf8");
+  const next = { ...settings, ...(statusLine !== undefined ? { statusLine } : {}) };
+  if (settings.hooks !== undefined || Object.keys(hooksKey).length) next.hooks = hooksKey;
+  fs.writeFileSync(settingsPath, JSON.stringify(next, null, 2) + "\n", "utf8");
   console.log(`\nDone. ${added.length} hook(s) registered in ${settingsPath} (other keys untouched). Restart Claude Code to load them.`);
 }
 
@@ -922,7 +945,9 @@ Hooks (--target claude-hooks):
   --only <name>       install one hook: fs-guard (PreToolUse, blocks recursive searches
                       from / ~ or a drive root and asks before destructive commands
                       such as rm -rf or Remove-Item -Recurse) | telemetry (SubagentStop, logs each
-                      subagent run to ~/.claude/eef/subagent-runs.jsonl). Default: both.
+                      subagent run to ~/.claude/eef/subagent-runs.jsonl) | statusline
+                      (5h/7d quota, context, subagents, cost — set only when no
+                      statusLine exists). Default: all three.
                       Existing settings.json keys are kept; a hook already registered
                       (even by hand) is never added twice; an unparsable file is refused.
 

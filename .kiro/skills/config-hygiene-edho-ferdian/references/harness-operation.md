@@ -304,6 +304,28 @@ task was too large to hold, and the fix is to split it and write the
 constraints down (see `dev-kickoff-edho-ferdian`'s session-snapshot pattern),
 not to buy a bigger window.
 
+### 5.2 Quota in the status line — passive, never an interruption
+
+The exception to "no running number": the plan's own quota. On a claude.ai
+Pro/Max plan the scarce resource is the 5-hour and 7-day window, and it
+drains fastest exactly when nobody is looking — a session fanning out
+subagents for work it could do inline. A status line is the right surface
+for it because it interrupts nothing: it sits under the prompt and is read
+only when glanced at.
+
+`hooks/statusline-usage.js` in this skill prints the 5h/7d window
+percentages (with the 5h reset time), context used, the number of subagents
+this session has finished (from §4.4's telemetry log, when that hook is
+installed) and the session's estimated cost — each only when Claude Code
+supplies it. Install it with `npx eef-install --target claude-hooks --only
+statusline`; it sets `statusLine` in `~/.claude/settings.json` only when
+none is configured, and leaves an existing one alone. The status line is a
+terminal (CLI) surface; the desktop app shows its own usage view instead.
+
+Read it the way §4.4 reads telemetry: a 5h figure climbing several points
+per turn while `agents` climbs with it means the delegation rule is being
+ignored — fix the routing, not the plan size.
+
 ## 6. Permission posture
 
 - Widen permissions in the settings allowlist, deliberately and per-tool.

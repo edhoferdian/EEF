@@ -191,7 +191,13 @@ jobs:
             if(pre[0].hooks[0].command!=='echo mine') throw new Error('clobbered existing hook');
             if(pre.length!==2||pre[1].matcher!=='Bash|PowerShell') throw new Error('fs-guard missing or duplicated: '+JSON.stringify(pre));
             if(c.hooks.SubagentStop.length!==1||'matcher' in c.hooks.SubagentStop[0]) throw new Error('telemetry missing or duplicated');
+            if(!c.statusLine||!c.statusLine.command.includes('statusline-usage.js')) throw new Error('statusline not set');
           "
+          test -f $d/hooks/statusline-usage.js
+          echo '{"statusLine":{"type":"command","command":"mine"}}' > $d/own.json
+          CLAUDE_SETTINGS_FILE=$d/own.json node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks --only statusline
+          node -e "if(require('$d/own.json').statusLine.command!=='mine') throw new Error('clobbered an existing statusLine');"
+          echo '{"rate_limits":{"five_hour":{"used_percentage":12}}}' | NO_COLOR=1 node $d/hooks/statusline-usage.js | grep -q '^5h 12%'
           test -f $d/hooks/block-fs-wide-search.js
           test -f $d/hooks/log-subagent-run.js
           cmd=$(node -e "console.log(require('$d/settings.json').hooks.PreToolUse[1].hooks[0].command)")
