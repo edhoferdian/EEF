@@ -1,6 +1,6 @@
 ---
 name: e2e-testing-edho-ferdian
-description: Agent form of the e2e-testing-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. End-to-end testing for critical user journeys — the visual/browser-level layer that dev-kickoff-edho-ferdian's TEST stage explicitly defers to.
+description: Agent form of the e2e-testing-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. End-to-end testing for critical user journeys — the visual/browser-level layer that dev-kickoff-edho-ferdian's TEST stage explicitly defers to.
 tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - e2e-testing-edho-ferdian

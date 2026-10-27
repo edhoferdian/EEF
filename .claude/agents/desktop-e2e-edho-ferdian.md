@@ -1,6 +1,6 @@
 ---
 name: desktop-e2e-edho-ferdian
-description: Agent form of the desktop-e2e-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. End-to-end testing for Windows native desktop applications (WPF, WinForms, Win32/MFC, Qt 5/6) using pywinauto over the Windows UI Automation API.
+description: Agent form of the desktop-e2e-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. End-to-end testing for Windows native desktop applications (WPF, WinForms, Win32/MFC, Qt 5/6) using pywinauto over the Windows UI Automation API.
 tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - desktop-e2e-edho-ferdian

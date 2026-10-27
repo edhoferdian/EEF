@@ -1,12 +1,12 @@
 ---
 name: code-quality-tooling-edho-ferdian
 description: >-
-  Agent form of the code-quality-tooling-edho-ferdian skill, same triggers —
-  delegate here when the task justifies isolated or parallel execution; a
-  small task should use the skill directly instead. Set up and configure the
-  automated code-quality gate around a project — Biome or ESLint+Prettier,
-  Husky Git hooks (pre-commit/pre-push), and lint-staged for JS/TS, plus the
-  equivalent tooling for….
+  Agent form of the code-quality-tooling-edho-ferdian skill. Use the skill
+  inline instead; delegate here only for large, isolated or parallel work,
+  never a small task. Set up and configure the automated code-quality gate
+  around a project — Biome or ESLint+Prettier, Husky Git hooks
+  (pre-commit/pre-push), and lint-staged for JS/TS, plus the equivalent
+  tooling for….
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: code-quality-tooling-edho-ferdian
 tier: light

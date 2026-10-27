@@ -1,5 +1,5 @@
 name = "system-design-edho-ferdian"
-description = "Agent form of the system-design-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Mid-project architectural decision-making — Architecture Decision Records (ADRs), structured trade-off analysis, non-functional-requirements review, and scaling-tier planning for an existing system."
+description = "Agent form of the system-design-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Mid-project architectural decision-making — Architecture Decision Records (ADRs), structured trade-off analysis, non-functional-requirements review, and scaling-tier planning for an existing system."
 model = "gpt-6-astra"
 model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"

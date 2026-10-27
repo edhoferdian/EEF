@@ -1,6 +1,6 @@
 ---
 name: "dead-code-cleanup-edho-ferdian"
-description: "Agent form of the dead-code-cleanup-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Staged dead-code removal workflow — detect (stack-appropriate tooling: knip/depcheck/ts-prune, vulture/deptry, cargo-udeps, deadcode, ...), classify by removal risk (SAFE/CAREFUL/RISKY), cross-check…."
+description: "Agent form of the dead-code-cleanup-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Staged dead-code removal workflow — detect (stack-appropriate tooling: knip/depcheck/ts-prune, vulture/deptry, cargo-udeps, deadcode, ...), classify by removal risk (SAFE/CAREFUL/RISKY), cross-check…."
 injectAgentsMd: true
 ---
 

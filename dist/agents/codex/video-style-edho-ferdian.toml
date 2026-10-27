@@ -1,5 +1,5 @@
 name = "video-style-edho-ferdian"
-description = "Agent form of the video-style-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Capture the look and pacing of reference videos as measurements, then reproduce them: distill references into a style pack (colour grade per luminance zone baked to a 3D LUT, cut rhythm as a…."
+description = "Agent form of the video-style-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Capture the look and pacing of reference videos as measurements, then reproduce them: distill references into a style pack (colour grade per luminance zone baked to a 3D LUT, cut rhythm as a…."
 model = "gpt-6.1-sol"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"

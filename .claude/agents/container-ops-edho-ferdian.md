@@ -1,6 +1,6 @@
 ---
 name: container-ops-edho-ferdian
-description: Agent form of the container-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Container setup, docker-compose design, multi-stage build optimization, and debugging guidance.
+description: Agent form of the container-ops-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Container setup, docker-compose design, multi-stage build optimization, and debugging guidance.
 tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - container-ops-edho-ferdian

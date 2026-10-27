@@ -1,12 +1,11 @@
 ---
 name: networking-ops-edho-ferdian
 description: >-
-  Agent form of the networking-ops-edho-ferdian skill, same triggers —
-  delegate here when the task justifies isolated or parallel execution; a
-  small task should use the skill directly instead. Networking skill
-  covering five modes — config review, network design (homelab or
-  enterprise/multi-site), read-only OSI-layer diagnosis, device
-  operations/change windows (Cisco IOS-flavoured), and….
+  Agent form of the networking-ops-edho-ferdian skill. Use the skill inline
+  instead; delegate here only for large, isolated or parallel work, never a
+  small task. Networking skill covering five modes — config review, network
+  design (homelab or enterprise/multi-site), read-only OSI-layer diagnosis,
+  device operations/change windows (Cisco IOS-flavoured), and….
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: networking-ops-edho-ferdian
 tier: standard

@@ -1,6 +1,6 @@
 ---
 name: git-and-release-ops-edho-ferdian
-description: Agent form of the git-and-release-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Git and forge workflow — branching strategy selection, conventional commit format, merge versus rebase, conflict resolution, PR readiness and triage, issue/backlog classification, CI failure triage….
+description: Agent form of the git-and-release-ops-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Git and forge workflow — branching strategy selection, conventional commit format, merge versus rebase, conflict resolution, PR readiness and triage, issue/backlog classification, CI failure triage….
 tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - git-and-release-ops-edho-ferdian

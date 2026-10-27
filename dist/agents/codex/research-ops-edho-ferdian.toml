@@ -1,5 +1,5 @@
 name = "research-ops-edho-ferdian"
-description = "Agent form of the research-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Evidence-first research workflow — classify what kind of research the question actually needs, take the lightest evidence path that answers it, synthesize multiple sources into a cited report, and…."
+description = "Agent form of the research-ops-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Evidence-first research workflow — classify what kind of research the question actually needs, take the lightest evidence path that answers it, synthesize multiple sources into a cited report, and…."
 model = "gpt-6.1-sol"
 model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"

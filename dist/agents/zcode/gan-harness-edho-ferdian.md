@@ -1,6 +1,6 @@
 ---
 name: "gan-harness-edho-ferdian"
-description: "Agent form of the gan-harness-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Rapid, adversarial-loop prototyping and design iteration: a Plan → Generate → Evaluate cycle where a generator builds a live app and an evaluator drives it in a real browser, scores it against a…."
+description: "Agent form of the gan-harness-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Rapid, adversarial-loop prototyping and design iteration: a Plan → Generate → Evaluate cycle where a generator builds a live app and an evaluator drives it in a real browser, scores it against a…."
 injectAgentsMd: true
 ---
 

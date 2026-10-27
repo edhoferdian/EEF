@@ -67,9 +67,8 @@ def agent_name(skill_name: str) -> str:
 
 
 PREFIX_TEMPLATE = (
-    "Agent form of the {name} skill, same triggers — delegate here when the "
-    "task justifies isolated or parallel execution; a small task should use "
-    "the skill directly instead. "
+    "Agent form of the {name} skill. Use the skill inline instead; delegate "
+    "here only for large, isolated or parallel work, never a small task. "
 )
 
 # The wrapped skill's own description — with its full trigger list — is

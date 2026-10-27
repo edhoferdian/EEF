@@ -1,12 +1,11 @@
 ---
 name: spec-mining-edho-ferdian
 description: >-
-  Agent form of the spec-mining-edho-ferdian skill, same triggers — delegate
-  here when the task justifies isolated or parallel execution; a small task
-  should use the skill directly instead. Extract behavioral specifications
-  from an existing codebase that has no written spec — mining a brownfield
-  repo into a flat list of Requirements (WHEN/THEN) and Invariants
-  (always-true), each….
+  Agent form of the spec-mining-edho-ferdian skill. Use the skill inline
+  instead; delegate here only for large, isolated or parallel work, never a
+  small task. Extract behavioral specifications from an existing codebase
+  that has no written spec — mining a brownfield repo into a flat list of
+  Requirements (WHEN/THEN) and Invariants (always-true), each….
 tools: Read, Grep, Glob, Bash, Write, Edit, Agent
 skills: spec-mining-edho-ferdian
 tier: standard

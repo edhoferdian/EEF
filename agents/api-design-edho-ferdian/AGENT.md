@@ -1,12 +1,11 @@
 ---
 name: api-design-edho-ferdian
 description: >-
-  Agent form of the api-design-edho-ferdian skill, same triggers — delegate
-  here when the task justifies isolated or parallel execution; a small task
-  should use the skill directly instead. Design and evolve API boundaries
-  and contracts — REST resource naming, status-code semantics, pagination
-  strategy, versioning policy, and the discipline of treating one contract
-  artifact….
+  Agent form of the api-design-edho-ferdian skill. Use the skill inline
+  instead; delegate here only for large, isolated or parallel work, never a
+  small task. Design and evolve API boundaries and contracts — REST resource
+  naming, status-code semantics, pagination strategy, versioning policy, and
+  the discipline of treating one contract artifact….
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: api-design-edho-ferdian
 tier: standard

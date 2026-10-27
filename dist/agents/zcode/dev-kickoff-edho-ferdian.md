@@ -1,6 +1,6 @@
 ---
 name: "dev-kickoff-edho-ferdian"
-description: "Agent form of the dev-kickoff-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Kickoff and execute a development project from ANY specification or planning documents (PRD, SRS, WBS, tech spec, RFC, ADRs, and more — see the Phase 0 role table below for the full list)."
+description: "Agent form of the dev-kickoff-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Kickoff and execute a development project from ANY specification or planning documents (PRD, SRS, WBS, tech spec, RFC, ADRs, and more — see the Phase 0 role table below for the full list)."
 injectAgentsMd: true
 ---
 

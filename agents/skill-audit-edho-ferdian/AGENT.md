@@ -1,12 +1,11 @@
 ---
 name: skill-audit-edho-ferdian
 description: >-
-  Agent form of the skill-audit-edho-ferdian skill, same triggers — delegate
-  here when the task justifies isolated or parallel execution; a small task
-  should use the skill directly instead. Audit this ecosystem's own
-  `skills/` directory for staleness, redundancy, broken cross-references,
-  and description-quality problems — increasingly important as this
-  ecosystem grows past a dozen….
+  Agent form of the skill-audit-edho-ferdian skill. Use the skill inline
+  instead; delegate here only for large, isolated or parallel work, never a
+  small task. Audit this ecosystem's own `skills/` directory for staleness,
+  redundancy, broken cross-references, and description-quality problems —
+  increasingly important as this ecosystem grows past a dozen….
 tools: Read, Grep, Glob, Bash
 skills: skill-audit-edho-ferdian
 tier: standard

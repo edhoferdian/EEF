@@ -1,6 +1,6 @@
 ---
 name: security-review-edho-ferdian
-description: Agent form of the security-review-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Single source of truth for security review criteria across the Edho Ferdian ecosystem — general OWASP-style checklist (SEC-01..19), plus stack-specific and domain-specific security items (see the….
+description: Agent form of the security-review-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Single source of truth for security review criteria across the Edho Ferdian ecosystem — general OWASP-style checklist (SEC-01..19), plus stack-specific and domain-specific security items (see the….
 tools: Read, Grep, Glob, Bash, Agent, Skill
 skills:
   - security-review-edho-ferdian

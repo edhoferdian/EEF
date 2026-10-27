@@ -1,12 +1,12 @@
 ---
 name: counterparty-comms-edho-ferdian
 description: >-
-  Agent form of the counterparty-comms-edho-ferdian skill, same triggers —
-  delegate here when the task justifies isolated or parallel execution; a
-  small task should use the skill directly instead. Contract for an agent
-  that talks to external counterparties (customers, suppliers, partners) in
-  shared channels, group chats, DMs, or email: who it may speak to and when
-  (audience classification….
+  Agent form of the counterparty-comms-edho-ferdian skill. Use the skill
+  inline instead; delegate here only for large, isolated or parallel work,
+  never a small task. Contract for an agent that talks to external
+  counterparties (customers, suppliers, partners) in shared channels, group
+  chats, DMs, or email: who it may speak to and when (audience
+  classification….
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: counterparty-comms-edho-ferdian
 tier: standard
