@@ -179,7 +179,7 @@ const TARGETS = {
       if (!roster) return;
       const route = profileRoute(opts, "claude");
       if (route === undefined) return;
-      copyAgentFiles(path.join(PKG_ROOT, ".claude", "agents"), destRoot, ".md", route && withClaudeModel(route), roster);
+      copyAgentFiles(path.join(AGENTS_DIST_DIR, "claude"), destRoot, ".md", route && withClaudeModel(route), roster);
     },
   },
 
@@ -750,7 +750,7 @@ function doctor() {
 
   // Agents: compare without model/effort (those are the profile's), then infer the profile.
   const agentsDir = claudeAgentsDir();
-  const agentsSrc = path.join(PKG_ROOT, ".claude", "agents");
+  const agentsSrc = path.join(AGENTS_DIST_DIR, "claude");
   const agentFiles = fs.readdirSync(agentsSrc).filter((f) => f.endsWith(".md")).sort();
   const agents = compareFiles(
     agentFiles.map((f) => [f, path.join(agentsSrc, f)]),
@@ -869,7 +869,7 @@ function update(opts) {
 
   // Agents: replace the body, keep each installed file's own model/effort.
   const agentsDir = claudeAgentsDir();
-  const agentsSrc = path.join(PKG_ROOT, ".claude", "agents");
+  const agentsSrc = path.join(AGENTS_DIST_DIR, "claude");
   const agentFiles = fs.readdirSync(agentsSrc).filter((f) => f.endsWith(".md")).sort();
   const agents = compareFiles(
     agentFiles.map((f) => [f, path.join(agentsSrc, f)]),

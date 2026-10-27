@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate .claude/agents/*.md — one file per canonical agent under
+"""Generate dist/agents/claude/*.md — one file per canonical agent under
 agents/, in Claude Code's own native subagent format (frontmatter: name,
 description, tools, skills, model, effort; body: system prompt).
 
@@ -14,7 +14,7 @@ agents/model-profiles.json (D-060). `eef-install --profile` rewrites those
 two lines at install time for the other profiles.
 
 Usage:
-    python scripts/export_agents_claude.py            # write .claude/agents/*.md
+    python scripts/export_agents_claude.py            # write dist/agents/claude/*.md
     python scripts/export_agents_claude.py --check     # exit 1 if stale
 """
 import argparse
@@ -22,7 +22,11 @@ import sys
 
 from lib_agents import REPO_ROOT, Agent, load_agents, load_profiles, resolve_model
 
-DEST_DIR = REPO_ROOT / ".claude" / "agents"
+# Not .claude/agents/: Claude Code loads that folder as this repo's own
+# project agents, so every session working on EEF read all 46 agent
+# descriptions whatever roster the user installed. eef-install copies
+# from here into ~/.claude/agents/.
+DEST_DIR = REPO_ROOT / "dist" / "agents" / "claude"
 
 
 # Claude Code-only additions, kept out of the canonical AGENT.md so other
@@ -114,9 +118,9 @@ def main() -> int:
                     print(f"Removed orphaned: {existing.relative_to(REPO_ROOT)}")
 
     if args.check:
-        print(".claude/agents/ is in sync." if ok else "\nRun: python scripts/export_agents_claude.py")
+        print("dist/agents/claude/ is in sync." if ok else "\nRun: python scripts/export_agents_claude.py")
     else:
-        print(f"Done. {len(wanted)} agent(s) written to .claude/agents/.")
+        print(f"Done. {len(wanted)} agent(s) written to dist/agents/claude/.")
 
     return 0 if ok else 1
 

@@ -270,7 +270,7 @@ npx eef-install --target claude-agents --roster inti                # only the i
 npx eef-install --target opencode-agents --models ./eef-models.json # your own model ID per tier (required for OpenCode/ZCode, optional override elsewhere)
 ```
 
-- **[.claude/agents/](.claude/agents/)** — Claude Code's own native
+- **[dist/agents/claude/](dist/agents/claude/)** — Claude Code's own native
   subagent format; a straight 1:1 mapping since `AGENT.md` already *is*
   that format. Regenerate: `python scripts/export_agents_claude.py`.
 - **dist/agents/codex/** — one `.toml` per agent in Codex's custom-agent
@@ -547,7 +547,7 @@ the harness, and mostly needs no explicit invocation:
   first?** [CATALOG.md](CATALOG.md) lists all of them with a one-line
   purpose and a "use when" — skim it instead of guessing from a folder
   name in `skills/`.
-- **Agents** (the `agents/`/`.claude/agents/` layer) are for delegation,
+- **Agents** (the `agents/`/`dist/agents/claude/` layer) are for delegation,
   not day-to-day use directly — see "Agent orchestration" above for when a
   task is substantial enough to hand off to one instead of just using the
   skill inline.
