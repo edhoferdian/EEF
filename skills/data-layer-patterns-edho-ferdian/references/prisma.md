@@ -27,12 +27,38 @@ The `globalThis` cache prevents duplicate pools across hot-reload cycles
 (Next.js, nodemon, ts-node-dev) — without it, dev-mode reloads leak
 connections until the database refuses new ones.
 
-**`connection_limit` and serverless.** In Lambda/Vercel/Cloudflare Workers,
-every function instance opens its own pool — cap each to 1 and put a real
-pooler in front:
+**Prisma 7 moved pooling to the driver.** From v7, relational databases
+run through a driver adapter by default (`@prisma/adapter-pg` for
+Postgres), and the pool belongs to that driver: `connection_limit`,
+`pool_timeout` and `connect_timeout` in the URL no longer do anything. Set
+them on the adapter instead — and note `pg` defaults to **no** connection
+timeout (v6 used 5s), so set one explicitly:
+
+```ts
+// Prisma 7 — the pool is configured on the driver adapter
+import { PrismaPg } from '@prisma/adapter-pg';
+import { PrismaClient } from './generated/prisma/client';
+
+const createPrismaClient = () =>
+  new PrismaClient({
+    adapter: new PrismaPg({
+      connectionString: process.env.DATABASE_URL,
+      max: 10,                        // was connection_limit
+      connectionTimeoutMillis: 5_000, // was connect_timeout / pool_timeout
+    }),
+  });
+```
+
+The connection URL the CLI uses for migrations lives in `prisma.config.ts`
+(`datasource.url`), not in the schema's `datasource` block.
+
+**Serverless (any version).** In Lambda/Vercel/Cloudflare Workers, every
+function instance opens its own pool — cap each to 1 and put a real pooler
+in front. On Prisma 6 that is the URL parameter below; on Prisma 7,
+`max: 1` on the adapter:
 
 ```bash
-# Embed params directly in the URL — string-concatenating them breaks if
+# Prisma 6 only — embed params directly in the URL — string-concatenating them breaks if
 # the URL already has query params (e.g. ?schema=public)
 DATABASE_URL="postgresql://user:pass@host/db?connection_limit=1&pool_timeout=20"
 
@@ -40,7 +66,9 @@ DATABASE_URL="postgresql://user:pass@host/db?connection_limit=1&pool_timeout=20"
 DATABASE_URL="postgresql://user:pass@host/db?pgbouncer=true&connection_limit=1"
 ```
 
-**pgBouncer compatibility mode** matters here: PgBouncer's transaction
+**pgBouncer compatibility mode** (Prisma 6's built-in engine; on Prisma 7
+the driver adapter's own driver decides prepared-statement use, so check
+that driver's docs instead) matters here: PgBouncer's transaction
 pooling mode doesn't support prepared statements the way Prisma expects by
 default — pass `pgbouncer=true` in the connection string so Prisma disables
 prepared-statement caching and stays compatible. Without it, expect
@@ -107,11 +135,11 @@ npx prisma migrate dev --name add_column
 # Safe everywhere except local solo dev
 npx prisma migrate deploy
 
-# Check drift without applying anything
+# Check drift without applying anything. Prisma 7 removed
+# --shadow-database-url: the shadow database is set in prisma.config.ts.
 npx prisma migrate diff \
   --from-migrations ./prisma/migrations \
-  --to-schema-datamodel ./prisma/schema.prisma \
-  --shadow-database-url "$SHADOW_DATABASE_URL"
+  --to-schema ./prisma/schema.prisma
 ```
 
 Set this up once at project init: CI/CD pipelines call `migrate deploy`
