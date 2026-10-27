@@ -64,6 +64,22 @@ Fact 4 looks like ceremony and is not: re-reading the literal instruction
 before acting is the cheapest defence against the drift where an agent, six
 tool calls deep, is solving an adjacent problem it invented.
 
+**Scale the facts to the change, not to the file.** Read the edit itself
+(old and new text) before choosing which facts it owes:
+
+| The edit… | Owes |
+|---|---|
+| changes only comments, whitespace or formatting — same code once those are stripped | nothing; proceed |
+| changes a body, but no declaration that other files can see | the call sites that rely on this behaviour (narrower than fact 1), plus fact 4 |
+| touches the public surface — an exported/`pub`/capitalised name, a signature, a module's export list, a whole-file Write | fact 1 and fact 2 in full |
+| touches data — a format, schema, query, date/time handling, file or network I/O | fact 3, whatever else it owes |
+| cannot be classified with confidence | every fact; uncertainty never earns a discount |
+
+Over-matching is fine (a body inside an exported object counts as surface);
+under-matching is the failure. This keeps the gate expensive exactly where
+the A/B bugs lived — data shape and public contracts — and nearly free for
+the edits that never carried them.
+
 Scope: **first touch per target, not every edit.** Once the facts are
 presented, further edits to that same file proceed freely. A gate that
 fires on every call gets disabled by lunchtime.
@@ -83,6 +99,12 @@ On a hit, produce before running:
 3. The user's current instruction, quoted verbatim.
 
 If step 2 cannot be written, that is the answer: do not run it.
+
+PowerShell has the same list under other names: `Remove-Item -Recurse`
+(and `rm`/`ri`/`del`/`rd` with `-Recurse` or `/s`), `Format-Volume`,
+`Clear-Disk`, `Clear-RecycleBin`. In Claude Code, the hook in the appendix
+turns every hit into a permission prompt the user must answer — even in
+auto mode — so the three facts above are what they read before approving.
 
 `--no-verify` is on the list deliberately — it is the mechanical form of
 "skip the checks", and it is exactly what an agent under time pressure
@@ -193,8 +215,10 @@ mechanical binding for Claude Code specifically — `PreToolUse` for gates
 Nothing above depends on this appendix existing.
 
 One gate ships ready-made: `hooks/block-fs-wide-search.js` (Node, no
-dependencies) denies root-level recursive searches for Gate 2 and fails
-open on anything it cannot parse. Install it with
+dependencies) covers Gate 2 for Bash and PowerShell: it denies root-level
+recursive searches outright, escalates every watched destructive command to
+an `ask` prompt (never a silent allow, never an outright deny — the user
+may well want it), and fails open on anything it cannot parse. Install it with
 `npx eef-install --target claude-hooks --only fs-guard`, which copies it to
 `~/.claude/hooks/` and adds the registration below to
 `~/.claude/settings.json` without touching anything else there (never twice,

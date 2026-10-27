@@ -40,9 +40,20 @@ const HOOKS = {
   telemetry: {
     file: "log-subagent-run.js",
     src: path.join(SKILLS_DIR, "config-hygiene-edho-ferdian", "hooks", "log-subagent-run.js"),
-    event: "SubagentStop",
+    // SubagentStop carries no model/duration/usage; the Agent tool's
+    // PostToolUse response does. A leftover SubagentStop entry is a no-op.
+    event: "PostToolUse",
+    matcher: "Agent",
+  },
+  // Not a hook event: settings.statusLine is a single slot, so it is only
+  // ever filled when empty — an existing status line is the user's.
+  statusline: {
+    file: "statusline-usage.js",
+    src: path.join(SKILLS_DIR, "config-hygiene-edho-ferdian", "hooks", "statusline-usage.js"),
+    event: "statusLine",
   },
 };
+const isStatusLine = (hook) => hook.event === "statusLine";
 
 const claudeDir = () => path.join(os.homedir(), ".claude");
 const claudeSkillsDir = () => process.env.CLAUDE_SKILLS_DIR || path.join(claudeDir(), "skills");
@@ -159,13 +170,15 @@ const TARGETS = {
   },
 
   "claude-agents": {
-    label: "Claude Code sub-agents (agents/*/AGENT.md roster; --profile picks the model mix)",
+    label: "Claude Code sub-agents (agents/*/AGENT.md roster; --profile picks the model mix, --roster inti keeps only isolation agents)",
     scope: "global (or $CLAUDE_AGENTS_DIR)",
     install(_skillNames, opts) {
       const destRoot = claudeAgentsDir();
+      const roster = rosterOf(opts);
+      if (!roster) return;
       const route = profileRoute(opts, "claude");
       if (route === undefined) return;
-      copyAgentFiles(path.join(PKG_ROOT, ".claude", "agents"), destRoot, ".md", route && withClaudeModel(route));
+      copyAgentFiles(path.join(PKG_ROOT, ".claude", "agents"), destRoot, ".md", route && withClaudeModel(route), roster);
     },
   },
 
@@ -193,7 +206,7 @@ const TARGETS = {
   },
 
   "claude-hooks": {
-    label: "Claude Code hooks (fs-guard: blocks root-wide searches; telemetry: logs subagent runs) — registered in settings.json, other keys untouched; --only picks one",
+    label: "Claude Code hooks (fs-guard: blocks root-wide searches, asks before destructive commands; telemetry: logs subagent runs; statusline: quota/context/agents, only if no statusLine is set) — registered in settings.json, other keys untouched; --only picks one",
     scope: "global (or $CLAUDE_HOOKS_DIR + $CLAUDE_SETTINGS_FILE)",
     install(_skillNames, opts) {
       const names = opts.only ? [opts.only] : Object.keys(HOOKS);
@@ -372,7 +385,7 @@ function loadTierModels(opts) {
  * destRoot, leaving every other file there untouched. transform(name,
  * content) — optional — rewrites a file's model fields before writing.
  */
-function copyAgentFiles(srcDir, destRoot, ext, transform) {
+function copyAgentFiles(srcDir, destRoot, ext, transform, roster = "lengkap") {
   if (!fs.existsSync(srcDir)) {
     console.error(`Error: ${srcDir} not found in this package — reinstall eef-install.`);
     process.exitCode = 1;
@@ -380,15 +393,46 @@ function copyAgentFiles(srcDir, destRoot, ext, transform) {
   }
   fs.mkdirSync(destRoot, { recursive: true });
   let count = 0;
+  let removed = 0;
   for (const file of fs.readdirSync(srcDir)) {
     if (!file.endsWith(ext)) continue;
     const content = fs.readFileSync(path.join(srcDir, file), "utf8");
     const name = file.slice(0, -ext.length);
-    fs.writeFileSync(path.join(destRoot, file), transform ? transform(name, content) : content, "utf8");
+    const dest = path.join(destRoot, file);
+    if (roster === "inti" && isWrapperAgent(content)) {
+      // Only this package's own wrapper, under its own name, is removed.
+      if (fs.existsSync(dest) && isWrapperAgent(fs.readFileSync(dest, "utf8"))) {
+        fs.rmSync(dest);
+        console.log(`Removed wrapper agent: ${file} (its skill runs inline)`);
+        removed++;
+      }
+      continue;
+    }
+    fs.writeFileSync(dest, transform ? transform(name, content) : content, "utf8");
     console.log(`Installed: ${file} -> ${destRoot}`);
     count++;
   }
-  console.log(`\nDone. ${count} agent(s) installed to ${destRoot} (other files there untouched).`);
+  const pruned = removed ? `, ${removed} wrapper agent(s) removed` : "";
+  console.log(`\nDone. ${count} agent(s) installed to ${destRoot}${pruned} (other files there untouched).`);
+}
+
+/**
+ * A wrapper agent only restates a skill as a delegate ("Agent form of the X
+ * skill"); the rest (critics, evaluators, workers) exist because they must
+ * run isolated. Every installed agent's description is read each session,
+ * so --roster inti drops the wrappers and keeps the isolation agents.
+ */
+const isWrapperAgent = (content) => /Agent form of the [a-z0-9-]+-edho-ferdian skill/.test(content);
+const ROSTERS = ["lengkap", "inti"];
+
+function rosterOf(opts) {
+  const roster = opts.roster || "lengkap";
+  if (!ROSTERS.includes(roster)) {
+    console.error(`Unknown roster '${roster}'. Valid rosters: ${ROSTERS.join(", ")}`);
+    process.exitCode = 2;
+    return null;
+  }
+  return roster;
 }
 
 // Shipped files may carry LF or CRLF (a checkout on Windows converts them),
@@ -547,6 +591,11 @@ function readSettings(settingsPath) {
  * so a hook someone already wired up by hand is never added a second time.
  */
 function findHookRegistrations(settings, hook) {
+  if (isStatusLine(hook)) {
+    const line = settings.statusLine;
+    const command = line && typeof line.command === "string" ? line.command : null;
+    return command && command.replace(/\\/g, "/").includes(hook.file) ? [{ command }] : [];
+  }
   const groups = settings.hooks && Array.isArray(settings.hooks[hook.event]) ? settings.hooks[hook.event] : [];
   const found = [];
   for (const group of groups) {
@@ -580,6 +629,7 @@ function mergeClaudeHooks(names, hooksDir, settingsPath) {
     return;
   }
   for (const name of names) {
+    if (isStatusLine(HOOKS[name])) continue;
     const event = hooksKey[HOOKS[name].event];
     if (event !== undefined && !Array.isArray(event)) {
       console.error(`Error: "hooks.${HOOKS[name].event}" in ${settingsPath} is not an array — refusing to touch it.`);
@@ -590,6 +640,7 @@ function mergeClaudeHooks(names, hooksDir, settingsPath) {
 
   fs.mkdirSync(hooksDir, { recursive: true });
   const added = [];
+  let statusLine = settings.statusLine;
   for (const name of names) {
     const hook = HOOKS[name];
     const dest = path.join(hooksDir, hook.file);
@@ -600,8 +651,14 @@ function mergeClaudeHooks(names, hooksDir, settingsPath) {
     console.log(`${fileState} hook file: ${name} -> ${dest}`);
 
     const command = hookCommand(hooksDir, hook);
-    const existing = findHookRegistrations({ hooks: hooksKey }, hook);
-    if (existing.some((r) => r.command === command)) {
+    const existing = findHookRegistrations({ hooks: hooksKey, statusLine }, hook);
+    if (isStatusLine(hook) && !existing.length && statusLine !== undefined) {
+      console.log(`Not registered: ${name} — statusLine is already set in ${settingsPath}; left as is (point it at ${dest} yourself to switch)`);
+    } else if (isStatusLine(hook) && !existing.length) {
+      statusLine = { type: "command", command };
+      added.push(name);
+      console.log(`Added registration: ${name} (statusLine)`);
+    } else if (existing.some((r) => r.command === command)) {
       console.log(`Already registered: ${name} (${hook.event})`);
     } else if (existing.length) {
       console.log(`Already registered: ${name} (${hook.event}) as \`${existing[0].command}\` — left as is`);
@@ -622,7 +679,9 @@ function mergeClaudeHooks(names, hooksDir, settingsPath) {
     console.log(`Backup: ${settingsPath}.eef-backup`);
   }
   fs.mkdirSync(path.dirname(settingsPath), { recursive: true });
-  fs.writeFileSync(settingsPath, JSON.stringify({ ...settings, hooks: hooksKey }, null, 2) + "\n", "utf8");
+  const next = { ...settings, ...(statusLine !== undefined ? { statusLine } : {}) };
+  if (settings.hooks !== undefined || Object.keys(hooksKey).length) next.hooks = hooksKey;
+  fs.writeFileSync(settingsPath, JSON.stringify(next, null, 2) + "\n", "utf8");
   console.log(`\nDone. ${added.length} hook(s) registered in ${settingsPath} (other keys untouched). Restart Claude Code to load them.`);
 }
 
@@ -701,9 +760,11 @@ function doctor() {
   if (!agents.present.length) {
     say("  not installed");
   } else {
-    say(`  ${agents.present.length}/${agentFiles.length} installed, ${agents.same.length} match this version`);
+    const lean = !agents.present.some((f) => isWrapperAgent(fs.readFileSync(path.join(agentsDir, f), "utf8")));
+    const missing = agents.missing.filter((f) => !(lean && isWrapperAgent(fs.readFileSync(path.join(agentsSrc, f), "utf8"))));
+    say(`  ${agents.present.length}/${agentFiles.length} installed, ${agents.same.length} match this version${lean ? " — roster: inti (skill wrappers left out on purpose)" : ""}`);
     if (agents.differs.length) say(`  differ (older EEF version, or edited locally): ${shortList(agents.differs.map((f) => f.slice(0, -3)))}`);
-    if (agents.missing.length) say(`  missing (new in this version?): ${shortList(agents.missing.map((f) => f.slice(0, -3)))}`);
+    if (missing.length) say(`  missing (new in this version?): ${shortList(missing.map((f) => f.slice(0, -3)))}`);
     const routing = loadRouting();
     const installed = agents.present
       .map((f) => [f.slice(0, -3), splitAgentModel(fs.readFileSync(path.join(agentsDir, f), "utf8"))])
@@ -833,7 +894,11 @@ function update(opts) {
         ? { model: installed[name].model, effort: installed[name].effort }
         : routing.agents[name] && routing.agents[name].profiles[profile].claude
     );
-    for (const file of [...agents.differs, ...agents.missing]) {
+    // An install with no wrapper agent left was made with --roster inti:
+    // keep it that way rather than re-adding the wrappers it dropped.
+    const lean = !agents.present.some((f) => isWrapperAgent(fs.readFileSync(path.join(agentsDir, f), "utf8")));
+    const wanted = agents.missing.filter((f) => !(lean && isWrapperAgent(fs.readFileSync(path.join(agentsSrc, f), "utf8"))));
+    for (const file of [...agents.differs, ...wanted]) {
       const name = file.slice(0, -3);
       console.log(`${act} agent: ${name}${installed[name] ? "" : ` (new, profile ${profile})`}`);
       if (!dry) fs.writeFileSync(path.join(agentsDir, file), keepModel(name, fs.readFileSync(path.join(agentsSrc, file), "utf8")), "utf8");
@@ -920,13 +985,20 @@ Env vars:
 
 Hooks (--target claude-hooks):
   --only <name>       install one hook: fs-guard (PreToolUse, blocks recursive searches
-                      from / ~ or a drive root) | telemetry (SubagentStop, logs each
-                      subagent run to ~/.claude/eef/subagent-runs.jsonl). Default: both.
+                      from / ~ or a drive root and asks before destructive commands
+                      such as rm -rf or Remove-Item -Recurse) | telemetry (PostToolUse on Agent, logs each
+                      subagent run to ~/.claude/eef/subagent-runs.jsonl) | statusline
+                      (5h/7d quota, context, subagents, cost — set only when no
+                      statusLine exists). Default: all three.
                       Existing settings.json keys are kept; a hook already registered
                       (even by hand) is never added twice; an unparsable file is refused.
 
 Model routing (sub-agent targets) — each agent has a tier (light/standard/deep):
   --profile <name>    claude-agents, codex-agents: hemat | seimbang (default) | maksimal
+  --roster <name>     claude-agents: lengkap (default) | inti — inti installs only the
+                      agents that must run isolated (critics, evaluators, workers) and
+                      removes this package's skill-wrapper agents; their skills run
+                      inline, and every session reads fewer agent descriptions.
   --models <file>     any *-agents target: JSON giving a model ID per tier, e.g.
                       {"light":"...","standard":"...","deep":"..."} — overrides the
                       profile's models (effort still follows the profile). Required
@@ -939,6 +1011,7 @@ Examples:
   eef-install --target cursor
   eef-install --target kiro --global
   eef-install --target claude-agents --profile hemat
+  eef-install --target claude-agents --roster inti
   eef-install --target codex-agents --global
   eef-install --target opencode-agents --models ./eef-models.json
   eef-install --target claude-hooks --only fs-guard
@@ -989,8 +1062,9 @@ function main() {
     profile: valueOf("--profile"),
     models: valueOf("--models"),
     only: valueOf("--only"),
+    roster: valueOf("--roster"),
   };
-  const valueFlags = ["--target", "--profile", "--models", "--only"];
+  const valueFlags = ["--target", "--profile", "--models", "--only", "--roster"];
   const skillNames = args.filter((a, i) => {
     if (a.startsWith("-")) return false;
     if (i > 0 && valueFlags.includes(args[i - 1])) return false;
@@ -998,6 +1072,9 @@ function main() {
   });
   if (opts.profile && !["claude-agents", "codex-agents"].includes(targetName)) {
     console.warn(`Note: --profile only applies to claude-agents and codex-agents; ignored for '${targetName}'.`);
+  }
+  if (opts.roster && targetName !== "claude-agents") {
+    console.warn(`Note: --roster only applies to claude-agents; ignored for '${targetName}'.`);
   }
   if (opts.models && !["claude-agents", "codex-agents", "opencode-agents", "zcode-agents"].includes(targetName)) {
     console.warn(`Note: --models only applies to the *-agents targets; ignored for '${targetName}'.`);

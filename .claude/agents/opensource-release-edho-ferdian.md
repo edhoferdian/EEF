@@ -1,6 +1,6 @@
 ---
 name: opensource-release-edho-ferdian
-description: Agent form of the opensource-release-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Fork, sanitize, and package a project for open-source release in three phases — extract secrets into .env.example rather than deleting them, run an independent adversarial audit that never trusts the….
+description: Agent form of the opensource-release-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Fork, sanitize, and package a project for open-source release in three phases — extract secrets into .env.example rather than deleting them, run an independent adversarial audit that never trusts the….
 tools: Read, Grep, Glob, Bash, Write, Edit, Agent, Skill
 skills:
   - opensource-release-edho-ferdian

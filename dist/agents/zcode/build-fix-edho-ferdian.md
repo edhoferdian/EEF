@@ -1,6 +1,6 @@
 ---
 name: "build-fix-edho-ferdian"
-description: "Agent form of the build-fix-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Diagnose and fix build, compile, dependency, and runtime-startup failures with minimal surgical diffs — never refactors, never architectural changes, always verified green."
+description: "Agent form of the build-fix-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Diagnose and fix build, compile, dependency, and runtime-startup failures with minimal surgical diffs — never refactors, never architectural changes, always verified green."
 injectAgentsMd: true
 ---
 

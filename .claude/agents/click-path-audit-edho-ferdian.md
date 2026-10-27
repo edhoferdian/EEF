@@ -1,6 +1,6 @@
 ---
 name: click-path-audit-edho-ferdian
-description: Agent form of the click-path-audit-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Trace every user-facing touchpoint (button, toggle, form submit) through its full state-change sequence to find defects that reading code line by line cannot see: handlers whose calls silently undo….
+description: Agent form of the click-path-audit-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Trace every user-facing touchpoint (button, toggle, form submit) through its full state-change sequence to find defects that reading code line by line cannot see: handlers whose calls silently undo….
 tools: Read, Grep, Glob, Bash, Agent, Skill
 skills:
   - click-path-audit-edho-ferdian

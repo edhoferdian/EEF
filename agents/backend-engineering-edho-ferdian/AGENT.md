@@ -1,12 +1,11 @@
 ---
 name: backend-engineering-edho-ferdian
 description: >-
-  Agent form of the backend-engineering-edho-ferdian skill, same triggers —
-  delegate here when the task justifies isolated or parallel execution; a
-  small task should use the skill directly instead. Authoring server-side
-  code between the API contract and the datastore — layering and
-  ports/adapters boundaries, error taxonomy and resilience (typed errors,
-  Result style, retry with backoff, circuit….
+  Agent form of the backend-engineering-edho-ferdian skill. Use the skill
+  inline instead; delegate here only for large, isolated or parallel work,
+  never a small task. Authoring server-side code between the API contract
+  and the datastore — layering and ports/adapters boundaries, error taxonomy
+  and resilience (typed errors, Result style, retry with backoff, circuit….
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: backend-engineering-edho-ferdian
 tier: standard

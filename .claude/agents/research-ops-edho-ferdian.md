@@ -1,6 +1,6 @@
 ---
 name: research-ops-edho-ferdian
-description: Agent form of the research-ops-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Evidence-first research workflow — classify what kind of research the question actually needs, take the lightest evidence path that answers it, synthesize multiple sources into a cited report, and….
+description: Agent form of the research-ops-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Evidence-first research workflow — classify what kind of research the question actually needs, take the lightest evidence path that answers it, synthesize multiple sources into a cited report, and….
 tools: Read, Grep, Glob, Bash, WebSearch, WebFetch, Write, Agent, Skill
 skills:
   - research-ops-edho-ferdian

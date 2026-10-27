@@ -1,6 +1,6 @@
 ---
 name: test-authoring-edho-ferdian
-description: Agent form of the test-authoring-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Guidance for WRITING unit and component tests well — React/Testing Library, Python/pytest, Go, and Vue, plus stack-agnostic regression-test patterns.
+description: Agent form of the test-authoring-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Guidance for WRITING unit and component tests well — React/Testing Library, Python/pytest, Go, and Vue, plus stack-agnostic regression-test patterns.
 tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - test-authoring-edho-ferdian

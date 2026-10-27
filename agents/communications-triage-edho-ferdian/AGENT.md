@@ -1,12 +1,11 @@
 ---
 name: communications-triage-edho-ferdian
 description: >-
-  Agent form of the communications-triage-edho-ferdian skill, same triggers
-  — delegate here when the task justifies isolated or parallel execution; a
-  small task should use the skill directly instead. Channel-agnostic
-  framework for triaging incoming messages (email, chat, Slack, LINE,
-  Messenger, or any other channel) into four priority tiers, drafting
-  replies that stay within a strict….
+  Agent form of the communications-triage-edho-ferdian skill. Use the skill
+  inline instead; delegate here only for large, isolated or parallel work,
+  never a small task. Channel-agnostic framework for triaging incoming
+  messages (email, chat, Slack, LINE, Messenger, or any other channel) into
+  four priority tiers, drafting replies that stay within a strict….
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: communications-triage-edho-ferdian
 tier: light

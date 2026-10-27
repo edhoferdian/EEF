@@ -1,12 +1,11 @@
 ---
 name: legal-ops-edho-ferdian
 description: >-
-  Agent form of the legal-ops-edho-ferdian skill, same triggers — delegate
-  here when the task justifies isolated or parallel execution; a small task
-  should use the skill directly instead. Reproducible agreement paperwork
-  for a solo operator or small team: build review drafts of a
-  master/framework agreement (NDA, referral or sourcing fee,
-  non-circumvention, master services) from one….
+  Agent form of the legal-ops-edho-ferdian skill. Use the skill inline
+  instead; delegate here only for large, isolated or parallel work, never a
+  small task. Reproducible agreement paperwork for a solo operator or small
+  team: build review drafts of a master/framework agreement (NDA, referral
+  or sourcing fee, non-circumvention, master services) from one….
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: legal-ops-edho-ferdian
 tier: deep

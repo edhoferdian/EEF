@@ -1,6 +1,6 @@
 ---
 name: config-hygiene-edho-ferdian
-description: Agent form of the config-hygiene-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Periodic garbage collection for Edho's own Claude Code environment (`~/.claude`): find redundant, stale, orphaned, or context-expensive items across skills, memory, hooks, permissions, MCP servers….
+description: Agent form of the config-hygiene-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Periodic garbage collection for Edho's own Claude Code environment (`~/.claude`): find redundant, stale, orphaned, or context-expensive items across skills, memory, hooks, permissions, MCP servers….
 tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - config-hygiene-edho-ferdian

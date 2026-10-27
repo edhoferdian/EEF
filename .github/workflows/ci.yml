@@ -107,6 +107,8 @@ jobs:
           node-version: "20"
       - name: npm pack produces a valid tarball
         run: npm pack --dry-run
+      - name: Shipped hooks decide each case as expected
+        run: node --test tests/*.test.js
       - name: --list returns one line per skill folder
         run: |
           count=$(node bin/eef.js --list | wc -l)
@@ -141,6 +143,20 @@ jobs:
           test "$(grep -c '^effort:' $d/dev-kickoff-edho-ferdian.md)" -eq 1
           grep -qx "effort: medium" $d/dev-kickoff-edho-ferdian.md
           if node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents --profile no-such-profile; then exit 1; fi
+      - name: install target=claude-agents --roster inti keeps only isolation agents, and update keeps it lean
+        run: |
+          d=/tmp/eef-cli-test-roster
+          export CLAUDE_AGENTS_DIR=$d CLAUDE_SKILLS_DIR=$d-skills CLAUDE_RULES_DIR=$d-rules CLAUDE_HOOKS_DIR=$d-hooks
+          node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents
+          echo "mine" > $d/my-own-agent.md
+          node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents --roster inti
+          test -f $d/code-critic-edho-ferdian.md
+          test ! -e $d/build-fix-edho-ferdian.md
+          test -f $d/my-own-agent.md
+          test "$(ls $d | grep -c edho-ferdian)" -eq "$(grep -L 'Agent form of the' $GITHUB_WORKSPACE/.claude/agents/*.md | wc -l)"
+          node "$GITHUB_WORKSPACE/bin/eef.js" update
+          test ! -e $d/build-fix-edho-ferdian.md
+          if node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents --roster no-such-roster; then exit 1; fi
       - name: update replaces only stale items and keeps each agent's model
         run: |
           d=/tmp/eef-cli-test-update
@@ -181,7 +197,7 @@ jobs:
           export CLAUDE_HOOKS_DIR=$d/hooks CLAUDE_SETTINGS_FILE=$d/settings.json
           echo '{"model":"opus","permissions":{"allow":["Bash(ls:*)"]},"hooks":{"PreToolUse":[{"matcher":"Edit","hooks":[{"type":"command","command":"echo mine"}]}]}}' > $d/settings.json
           node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks --only fs-guard
-          node -e "const c=require('$d/settings.json'); if(c.hooks.SubagentStop) throw new Error('--only fs-guard also added telemetry');"
+          node -e "const c=require('$d/settings.json'); if(c.hooks.PostToolUse||c.statusLine) throw new Error('--only fs-guard also added another hook');"
           node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks
           node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks
           node -e "
@@ -190,12 +206,22 @@ jobs:
             const pre=c.hooks.PreToolUse;
             if(pre[0].hooks[0].command!=='echo mine') throw new Error('clobbered existing hook');
             if(pre.length!==2||pre[1].matcher!=='Bash|PowerShell') throw new Error('fs-guard missing or duplicated: '+JSON.stringify(pre));
-            if(c.hooks.SubagentStop.length!==1||'matcher' in c.hooks.SubagentStop[0]) throw new Error('telemetry missing or duplicated');
+            const post=c.hooks.PostToolUse;
+            if(post.length!==1||post[0].matcher!=='Agent') throw new Error('telemetry missing or duplicated: '+JSON.stringify(post));
+            if(!c.statusLine||!c.statusLine.command.includes('statusline-usage.js')) throw new Error('statusline not set');
           "
+          test -f $d/hooks/statusline-usage.js
+          echo '{"statusLine":{"type":"command","command":"mine"}}' > $d/own.json
+          CLAUDE_SETTINGS_FILE=$d/own.json node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks --only statusline
+          node -e "if(require('$d/own.json').statusLine.command!=='mine') throw new Error('clobbered an existing statusLine');"
+          echo '{"rate_limits":{"five_hour":{"used_percentage":12}}}' | NO_COLOR=1 node $d/hooks/statusline-usage.js | grep -q '^5h 12%'
           test -f $d/hooks/block-fs-wide-search.js
           test -f $d/hooks/log-subagent-run.js
           cmd=$(node -e "console.log(require('$d/settings.json').hooks.PreToolUse[1].hooks[0].command)")
           echo '{"tool_name":"Bash","tool_input":{"command":"find / -name x"}}' | bash -c "$cmd" | grep -q '"permissionDecision":"deny"'
+          echo '{"tool_name":"PowerShell","tool_input":{"command":"Remove-Item dist -Recurse -Force"}}' | bash -c "$cmd" | grep -q '"permissionDecision":"ask"'
+          echo '{"tool_name":"Bash","tool_input":{"command":"git reset --hard"}}' | bash -c "$cmd" | grep -q '"permissionDecision":"ask"'
+          test -z "$(echo '{"tool_name":"PowerShell","tool_input":{"command":"Remove-Item a.txt -Force"}}' | bash -c "$cmd")"
           if node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks --only no-such-hook; then exit 1; fi
           echo '{ not json' > $d/settings.json
           if node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks; then exit 1; fi

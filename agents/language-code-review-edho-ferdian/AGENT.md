@@ -1,12 +1,12 @@
 ---
 name: language-code-review-edho-ferdian
 description: >-
-  Agent form of the language-code-review-edho-ferdian skill, same triggers —
-  delegate here when the task justifies isolated or parallel execution; a
-  small task should use the skill directly instead. Language- and
-  framework-specific code review lenses layered on top of the general
-  four-domain review in code-review-edho-ferdian — idioms, framework
-  security misconfigurations, ORM/query correctness….
+  Agent form of the language-code-review-edho-ferdian skill. Use the skill
+  inline instead; delegate here only for large, isolated or parallel work,
+  never a small task. Language- and framework-specific code review lenses
+  layered on top of the general four-domain review in
+  code-review-edho-ferdian — idioms, framework security misconfigurations,
+  ORM/query correctness….
 tools: Read, Grep, Glob, Bash
 skills: language-code-review-edho-ferdian
 tier: standard

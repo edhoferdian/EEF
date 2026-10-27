@@ -249,12 +249,16 @@ read the trend:
 1. Install `hooks/log-subagent-run.js` from this skill with
    `npx eef-install --target claude-hooks --only telemetry` (or by hand:
    copy it to `~/.claude/hooks/` and register it under
-   `hooks.SubagentStop`, no matcher, with
+   `hooks.PostToolUse` with matcher `Agent` and
    `node "<home>/.claude/hooks/log-subagent-run.js"`); `npx eef-install
    doctor` confirms it is registered. It
-   appends agent, model actually used, duration and tokens to
+   appends agent, model actually used, duration, tool-call count and the
+   final request's tokens to
    `~/.claude/eef/subagent-runs.jsonl` — sizes only, never prompt or reply
-   content, and nothing leaves the machine.
+   content, and nothing leaves the machine. (Until 2026-10-27 it hung off
+   `SubagentStop`, which carries none of those fields: records from then
+   have them null and only count runs. A leftover `SubagentStop`
+   registration is now a no-op; remove it at leisure.)
 2. After a few weeks of real use, run
    `node <this skill>/scripts/subagent-report.js` (`--days 30`, `--json`).
    Per agent it shows how often the agent ran on a stronger model than its
@@ -303,6 +307,28 @@ more than once. That is not a cost problem, it is a scoping problem — the
 task was too large to hold, and the fix is to split it and write the
 constraints down (see `dev-kickoff-edho-ferdian`'s session-snapshot pattern),
 not to buy a bigger window.
+
+### 5.2 Quota in the status line — passive, never an interruption
+
+The exception to "no running number": the plan's own quota. On a claude.ai
+Pro/Max plan the scarce resource is the 5-hour and 7-day window, and it
+drains fastest exactly when nobody is looking — a session fanning out
+subagents for work it could do inline. A status line is the right surface
+for it because it interrupts nothing: it sits under the prompt and is read
+only when glanced at.
+
+`hooks/statusline-usage.js` in this skill prints the 5h/7d window
+percentages (with the 5h reset time), context used, the number of subagents
+this session has finished (from §4.4's telemetry log, when that hook is
+installed) and the session's estimated cost — each only when Claude Code
+supplies it. Install it with `npx eef-install --target claude-hooks --only
+statusline`; it sets `statusLine` in `~/.claude/settings.json` only when
+none is configured, and leaves an existing one alone. The status line is a
+terminal (CLI) surface; the desktop app shows its own usage view instead.
+
+Read it the way §4.4 reads telemetry: a 5h figure climbing several points
+per turn while `agents` climbs with it means the delegation rule is being
+ignored — fix the routing, not the plan size.
 
 ## 6. Permission posture
 

@@ -1,6 +1,6 @@
 ---
 name: "code-simplification-edho-ferdian"
-description: "Agent form of the code-simplification-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Behavior-preserving refactoring workflow that actively rewrites code for clarity — extracting overlong functions, flattening deep nesting, consolidating duplicated logic, AND removing over-engineered…."
+description: "Agent form of the code-simplification-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Behavior-preserving refactoring workflow that actively rewrites code for clarity — extracting overlong functions, flattening deep nesting, consolidating duplicated logic, AND removing over-engineered…."
 injectAgentsMd: true
 ---
 

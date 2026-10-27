@@ -1,0 +1,16 @@
+{
+  "session_id": "s1",
+  "cwd": "/work/demo",
+  "hook_event_name": "PostToolUse",
+  "tool_name": "Agent",
+  "tool_input": { "subagent_type": "Explore", "description": "Find endpoints", "prompt": "Find all API endpoints" },
+  "tool_response": {
+    "status": "completed",
+    "agentId": "a4d2c8f1e0b3a297",
+    "content": [{ "type": "text", "text": "Found 12 endpoints..." }],
+    "resolvedModel": "claude-haiku-5-5",
+    "totalTokens": 12450,
+    "totalDurationMs": 48211,
+    "totalToolUseCount": 7
+  }
+}

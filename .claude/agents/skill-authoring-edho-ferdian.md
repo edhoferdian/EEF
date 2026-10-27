@@ -1,6 +1,6 @@
 ---
 name: skill-authoring-edho-ferdian
-description: Agent form of the skill-authoring-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Discipline for creating and governing this ecosystem's own skills: search before building (local → marketplace → GitHub → web, with a security vet on anything external), write to a quality bar….
+description: Agent form of the skill-authoring-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Discipline for creating and governing this ecosystem's own skills: search before building (local → marketplace → GitHub → web, with a security vet on anything external), write to a quality bar….
 tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - skill-authoring-edho-ferdian

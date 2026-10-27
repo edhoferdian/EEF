@@ -1,6 +1,6 @@
 ---
 name: data-layer-patterns-edho-ferdian
-description: Agent form of the data-layer-patterns-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Design and setup guidance for the data layer — Postgres schema design, Prisma ORM patterns, Redis caching/queue patterns, and cross-ORM migration strategy (expand-contract).
+description: Agent form of the data-layer-patterns-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Design and setup guidance for the data layer — Postgres schema design, Prisma ORM patterns, Redis caching/queue patterns, and cross-ORM migration strategy (expand-contract).
 tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - data-layer-patterns-edho-ferdian

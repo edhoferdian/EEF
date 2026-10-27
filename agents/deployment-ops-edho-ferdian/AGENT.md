@@ -1,12 +1,11 @@
 ---
 name: deployment-ops-edho-ferdian
 description: >-
-  Agent form of the deployment-ops-edho-ferdian skill, same triggers —
-  delegate here when the task justifies isolated or parallel execution; a
-  small task should use the skill directly instead. Getting a build to
-  production and keeping it healthy — release strategy (rolling / blue-green
-  / canary), CI/CD pipeline gates, health checks and Kubernetes probes,
-  environment config and rollback, a….
+  Agent form of the deployment-ops-edho-ferdian skill. Use the skill inline
+  instead; delegate here only for large, isolated or parallel work, never a
+  small task. Getting a build to production and keeping it healthy — release
+  strategy (rolling / blue-green / canary), CI/CD pipeline gates, health
+  checks and Kubernetes probes, environment config and rollback, a….
 tools: Read, Grep, Glob, Bash, Write, Edit, Agent
 skills: deployment-ops-edho-ferdian
 tier: standard

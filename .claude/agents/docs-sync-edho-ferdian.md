@@ -1,6 +1,6 @@
 ---
 name: docs-sync-edho-ferdian
-description: Agent form of the docs-sync-edho-ferdian skill, same triggers — delegate here when the task justifies isolated or parallel execution; a small task should use the skill directly instead. Keep USER-FACING documentation honest against the current codebase — README, docs/CODEMAPS/*, architecture-as-markdown, public API docs.
+description: Agent form of the docs-sync-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Keep USER-FACING documentation honest against the current codebase — README, docs/CODEMAPS/*, architecture-as-markdown, public API docs.
 tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 skills:
   - docs-sync-edho-ferdian

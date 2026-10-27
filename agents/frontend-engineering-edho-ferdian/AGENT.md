@@ -1,12 +1,12 @@
 ---
 name: frontend-engineering-edho-ferdian
 description: >-
-  Agent form of the frontend-engineering-edho-ferdian skill, same triggers —
-  delegate here when the task justifies isolated or parallel execution; a
-  small task should use the skill directly instead. Authoring and
-  configuration guidance for building React/Next.js frontend applications
-  well from the start — component composition, UX/interaction recipes, Vite
-  config, HeroUI setup, and AI-slop….
+  Agent form of the frontend-engineering-edho-ferdian skill. Use the skill
+  inline instead; delegate here only for large, isolated or parallel work,
+  never a small task. Authoring and configuration guidance for building
+  React/Next.js frontend applications well from the start — component
+  composition, UX/interaction recipes, Vite config, HeroUI setup, and
+  AI-slop….
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: frontend-engineering-edho-ferdian
 tier: standard

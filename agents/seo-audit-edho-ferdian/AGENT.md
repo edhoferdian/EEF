@@ -1,12 +1,11 @@
 ---
 name: seo-audit-edho-ferdian
 description: >-
-  Agent form of the seo-audit-edho-ferdian skill, same triggers — delegate
-  here when the task justifies isolated or parallel execution; a small task
-  should use the skill directly instead. Technical + on-page SEO audit
-  workflow — crawl/gather site signals, check them against a real
-  technical-SEO checklist (crawlability, indexability, structured data, meta
-  tags, sitemap/robots.txt….
+  Agent form of the seo-audit-edho-ferdian skill. Use the skill inline
+  instead; delegate here only for large, isolated or parallel work, never a
+  small task. Technical + on-page SEO audit workflow — crawl/gather site
+  signals, check them against a real technical-SEO checklist (crawlability,
+  indexability, structured data, meta tags, sitemap/robots.txt….
 tools: Read, Grep, Glob, Bash, WebFetch, Write, Edit, Agent
 skills: seo-audit-edho-ferdian
 tier: standard

@@ -1,12 +1,11 @@
 ---
 name: billing-ops-edho-ferdian
 description: >-
-  Agent form of the billing-ops-edho-ferdian skill, same triggers — delegate
-  here when the task justifies isolated or parallel execution; a small task
-  should use the skill directly instead. Diagnosing and handling
-  billing/subscription operations — classifying customer billing incidents
-  (duplicate subscriptions, multi-seat vs accidental duplicate, failed
-  checkout, missing self-serve….
+  Agent form of the billing-ops-edho-ferdian skill. Use the skill inline
+  instead; delegate here only for large, isolated or parallel work, never a
+  small task. Diagnosing and handling billing/subscription operations —
+  classifying customer billing incidents (duplicate subscriptions,
+  multi-seat vs accidental duplicate, failed checkout, missing self-serve….
 tools: Read, Grep, Glob, Bash, Write, Edit
 skills: billing-ops-edho-ferdian
 tier: standard

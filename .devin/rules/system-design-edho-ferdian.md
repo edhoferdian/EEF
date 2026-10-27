@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Mid-project architectural decision-making — Architecture Decision Records (ADRs), structured trade-off analysis, non-functional-requirements review, and scaling-tier planning for an existing system. Use for \"desain arsitektur\", \"keputusan teknis besar\", \"bikin ADR\", \"trade-off antara X dan Y\", \"should I refactor this to microservices/monolith/event-driven\", a scaling or capacity question, or any task from dev-kickoff-edho-ferdian that surfaces an uncovered ARCHITECTURE decision mid-project (not at kickoff — kickoff's own PDR process in Phase 0/1 handles that). Not for restating a single task's plan (that's dev-kickoff's PLAN stage) and not for reviewing code that already exists (that's code-review-edho-ferdian's Blueprint/Consistency domain)."
+description: "Mid-project architectural decision-making — Architecture Decision Records (ADRs), structured trade-off analysis, non-functional-requirements review, and scaling-tier planning for an existing system. Use for \"desain arsitektur\", \"keputusan teknis besar\", \"bikin ADR\", \"trade-off antara X dan Y\", \"should I refactor this to microservices/monolith/event-driven\", a scaling or capacity question, a blast-radius question (\"apa yang rusak kalau X diubah\"), or any task from dev-kickoff-edho-ferdian that surfaces an uncovered ARCHITECTURE decision mid-project (not at kickoff — kickoff's own PDR process in Phase 0/1 handles that). Not for restating a single task's plan (that's dev-kickoff's PLAN stage) and not for reviewing code that already exists (that's code-review-edho-ferdian's Blueprint/Consistency domain)."
 ---
 
 # System Design — Edho Ferdian Mode (Skill Edition)
@@ -96,6 +96,12 @@ Format, worked example, and the "how many options is enough" guidance:
 Run the NFR checklist and the scaling-tier framework (what actually changes
 at 10x, 100x, 1000x current load — not a generic "add more servers"
 hand-wave). Full detail: `references/nfr-and-scaling.md`.
+
+**When the decision lands as a risky change** — across modules, a public
+contract, persisted data, auth or deployment — map its blast radius before
+the first edit and reconcile the finished diff against that map afterwards:
+`references/change-impact.md`. It also stands alone, without an ADR, for a
+plain "what breaks if we change X?" question.
 
 ### Step 5 — Write the ADR
 
