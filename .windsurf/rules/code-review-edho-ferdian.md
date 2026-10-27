@@ -187,13 +187,11 @@ tool would say — run it.** Using whatever exists in the repo (see Phase 0 prob
 - Test suite — confirm nothing you flag is already covered or already failing.
 - Dependency & secret scanners (e.g. `npm/pnpm audit`, `pip-audit`, gitleaks) —
   confirm SEC-02 and SEC-07 with real output, not memory.
+- Blast radius of a changed public surface — if `salak` is installed, cite
+  `salak query importers <file>` (or `callers` for Go) after `salak check .`
+  instead of a guess at who depends on it; an exit 2 answer proves nothing
+  (`dev-kickoff-edho-ferdian/references/salak-integration.md`).
 
 **Confidence labeling rule (applies to every finding):**
-- Confirmed by a tool or by a directly readable line → **[High confidence]**.
-- Sound reasoning but not tool-verified → **[Medium confidence]** + a short note
-  on what would confirm it.
-- Plausible but uncertain (e.g. depends on runtime data you can't see, or on an
-  external API's current behavior) → **[Low confidence] — needs verification.**
-
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/code-review-edho-ferdian/SKILL.md` for complete instructions.

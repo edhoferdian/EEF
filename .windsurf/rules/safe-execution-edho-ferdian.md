@@ -36,7 +36,11 @@ ALLOW — permit the retry once those facts are on the table
 ```
 
 **Before editing an existing file**, produce:
-1. Every file that imports or requires it (search the tree — Grep/Glob).
+1. Every file that imports or requires it (search the tree — Grep/Glob; if
+   `salak` is on PATH, `salak query importers <file>` and, for Go,
+   `salak query callers <node>` give the edges with provenance — exit 2
+   means not tracked, so Grep instead; see
+   `dev-kickoff-edho-ferdian/references/salak-integration.md`).
 2. The public functions or classes this change affects.
 3. If it reads or writes data files: the field names, structure, and date
    format — using redacted or synthetic values, never raw production data.
@@ -215,16 +219,5 @@ may well want it), and fails open on anything it cannot parse. Install it with
 `~/.claude/hooks/` and adds the registration below to
 `~/.claude/settings.json` without touching anything else there (never twice,
 and never into a file it cannot parse); `npx eef-install doctor` then
-confirms it is registered. To do it by hand instead, copy the file and add:
-
-```json
-"PreToolUse": [{
-  "matcher": "Bash|PowerShell",
-  "hooks": [{ "type": "command", "command": "node \"<home>/.claude/hooks/block-fs-wide-search.js\"", "timeout": 10 }]
-}]
-```
-
-## Growth path
-
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/safe-execution-edho-ferdian/SKILL.md` for complete instructions.
