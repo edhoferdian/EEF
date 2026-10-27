@@ -97,19 +97,13 @@ def set_plugin_version(old: str, new: str) -> None:
         path.write_text(text.replace(target, f'"version": "{new}"'), encoding="utf-8", newline="\n")
 
 
-def check_scripts() -> list[str]:
-    hook = (REPO / ".husky" / "pre-commit").read_text(encoding="utf-8")
-    names = re.findall(r"^run_check (\w+)\s*$", hook, re.M)
-    if not names:
-        raise ReleaseError(".husky/pre-commit lists no run_check scripts — refusing to release unchecked")
-    return names
-
-
 def run_checks() -> None:
     run("python", "scripts/validate_skills.py")
-    for name in check_scripts():
-        run("python", f"scripts/{name}.py", "--check")
+    # The generator list lives in regen_all.py. The changelog is skipped: this
+    # script regenerates it after tagging (step 6), so it is stale until then.
+    run("python", "scripts/regen_all.py", "--check", "--skip", "generate_changelog")
     run("python", "evals/review-seeded-bugs/run.py", "--check-records")
+    run("python", "evals/build-fix/run.py", "--check-records")
     run("python", "scripts/measure_context.py", "--budget", CONTEXT_BUDGET)
     run("node", "--check", "bin/eef.js")
 
