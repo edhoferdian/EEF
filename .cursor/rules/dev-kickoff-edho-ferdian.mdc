@@ -227,8 +227,8 @@ Then create/update the persistent memory structure:
   00-master-plan.md        01-decision-register.md
   02-gap-analysis.md       03-progress.md
   04-instincts.md          ← new in v2.0 (REMEMBER stage output)
-  repo-graph.json          ← owned by Salak, not this skill, if installed
-                              (see references/salak-integration.md)
+  repo-graph.json          ← owned by Salak, not this skill, if installed;
+                              gitignored (see references/salak-integration.md)
 ```
 
 Templates, sync rules, and the 8-gate Reflection block for this phase:
