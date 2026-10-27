@@ -143,6 +143,20 @@ jobs:
           test "$(grep -c '^effort:' $d/dev-kickoff-edho-ferdian.md)" -eq 1
           grep -qx "effort: medium" $d/dev-kickoff-edho-ferdian.md
           if node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents --profile no-such-profile; then exit 1; fi
+      - name: install target=claude-agents --roster inti keeps only isolation agents, and update keeps it lean
+        run: |
+          d=/tmp/eef-cli-test-roster
+          export CLAUDE_AGENTS_DIR=$d CLAUDE_SKILLS_DIR=$d-skills CLAUDE_RULES_DIR=$d-rules CLAUDE_HOOKS_DIR=$d-hooks
+          node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents
+          echo "mine" > $d/my-own-agent.md
+          node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents --roster inti
+          test -f $d/code-critic-edho-ferdian.md
+          test ! -e $d/build-fix-edho-ferdian.md
+          test -f $d/my-own-agent.md
+          test "$(ls $d | grep -c edho-ferdian)" -eq "$(grep -L 'Agent form of the' $GITHUB_WORKSPACE/.claude/agents/*.md | wc -l)"
+          node "$GITHUB_WORKSPACE/bin/eef.js" update
+          test ! -e $d/build-fix-edho-ferdian.md
+          if node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents --roster no-such-roster; then exit 1; fi
       - name: update replaces only stale items and keeps each agent's model
         run: |
           d=/tmp/eef-cli-test-update

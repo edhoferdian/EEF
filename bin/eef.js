@@ -170,13 +170,15 @@ const TARGETS = {
   },
 
   "claude-agents": {
-    label: "Claude Code sub-agents (agents/*/AGENT.md roster; --profile picks the model mix)",
+    label: "Claude Code sub-agents (agents/*/AGENT.md roster; --profile picks the model mix, --roster inti keeps only isolation agents)",
     scope: "global (or $CLAUDE_AGENTS_DIR)",
     install(_skillNames, opts) {
       const destRoot = claudeAgentsDir();
+      const roster = rosterOf(opts);
+      if (!roster) return;
       const route = profileRoute(opts, "claude");
       if (route === undefined) return;
-      copyAgentFiles(path.join(PKG_ROOT, ".claude", "agents"), destRoot, ".md", route && withClaudeModel(route));
+      copyAgentFiles(path.join(PKG_ROOT, ".claude", "agents"), destRoot, ".md", route && withClaudeModel(route), roster);
     },
   },
 
@@ -383,7 +385,7 @@ function loadTierModels(opts) {
  * destRoot, leaving every other file there untouched. transform(name,
  * content) — optional — rewrites a file's model fields before writing.
  */
-function copyAgentFiles(srcDir, destRoot, ext, transform) {
+function copyAgentFiles(srcDir, destRoot, ext, transform, roster = "lengkap") {
   if (!fs.existsSync(srcDir)) {
     console.error(`Error: ${srcDir} not found in this package — reinstall eef-install.`);
     process.exitCode = 1;
@@ -391,15 +393,46 @@ function copyAgentFiles(srcDir, destRoot, ext, transform) {
   }
   fs.mkdirSync(destRoot, { recursive: true });
   let count = 0;
+  let removed = 0;
   for (const file of fs.readdirSync(srcDir)) {
     if (!file.endsWith(ext)) continue;
     const content = fs.readFileSync(path.join(srcDir, file), "utf8");
     const name = file.slice(0, -ext.length);
-    fs.writeFileSync(path.join(destRoot, file), transform ? transform(name, content) : content, "utf8");
+    const dest = path.join(destRoot, file);
+    if (roster === "inti" && isWrapperAgent(content)) {
+      // Only this package's own wrapper, under its own name, is removed.
+      if (fs.existsSync(dest) && isWrapperAgent(fs.readFileSync(dest, "utf8"))) {
+        fs.rmSync(dest);
+        console.log(`Removed wrapper agent: ${file} (its skill runs inline)`);
+        removed++;
+      }
+      continue;
+    }
+    fs.writeFileSync(dest, transform ? transform(name, content) : content, "utf8");
     console.log(`Installed: ${file} -> ${destRoot}`);
     count++;
   }
-  console.log(`\nDone. ${count} agent(s) installed to ${destRoot} (other files there untouched).`);
+  const pruned = removed ? `, ${removed} wrapper agent(s) removed` : "";
+  console.log(`\nDone. ${count} agent(s) installed to ${destRoot}${pruned} (other files there untouched).`);
+}
+
+/**
+ * A wrapper agent only restates a skill as a delegate ("Agent form of the X
+ * skill"); the rest (critics, evaluators, workers) exist because they must
+ * run isolated. Every installed agent's description is read each session,
+ * so --roster inti drops the wrappers and keeps the isolation agents.
+ */
+const isWrapperAgent = (content) => /Agent form of the [a-z0-9-]+-edho-ferdian skill/.test(content);
+const ROSTERS = ["lengkap", "inti"];
+
+function rosterOf(opts) {
+  const roster = opts.roster || "lengkap";
+  if (!ROSTERS.includes(roster)) {
+    console.error(`Unknown roster '${roster}'. Valid rosters: ${ROSTERS.join(", ")}`);
+    process.exitCode = 2;
+    return null;
+  }
+  return roster;
 }
 
 // Shipped files may carry LF or CRLF (a checkout on Windows converts them),
@@ -727,9 +760,11 @@ function doctor() {
   if (!agents.present.length) {
     say("  not installed");
   } else {
-    say(`  ${agents.present.length}/${agentFiles.length} installed, ${agents.same.length} match this version`);
+    const lean = !agents.present.some((f) => isWrapperAgent(fs.readFileSync(path.join(agentsDir, f), "utf8")));
+    const missing = agents.missing.filter((f) => !(lean && isWrapperAgent(fs.readFileSync(path.join(agentsSrc, f), "utf8"))));
+    say(`  ${agents.present.length}/${agentFiles.length} installed, ${agents.same.length} match this version${lean ? " — roster: inti (skill wrappers left out on purpose)" : ""}`);
     if (agents.differs.length) say(`  differ (older EEF version, or edited locally): ${shortList(agents.differs.map((f) => f.slice(0, -3)))}`);
-    if (agents.missing.length) say(`  missing (new in this version?): ${shortList(agents.missing.map((f) => f.slice(0, -3)))}`);
+    if (missing.length) say(`  missing (new in this version?): ${shortList(missing.map((f) => f.slice(0, -3)))}`);
     const routing = loadRouting();
     const installed = agents.present
       .map((f) => [f.slice(0, -3), splitAgentModel(fs.readFileSync(path.join(agentsDir, f), "utf8"))])
@@ -859,7 +894,11 @@ function update(opts) {
         ? { model: installed[name].model, effort: installed[name].effort }
         : routing.agents[name] && routing.agents[name].profiles[profile].claude
     );
-    for (const file of [...agents.differs, ...agents.missing]) {
+    // An install with no wrapper agent left was made with --roster inti:
+    // keep it that way rather than re-adding the wrappers it dropped.
+    const lean = !agents.present.some((f) => isWrapperAgent(fs.readFileSync(path.join(agentsDir, f), "utf8")));
+    const wanted = agents.missing.filter((f) => !(lean && isWrapperAgent(fs.readFileSync(path.join(agentsSrc, f), "utf8"))));
+    for (const file of [...agents.differs, ...wanted]) {
       const name = file.slice(0, -3);
       console.log(`${act} agent: ${name}${installed[name] ? "" : ` (new, profile ${profile})`}`);
       if (!dry) fs.writeFileSync(path.join(agentsDir, file), keepModel(name, fs.readFileSync(path.join(agentsSrc, file), "utf8")), "utf8");
@@ -956,6 +995,10 @@ Hooks (--target claude-hooks):
 
 Model routing (sub-agent targets) — each agent has a tier (light/standard/deep):
   --profile <name>    claude-agents, codex-agents: hemat | seimbang (default) | maksimal
+  --roster <name>     claude-agents: lengkap (default) | inti — inti installs only the
+                      agents that must run isolated (critics, evaluators, workers) and
+                      removes this package's skill-wrapper agents; their skills run
+                      inline, and every session reads fewer agent descriptions.
   --models <file>     any *-agents target: JSON giving a model ID per tier, e.g.
                       {"light":"...","standard":"...","deep":"..."} — overrides the
                       profile's models (effort still follows the profile). Required
@@ -968,6 +1011,7 @@ Examples:
   eef-install --target cursor
   eef-install --target kiro --global
   eef-install --target claude-agents --profile hemat
+  eef-install --target claude-agents --roster inti
   eef-install --target codex-agents --global
   eef-install --target opencode-agents --models ./eef-models.json
   eef-install --target claude-hooks --only fs-guard
@@ -1018,8 +1062,9 @@ function main() {
     profile: valueOf("--profile"),
     models: valueOf("--models"),
     only: valueOf("--only"),
+    roster: valueOf("--roster"),
   };
-  const valueFlags = ["--target", "--profile", "--models", "--only"];
+  const valueFlags = ["--target", "--profile", "--models", "--only", "--roster"];
   const skillNames = args.filter((a, i) => {
     if (a.startsWith("-")) return false;
     if (i > 0 && valueFlags.includes(args[i - 1])) return false;
@@ -1027,6 +1072,9 @@ function main() {
   });
   if (opts.profile && !["claude-agents", "codex-agents"].includes(targetName)) {
     console.warn(`Note: --profile only applies to claude-agents and codex-agents; ignored for '${targetName}'.`);
+  }
+  if (opts.roster && targetName !== "claude-agents") {
+    console.warn(`Note: --roster only applies to claude-agents; ignored for '${targetName}'.`);
   }
   if (opts.models && !["claude-agents", "codex-agents", "opencode-agents", "zcode-agents"].includes(targetName)) {
     console.warn(`Note: --models only applies to the *-agents targets; ignored for '${targetName}'.`);

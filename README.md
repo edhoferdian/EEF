@@ -259,6 +259,7 @@ npx eef-install --target opencode-agents    # merges into ./opencode.json ($sche
 npx eef-install --target zcode-agents       # adds to ~/.zcode/agents/, your own agents there untouched
 
 npx eef-install --target claude-agents --profile hemat              # pick a cost profile (Claude Code, Codex)
+npx eef-install --target claude-agents --roster inti                # only the isolation agents; skill wrappers removed (Claude Code)
 npx eef-install --target opencode-agents --models ./eef-models.json # your own model ID per tier (required for OpenCode/ZCode, optional override elsewhere)
 ```
 
