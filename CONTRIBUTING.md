@@ -24,7 +24,10 @@ Every skill lives at `skills/<name>/SKILL.md`, with an optional
 every invocation. `SKILL.md` needs valid YAML frontmatter with `name` and
 `description` — `description` is the trigger mechanism (what tells an AI
 agent when to load this skill), so it needs concrete phrases someone would
-actually type, not abstract category words. Look at a few existing skills
+actually type, not abstract category words. It also carries
+`metadata.last_reviewed: "YYYY-MM-DD"`, the last time someone checked its
+content against current docs; `validate_skills.py` warns once that is
+more than 90 days old. Bump it only after a real re-check. Look at a few existing skills
 before writing a new one; the pattern is more important to match than any
 single rule here.
 
@@ -37,26 +40,21 @@ build if any of them fail:
 # Structural checks: frontmatter, description length, broken references
 python scripts/validate_skills.py
 
-# Repackage dist/*.skill if you touched anything under skills/
-python scripts/package_skills.py
+# Regenerate every generated file (dist/*.skill, every cross-harness
+# adapter, CATALOG.md, CHANGELOG.md, skill counts) if you touched skills/,
+# agents/, rules/ or scripts/. The list of generators lives in this one
+# script; CI and the pre-commit hook call the same script.
+python scripts/regen_all.py
 
-# Regenerate every cross-harness adapter if you touched anything under skills/
-python scripts/export_agents_md.py
-python scripts/export_gemini_md.py
-python scripts/export_cursor.py
-python scripts/export_windsurf.py
-python scripts/export_cline.py
-python scripts/export_copilot.py
-python scripts/export_kiro.py
-
-# Sanity-check the npm CLI still lists what you expect
-node bin/eef.js --list
+# Unit tests for scripts/, the shipped hooks and the npm CLI
+python -m unittest discover -s tests -p "test_*.py"
+node --test tests/*.test.js
 ```
 
-Forgetting to regenerate an adapter is the single most common way to fail
-CI here — every `export_*.py` script has a `--check` flag that mirrors
-what CI runs, so `python scripts/export_cursor.py --check` (etc.) tells you
-before you push whether something drifted.
+Forgetting to regenerate is the single most common way to fail CI here.
+`python scripts/regen_all.py --check` tells you before you push whether
+anything drifted, without writing. CI also runs these checks on
+`windows-latest`, because default encodings and shells differ there.
 
 ## Parallel sessions and agents
 
@@ -96,7 +94,9 @@ automatically and need no dedicated adapter at all. Only build a new
 location, or per-file scoping AGENTS.md can't express. Confirm the exact
 schema against that tool's own documentation before writing code — this
 project has been burned before by trusting search-engine summaries over
-primary sources.
+primary sources. Give it a `--check` flag and add its name to `GENERATORS`
+in [`scripts/regen_all.py`](scripts/regen_all.py) — that one line is what
+puts it in CI and the pre-commit hook.
 
 ## Commit and PR conventions
 

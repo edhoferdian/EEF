@@ -37,7 +37,11 @@ jobs:
       - name: No committed evals/*/results*/runs/ record is modified or deleted
         env:
           BASE: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || github.event.before }}
-        run: python evals/review-seeded-bugs/run.py --check-records "$BASE"
+        run: |
+          python evals/review-seeded-bugs/run.py --check-records "$BASE"
+          python evals/build-fix/run.py --check-records "$BASE"
+      - name: Build-fix cases still fail as committed, and the scorer tells a fix from a suppression
+        run: python evals/build-fix/run.py --self-test
 
   dist-sync:
     name: dist/*.skill matches skills/
@@ -55,47 +59,53 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # generate_changelog needs the release tags.
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.x"
-      - name: Install PyYAML (frontmatter validation)
-        run: pip install pyyaml
-      - name: Check package.json/bin/eef.js/plugin manifests quote the current skill count
-        run: python scripts/sync_metadata.py --check
-      - name: Check AGENTS.md is up to date
-        run: python scripts/export_agents_md.py --check
-      - name: Check CATALOG.md is up to date
-        run: python scripts/generate_catalog.py --check
-      - name: Check .cursor/rules/ is up to date
-        run: python scripts/export_cursor.py --check
-      - name: Check .windsurf/rules/ and .devin/rules/ are up to date
-        run: python scripts/export_windsurf.py --check
-      - name: Check .clinerules/ is up to date
-        run: python scripts/export_cline.py --check
-      - name: Check .github/copilot-instructions.md is up to date
-        run: python scripts/export_copilot.py --check
-      - name: Check .kiro/skills/ is up to date
-        run: python scripts/export_kiro.py --check
-      - name: Check GEMINI.md is up to date
-        run: python scripts/export_gemini_md.py --check
-      - name: Check .hermes/skills/ is up to date
-        run: python scripts/export_hermes.py --check
-      - name: Check .agents/skills/ is up to date
-        run: python scripts/export_openclaw.py --check
-      - name: Check .zcode/skills/ is up to date
-        run: python scripts/export_zcode.py --check
-      - name: Check .claude/agents/ is up to date
-        run: python scripts/export_agents_claude.py --check
-      - name: Check dist/agents/opencode/ is up to date
-        run: python scripts/export_agents_opencode.py --check
-      - name: Check .hermes agent-delegation skill is up to date
-        run: python scripts/export_agents_hermes.py --check
-      - name: Check dist/agents/zcode/ is up to date
-        run: python scripts/export_agents_zcode.py --check
-      - name: Check dist/agents/codex/ is up to date
-        run: python scripts/export_agents_codex.py --check
-      - name: Check dist/agents/routing.json is up to date
-        run: python scripts/export_agents_routing.py --check
+      - name: Every generated file matches its source (scripts/regen_all.py holds the list)
+        # package_skills is the dist-sync job's own required check.
+        run: python scripts/regen_all.py --check --skip package_skills
+
+  windows:
+    name: Windows (encoding, hooks, install.ps1)
+    # Two Windows-only bugs reached main through Linux-only CI: c94866d
+    # (release.py) and generate_changelog's cp1252 mojibake. This job runs
+    # the code paths that depend on the platform's default encoding/shell.
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Generators produce identical output on Windows
+        shell: pwsh
+        run: python scripts/regen_all.py --check
+      - name: Script unit tests
+        shell: pwsh
+        run: python -m unittest discover -s tests -p "test_*.py"
+      - name: Hook and CLI tests
+        # bash expands the glob; pwsh would pass it to node literally.
+        shell: bash
+        run: node --test tests/*.test.js
+      - name: install.ps1 installs every skill into a throwaway directory
+        shell: pwsh
+        run: |
+          $d = Join-Path $env:RUNNER_TEMP "eef-ps1"
+          $env:CLAUDE_SKILLS_DIR = $d
+          .\install.ps1
+          $want = (Get-ChildItem skills -Directory).Count
+          $got = (Get-ChildItem $d -Directory).Count
+          if ($got -ne $want) { throw "install.ps1 installed $got of $want skills" }
+          .\install.ps1 -Only code-review-edho-ferdian
+          if (-not (Test-Path (Join-Path $d "code-review-edho-ferdian\SKILL.md"))) { throw "-Only install missing SKILL.md" }
 
   npm-cli-smoke-test:
     name: eef-install CLI smoke test

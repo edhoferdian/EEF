@@ -10,6 +10,7 @@
 # append-only: e072dc1 (2026-10-08) overwrote the committed 60-run v1
 # summary with a one-run spot check. Refuse a commit that edits or deletes one.
 python evals/review-seeded-bugs/run.py --check-records || exit 1
+python evals/build-fix/run.py --check-records || exit 1
 
 STAGED=$(git diff --cached --name-only -- 'skills/' 'agents/' 'scripts/' 'rules/')
 if [ -z "$STAGED" ]; then
@@ -19,37 +20,15 @@ fi
 echo "skills/, agents/, scripts/ or rules/ changed — validating and checking cross-harness export sync..."
 
 FAIL=0
-run_check() {
-  if ! python "scripts/$1.py" --check; then
-    FAIL=1
-  fi
-}
-
 python scripts/validate_skills.py || FAIL=1
-run_check package_skills
-run_check sync_metadata
-run_check export_agents_md
-run_check generate_catalog
-run_check export_cursor
-run_check export_windsurf
-run_check export_cline
-run_check export_copilot
-run_check export_kiro
-run_check export_gemini_md
-run_check export_hermes
-run_check export_openclaw
-run_check export_zcode
-run_check export_agents_claude
-run_check export_agents_opencode
-run_check export_agents_hermes
-run_check export_agents_zcode
-run_check export_agents_codex
-run_check export_agents_routing
+# The generator list lives in scripts/regen_all.py only. The changelog is
+# skipped here: it changes at release time, and a clone without tags would
+# see it as stale.
+python scripts/regen_all.py --check --skip generate_changelog || FAIL=1
 
 if [ "$FAIL" -ne 0 ]; then
   echo ""
   echo "One or more cross-harness exports are stale (would fail CI)."
-  echo "Run the matching generator script(s) above (drop --check), git add"
-  echo "the results, then commit again."
+  echo "Run: python scripts/regen_all.py, git add the results, then commit again."
   exit 1
 fi
