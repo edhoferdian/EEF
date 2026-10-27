@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Mechanical gates around agent execution, as a complement to this ecosystem's reasoning gates: a pre-action fact-forcing gate that demands concrete investigation before the first edit to a file, a destructive- command guard, a write-scope freeze for autonomous or parallel agent runs, and a stop-gate that blocks \"done\" until the memory files were actually touched. Use when running agents autonomously or in parallel, when working against production, or when the user says \"jangan sampai kehapus\", \"agent-nya nulis di luar scope\", \"pastiin dia ngecek dulu\"."
+description: "Mechanical gates for agent runs: investigate before the first edit, guard destructive commands, freeze write scope for autonomous or parallel agents, block \"done\" until memory is updated. Use for autonomous or production work, or \"jangan sampai kehapus\", \"agent-nya nulis di luar scope\", \"pastiin dia ngecek dulu\"."
 ---
 
 # Safe Execution — Edho Ferdian Mode
@@ -219,5 +219,16 @@ may well want it), and fails open on anything it cannot parse. Install it with
 `~/.claude/hooks/` and adds the registration below to
 `~/.claude/settings.json` without touching anything else there (never twice,
 and never into a file it cannot parse); `npx eef-install doctor` then
+confirms it is registered. To do it by hand instead, copy the file and add:
+
+```json
+"PreToolUse": [{
+  "matcher": "Bash|PowerShell",
+  "hooks": [{ "type": "command", "command": "node \"<home>/.claude/hooks/block-fs-wide-search.js\"", "timeout": 10 }]
+}]
+```
+
+## Growth path
+
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/safe-execution-edho-ferdian/SKILL.md` for complete instructions.

@@ -25,11 +25,15 @@ PACKAGE_JSON = REPO_ROOT / "package.json"
 EEF_JS = REPO_ROOT / "bin" / "eef.js"
 PLUGIN_JSON = REPO_ROOT / ".claude-plugin" / "plugin.json"
 MARKETPLACE_JSON = REPO_ROOT / ".claude-plugin" / "marketplace.json"
+README = REPO_ROOT / "README.md"
+INSTALL_SH = REPO_ROOT / "install.sh"
+INSTALL_PS1 = REPO_ROOT / "install.ps1"
 
 # Each entry: (file, compiled regex with one capture group around the
 # number to replace, format string for the replacement number).
 # The regex must match the exact phrasing already in each file so a
-# rewrite is a pure substitution, never a rewording.
+# rewrite is a pure substitution, never a rewording. Every match in the
+# file is rewritten, and one file may appear in several entries.
 TARGETS = [
     (
         PACKAGE_JSON,
@@ -51,20 +55,42 @@ TARGETS = [
         re.compile(r"(\d+) native skills for engineering"),
         lambda skills, agents: f"{skills} native skills for engineering",
     ),
+    (
+        README,
+        re.compile(r"skill ecosystem — (\d+) skills covering"),
+        lambda skills, agents: f"skill ecosystem — {skills} skills covering",
+    ),
+    (
+        README,
+        re.compile(r"# Claude Code, all (\d+) skills"),
+        lambda skills, agents: f"# Claude Code, all {skills} skills",
+    ),
+    (
+        README,
+        re.compile(r"# installs all (\d+) skills"),
+        lambda skills, agents: f"# installs all {skills} skills",
+    ),
+    (
+        INSTALL_SH,
+        re.compile(r"# install all (\d+) skills"),
+        lambda skills, agents: f"# install all {skills} skills",
+    ),
+    (
+        INSTALL_PS1,
+        re.compile(r"# install all (\d+) skills"),
+        lambda skills, agents: f"# install all {skills} skills",
+    ),
 ]
 
 
-def rewrite(path, pattern, make_replacement, skills_count, agents_count):
-    text = path.read_text(encoding="utf-8")
-    match = pattern.search(text)
-    if not match:
+def rewrite(path, text, pattern, make_replacement, skills_count, agents_count):
+    new_text, n = pattern.subn(lambda _m: make_replacement(skills_count, agents_count), text)
+    if not n:
         raise ValueError(
             f"{path.relative_to(REPO_ROOT)}: expected phrase not found — the wording "
             "changed and this script's regex needs updating to match it"
         )
-    replacement = make_replacement(skills_count, agents_count)
-    new_text = text[: match.start()] + replacement + text[match.end() :]
-    return new_text, new_text != text
+    return new_text
 
 
 def main() -> int:
@@ -75,11 +101,11 @@ def main() -> int:
     skills_count = len(load_skills())
     agents_count = len(load_agents())
 
-    stale = []
+    texts = {}
     for path, pattern, make_replacement in TARGETS:
-        new_text, changed = rewrite(path, pattern, make_replacement, skills_count, agents_count)
-        if changed:
-            stale.append((path, new_text))
+        current = texts.get(path) or path.read_text(encoding="utf-8")
+        texts[path] = rewrite(path, current, pattern, make_replacement, skills_count, agents_count)
+    stale = [(path, text) for path, text in texts.items() if text != path.read_text(encoding="utf-8")]
 
     if not stale:
         print("All metadata counts are in sync." if args.check else "Already up to date.")

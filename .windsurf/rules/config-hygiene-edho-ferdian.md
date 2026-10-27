@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Periodic garbage collection for Edho's own Claude Code environment (`~/.claude`): find redundant, stale, orphaned, or context-expensive items across skills, memory, hooks, permissions, MCP servers, automations and caches, then walk them one by one with a human confirmation and an undo path. Includes the ECC decommissioning track — the concrete checklist for removing the ECC install once its native replacement exists. Use when the user says \"bersihin config\", \"~/.claude berantakan\", \"kebanyakan skill\", \"sesi lambat mulai\", \"audit setup gue\", \"context cepat penuh\", or when a periodic (~30 day) review is due."
+description: "Clean up the ~/.claude environment: redundant, stale or context-expensive skills, memory, hooks, permissions, MCP servers and caches, one item at a time with an undo path. Use for \"bersihin config\", \"~/.claude berantakan\", \"kebanyakan skill\", \"sesi lambat mulai\", \"context cepat penuh\", \"audit setup gue\"."
 ---
 
 # Config Hygiene — Edho Ferdian Mode
@@ -207,5 +207,9 @@ breaks before its replacement exists:
 ## Provenance
 
 Adapted from ECC `config-gc`, `context-budget`, `workspace-surface-audit`,
+`automation-audit-ops`, `strategic-compact`, and the DAILY/LIBRARY concept
+of `agent-sort` — all fetched 2026-09-04. Consolidated into one skill with
+per-channel lenses per D-009 rather than six near-overlapping skills.
+The ECC decommissioning track has no upstream equivalent; it exists
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/config-hygiene-edho-ferdian/SKILL.md` for complete instructions.

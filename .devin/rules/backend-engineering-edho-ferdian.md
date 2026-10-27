@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Authoring server-side code between the API contract and the datastore — layering and ports/adapters boundaries, error taxonomy and resilience (typed errors, Result style, retry with backoff, circuit breakers), background jobs and queues, structured logging emission, and adding a new integration that matches the repo's existing connector pattern. The backend counterpart to frontend-engineering-edho-ferdian. Framework guides: NestJS and Ruby on Rails (service/form/query objects, Hotwire, Rails 8 Solid stack). Trigger phrases: \"struktur service layer\", \"error handling di backend\", \"retry/circuit breaker\", \"background job / queue\", \"tambah integrasi baru\", \"bikin app Rails\", \"Rails service object\"."
+description: "Write server-side code well: service layering and ports/adapters, typed errors, retry with backoff and circuit breakers, background jobs and queues, structured logging, new integrations; NestJS and Rails guides. Use for \"struktur service layer\", \"error handling di backend\", \"retry/circuit breaker\", \"background job / queue\", \"tambah integrasi baru\", \"bikin app Rails\"."
 ---
 
 # Backend Engineering — Edho Ferdian Mode

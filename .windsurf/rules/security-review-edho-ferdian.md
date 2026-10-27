@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Single source of truth for security review criteria across the Edho Ferdian ecosystem — general OWASP-style checklist (SEC-01..19), plus stack-specific and domain-specific security items (see the reference list at the bottom of this file for the full stack/domain coverage). Runs STANDALONE for a security-only pass (\"cek keamanan kode ini\", \"security audit\", \"find vulnerabilities\") OR as the delegated depth layer for Domain 2 (SEC) of code-review-edho-ferdian's full review. Every other skill in this ecosystem that touches security cross-references this skill instead of holding its own copy — this is the only place security criteria are defined, to remove drift risk from duplication."
+description: "The single source of security review criteria: OWASP-style checklist (SEC-01..19) plus stack- and domain-specific items, standalone or as code-review's security depth. Use for \"cek keamanan kode ini\", \"security audit\", \"find vulnerabilities\", \"aman gak ini\", \"is it safe to ship security-wise\"."
 ---
 
 # Security Review — Edho Ferdian Mode (Skill Edition)
@@ -207,5 +207,18 @@ scoped to security findings only, and titled `SECURITY REVIEW REPORT` instead
 of `CODE REVIEW REPORT`. Save the report file the same way
 (`./<file-or-module>-security-review.md`) and tell the user the path.
 
+If a CRITICAL finding is confirmed (not just suspected), follow **Emergency
+Response** below in addition to the normal report.
+
+---
+
+## Severity system
+
+Same 5-level scale as the rest of the ecosystem — do not invent a parallel
+one:
+
+- 🔴 **CRITICAL** — direct security breach, data leak, or exploitable RCE/auth
+  bypass. Must fix before ship.
+- 🟠 **HIGH** — serious exploitable issue, narrower blast radius or requiring
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/security-review-edho-ferdian/SKILL.md` for complete instructions.

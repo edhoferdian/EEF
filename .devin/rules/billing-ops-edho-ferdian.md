@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Diagnosing and handling billing/subscription operations — classifying customer billing incidents (duplicate subscriptions, multi-seat vs accidental duplicate, failed checkout, missing self-serve controls, broken product), separating customer impact from code-backed product truth, and routing pricing/entitlement claims through verification before they're repeated. Diagnosis-only for financial actions: refunds, credits, and cancellations require the user's explicit go-ahead before execution. Trigger phrases: \"pelanggan minta refund\", \"subscription ganda\", \"checkout gagal\", \"kenapa dia kena tagih dua kali\", \"billing portal rusak\", \"apakah per-seat billing beneran jalan di kode\"."
+description: "Diagnose billing and subscription incidents (duplicate subscriptions, failed checkout, double charges, broken billing portal) and verify pricing/entitlement claims against the code. Refunds, credits and cancellations need an explicit go-ahead. Use for \"pelanggan minta refund\", \"subscription ganda\", \"checkout gagal\", \"kena tagih dua kali\", \"billing portal rusak\"."
 ---
 
 # Billing Ops — Edho Ferdian Mode

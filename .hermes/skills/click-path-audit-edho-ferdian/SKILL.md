@@ -1,15 +1,13 @@
 ---
 name: click-path-audit-edho-ferdian
 description: >-
-  Trace every user-facing touchpoint (button, toggle, form submit) through its
-  full state-change sequence to find defects that reading code line by line
-  cannot see: handlers whose calls silently undo each other, async races,
-  stale closures, and effects that reset the very state the button just set.
-  Use when a control "does nothing" despite the handler existing and not
-  crashing, after refactoring a shared state store (Zustand/Redux/context/
-  signals), or before release on critical flows. Trigger phrases: "tombolnya
-  gak jalan", "diklik tapi gak ada yang terjadi", "the button does nothing",
-  "state-nya balik lagi", "sudah dicek semua tapi gak ketemu bug-nya".
+  Trace each button, toggle or form submit through its full state changes to
+  find handlers that undo each other, async races, stale closures and
+  effects that reset state. Use for "tombolnya gak jalan", "diklik tapi gak
+  ada yang terjadi", "the button does nothing", "state-nya balik lagi", or
+  after refactoring a shared store.
+metadata:
+  last_reviewed: "2026-10-07"
 ---
 
 # Click-Path Audit — Edho Ferdian Mode

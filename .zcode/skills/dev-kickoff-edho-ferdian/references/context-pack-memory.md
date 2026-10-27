@@ -119,6 +119,23 @@ in every file.
 - `00` changes only when scope changes — which requires explicit user
   confirmation and a dated note.
 
+**Version control (decide once, at Phase 2):**
+- **Default: commit `/project-memory/` and the context pack** to the
+  project's own repo. Every clone, machine and git worktree then sees the
+  same decisions, and the register gets history. A worktree's memory edits
+  land through its PR like any other change.
+- **Exception: public repo with private planning.** Check visibility
+  (`gh repo view --json visibility`) and ask the user once. If the
+  planning must stay private: gitignore `project-memory/` and the context
+  pack, keep `project-memory/` as its own private git repo (local, or a
+  private remote), and for Claude Code worktrees add
+  `"worktree": {"symlinkDirectories": ["project-memory"]}` to the
+  **project's** `.claude/settings.json`, so every worktree edits the one
+  live copy. Never set that in user settings: in a repo that commits
+  `project-memory/`, it would swap the tracked folder for a link to the
+  main checkout.
+- Record which one applies in the PDR.
+
 **Environment adaptation:**
 - Filesystem available → write and update these files directly.
 - Pure chat → emit each file as a copy-ready block and tell the user to commit

@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Extract behavioral specifications from an existing codebase that has no written spec — mining a brownfield repo into a flat list of Requirements (WHEN/THEN) and Invariants (always-true), each anchored to the exact code location that enforces it, grounded in Salak's dependency graph when installed. Groups the codebase into capabilities first, then mines with a bounded sample-and-expand read strategy (see Phase 1/2 below for the mechanics) — never reading a whole module blindly. Use when entering a project with code but no spec, when dev-kickoff-edho-ferdian Phase 0 reports a missing BEHAVIOR_SPEC role, or when the user says \"ekstrak spec\", \"buat spec dari kode\", \"reverse-engineer the spec\", or \"repo ini tidak ada dokumentasi\". Never invents behavior: anything unclear is recorded as an explicit uncertainty, not a requirement."
+description: "Extract behavioural specs from a codebase with none: WHEN/THEN requirements and invariants, each anchored to the code that enforces it, unclear behaviour recorded as uncertainty. Use for \"ekstrak spec\", \"buat spec dari kode\", \"reverse-engineer the spec\", \"repo ini tidak ada dokumentasi\", or a missing BEHAVIOR_SPEC in dev-kickoff."
 ---
 
 # Spec Mining — Edho Ferdian Mode (Skill Edition) · v1.0

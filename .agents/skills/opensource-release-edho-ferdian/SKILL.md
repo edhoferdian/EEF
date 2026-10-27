@@ -1,14 +1,13 @@
 ---
 name: opensource-release-edho-ferdian
 description: >-
-  Fork, sanitize, and package a project for open-source release in three
-  phases — extract secrets into .env.example rather than deleting them, run
-  an independent adversarial audit that never trusts the fork phase's own
-  report (PASS/FAIL/PASS-WITH-WARNINGS, hard-gates packaging on FAIL), then
-  generate CLAUDE.md/README/LICENSE/CONTRIBUTING/issue-templates. Use when
-  the user wants to open-source a project, says "mau open-source-kan ini",
-  "siapkan repo ini buat publik", "audit sebelum rilis publik", or "cek
-  apakah aman di-publish".
+  Prepare a project for public open-source release: move secrets to
+  .env.example, run an independent audit that gates on FAIL, then generate
+  README, LICENSE and contributor files. Use for "mau open-source-kan ini",
+  "siapkan repo ini buat publik", "audit sebelum rilis publik", "cek apakah
+  aman di-publish".
+metadata:
+  last_reviewed: "2026-09-10"
 ---
 
 # Open-Source Release — Edho Ferdian Mode

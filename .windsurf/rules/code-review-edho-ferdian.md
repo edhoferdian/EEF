@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Senior-engineer code review across five domains — Code Quality, Security, Performance, Blueprint/Spec Consistency, and Test Quality — plus conditional lenses auto-detected from scope (database, accessibility, RAG, ML, healthcare, agent/LLM). Produces an evidence-backed findings report with confidence-labeled severities and an adaptive fix. Load it whenever code is to be reviewed or checked before merge/deploy, even a short snippet or a quick \"is this OK?\": its checklist and false-positive gate catch what an unaided read misses, and its severity scale is what this ecosystem reports with. Triggers: \"review this\", \"audit\", \"cek kode\", \"cek dulu sebelum merge\", \"ada yang salah gak\", \"review PR\", \"is this production-ready\", \"find bugs\" — even without the word \"review\". If the request is only about security (\"cek keamanan kode ini\"), use `security-review-edho-ferdian` instead."
+description: "Senior code review across quality, security, performance, spec consistency and tests, with evidence-backed, severity-ranked findings. Load it for any review, even a short snippet or a quick \"is this OK?\". Use for \"review this\", \"cek kode\", \"cek dulu sebelum merge\", \"ada yang salah gak\", \"review PR\", \"find bugs\". Security-only asks go to security-review."
 ---
 
 # Code Review — Edho Ferdian Mode (Skill Edition)
@@ -193,5 +193,17 @@ tool would say — run it.** Using whatever exists in the repo (see Phase 0 prob
   (`dev-kickoff-edho-ferdian/references/salak-integration.md`).
 
 **Confidence labeling rule (applies to every finding):**
+- Confirmed by a tool or by a directly readable line → **[High confidence]**.
+- Sound reasoning but not tool-verified → **[Medium confidence]** + a short note
+  on what would confirm it.
+- Plausible but uncertain (e.g. depends on runtime data you can't see, or on an
+  external API's current behavior) → **[Low confidence] — needs verification.**
+
+Never fabricate tool output. If a tool isn't installed or can't run, say so and
+label affected findings accordingly. If a claim depends on a library/API version
+or on time-sensitive behavior, flag it as needing live verification rather than
+asserting it.
+
+---
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/code-review-edho-ferdian/SKILL.md` for complete instructions.

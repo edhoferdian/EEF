@@ -1,15 +1,13 @@
 ---
 name: skill-authoring-edho-ferdian
 description: >-
-  Discipline for creating and governing this ecosystem's own skills: search
-  before building (local → marketplace → GitHub → web, with a security vet
-  on anything external), write to a quality bar, measure whether a skill is
-  actually obeyed rather than assuming it, promote recurring cross-skill
-  principles up into rules, and package a finished skill into
-  `dist/*.skill` for manual upload. Use when the user says "bikin skill
-  baru", "ada skill buat X gak", "fork skill ini", "skill gue kepake gak
-  sih", "package skill ini", "mau publish skill ini", "buatkan .skill-nya",
-  or before adding anything to this repo's `skills/` or `dist/`.
+  Create and govern this ecosystem's skills: search before building, a
+  quality bar, compliance checks, promoting repeated principles to rules,
+  and packaging dist/*.skill. Use for "bikin skill baru", "ada skill buat X
+  gak", "fork skill ini", "skill gue kepake gak sih", "package skill ini",
+  "buatkan .skill-nya".
+metadata:
+  last_reviewed: "2026-10-08"
 ---
 
 # Skill Authoring — Edho Ferdian Mode
@@ -75,6 +73,12 @@ A skill in this ecosystem is not done until:
   says (including Indonesian ones), and it says what the skill is *not* for
   when a neighbouring skill exists. A description that is merely accurate
   but never fires is a dead skill.
+- **The description is short.** At most 450 characters (CI enforces it via
+  `measure_context.py --max-desc-chars`): what the skill does, then the
+  trigger phrases. Claude Code caps the whole skill listing and drops the
+  descriptions of rarely used skills when it overflows, so a long
+  description can cost another skill its triggers. Boundary detail goes in
+  the body.
 - **Its boundary is stated.** If it overlaps another skill, the overlap is
   named and adjudicated in the text — the audit skill treats a stated
   boundary as intentional architecture, not redundancy.

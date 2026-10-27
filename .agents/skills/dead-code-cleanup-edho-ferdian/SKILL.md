@@ -1,17 +1,13 @@
 ---
 name: dead-code-cleanup-edho-ferdian
 description: >-
-  Staged dead-code removal workflow — detect (stack-appropriate tooling:
-  knip/depcheck/ts-prune, vulture/deptry, cargo-udeps, deadcode, ...),
-  classify by removal risk (SAFE/CAREFUL/RISKY), cross-check every "unused"
-  hit against Salak's repo-graph.json reverse-dependency data when available,
-  then delete in ordered categories (deps → exports → files → duplicates)
-  running the test suite between each category. Use this whenever the user
-  wants dead code, unused exports, unused dependencies, or duplicate code
-  actually REMOVED — "bersihkan kode mati", "hapus yang tidak dipakai",
-  "cleanup unused code/deps", "remove dead code", "consolidate duplicates".
-  Not for finding-only review — see the scope note below for the boundary
-  with code-review-edho-ferdian's CQ-07.
+  Remove dead code safely: detect with stack tooling (knip, vulture,
+  cargo-udeps...), rank by risk, then delete deps, exports, files and
+  duplicates in stages with tests between. Use for "bersihkan kode mati",
+  "hapus yang tidak dipakai", "cleanup unused code/deps", "remove dead
+  code", "consolidate duplicates".
+metadata:
+  last_reviewed: "2026-09-19"
 ---
 
 # Dead Code Cleanup — Edho Ferdian Mode (Skill Edition)

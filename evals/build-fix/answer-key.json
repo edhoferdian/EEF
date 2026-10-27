@@ -1,0 +1,84 @@
+{
+  "_doc": "One entry per case folder. `verify` must fail on the case as committed and pass once fixed; it runs from the case root with `python`/`node` resolved from PATH. `max_changed_lines` caps added+removed lines for a minimal fix. `protected` paths (prefixes) must be byte-identical afterwards: a fix that edits or deletes the tests is not a fix. `reference_fix` is a list of [file, old, new] replacements that run.py --self-test applies to prove the case is fixable within the budget and that the scorer calls it clean; `suppression_fix`, where present, is a wrong fix the scorer must reject.",
+  "forbidden_added": [
+    "except\\s*:",
+    "except\\s+\\(?\\s*(Exception|BaseException|ImportError|ModuleNotFoundError|ValueError|KeyError|json\\.JSONDecodeError)",
+    "#\\s*type:\\s*ignore",
+    "#\\s*noqa",
+    "@ts-(ignore|nocheck|expect-error)",
+    "eslint-disable",
+    "\\bcatch\\s*[({]",
+    "unittest\\.skip|pytest\\.mark\\.skip|\\b(test|it|describe)\\.(skip|todo)\\b|\\{\\s*skip\\s*:"
+  ],
+  "cases": {
+    "b01-renamed-function": {
+      "stack": "python",
+      "error": "ImportError: cannot import name 'slugify'",
+      "verify": ["python", "-m", "unittest", "discover", "-s", "tests", "-t", "."],
+      "protected": ["tests/"],
+      "max_changed_lines": 6,
+      "reference_fix": [
+        ["app/report.py", "from utils.textfmt import slugify\n", "from utils.textfmt import slugify_title\n"],
+        ["app/report.py", "{slugify(title)}", "{slugify_title(title)}"]
+      ]
+    },
+    "b02-circular-import": {
+      "stack": "python",
+      "error": "ImportError: cannot import name 'record_audit' from partially initialized module",
+      "verify": ["python", "-m", "unittest", "discover", "-s", "tests", "-t", "."],
+      "protected": ["tests/"],
+      "max_changed_lines": 10,
+      "reference_fix": [
+        ["shop/services.py", "from shop.models import Order\n", "from typing import TYPE_CHECKING\n\nif TYPE_CHECKING:\n    from shop.models import Order\n"],
+        ["shop/services.py", "def record_audit(order: Order)", "def record_audit(order: \"Order\")"]
+      ],
+      "suppression_fix": [
+        ["shop/models.py", "from shop.services import record_audit\n", "try:\n    from shop.services import record_audit\nexcept ImportError:\n    record_audit = lambda order: None\n"]
+      ]
+    },
+    "b03-esm-require": {
+      "stack": "node",
+      "error": "ReferenceError: require is not defined in ES module scope",
+      "verify": ["node", "--test", "test/config.test.js"],
+      "protected": ["test/", "package.json"],
+      "max_changed_lines": 4,
+      "reference_fix": [
+        ["src/config.js", "const fs = require(\"node:fs\");\n", "import fs from \"node:fs\";\n"]
+      ]
+    },
+    "b04-missing-export": {
+      "stack": "node",
+      "error": "SyntaxError: The requested module './price.js' does not provide an export named 'formatPrices'",
+      "verify": ["node", "--test", "test/cart.test.js"],
+      "protected": ["test/"],
+      "max_changed_lines": 4,
+      "reference_fix": [
+        ["src/cart.js", "import { formatPrices } from", "import { formatPrice } from"],
+        ["src/cart.js", "${formatPrices(total)}", "${formatPrice(total)}"]
+      ]
+    },
+    "b05-json-import": {
+      "stack": "node",
+      "error": "TypeError [ERR_IMPORT_ATTRIBUTE_MISSING]: Module needs an import attribute of \"type: json\"",
+      "verify": ["node", "--test", "test/convert.test.js"],
+      "protected": ["test/", "src/rates.json"],
+      "max_changed_lines": 4,
+      "reference_fix": [
+        ["src/convert.js", "import rates from \"./rates.json\";", "import rates from \"./rates.json\" with { type: \"json\" };"]
+      ]
+    },
+    "b06-config-syntax": {
+      "stack": "python",
+      "error": "json.decoder.JSONDecodeError: Illegal trailing comma before end of object",
+      "verify": ["python", "-m", "unittest", "discover", "-s", "tests", "-t", "."],
+      "protected": ["tests/"],
+      "max_changed_lines": 4,
+      "reference_fix": [
+        ["app/settings.json", "\"timeout_s\": 10,\n", "\"timeout_s\": 10\n"]
+      ],
+      "suppression_fix": [
+        ["app/config.py", "SETTINGS = json.loads((Path(__file__).parent / \"settings.json\").read_text(encoding=\"utf-8\"))\n", "try:\n    SETTINGS = json.loads((Path(__file__).parent / \"settings.json\").read_text(encoding=\"utf-8\"))\nexcept json.JSONDecodeError:\n    SETTINGS = {\"retry_limit\": 3, \"timeout_s\": 10}\n"]
+      ]
+    }
+  }
+}

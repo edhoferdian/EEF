@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Contract for an agent that talks to external counterparties (customers, suppliers, partners) in shared channels, group chats, DMs, or email: who it may speak to and when (audience classification, mention gating, silent observation, no leakage of internal context), and what it may send (every outbound draft filed for operator approval against an exact text hash, stale approvals unable to release rewritten text, one dispatch per approval with a delivery ledger). Use when building or reviewing a bot, desk agent, or auto-reply that sits where outsiders read every message, or when the user says \"agent di grup customer\", \"bot balas supplier\", \"approval sebelum kirim\", \"jangan sampai bocor ke klien\", \"outbound approval\"."
+description: "Rules for an agent that talks to customers, suppliers or partners: who it may answer, no leak of internal context, and every outbound draft approved against its exact text. Use for \"agent di grup customer\", \"bot balas supplier\", \"approval sebelum kirim\", \"jangan sampai bocor ke klien\", \"outbound approval\"."
 ---
 
 # Counterparty Communications — Edho Ferdian Mode

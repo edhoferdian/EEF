@@ -3,7 +3,7 @@
 # ~/.claude/skills/. Run from a cloned copy of this repo.
 #
 # Usage:
-#   ./install.sh                 # install all 33 skills
+#   ./install.sh                 # install all 38 skills
 #   ./install.sh code-review-edho-ferdian dev-kickoff-edho-ferdian
 #                                 # install only the named skills
 #   ./install.sh --list          # list installable skill names and exit

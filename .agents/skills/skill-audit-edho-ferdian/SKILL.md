@@ -1,15 +1,12 @@
 ---
 name: skill-audit-edho-ferdian
 description: >-
-  Audit this ecosystem's own `skills/` directory for staleness, redundancy,
-  broken cross-references, and description-quality problems — increasingly
-  important as this ecosystem grows past a dozen interlinked skills. Use
-  when the user says "audit skill saya", "cek skill yang sudah dibuat", "ada
-  yang redundan gak", "skill mana yang basi", or periodically after a batch
-  of new skills is added. Scope is this repo's own `skills/` content and
-  quality only — NOT the `~/.claude` environment/config (that's
-  `config-hygiene-edho-ferdian`), even for overlapping phrasing like
-  "kebanyakan skill" or "audit setup gue".
+  Audit this repo's skills/ for staleness, redundancy, broken
+  cross-references and weak descriptions (not the ~/.claude setup: that is
+  config-hygiene). Use for "audit skill saya", "cek skill yang sudah
+  dibuat", "ada yang redundan gak", "skill mana yang basi".
+metadata:
+  last_reviewed: "2026-09-12"
 ---
 
 # Skill Audit — Edho Ferdian Mode

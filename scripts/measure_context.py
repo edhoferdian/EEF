@@ -11,10 +11,20 @@ wrap — text the session then reads twice.
 Token counts are estimates (characters / 4); exact counts need the
 token-counting API, and the ranking does not change with the divisor.
 
+Skill descriptions have a second, harder limit. Claude Code caps the whole
+skill listing at a share of the context window (skillListingBudgetFraction,
+1% by default) and, when it overflows, drops the descriptions of the
+least-used skills: they stay listed by name only and lose the trigger
+phrases that make them fire. On 2026-10-27 that had stripped 14 of 38 EEF
+skills. EEF shares that listing with every other skill a user has, so its
+own share must stay well under it: --max-desc-chars caps any one
+description and --listing-chars caps all of them together.
+
 Usage:
     python scripts/measure_context.py               # report
     python scripts/measure_context.py --top 15      # longer ranking
     python scripts/measure_context.py --budget 20000  # exit 1 above this many est. tokens
+    python scripts/measure_context.py --max-desc-chars 450 --listing-chars 14000
 """
 import argparse
 import sys
@@ -45,6 +55,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--top", type=int, default=8, help="items to list per layer")
     parser.add_argument("--budget", type=int, help="fail when the estimated total exceeds this many tokens")
+    parser.add_argument("--max-desc-chars", type=int, help="fail when any skill description is longer than this")
+    parser.add_argument("--listing-chars", type=int,
+                        help="fail when all skill names plus descriptions exceed this many chars")
     args = parser.parse_args()
 
     skills = load_skills()
@@ -73,10 +86,23 @@ def main() -> int:
           f"{dup_chars:,} chars, ~{est_tokens(dup_chars):,} tokens read twice per session")
 
     print(f"\nTOTAL loaded every session: {total:,} chars, ~{est_tokens(total):,} tokens (estimate)")
+    failed = False
     if args.budget is not None and est_tokens(total) > args.budget:
         print(f"OVER BUDGET: ~{est_tokens(total):,} > {args.budget:,} tokens")
-        return 1
-    return 0
+        failed = True
+
+    listing = sum(len(s.name) + len(s.description) for s in skills)
+    print(f"skill listing share (names + descriptions): {listing:,} chars, ~{est_tokens(listing):,} tokens")
+    if args.listing_chars is not None and listing > args.listing_chars:
+        print(f"OVER LISTING BUDGET: {listing:,} > {args.listing_chars:,} chars — shorten descriptions, "
+              "or Claude Code drops some of them")
+        failed = True
+    if args.max_desc_chars is not None:
+        for s in skills:
+            if len(s.description) > args.max_desc_chars:
+                print(f"DESCRIPTION TOO LONG: {s.name} has {len(s.description)} > {args.max_desc_chars} chars")
+                failed = True
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":
