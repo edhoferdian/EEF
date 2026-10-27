@@ -2,6 +2,30 @@
 
 Generated from conventional commits by `scripts/generate_changelog.py` — do not edit by hand.
 
+## [v1.22.0](https://github.com/edhoferdian/EEF/releases/tag/v1.22.0) — 2026-10-28
+
+### Features
+
+- cut agent quota burn, guard destructive commands, show usage (#4) ([474bfa2](https://github.com/edhoferdian/EEF/commit/474bfa2))
+- Windows CI, one generator list, review dates, outcome evals, incident response (#5) ([6d765b9](https://github.com/edhoferdian/EEF/commit/6d765b9))
+- use Salak 0.3.x across skills, rules and doctor (#6) ([4ce234a](https://github.com/edhoferdian/EEF/commit/4ce234a))
+
+### Fixes
+
+- **scripts:** skip deleting a release branch gh already removed ([0e7c566](https://github.com/edhoferdian/EEF/commit/0e7c566))
+
+### Documentation
+
+- regenerate CHANGELOG.md for v1.21.0 ([d3fdafe](https://github.com/edhoferdian/EEF/commit/d3fdafe))
+
+### CI and release
+
+- **publish:** publish through OIDC only now that the npm token is gone (#3) ([bc2f199](https://github.com/edhoferdian/EEF/commit/bc2f199))
+
+### Maintenance
+
+- bump version to 1.22.0 (Windows CI, one generator list, shorter skill descriptions, outcome evals, incident response, Salak 0.3.x) ([487296b](https://github.com/edhoferdian/EEF/commit/487296b))
+
 ## [v1.21.0](https://github.com/edhoferdian/EEF/releases/tag/v1.21.0) — 2026-10-09
 
 ### Features
