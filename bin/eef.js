@@ -719,6 +719,23 @@ function compareFiles(shippedPaths, destDir, compare) {
   return result;
 }
 
+// The salak release skills/dev-kickoff-edho-ferdian/references/salak-integration.md
+// was last verified against; older builds lack `salak query` and `salak init`.
+const SALAK_VERIFIED = [0, 3];
+
+/** One line on whether `salak` is on PATH and how its version compares. */
+function salakStatus() {
+  const res = require("child_process").spawnSync("salak", ["version"], { encoding: "utf8", timeout: 5000 });
+  if (res.error && res.error.code === "ENOENT") return "not found (fine: every skill runs without it)";
+  if (res.error || res.status !== 0) return "found, but `salak version` failed or timed out";
+  const m = (res.stdout || "").match(/(\d+)\.(\d+)(?:\.\d+)?\S*/);
+  if (!m) return "found, version unreadable";
+  const older = Number(m[1]) < SALAK_VERIFIED[0] || (Number(m[1]) === SALAK_VERIFIED[0] && Number(m[2]) < SALAK_VERIFIED[1]);
+  return older
+    ? `salak ${m[0]} — older than ${SALAK_VERIFIED.join(".")}, which the skills' Salak contract was verified on (no \`salak query\`/\`init\`); upgrade with \`uv tool upgrade salak\``
+    : `salak ${m[0]}`;
+}
+
 /**
  * eef-install doctor — read-only report of what this package has installed
  * for Claude Code, and whether it still matches this version. Exits 1 only
@@ -827,6 +844,9 @@ function doctor() {
     }
     say(`  ${name} (${hook.file}): ${fileState}; ${regState}`);
   }
+
+  // Salak: optional, so absence or a failed probe is reported, never counted as breakage.
+  say(`\nSalak (optional dependency graph; skills use it when present) — ${salakStatus()}`);
 
   say(broken ? `\n${broken} problem(s) need fixing (marked above).` : "\nNo breakage found.");
   if (broken) process.exitCode = 1;
