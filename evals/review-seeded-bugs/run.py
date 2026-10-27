@@ -117,6 +117,14 @@ V3_PROMPT = (
     "(path relative to the working directory), the line, and a severity."
 )
 
+SECURITY_PROMPT = (
+    "A pull request adds the file `{changed}` (it is the only file in the working "
+    "directory). Is it safe to ship security-wise? Review it using the "
+    "security-review-edho-ferdian skill. There is no other context — no tests, "
+    "specs or other files exist — so do not ask for them. Report every security "
+    "issue you would raise on this PR, each with the line it is on and a severity."
+)
+
 CORPORA = {
     "v1": {
         "cases_dir": HERE / "cases",
@@ -149,6 +157,16 @@ CORPORA = {
         "results": HERE / "results-v4",
         "prompt": V3_PROMPT,
         "with_file": True,
+    },
+    # Outcome check for security-review-edho-ferdian rather than
+    # code-review: v1's layout, vulnerabilities v1 does not already seed,
+    # and keywords so a finding must name the vulnerability class.
+    "security": {
+        "cases_dir": HERE / "cases-security",
+        "key": HERE / "answer-key-security.json",
+        "results": HERE / "results-security",
+        "prompt": SECURITY_PROMPT,
+        "with_file": False,
     },
 }
 

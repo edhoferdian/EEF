@@ -1,0 +1,56 @@
+{
+  "_doc": "Security corpus: one file per case, as in v1. Each bug case carries one seeded vulnerability that security-review-edho-ferdian's checklist names; `keywords` must appear in a finding's summary or category for it to count, so a vague 'improve validation' near the line is not a catch. `bug: null` marks a clean control that does the risky thing safely.",
+  "tolerance": 2,
+  "cases": {
+    "01-link_preview.py": {
+      "category": "ssrf",
+      "bug": "Any http(s) URL from a chat message is fetched server-side, including internal addresses and cloud metadata endpoints.",
+      "anchors": ["with urllib.request.urlopen(url, timeout=5) as resp:"],
+      "keywords": ["ssrf", "server-side request", "internal", "metadata", "169.254", "private"]
+    },
+    "02-session_cache.py": {
+      "category": "insecure-deserialization",
+      "bug": "pickle.loads runs on a value the client controls (a cookie), which is remote code execution.",
+      "anchors": ["draft = pickle.loads(data)"],
+      "keywords": ["pickle", "deserializ", "remote code", "rce", "arbitrary code"]
+    },
+    "03-profile-update.js": {
+      "category": "mass-assignment",
+      "bug": "Object.assign copies every request field onto the user, so a caller can set role, isAdmin, email verification or id.",
+      "anchors": ["Object.assign(user, req.body);"],
+      "keywords": ["mass assignment", "mass-assignment", "allowlist", "whitelist", "role", "admin", "privilege", "any field", "arbitrary field", "overpost"]
+    },
+    "04-login-redirect.ts": {
+      "category": "open-redirect",
+      "bug": "`next` is redirected to unchecked, so a login link can send the user to an attacker's site.",
+      "anchors": ["res.redirect(302, next);"],
+      "keywords": ["open redirect", "open-redirect", "redirect", "phishing"]
+    },
+    "05-webhook_auth.py": {
+      "category": "timing-attack",
+      "bug": "The HMAC is compared with ==, which leaks timing; use hmac.compare_digest.",
+      "anchors": ["return expected == signature_header"],
+      "keywords": ["timing", "compare_digest", "constant-time", "constant time"]
+    },
+    "06-thumbnail_job.py": {
+      "category": "command-injection",
+      "bug": "The filename is interpolated into a shell=True command; a quote in the name breaks out of the quoting.",
+      "anchors": ["subprocess.run(f\"convert '{src}' -resize {width}x '{dest}'\", shell=True, check=True)"],
+      "keywords": ["command injection", "shell injection", "shell=true", "injection"]
+    },
+    "07-merge-settings.js": {
+      "category": "prototype-pollution",
+      "bug": "deepMerge walks __proto__ from parsed JSON, so saved settings can pollute Object.prototype.",
+      "anchors": ["for (const key of Object.keys(source)) {", "deepMerge(target[key], value);"],
+      "keywords": ["prototype", "__proto__", "pollution"]
+    },
+    "08-api_keys.py": {
+      "category": "weak-password-hash",
+      "bug": "Passwords are hashed with salted SHA-1, a fast hash; use bcrypt, scrypt or argon2.",
+      "anchors": ["return hashlib.sha1((salt + password).encode()).hexdigest()"],
+      "keywords": ["sha1", "sha-1", "bcrypt", "argon", "scrypt", "pbkdf2", "fast hash", "weak hash", "password hash"]
+    },
+    "09-avatar_fetch.py": {"category": "control", "bug": null},
+    "10-export_archive.py": {"category": "control", "bug": null}
+  }
+}
