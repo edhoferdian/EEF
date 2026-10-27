@@ -107,6 +107,8 @@ jobs:
           node-version: "20"
       - name: npm pack produces a valid tarball
         run: npm pack --dry-run
+      - name: Shipped hooks decide each case as expected
+        run: node --test tests/*.test.js
       - name: --list returns one line per skill folder
         run: |
           count=$(node bin/eef.js --list | wc -l)
@@ -181,7 +183,7 @@ jobs:
           export CLAUDE_HOOKS_DIR=$d/hooks CLAUDE_SETTINGS_FILE=$d/settings.json
           echo '{"model":"opus","permissions":{"allow":["Bash(ls:*)"]},"hooks":{"PreToolUse":[{"matcher":"Edit","hooks":[{"type":"command","command":"echo mine"}]}]}}' > $d/settings.json
           node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks --only fs-guard
-          node -e "const c=require('$d/settings.json'); if(c.hooks.SubagentStop) throw new Error('--only fs-guard also added telemetry');"
+          node -e "const c=require('$d/settings.json'); if(c.hooks.PostToolUse||c.statusLine) throw new Error('--only fs-guard also added another hook');"
           node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks
           node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks
           node -e "
@@ -190,7 +192,8 @@ jobs:
             const pre=c.hooks.PreToolUse;
             if(pre[0].hooks[0].command!=='echo mine') throw new Error('clobbered existing hook');
             if(pre.length!==2||pre[1].matcher!=='Bash|PowerShell') throw new Error('fs-guard missing or duplicated: '+JSON.stringify(pre));
-            if(c.hooks.SubagentStop.length!==1||'matcher' in c.hooks.SubagentStop[0]) throw new Error('telemetry missing or duplicated');
+            const post=c.hooks.PostToolUse;
+            if(post.length!==1||post[0].matcher!=='Agent') throw new Error('telemetry missing or duplicated: '+JSON.stringify(post));
             if(!c.statusLine||!c.statusLine.command.includes('statusline-usage.js')) throw new Error('statusline not set');
           "
           test -f $d/hooks/statusline-usage.js
