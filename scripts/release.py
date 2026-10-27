@@ -221,7 +221,10 @@ def main() -> int:
         print(f"   {url}")
 
         step("5. npm publish (publish.yml)")
-        publish_id = wait_for_run("publish.yml")
+        # Filter by the released commit: the newest publish run can still be
+        # the previous release's for a few seconds (v1.22.0 picked v1.21.0's
+        # failed run and stopped although its own publish succeeded).
+        publish_id = wait_for_run("publish.yml", commit=landed)
         log = run("gh", "run", "view", publish_id, "--log")
         if f"+ eef-install@{new}" not in log:
             raise ReleaseError(f"publish run {publish_id} succeeded but its log does not show + eef-install@{new}")

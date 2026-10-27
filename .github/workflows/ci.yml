@@ -68,7 +68,11 @@ jobs:
           python-version: "3.x"
       - name: Every generated file matches its source (scripts/regen_all.py holds the list)
         # package_skills is the dist-sync job's own required check.
-        run: python scripts/regen_all.py --check --skip package_skills
+        # On a push to main the changelog is skipped: release.py tags the
+        # bump commit and lands CHANGELOG.md in the next PR, so that push's
+        # run sees the new tag before CHANGELOG.md has it (red on v1.22.0).
+        # PRs still check it.
+        run: python scripts/regen_all.py --check --skip package_skills ${{ github.event_name == 'push' && '--skip generate_changelog' || '' }}
 
   windows:
     name: Windows (encoding, hooks, install.ps1)
@@ -88,7 +92,8 @@ jobs:
           node-version: "20"
       - name: Generators produce identical output on Windows
         shell: pwsh
-        run: python scripts/regen_all.py --check
+        # Same push-to-main changelog skip as export-targets-sync.
+        run: python scripts/regen_all.py --check ${{ github.event_name == 'push' && '--skip generate_changelog' || '' }}
       - name: Script unit tests
         shell: pwsh
         run: python -m unittest discover -s tests -p "test_*.py"
