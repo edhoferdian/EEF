@@ -39,7 +39,9 @@ CONVENTIONAL = re.compile(r"^(?P<type>[a-z]+)(?:\((?P<scope>[^)]+)\))?(?P<breaki
 
 
 def git(*args: str) -> str:
-    return subprocess.run(["git", *args], cwd=REPO_ROOT, capture_output=True, text=True, check=True).stdout
+    # git emits UTF-8; without an explicit encoding Windows Python decodes it as cp1252 (mojibake in subjects).
+    return subprocess.run(["git", *args], cwd=REPO_ROOT, capture_output=True, text=True, encoding="utf-8",
+                          check=True).stdout
 
 
 def release_tags() -> list[str]:

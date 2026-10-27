@@ -16,6 +16,7 @@
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
+const { spawnSync } = require("child_process");
 
 const PKG_ROOT = path.resolve(__dirname, "..");
 const SKILLS_DIR = path.join(PKG_ROOT, "skills");
@@ -178,7 +179,7 @@ const TARGETS = {
       if (!roster) return;
       const route = profileRoute(opts, "claude");
       if (route === undefined) return;
-      copyAgentFiles(path.join(PKG_ROOT, ".claude", "agents"), destRoot, ".md", route && withClaudeModel(route), roster);
+      copyAgentFiles(path.join(AGENTS_DIST_DIR, "claude"), destRoot, ".md", route && withClaudeModel(route), roster);
     },
   },
 
@@ -749,7 +750,7 @@ function doctor() {
 
   // Agents: compare without model/effort (those are the profile's), then infer the profile.
   const agentsDir = claudeAgentsDir();
-  const agentsSrc = path.join(PKG_ROOT, ".claude", "agents");
+  const agentsSrc = path.join(AGENTS_DIST_DIR, "claude");
   const agentFiles = fs.readdirSync(agentsSrc).filter((f) => f.endsWith(".md")).sort();
   const agents = compareFiles(
     agentFiles.map((f) => [f, path.join(agentsSrc, f)]),
@@ -868,7 +869,7 @@ function update(opts) {
 
   // Agents: replace the body, keep each installed file's own model/effort.
   const agentsDir = claudeAgentsDir();
-  const agentsSrc = path.join(PKG_ROOT, ".claude", "agents");
+  const agentsSrc = path.join(AGENTS_DIST_DIR, "claude");
   const agentFiles = fs.readdirSync(agentsSrc).filter((f) => f.endsWith(".md")).sort();
   const agents = compareFiles(
     agentFiles.map((f) => [f, path.join(agentsSrc, f)]),
@@ -965,6 +966,8 @@ Usage:
   eef-install update [--dry-run]       Bring an existing Claude Code install up to this
                                        version: only what is installed and differs is
                                        replaced; agents keep their model/effort
+  eef-install stats [--days N] [--json] Summarize subagent telemetry (from the telemetry
+                                       hook) per agent, as evidence for re-tiering (read-only)
   eef-install --help                   Show this message
 
 Targets (--target):
@@ -1017,6 +1020,7 @@ Examples:
   eef-install --target claude-hooks --only fs-guard
   eef-install doctor
   eef-install update --dry-run
+  eef-install stats --days 30
 `);
 }
 
@@ -1040,6 +1044,15 @@ function main() {
 
   if (args[0] === "update") {
     update({ dryRun: args.includes("--dry-run") });
+    return;
+  }
+
+  if (args[0] === "stats") {
+    // The report ships inside config-hygiene's skill folder; run that copy
+    // so npx users get it without installing the skill.
+    const report = path.join(SKILLS_DIR, "config-hygiene-edho-ferdian", "scripts", "subagent-report.js");
+    const res = spawnSync(process.execPath, [report, ...args.slice(1)], { stdio: "inherit" });
+    process.exitCode = res.status ?? 1;
     return;
   }
 

@@ -31,7 +31,6 @@
     ".hermes/",
     ".agents/",
     ".zcode/",
-    ".claude/agents/",
     "dist/agents/"
   ],
   "engines": {

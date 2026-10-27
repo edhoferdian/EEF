@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Getting a build to production and keeping it healthy — release strategy (rolling / blue-green / canary), CI/CD pipeline gates, health checks and Kubernetes probes, environment config and rollback, a production-readiness ship/block verdict, operator dashboards, and post-deploy watching. Starts where container-ops-edho-ferdian stops (image built, compose working). Trigger phrases: \"deploy ini gimana\", \"bikin pipeline CI/CD\", \"rollback\", \"manifest kubernetes\", \"siap rilis belum\", \"pantau setelah deploy\", \"bikin dashboard monitoring\"."
+description: "Ship a build and keep it healthy: release strategy, CI/CD gates, health checks and Kubernetes, rollback, readiness verdict, dashboards, post-deploy watch, and production incidents with postmortems. Use for \"deploy ini gimana\", \"pipeline CI/CD\", \"rollback\", \"siap rilis belum\", \"pantau setelah deploy\", \"production down\", \"ada insiden\", \"tulis postmortem\"."
 ---
 
 # Deployment Ops — Edho Ferdian Mode
@@ -37,6 +37,10 @@ Step 4  Production-readiness verdict     → references/production-readiness.md
                                             duplication" section)
 Step 5  Deploy, then watch               → references/post-deploy-watch.md
 Step 6  Make it operable                 → references/observability.md
+Step 7  When production breaks           → references/incident-response.md
+                                            (mitigate before diagnosing;
+                                            read-only until a mitigation
+                                            is approved; postmortem)
 
 `references/cicd-pipeline.md` (Step 2) covers gate ordering (lint → typecheck
 → unit test → security scan → build → deploy) with rationale, GitHub

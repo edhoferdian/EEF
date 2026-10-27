@@ -1,15 +1,12 @@
 ---
 name: desktop-e2e-edho-ferdian
 description: >-
-  End-to-end testing for Windows native desktop applications (WPF, WinForms,
-  Win32/MFC, Qt 5/6) using pywinauto over the Windows UI Automation API. The
-  native-automation driver that e2e-testing-edho-ferdian's Phase 0 detects as
-  option 4 but has no content behind — journey mapping and the Page Object
-  Model come from there; the pywinauto mechanics live here. Use when the
-  target is a desktop .exe rather than a browser page, when a desktop GUI test
-  suite is being set up or is flaky, or when adding AutomationIds to make an
-  app testable. Trigger phrases: "test aplikasi desktop", "pywinauto",
-  "WPF/WinForms/Qt test", "UI Automation", "test .exe ini".
+  End-to-end tests for Windows desktop apps (WPF, WinForms, Win32, Qt) with
+  pywinauto over UI Automation. Use for "test aplikasi desktop",
+  "pywinauto", "WPF/WinForms/Qt test", "UI Automation", "test .exe ini", or
+  a flaky desktop GUI suite.
+metadata:
+  last_reviewed: "2026-09-09"
 ---
 
 # Desktop E2E (Windows) — Edho Ferdian Mode

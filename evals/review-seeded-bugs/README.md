@@ -27,6 +27,17 @@ key (`answer-key.json`) locates each bug by anchor text, not a hand-typed
 line number; `run.py` resolves anchors to lines and refuses to run if any
 anchor is missing or ambiguous. All cases were written for this benchmark.
 
+**security** (`cases-security/`, `answer-key-security.json`, `--corpus
+security`): an outcome check for `security-review-edho-ferdian` instead of
+code-review, same single-file layout and scoring as v1. 8 cases each carry
+one vulnerability v1 does not already seed (SSRF, pickle deserialization
+of a cookie, mass assignment, open redirect, `==` on an HMAC, shell
+command injection, prototype pollution, SHA-1 password hashing), plus 2
+controls that do the risky thing safely (an allow-listed fetch with a
+private-address check, a `subprocess` call with an argument list). Each
+case has `keywords`, so a finding must name the vulnerability class, not
+just sit near the line. Not yet run.
+
 ## Method
 
 Each run is one headless Claude Code session (`claude -p`) in a fresh temp

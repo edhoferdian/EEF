@@ -29,7 +29,7 @@ Generated from conventional commits by `scripts/generate_changelog.py` — do no
 - **evals:** cover all 38 skills with trigger cases and near-miss checks ([bec585d](https://github.com/edhoferdian/EEF/commit/bec585d))
 - **evals:** record the coverage trigger run (spend limit hit) ([3a82ac8](https://github.com/edhoferdian/EEF/commit/3a82ac8))
 - **evals:** record coverage re-runs and the three description fixes ([eaf60e1](https://github.com/edhoferdian/EEF/commit/eaf60e1))
-- **evals:** record run 7 â€” performance-audit fires, seo-audit inline stays a known miss ([d2567a2](https://github.com/edhoferdian/EEF/commit/d2567a2))
+- **evals:** record run 7 — performance-audit fires, seo-audit inline stays a known miss ([d2567a2](https://github.com/edhoferdian/EEF/commit/d2567a2))
 
 ### Maintenance
 
@@ -45,7 +45,7 @@ Generated from conventional commits by `scripts/generate_changelog.py` — do no
 ### Documentation
 
 - regenerate CHANGELOG.md for v1.20.0 ([f415aae](https://github.com/edhoferdian/EEF/commit/f415aae))
-- **evals:** record the v4 run â€” first tier difference, D-062 holds ([8eed781](https://github.com/edhoferdian/EEF/commit/8eed781))
+- **evals:** record the v4 run — first tier difference, D-062 holds ([8eed781](https://github.com/edhoferdian/EEF/commit/8eed781))
 
 ### Maintenance
 
@@ -79,7 +79,7 @@ Generated from conventional commits by `scripts/generate_changelog.py` — do no
 
 ### Tests and evals
 
-- **evals:** record review benchmark after the SKILL.md trim â€” no regression ([5bb49f8](https://github.com/edhoferdian/EEF/commit/5bb49f8))
+- **evals:** record review benchmark after the SKILL.md trim — no regression ([5bb49f8](https://github.com/edhoferdian/EEF/commit/5bb49f8))
 
 ### Maintenance
 
@@ -161,10 +161,10 @@ Generated from conventional commits by `scripts/generate_changelog.py` — do no
 
 ### Maintenance
 
-- skill-hygiene pass â€” adopt Â§10 surgical-changes contract, trim bloated descriptions ([abded9c](https://github.com/edhoferdian/EEF/commit/abded9c))
+- skill-hygiene pass — adopt §10 surgical-changes contract, trim bloated descriptions ([abded9c](https://github.com/edhoferdian/EEF/commit/abded9c))
 - regenerate cross-harness exports after skill-hygiene pass ([80e8f31](https://github.com/edhoferdian/EEF/commit/80e8f31))
 - add pre-commit hook guarding skills/ vs cross-harness export drift ([e76f45c](https://github.com/edhoferdian/EEF/commit/e76f45c))
-- bump version to 1.17.3 (skill-hygiene pass: Â§10 contract, trimmed descriptions, stale-count fixes, pre-commit hook) ([8ba325f](https://github.com/edhoferdian/EEF/commit/8ba325f))
+- bump version to 1.17.3 (skill-hygiene pass: §10 contract, trimmed descriptions, stale-count fixes, pre-commit hook) ([8ba325f](https://github.com/edhoferdian/EEF/commit/8ba325f))
 
 ## [v1.17.2](https://github.com/edhoferdian/EEF/releases/tag/v1.17.2) — 2026-09-19
 
@@ -267,10 +267,10 @@ Generated from conventional commits by `scripts/generate_changelog.py` — do no
 - add GitHub Sponsors tiers and funding config ([8c77218](https://github.com/edhoferdian/EEF/commit/8c77218))
 - remove all ECC mentions from the ecosystem, zero external attribution ([53ba399](https://github.com/edhoferdian/EEF/commit/53ba399))
 - add CI, LICENSE (MIT), and a canonical packaging script ([48b5ebd](https://github.com/edhoferdian/EEF/commit/48b5ebd))
-- cross-harness export â€” AGENTS.md router + Cursor .mdc adapter ([6256a76](https://github.com/edhoferdian/EEF/commit/6256a76))
-- three more cross-harness adapters â€” Windsurf/Devin, Cline, GitHub Copilot ([6aa545c](https://github.com/edhoferdian/EEF/commit/6aa545c))
-- Kiro adapter â€” generated .kiro/skills/ copy, not a hand-maintained fork ([310ab1e](https://github.com/edhoferdian/EEF/commit/310ab1e))
-- npm CLI (eef-install) â€” install into any supported harness, no git needed ([696775f](https://github.com/edhoferdian/EEF/commit/696775f))
+- cross-harness export — AGENTS.md router + Cursor .mdc adapter ([6256a76](https://github.com/edhoferdian/EEF/commit/6256a76))
+- three more cross-harness adapters — Windsurf/Devin, Cline, GitHub Copilot ([6aa545c](https://github.com/edhoferdian/EEF/commit/6aa545c))
+- Kiro adapter — generated .kiro/skills/ copy, not a hand-maintained fork ([310ab1e](https://github.com/edhoferdian/EEF/commit/310ab1e))
+- npm CLI (eef-install) — install into any supported harness, no git needed ([696775f](https://github.com/edhoferdian/EEF/commit/696775f))
 - Hermes Agent and OpenClaw adapters -- both via the agentskills.io standard ([8bd93e6](https://github.com/edhoferdian/EEF/commit/8bd93e6))
 
 ### Fixes
@@ -297,4 +297,4 @@ Generated from conventional commits by `scripts/generate_changelog.py` — do no
 
 ### Features
 
-- init EEF repo â€” 33 packaged skills, install scripts, plugin/marketplace manifest ([0edc0f5](https://github.com/edhoferdian/EEF/commit/0edc0f5))
+- init EEF repo — 33 packaged skills, install scripts, plugin/marketplace manifest ([0edc0f5](https://github.com/edhoferdian/EEF/commit/0edc0f5))

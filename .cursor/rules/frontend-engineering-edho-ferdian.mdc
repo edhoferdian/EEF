@@ -1,5 +1,5 @@
 ---
-description: "Authoring and configuration guidance for building React/Next.js frontend applications well from the start — component composition, UX/interaction recipes, Vite config, HeroUI setup, and AI-slop detection (see the Reference files table below for the full breakdown). A companion to language-code-review-edho-ferdian (which reviews code after it's written) — use this when DESIGNING or WRITING new frontend code, not when reviewing existing code. Trigger phrases: \"bagaimana cara structure component ini\", \"best practice React untuk X\", \"setup Vite untuk Y\", \"biar UI-nya gak keliatan AI banget\", \"kok hasil desainnya generic/template banget\", or when starting a new frontend feature."
+description: "Build React/Next.js frontends well from the start: component composition, UX recipes, Vite, HeroUI, and avoiding generic AI-looking UI. Use for \"struktur component ini\", \"best practice React untuk X\", \"setup Vite\", \"biar UI-nya gak keliatan AI banget\", \"desainnya generic banget\", or a new frontend feature."
 globs:
 alwaysApply: false
 ---

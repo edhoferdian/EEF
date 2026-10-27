@@ -31,6 +31,11 @@ Checks (all must pass):
 8. Model routing (D-060) — every agent declares a valid `tier:`/`effort:`
    and no harness-specific `model:`; agents/model-profiles.json maps every
    tier on every harness; a checker agent never ranks below what it checks.
+9. Review date — every SKILL.md carries `metadata.last_reviewed` as a
+   quoted ISO date, not in the future. Older than REVIEW_WARN_DAYS is a
+   warning, not a failure: a skill whose libraries moved on needs a human
+   re-check against current docs, which CI cannot do. After that re-check,
+   bump the date in the same commit as any fix it led to.
 
 What this deliberately does NOT check (left to periodic manual
 skill-audit-edho-ferdian runs, since they need human judgment and are
@@ -38,6 +43,7 @@ prone to false positives in CI): staleness of provenance dates,
 description vagueness/redundancy, absolute local paths, secret-shaped
 strings. See skills/skill-audit-edho-ferdian/ for those.
 """
+import datetime
 import json
 import re
 import sys
@@ -57,6 +63,8 @@ DESC_BLOCK_RE = re.compile(r"^description:\s*>-\n((?:  .+\n?)+)", re.MULTILINE)
 DESC_INLINE_RE = re.compile(r"^description:\s*(.+)$", re.MULTILINE)
 NAME_RE = re.compile(r"^name:\s*(.+)$", re.MULTILINE)
 REF_MENTION_RE = re.compile(r"references/([A-Za-z0-9_./-]+\.md)")
+LAST_REVIEWED_RE = re.compile(r'^metadata:\n(?:  .+\n)*?  last_reviewed: "(\d{4}-\d{2}-\d{2})"$', re.MULTILINE)
+REVIEW_WARN_DAYS = 90
 
 
 def check_frontmatter_and_description(errors: list[str]) -> None:
@@ -285,8 +293,30 @@ def check_agent_routing(errors: list[str]) -> None:
             errors.append(f"agents/{checker}: ranks below agents/{checked}, which it checks — raise its tier/effort")
 
 
+def check_review_dates(errors: list[str], warnings: list[str], today: datetime.date | None = None) -> None:
+    today = today or datetime.date.today()
+    for skill_md in sorted(SKILLS_DIR.glob("*/SKILL.md")):
+        name = skill_md.parent.name
+        m = FRONTMATTER_RE.search(skill_md.read_text(encoding="utf-8", newline=None))
+        date_m = LAST_REVIEWED_RE.search(m.group(1) + "\n") if m else None
+        if not date_m:
+            errors.append(f'{name}: frontmatter needs metadata.last_reviewed: "YYYY-MM-DD"')
+            continue
+        try:
+            reviewed = datetime.date.fromisoformat(date_m.group(1))
+        except ValueError:
+            errors.append(f"{name}: metadata.last_reviewed {date_m.group(1)!r} is not a real date")
+            continue
+        if reviewed > today:
+            errors.append(f"{name}: metadata.last_reviewed {reviewed} is in the future")
+        elif (today - reviewed).days > REVIEW_WARN_DAYS:
+            warnings.append(f"{name}: last reviewed {reviewed} ({(today - reviewed).days} days ago) — "
+                            "re-check it against current docs, then bump the date")
+
+
 def main() -> int:
     errors: list[str] = []
+    warnings: list[str] = []
     check_rules(errors)
     check_frontmatter_and_description(errors)
     check_ecc_mentions(errors)
@@ -295,7 +325,10 @@ def main() -> int:
     check_agent_routing(errors)
     check_filesystem_wide_search(errors)
     check_external_rule_pointers(errors)
+    check_review_dates(errors, warnings)
 
+    for w in warnings:
+        print(f"WARNING: {w}")
     if errors:
         print(f"FAILED — {len(errors)} issue(s):\n")
         for e in errors:

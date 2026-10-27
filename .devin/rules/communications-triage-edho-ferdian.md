@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Channel-agnostic framework for triaging incoming messages (email, chat, Slack, LINE, Messenger, or any other channel) into four priority tiers, drafting replies that stay within a strict human-approval gate, and tracking whether a sent reply's promises actually get followed through on. Use when the user wants to build or apply a message-triage workflow, says \"triase pesan\", \"atur inbox\", \"bantu balas email/chat\", \"klasifikasikan pesan masuk\", \"draft balasan\", or asks how to keep track of promises made in a reply. Note: no channel (Gmail, Slack, etc.) is wired up yet in this ecosystem — this skill defines the triage logic and reply-drafting discipline to apply once a channel is connected, not a working integration."
+description: "Triage incoming messages from any channel into four priority tiers, draft replies behind a human-approval gate, and track promises made in sent replies. Use for \"triase pesan\", \"atur inbox\", \"bantu balas email/chat\", \"klasifikasikan pesan masuk\", \"draft balasan\"."
 ---
 
 # Communications Triage — Edho Ferdian Mode (Skill Edition) · v1.0
@@ -208,5 +208,12 @@ it:
   the `drafted` / `approval-pending` / `sent` / `blocked` /
   `awaiting-verification` status vocabulary, treating inbound mail as
   untrusted data, cleanup rules) and message/DM-surface handling (resolving
+  the exact thread, one-time-code retrieval discipline, reporting shape),
+  plus how blockers on a live surface should be handled and reported. Load
+  this file once an actual mail or message surface is named, not while
+  operating purely on pasted content in chat.
+- **`references/workspace-ops.md`** — Google Workspace surface handling
+  (Drive/Docs/Sheets/Slides find-review-edit-maintain workflow, the
+  read-only vs. explicit-approval table for sharing/deleting, and this
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/communications-triage-edho-ferdian/SKILL.md` for complete instructions.

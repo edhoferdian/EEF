@@ -1,15 +1,13 @@
 ---
 name: api-design-edho-ferdian
 description: >-
-  Design and evolve API boundaries and contracts — REST resource naming,
-  status-code semantics, pagination strategy, versioning policy, and the
-  discipline of treating one contract artifact (OpenAPI/schema) as
-  authoritative so client and server never drift. A design-time activity,
-  distinct from system-design-edho-ferdian (broader architectural trade-offs)
-  and code-review-edho-ferdian (reviewing an already-written endpoint).
-  Trigger phrases: "desain API untuk fitur ini", "bagaimana struktur endpoint
-  yang baik", "API contract berubah, bagaimana handle-nya", "REST vs apa", or
-  when starting a new API surface.
+  Design and evolve API contracts: REST resource naming, status codes,
+  pagination, versioning, and one authoritative OpenAPI/schema so client and
+  server never drift. Use for "desain API untuk fitur ini", "struktur
+  endpoint yang baik", "API contract berubah", "REST vs apa", or a new API
+  surface.
+metadata:
+  last_reviewed: "2026-09-11"
 ---
 
 # API Design — Edho Ferdian Mode (Skill Edition)

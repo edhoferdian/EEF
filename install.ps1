@@ -2,7 +2,7 @@
 # ~/.claude/skills/. Run from a cloned copy of this repo.
 #
 # Usage:
-#   .\install.ps1                          # install all 33 skills
+#   .\install.ps1                          # install all 38 skills
 #   .\install.ps1 -Only code-review-edho-ferdian,dev-kickoff-edho-ferdian
 #                                           # install only the named skills
 #   .\install.ps1 -ListOnly                # list installable skill names and exit
