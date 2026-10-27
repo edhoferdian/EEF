@@ -9,6 +9,8 @@ description: >-
   actually touched. Use when running agents autonomously or in parallel,
   when working against production, or when the user says "jangan sampai
   kehapus", "agent-nya nulis di luar scope", "pastiin dia ngecek dulu".
+metadata:
+  last_reviewed: "2026-10-27"
 ---
 
 # Safe Execution — Edho Ferdian Mode

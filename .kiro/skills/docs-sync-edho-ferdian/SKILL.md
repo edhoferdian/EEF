@@ -12,6 +12,8 @@ description: >-
   rebuilt) and does NOT touch `/project-memory/*` (that's
   dev-kickoff-edho-ferdian's REMEMBER stage, a different artifact class —
   the internal execution ledger, not public documentation).
+metadata:
+  last_reviewed: "2026-09-09"
 ---
 
 # Docs Sync — Edho Ferdian Mode (Skill Edition)

@@ -13,6 +13,8 @@ description: >-
   — or wants to RESUME: "lanjutkan proyek", "resume", "lanjut dari
   snapshot". Also use when a repo has /project-memory/ and the user asks to
   continue it.
+metadata:
+  last_reviewed: "2026-10-08"
 ---
 
 # Dev Kickoff — Edho Ferdian Mode (Skill Edition) · v3.0

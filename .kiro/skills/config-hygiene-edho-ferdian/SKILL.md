@@ -10,6 +10,8 @@ description: >-
   exists. Use when the user says "bersihin config", "~/.claude berantakan",
   "kebanyakan skill", "sesi lambat mulai", "audit setup gue", "context
   cepat penuh", or when a periodic (~30 day) review is due.
+metadata:
+  last_reviewed: "2026-10-27"
 ---
 
 # Config Hygiene — Edho Ferdian Mode

@@ -11,6 +11,8 @@ description: >-
   says "tiru look video ini", "samakan grading", "bikin video dengan gaya
   referensi", "capture the vibe", "LUT dari referensi", "cut rhythm",
   "supplement footage", or wants AI-generated clips cut into a real edit.
+metadata:
+  last_reviewed: "2026-09-24"
 ---
 
 # Video Style — Edho Ferdian Mode

@@ -4,11 +4,15 @@ description: >-
   Getting a build to production and keeping it healthy — release strategy
   (rolling / blue-green / canary), CI/CD pipeline gates, health checks and
   Kubernetes probes, environment config and rollback, a production-readiness
-  ship/block verdict, operator dashboards, and post-deploy watching. Starts
-  where container-ops-edho-ferdian stops (image built, compose working).
-  Trigger phrases: "deploy ini gimana", "bikin pipeline CI/CD", "rollback",
-  "manifest kubernetes", "siap rilis belum", "pantau setelah deploy",
-  "bikin dashboard monitoring".
+  ship/block verdict, operator dashboards, post-deploy watching, and
+  production incidents (mitigate first, timeline, blameless postmortem, SLO
+  burn-rate alerts). Starts where container-ops-edho-ferdian stops (image
+  built, compose working). Trigger phrases: "deploy ini gimana", "bikin
+  pipeline CI/CD", "rollback", "manifest kubernetes", "siap rilis belum",
+  "pantau setelah deploy", "bikin dashboard monitoring", "production down",
+  "ada insiden", "tulis postmortem", "alert-nya kebanyakan".
+metadata:
+  last_reviewed: "2026-09-10"
 ---
 
 # Deployment Ops — Edho Ferdian Mode
@@ -45,6 +49,10 @@ Step 4  Production-readiness verdict     → references/production-readiness.md
                                             duplication" section)
 Step 5  Deploy, then watch               → references/post-deploy-watch.md
 Step 6  Make it operable                 → references/observability.md
+Step 7  When production breaks           → references/incident-response.md
+                                            (mitigate before diagnosing;
+                                            read-only until a mitigation
+                                            is approved; postmortem)
 
 `references/cicd-pipeline.md` (Step 2) covers gate ordering (lint → typecheck
 → unit test → security scan → build → deploy) with rationale, GitHub

@@ -12,6 +12,8 @@ description: >-
   end-to-end", "uji alur pengguna", "tes E2E", "critical user flow", or
   when dev-kickoff's TEST stage hits its "visual/layout work" escape hatch
   and needs a real automated check instead of a skip.
+metadata:
+  last_reviewed: "2026-09-19"
 ---
 
 # E2E Testing — Edho Ferdian Mode (Skill Edition)

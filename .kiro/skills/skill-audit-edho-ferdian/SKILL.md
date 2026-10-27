@@ -10,6 +10,8 @@ description: >-
   quality only — NOT the `~/.claude` environment/config (that's
   `config-hygiene-edho-ferdian`), even for overlapping phrasing like
   "kebanyakan skill" or "audit setup gue".
+metadata:
+  last_reviewed: "2026-09-12"
 ---
 
 # Skill Audit — Edho Ferdian Mode

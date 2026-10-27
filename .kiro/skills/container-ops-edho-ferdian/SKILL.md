@@ -6,6 +6,8 @@ description: >-
   security-review-edho-ferdian instead. Trigger phrases: "setup Docker
   untuk project ini", "docker-compose untuk dev environment", "container ini
   lambat/besar", "debug container yang crash".
+metadata:
+  last_reviewed: "2026-10-27"
 ---
 
 # Container Ops — Edho Ferdian Mode (Skill Edition)

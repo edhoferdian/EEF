@@ -15,6 +15,8 @@ description: >-
   "migration error", or a pasted stack trace. Enforces a 3-attempt loop
   guard and a stop-and-report contract for errors needing an architectural
   decision.
+metadata:
+  last_reviewed: "2026-10-08"
 ---
 
 # Build Fix — Edho Ferdian Mode (Skill Edition)

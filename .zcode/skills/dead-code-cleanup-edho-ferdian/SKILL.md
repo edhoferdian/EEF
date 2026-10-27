@@ -12,6 +12,8 @@ description: >-
   "cleanup unused code/deps", "remove dead code", "consolidate duplicates".
   Not for finding-only review — see the scope note below for the boundary
   with code-review-edho-ferdian's CQ-07.
+metadata:
+  last_reviewed: "2026-09-19"
 ---
 
 # Dead Code Cleanup — Edho Ferdian Mode (Skill Edition)

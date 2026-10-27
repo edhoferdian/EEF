@@ -11,6 +11,8 @@ description: >-
   SEO", "SEO check" — or when reviewing any public-facing web project.
   Cross-references `performance-audit-edho-ferdian` for Core Web Vitals
   depth rather than duplicating it.
+metadata:
+  last_reviewed: "2026-10-08"
 ---
 
 # SEO Audit — Edho Ferdian Mode

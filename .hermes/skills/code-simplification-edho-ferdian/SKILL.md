@@ -14,6 +14,8 @@ description: >-
   rewriting, is `code-review-edho-ferdian`'s job — see the scope table
   below for the boundary with that skill, dead-code-cleanup-edho-ferdian
   and build-fix-edho-ferdian.
+metadata:
+  last_reviewed: "2026-10-08"
 ---
 
 # Code Simplification — Edho Ferdian Mode

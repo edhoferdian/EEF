@@ -11,6 +11,8 @@ description: >-
   execution. Trigger phrases: "pelanggan minta refund", "subscription
   ganda", "checkout gagal", "kenapa dia kena tagih dua kali", "billing
   portal rusak", "apakah per-seat billing beneran jalan di kode".
+metadata:
+  last_reviewed: "2026-09-09"
 ---
 
 # Billing Ops — Edho Ferdian Mode

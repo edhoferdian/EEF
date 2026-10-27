@@ -10,6 +10,8 @@ description: >-
   competitors; whenever they say "marketing", "positioning", "brand voice",
   "landing page copy", "email sequence", "kampanye", "strategi pemasaran",
   "gimana cara jual ini", or wants to promote a tool/project they built.
+metadata:
+  last_reviewed: "2026-09-09"
 ---
 
 # Marketing — Edho Ferdian Mode

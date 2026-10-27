@@ -12,6 +12,8 @@ description: >-
   "strategi branch", "format commit", "commit message-nya apa", "rebase atau
   merge", "PR ini siap merge belum", "triase issue", "bikin release",
   "CI merah".
+metadata:
+  last_reviewed: "2026-10-08"
 ---
 
 # Git & Release Ops — Edho Ferdian Mode

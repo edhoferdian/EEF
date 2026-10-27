@@ -14,6 +14,8 @@ description: >-
   this production-ready", "find bugs" — even without the word "review". If
   the request is only about security ("cek keamanan kode ini"), use
   `security-review-edho-ferdian` instead.
+metadata:
+  last_reviewed: "2026-10-08"
 ---
 
 # Code Review — Edho Ferdian Mode (Skill Edition)

@@ -9,6 +9,8 @@ description: >-
   the user wants to open-source a project, says "mau open-source-kan ini",
   "siapkan repo ini buat publik", "audit sebelum rilis publik", or "cek
   apakah aman di-publish".
+metadata:
+  last_reviewed: "2026-09-10"
 ---
 
 # Open-Source Release — Edho Ferdian Mode

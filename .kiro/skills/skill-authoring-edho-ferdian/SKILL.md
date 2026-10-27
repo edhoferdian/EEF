@@ -10,6 +10,8 @@ description: >-
   baru", "ada skill buat X gak", "fork skill ini", "skill gue kepake gak
   sih", "package skill ini", "mau publish skill ini", "buatkan .skill-nya",
   or before adding anything to this repo's `skills/` or `dist/`.
+metadata:
+  last_reviewed: "2026-10-08"
 ---
 
 # Skill Authoring — Edho Ferdian Mode

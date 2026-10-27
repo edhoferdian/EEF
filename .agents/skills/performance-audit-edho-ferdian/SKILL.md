@@ -16,6 +16,8 @@ description: >-
   flagging code nobody reported as slow — that is code review (see the
   scope note below for the boundary with code-review-edho-ferdian's PERF
   domain).
+metadata:
+  last_reviewed: "2026-10-09"
 ---
 
 # Performance Audit — Edho Ferdian Mode (Skill Edition)

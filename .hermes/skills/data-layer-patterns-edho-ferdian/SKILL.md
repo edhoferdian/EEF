@@ -9,6 +9,8 @@ description: >-
   not when reviewing one. Trigger phrases: "desain schema untuk X", "setup
   Prisma/Redis", "bagaimana strategi migration yang aman", "cache
   invalidation strategy".
+metadata:
+  last_reviewed: "2026-10-27"
 ---
 
 # Data Layer Patterns — Edho Ferdian Mode (Skill Edition)

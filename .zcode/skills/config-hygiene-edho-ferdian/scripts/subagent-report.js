@@ -18,6 +18,11 @@
 //   node subagent-report.js --days 30       # only the last 30 days
 //   node subagent-report.js --all-agents    # include non-EEF agents
 //   node subagent-report.js --json          # machine-readable output
+//   node subagent-report.js --include-legacy  # also count SubagentStop-era records
+//
+// Records without a `status` field were written by the old SubagentStop
+// hook, which never had a model, duration or token count; they are left
+// out by default (and counted) so they cannot drive a suggestion.
 //
 // Env: EEF_SUBAGENT_LOG (log path), CLAUDE_AGENTS_DIR (installed agents,
 // read for each agent's default model; default ~/.claude/agents).
@@ -66,10 +71,13 @@ function median(values) {
   return v.length % 2 ? v[mid] : (v[mid - 1] + v[mid]) / 2;
 }
 
+// The PostToolUse hook always writes the key, even when its value is null.
+const isLegacy = (r) => !("status" in r);
+
 function readRuns() {
   if (!fs.existsSync(LOG_PATH)) return null;
   const cutoff = days ? Date.now() - days * 86400000 : null;
-  return fs
+  const parsed = fs
     .readFileSync(LOG_PATH, "utf8")
     .split(/\r?\n/)
     .filter(Boolean)
@@ -80,9 +88,14 @@ function readRuns() {
         return null;
       }
     })
-    .filter((r) => r && r.agent_type)
+    .filter(Boolean);
+  const legacy = flag("--include-legacy") ? 0 : parsed.filter(isLegacy).length;
+  const runs = parsed
+    .filter((r) => flag("--include-legacy") || !isLegacy(r))
+    .filter((r) => r.agent_type)
     .filter((r) => !cutoff || Date.parse(r.ts) >= cutoff)
     .filter((r) => flag("--all-agents") || r.agent_type.endsWith("-edho-ferdian"));
+  return { runs, legacy };
 }
 
 function summarize(agent, runs) {
@@ -123,11 +136,12 @@ function summarize(agent, runs) {
 }
 
 function main() {
-  const runs = readRuns();
-  if (runs === null) {
+  const read = readRuns();
+  if (read === null) {
     console.log(`No telemetry yet: ${LOG_PATH} does not exist. Install hooks/log-subagent-run.js first.`);
     return;
   }
+  const { runs, legacy } = read;
   const byAgent = {};
   for (const r of runs) (byAgent[r.agent_type] = byAgent[r.agent_type] || []).push(r);
   const rows = Object.keys(byAgent)
@@ -138,7 +152,11 @@ function main() {
     console.log(JSON.stringify(rows, null, 2));
     return;
   }
-  console.log(`${runs.length} subagent run(s) from ${LOG_PATH}${days ? ` (last ${days} days)` : ""}\n`);
+  console.log(`${runs.length} subagent run(s) from ${LOG_PATH}${days ? ` (last ${days} days)` : ""}`);
+  if (legacy) {
+    console.log(`${legacy} older record(s) from the SubagentStop hook left out: they carry no model, duration or tokens (--include-legacy keeps them)`);
+  }
+  console.log("");
   for (const r of rows) {
     const models = Object.entries(r.models)
       .map(([m, c]) => `${m}×${c}`)

@@ -10,6 +10,8 @@ description: >-
   signals), or before release on critical flows. Trigger phrases: "tombolnya
   gak jalan", "diklik tapi gak ada yang terjadi", "the button does nothing",
   "state-nya balik lagi", "sudah dicek semua tapi gak ketemu bug-nya".
+metadata:
+  last_reviewed: "2026-10-07"
 ---
 
 # Click-Path Audit — Edho Ferdian Mode

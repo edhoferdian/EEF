@@ -15,6 +15,8 @@ description: >-
   the code misses. Loads only the lens file(s) matching the detected
   stack. Inherits Reflection and Critique-Correction gates from
   code-review-edho-ferdian.
+metadata:
+  last_reviewed: "2026-10-09"
 ---
 
 # Language Code Review — Edho Ferdian Mode (Lens Layer)

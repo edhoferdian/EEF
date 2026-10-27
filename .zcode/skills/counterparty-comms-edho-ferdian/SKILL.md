@@ -12,6 +12,8 @@ description: >-
   when the user says "agent di grup customer", "bot balas supplier",
   "approval sebelum kirim", "jangan sampai bocor ke klien", "outbound
   approval".
+metadata:
+  last_reviewed: "2026-09-24"
 ---
 
 # Counterparty Communications — Edho Ferdian Mode

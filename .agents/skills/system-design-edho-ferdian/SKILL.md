@@ -13,6 +13,8 @@ description: >-
   restating a single task's plan (that's dev-kickoff's PLAN stage) and not
   for reviewing code that already exists (that's code-review-edho-ferdian's
   Blueprint/Consistency domain).
+metadata:
+  last_reviewed: "2026-10-27"
 ---
 
 # System Design — Edho Ferdian Mode (Skill Edition)

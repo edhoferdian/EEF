@@ -10,6 +10,8 @@ description: >-
   Trigger phrases: "desain API untuk fitur ini", "bagaimana struktur endpoint
   yang baik", "API contract berubah, bagaimana handle-nya", "REST vs apa", or
   when starting a new API surface.
+metadata:
+  last_reviewed: "2026-09-11"
 ---
 
 # API Design — Edho Ferdian Mode (Skill Edition)

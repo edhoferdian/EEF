@@ -10,6 +10,8 @@ description: >-
   "bagaimana test hook ini", "test yang bagus untuk fitur X", "tulis test
   pytest/Go/Vue untuk ini", or during dev-kickoff's TEST stage when the task
   needs concrete authoring guidance beyond "write a failing test."
+metadata:
+  last_reviewed: "2026-10-27"
 ---
 
 # Test Authoring — Edho Ferdian Mode

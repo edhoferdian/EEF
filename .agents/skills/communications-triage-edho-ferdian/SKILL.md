@@ -11,6 +11,8 @@ description: >-
   reply. Note: no channel (Gmail, Slack, etc.) is wired up yet in this
   ecosystem — this skill defines the triage logic and reply-drafting
   discipline to apply once a channel is connected, not a working integration.
+metadata:
+  last_reviewed: "2026-09-24"
 ---
 
 # Communications Triage — Edho Ferdian Mode (Skill Edition) · v1.0

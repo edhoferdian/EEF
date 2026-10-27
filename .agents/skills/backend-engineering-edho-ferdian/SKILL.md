@@ -11,6 +11,8 @@ description: >-
   Rails 8 Solid stack). Trigger phrases: "struktur service layer", "error
   handling di backend", "retry/circuit breaker", "background job / queue",
   "tambah integrasi baru", "bikin app Rails", "Rails service object".
+metadata:
+  last_reviewed: "2026-09-24"
 ---
 
 # Backend Engineering — Edho Ferdian Mode

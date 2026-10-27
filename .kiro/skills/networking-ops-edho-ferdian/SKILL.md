@@ -11,6 +11,8 @@ description: >-
   lambat"), needs to script a device change ("push this ACL via SSH"), or is
   building a homelab. Consolidates config review, design, troubleshooting,
   device automation, and homelab build-out into one skill.
+metadata:
+  last_reviewed: "2026-09-19"
 ---
 
 # Networking Ops — Edho Ferdian Mode

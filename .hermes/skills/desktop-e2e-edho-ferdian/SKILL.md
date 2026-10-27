@@ -10,6 +10,8 @@ description: >-
   suite is being set up or is flaky, or when adding AutomationIds to make an
   app testable. Trigger phrases: "test aplikasi desktop", "pywinauto",
   "WPF/WinForms/Qt test", "UI Automation", "test .exe ini".
+metadata:
+  last_reviewed: "2026-09-09"
 ---
 
 # Desktop E2E (Windows) — Edho Ferdian Mode
