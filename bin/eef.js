@@ -193,7 +193,7 @@ const TARGETS = {
   },
 
   "claude-hooks": {
-    label: "Claude Code hooks (fs-guard: blocks root-wide searches; telemetry: logs subagent runs) — registered in settings.json, other keys untouched; --only picks one",
+    label: "Claude Code hooks (fs-guard: blocks root-wide searches, asks before destructive commands; telemetry: logs subagent runs) — registered in settings.json, other keys untouched; --only picks one",
     scope: "global (or $CLAUDE_HOOKS_DIR + $CLAUDE_SETTINGS_FILE)",
     install(_skillNames, opts) {
       const names = opts.only ? [opts.only] : Object.keys(HOOKS);
@@ -920,7 +920,8 @@ Env vars:
 
 Hooks (--target claude-hooks):
   --only <name>       install one hook: fs-guard (PreToolUse, blocks recursive searches
-                      from / ~ or a drive root) | telemetry (SubagentStop, logs each
+                      from / ~ or a drive root and asks before destructive commands
+                      such as rm -rf or Remove-Item -Recurse) | telemetry (SubagentStop, logs each
                       subagent run to ~/.claude/eef/subagent-runs.jsonl). Default: both.
                       Existing settings.json keys are kept; a hook already registered
                       (even by hand) is never added twice; an unparsable file is refused.

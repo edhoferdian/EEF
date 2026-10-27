@@ -508,7 +508,9 @@ npx eef-install --target claude-rules       # ~/.claude/rules/eef/ (or $CLAUDE_R
 
 `scripts/validate_skills.py` keeps them small (≤ 2.5 KB each) and checks
 that every skill they point at exists. The matching mechanical guard for the
-search rule is a Claude Code hook shipped with
+search rule — which also makes every destructive command (`rm -rf`,
+`Remove-Item -Recurse`, `git reset --hard`, …) wait for your approval — is a
+Claude Code hook shipped with
 `safe-execution-edho-ferdian` (`hooks/block-fs-wide-search.js`) — install
 it with `npx eef-install --target claude-hooks --only fs-guard`, or by hand
 per that skill's appendix.

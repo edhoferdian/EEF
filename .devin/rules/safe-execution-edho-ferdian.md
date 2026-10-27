@@ -76,6 +76,12 @@ On a hit, produce before running:
 
 If step 2 cannot be written, that is the answer: do not run it.
 
+PowerShell has the same list under other names: `Remove-Item -Recurse`
+(and `rm`/`ri`/`del`/`rd` with `-Recurse` or `/s`), `Format-Volume`,
+`Clear-Disk`, `Clear-RecycleBin`. In Claude Code, the hook in the appendix
+turns every hit into a permission prompt the user must answer — even in
+auto mode — so the three facts above are what they read before approving.
+
 `--no-verify` is on the list deliberately — it is the mechanical form of
 "skip the checks", and it is exactly what an agent under time pressure
 reaches for.
@@ -185,8 +191,10 @@ mechanical binding for Claude Code specifically — `PreToolUse` for gates
 Nothing above depends on this appendix existing.
 
 One gate ships ready-made: `hooks/block-fs-wide-search.js` (Node, no
-dependencies) denies root-level recursive searches for Gate 2 and fails
-open on anything it cannot parse. Install it with
+dependencies) covers Gate 2 for Bash and PowerShell: it denies root-level
+recursive searches outright, escalates every watched destructive command to
+an `ask` prompt (never a silent allow, never an outright deny — the user
+may well want it), and fails open on anything it cannot parse. Install it with
 `npx eef-install --target claude-hooks --only fs-guard`, which copies it to
 `~/.claude/hooks/` and adds the registration below to
 `~/.claude/settings.json` without touching anything else there (never twice,

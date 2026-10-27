@@ -196,6 +196,9 @@ jobs:
           test -f $d/hooks/log-subagent-run.js
           cmd=$(node -e "console.log(require('$d/settings.json').hooks.PreToolUse[1].hooks[0].command)")
           echo '{"tool_name":"Bash","tool_input":{"command":"find / -name x"}}' | bash -c "$cmd" | grep -q '"permissionDecision":"deny"'
+          echo '{"tool_name":"PowerShell","tool_input":{"command":"Remove-Item dist -Recurse -Force"}}' | bash -c "$cmd" | grep -q '"permissionDecision":"ask"'
+          echo '{"tool_name":"Bash","tool_input":{"command":"git reset --hard"}}' | bash -c "$cmd" | grep -q '"permissionDecision":"ask"'
+          test -z "$(echo '{"tool_name":"PowerShell","tool_input":{"command":"Remove-Item a.txt -Force"}}' | bash -c "$cmd")"
           if node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks --only no-such-hook; then exit 1; fi
           echo '{ not json' > $d/settings.json
           if node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks; then exit 1; fi
