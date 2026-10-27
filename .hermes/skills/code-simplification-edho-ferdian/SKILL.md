@@ -1,19 +1,11 @@
 ---
 name: code-simplification-edho-ferdian
 description: >-
-  Behavior-preserving refactoring workflow that actively rewrites code for
-  clarity — extracting overlong functions, flattening deep nesting,
-  consolidating duplicated logic, AND removing over-engineered "just in
-  case" abstractions — always gated on a passing test suite (or a
-  characterization test written first) so behavior never changes. Load it
-  whenever code is to be simplified or refactored, even one small
-  function: its behavior-preservation gate is what keeps a quick rewrite
-  from silently changing what the code does. Triggers: "sederhanakan kode
-  ini", "nesting-nya kebanyakan", "refactor biar lebih rapi", "reduce
-  complexity", "ini over-engineered". Only reporting such issues, without
-  rewriting, is `code-review-edho-ferdian`'s job — see the scope table
-  below for the boundary with that skill, dead-code-cleanup-edho-ferdian
-  and build-fix-edho-ferdian.
+  Rewrite code for clarity without changing behaviour: extract long
+  functions, flatten nesting, merge duplication, remove over-engineering,
+  gated on passing tests. Load it even for one small function. Use for
+  "sederhanakan kode ini", "nesting-nya kebanyakan", "refactor biar lebih
+  rapi", "reduce complexity", "ini over-engineered".
 metadata:
   last_reviewed: "2026-10-08"
 ---

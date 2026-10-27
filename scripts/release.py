@@ -42,7 +42,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 PLUGIN_FILES = [REPO / ".claude-plugin" / "plugin.json", REPO / ".claude-plugin" / "marketplace.json"]
-CONTEXT_BUDGET = "13500"  # keep equal to ci.yml's measure_context.py --budget
+CONTEXT_BUDGET = ["--budget", "9500", "--max-desc-chars", "450", "--listing-chars", "14000"]  # keep equal to ci.yml
 CHILD_ENV = {**os.environ, "PYTHONIOENCODING": "utf-8"}  # Windows Python defaults to cp1252 output
 
 
@@ -104,7 +104,7 @@ def run_checks() -> None:
     run("python", "scripts/regen_all.py", "--check", "--skip", "generate_changelog")
     run("python", "evals/review-seeded-bugs/run.py", "--check-records")
     run("python", "evals/build-fix/run.py", "--check-records")
-    run("python", "scripts/measure_context.py", "--budget", CONTEXT_BUDGET)
+    run("python", "scripts/measure_context.py", *CONTEXT_BUDGET)
     run("node", "--check", "bin/eef.js")
 
 

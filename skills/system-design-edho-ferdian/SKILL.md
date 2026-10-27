@@ -1,18 +1,11 @@
 ---
 name: system-design-edho-ferdian
 description: >-
-  Mid-project architectural decision-making — Architecture Decision Records
-  (ADRs), structured trade-off analysis, non-functional-requirements review,
-  and scaling-tier planning for an existing system. Use for "desain
-  arsitektur", "keputusan teknis besar", "bikin ADR", "trade-off antara X dan
-  Y", "should I refactor this to microservices/monolith/event-driven", a
-  scaling or capacity question, a blast-radius question ("apa yang rusak
-  kalau X diubah"), or any task from dev-kickoff-edho-ferdian
-  that surfaces an uncovered ARCHITECTURE decision mid-project (not at
-  kickoff — kickoff's own PDR process in Phase 0/1 handles that). Not for
-  restating a single task's plan (that's dev-kickoff's PLAN stage) and not
-  for reviewing code that already exists (that's code-review-edho-ferdian's
-  Blueprint/Consistency domain).
+  Mid-project architecture decisions: ADRs, trade-off analysis,
+  non-functional requirements, scaling tiers and blast radius. Use for
+  "desain arsitektur", "keputusan teknis besar", "bikin ADR", "trade-off
+  antara X dan Y", "microservices atau monolith", "apa yang rusak kalau X
+  diubah", or a capacity question.
 metadata:
   last_reviewed: "2026-10-27"
 ---

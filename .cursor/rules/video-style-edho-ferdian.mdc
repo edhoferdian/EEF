@@ -1,5 +1,5 @@
 ---
-description: "Capture the look and pacing of reference videos as measurements, then reproduce them: distill references into a style pack (colour grade per luminance zone baked to a 3D LUT, cut rhythm as a shot-length distribution, overlay plates, hero stills, a grounded text spec), then generate or gather footage, grade it to the pack, cut it at the measured cadence, composite overlays, and verify the result numerically before handing an editable timeline to Resolve or another NLE. Use when the user says \"tiru look video ini\", \"samakan grading\", \"bikin video dengan gaya referensi\", \"capture the vibe\", \"LUT dari referensi\", \"cut rhythm\", \"supplement footage\", or wants AI-generated clips cut into a real edit."
+description: "Measure a reference video's look and pacing (colour grade as a 3D LUT, cut rhythm, overlays) and reproduce it: grade, cut and composite new footage, verify numerically, hand off an NLE timeline. Use for \"tiru look video ini\", \"samakan grading\", \"bikin video dengan gaya referensi\", \"LUT dari referensi\", \"cut rhythm\"."
 globs:
 alwaysApply: false
 ---

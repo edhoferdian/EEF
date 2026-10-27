@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Diagnose and fix build, compile, dependency, and runtime-startup failures with minimal surgical diffs — never refactors, never architectural changes, always verified green. Auto-detects the stack from project files (JS/TS, Python/Django, Go, Rust, PHP/Laravel, Java/Spring, Quarkus, Kotlin, Swift, React Native, Flutter, Android, .NET, C++, PyTorch, ArkTS, Perl, Ruby, and more) and loads the matching diagnostic lens. Load it whenever a build, compile, analyze, or startup step fails, even for a single pasted error: its anti-suppression gate is what stops the quick \"fix\" (a cast, a ts-ignore, a disabled check) that hides an error instead of fixing it. Triggers: \"build error\", \"gagal build\", \"build-nya gagal\", \"compile error\", \"tidak bisa jalan\", \"fix the build\", \"dependency conflict\", \"migration error\", or a pasted stack trace. Enforces a 3-attempt loop guard and a stop-and-report contract for errors needing an architectural decision."
+description: "Fix build, compile, dependency and startup failures with a minimal verified diff, never a cast, ts-ignore or disabled check that hides the error; lenses for ~20 stacks. Load it even for one pasted error. Use for \"build error\", \"gagal build\", \"compile error\", \"tidak bisa jalan\", \"fix the build\", \"dependency conflict\", \"migration error\", or a stack trace."
 ---
 
 # Build Fix — Edho Ferdian Mode (Skill Edition)
@@ -209,5 +209,15 @@ di gejala terukur dan terdokumentasi):
    mengizinkan kesalahan itu lolos sampai ke build/produksi. "Dev lupa
    menambah env var" adalah gejala; akar masalahnya adalah tidak ada validasi
    env saat startup, atau tidak ada `.env.example` yang di-cek CI.
+2. **Fix-mu setara "lebih hati-hati lain kali".** Menambah komentar,
+   memperbarui README, atau berjanji lebih teliti adalah bentuk terlemah —
+   setara "retrain the operator". Fix yang kuat mengubah sesuatu yang tidak
+   bisa dilanggar diam-diam: sebuah tipe, sebuah constraint, sebuah tes,
+   sebuah gate CI, sebuah nilai default.
+3. **Akar masalahmu adalah pernyataan masalah yang ditulis ulang.** "Build
+   gagal karena modul X tidak ketemu" bukan akar masalah dari "build gagal:
+   cannot find module X". Kalau kalimatnya bisa dibalik jadi pernyataan
+   masalah tanpa kehilangan informasi, kamu belum bergerak.
+
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/build-fix-edho-ferdian/SKILL.md` for complete instructions.

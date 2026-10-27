@@ -1,17 +1,10 @@
 ---
 name: docs-sync-edho-ferdian
 description: >-
-  Keep USER-FACING documentation honest against the current codebase —
-  README, docs/CODEMAPS/*, architecture-as-markdown, public API docs.
-  Generates/refreshes codemaps and validates doc freshness (every path
-  exists, every link resolves, every code snippet matches reality,
-  timestamps are current). Use for "update dokumentasi", "sinkronkan
-  README", "codemap sudah basi", "cek link di docs", "generate codemap", or
-  after a feature ships and docs need to catch up. Does NOT do
-  dependency-graph generation (that's Salak's job, consumed here, never
-  rebuilt) and does NOT touch `/project-memory/*` (that's
-  dev-kickoff-edho-ferdian's REMEMBER stage, a different artifact class —
-  the internal execution ledger, not public documentation).
+  Keep user-facing docs true to the code: README, codemaps, architecture and
+  API docs; every path, link and snippet checked. Use for "update
+  dokumentasi", "sinkronkan README", "codemap sudah basi", "cek link di
+  docs", "generate codemap", or after a feature ships.
 metadata:
   last_reviewed: "2026-09-09"
 ---

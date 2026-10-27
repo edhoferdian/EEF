@@ -1,11 +1,10 @@
 ---
 name: container-ops-edho-ferdian
 description: >-
-  Container setup, docker-compose design, multi-stage build optimization,
-  and debugging guidance. Security-specific container concerns live in
-  security-review-edho-ferdian instead. Trigger phrases: "setup Docker
-  untuk project ini", "docker-compose untuk dev environment", "container ini
-  lambat/besar", "debug container yang crash".
+  Container setup, docker-compose design, multi-stage build optimization and
+  debugging. Use for "setup Docker untuk project ini", "docker-compose untuk
+  dev environment", "container ini lambat/besar", "debug container yang
+  crash".
 metadata:
   last_reviewed: "2026-10-27"
 ---

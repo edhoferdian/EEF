@@ -1,5 +1,5 @@
 ---
-description: "Channel-agnostic framework for triaging incoming messages (email, chat, Slack, LINE, Messenger, or any other channel) into four priority tiers, drafting replies that stay within a strict human-approval gate, and tracking whether a sent reply's promises actually get followed through on. Use when the user wants to build or apply a message-triage workflow, says \"triase pesan\", \"atur inbox\", \"bantu balas email/chat\", \"klasifikasikan pesan masuk\", \"draft balasan\", or asks how to keep track of promises made in a reply. Note: no channel (Gmail, Slack, etc.) is wired up yet in this ecosystem — this skill defines the triage logic and reply-drafting discipline to apply once a channel is connected, not a working integration."
+description: "Triage incoming messages from any channel into four priority tiers, draft replies behind a human-approval gate, and track promises made in sent replies. Use for \"triase pesan\", \"atur inbox\", \"bantu balas email/chat\", \"klasifikasikan pesan masuk\", \"draft balasan\"."
 globs:
 alwaysApply: false
 ---

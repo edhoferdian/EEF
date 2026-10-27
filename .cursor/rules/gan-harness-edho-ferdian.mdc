@@ -1,5 +1,5 @@
 ---
-description: "Rapid, adversarial-loop prototyping and design iteration: a Plan → Generate → Evaluate cycle where a generator builds a live app and an evaluator drives it in a real browser, scores it against a weighted design rubric, and feeds fixes back until a quality threshold is crossed (see the Plan phase section below for exactly how scope is sourced, never invented from a one-line prompt). Use when the user wants fast UI/prototype iteration with automated design critique, says \"gan-harness\", \"loop generate-evaluate\", \"iterate sampai bagus\", or wants a live app scored and improved automatically. Not a substitute for dev-kickoff-edho-ferdian's IMPLEMENT stage on production feature work — this is the faster/looser prototyping variant."
+description: "Fast prototype iteration: a generator builds a live app and an evaluator drives it in a browser, scores it on a design rubric and feeds fixes back until it passes. Use for \"gan-harness\", \"loop generate-evaluate\", \"iterate sampai bagus\", or a live app scored and improved automatically."
 globs:
 alwaysApply: false
 ---

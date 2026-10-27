@@ -1,15 +1,10 @@
 ---
 name: marketing-edho-ferdian
 description: >-
-  Campaign/positioning strategy, brand-voice definition, landing-page and
-  email copywriting patterns, and a lightweight competitive/market-
-  positioning framework — scoped for a solo developer marketing their own
-  open-source tools or side projects, not a full marketing agency
-  replacement. Use when the user wants to plan a launch, write landing-page
-  or email copy, define a brand voice, or position a product against
-  competitors; whenever they say "marketing", "positioning", "brand voice",
-  "landing page copy", "email sequence", "kampanye", "strategi pemasaran",
-  "gimana cara jual ini", or wants to promote a tool/project they built.
+  Positioning, brand voice, launch plans, and landing-page and email copy
+  for a solo developer's own tools and projects. Use for "marketing",
+  "positioning", "brand voice", "landing page copy", "email sequence",
+  "kampanye", "strategi pemasaran", "gimana cara jual ini".
 metadata:
   last_reviewed: "2026-09-09"
 ---

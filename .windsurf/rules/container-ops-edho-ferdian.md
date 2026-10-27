@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Container setup, docker-compose design, multi-stage build optimization, and debugging guidance. Security-specific container concerns live in security-review-edho-ferdian instead. Trigger phrases: \"setup Docker untuk project ini\", \"docker-compose untuk dev environment\", \"container ini lambat/besar\", \"debug container yang crash\"."
+description: "Container setup, docker-compose design, multi-stage build optimization and debugging. Use for \"setup Docker untuk project ini\", \"docker-compose untuk dev environment\", \"container ini lambat/besar\", \"debug container yang crash\"."
 ---
 
 # Container Ops — Edho Ferdian Mode (Skill Edition)

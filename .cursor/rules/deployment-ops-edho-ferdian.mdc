@@ -1,5 +1,5 @@
 ---
-description: "Getting a build to production and keeping it healthy — release strategy (rolling / blue-green / canary), CI/CD pipeline gates, health checks and Kubernetes probes, environment config and rollback, a production-readiness ship/block verdict, operator dashboards, post-deploy watching, and production incidents (mitigate first, timeline, blameless postmortem, SLO burn-rate alerts). Starts where container-ops-edho-ferdian stops (image built, compose working). Trigger phrases: \"deploy ini gimana\", \"bikin pipeline CI/CD\", \"rollback\", \"manifest kubernetes\", \"siap rilis belum\", \"pantau setelah deploy\", \"bikin dashboard monitoring\", \"production down\", \"ada insiden\", \"tulis postmortem\", \"alert-nya kebanyakan\"."
+description: "Ship a build and keep it healthy: release strategy, CI/CD gates, health checks and Kubernetes, rollback, readiness verdict, dashboards, post-deploy watch, and production incidents with postmortems. Use for \"deploy ini gimana\", \"pipeline CI/CD\", \"rollback\", \"siap rilis belum\", \"pantau setelah deploy\", \"production down\", \"ada insiden\", \"tulis postmortem\"."
 globs:
 alwaysApply: false
 ---

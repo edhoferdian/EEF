@@ -1,14 +1,11 @@
 ---
 name: safe-execution-edho-ferdian
 description: >-
-  Mechanical gates around agent execution, as a complement to this
-  ecosystem's reasoning gates: a pre-action fact-forcing gate that demands
-  concrete investigation before the first edit to a file, a destructive-
-  command guard, a write-scope freeze for autonomous or parallel agent
-  runs, and a stop-gate that blocks "done" until the memory files were
-  actually touched. Use when running agents autonomously or in parallel,
-  when working against production, or when the user says "jangan sampai
-  kehapus", "agent-nya nulis di luar scope", "pastiin dia ngecek dulu".
+  Mechanical gates for agent runs: investigate before the first edit, guard
+  destructive commands, freeze write scope for autonomous or parallel
+  agents, block "done" until memory is updated. Use for autonomous or
+  production work, or "jangan sampai kehapus", "agent-nya nulis di luar
+  scope", "pastiin dia ngecek dulu".
 metadata:
   last_reviewed: "2026-10-27"
 ---

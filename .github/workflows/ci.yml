@@ -18,10 +18,11 @@ jobs:
       - name: Frontmatter, description length, ECC-mention guard, broken refs
         run: python scripts/validate_skills.py
       - name: Per-session context cost stays within budget
-        # ~12.1k est. tokens on 2026-10-08 (16.7k before agent descriptions
-        # stopped restating their skill). Raise the budget deliberately,
-        # in the same PR that explains what the new context buys.
-        run: python scripts/measure_context.py --budget 13500
+        # ~8.5k est. tokens on 2026-10-27 (12.3k before skill descriptions
+        # were cut to fit Claude Code's skill-listing budget). The listing
+        # caps keep every EEF description visible instead of name-only.
+        # Raise them deliberately, in the PR that explains what they buy.
+        run: python scripts/measure_context.py --budget 9500 --max-desc-chars 450 --listing-chars 14000
 
   bench-records:
     name: Benchmark records are append-only
@@ -163,7 +164,7 @@ jobs:
           test -f $d/code-critic-edho-ferdian.md
           test ! -e $d/build-fix-edho-ferdian.md
           test -f $d/my-own-agent.md
-          test "$(ls $d | grep -c edho-ferdian)" -eq "$(grep -L 'Agent form of the' $GITHUB_WORKSPACE/.claude/agents/*.md | wc -l)"
+          test "$(ls $d | grep -c edho-ferdian)" -eq "$(grep -L 'Agent form of the' $GITHUB_WORKSPACE/dist/agents/claude/*.md | wc -l)"
           node "$GITHUB_WORKSPACE/bin/eef.js" update
           test ! -e $d/build-fix-edho-ferdian.md
           if node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents --roster no-such-roster; then exit 1; fi

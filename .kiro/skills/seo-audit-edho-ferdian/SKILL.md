@@ -1,16 +1,11 @@
 ---
 name: seo-audit-edho-ferdian
 description: >-
-  Technical + on-page SEO audit workflow — crawl/gather site signals, check
-  them against a real technical-SEO checklist (crawlability, indexability,
-  structured data, meta tags, sitemap/robots.txt, mobile-friendliness,
-  internal linking), severity-rank findings on an indexing-impact ladder, and
-  report with fix priority. Use this whenever the user wants an SEO audit;
-  whenever they say "audit SEO", "kenapa website ini tidak muncul di
+  Technical and on-page SEO audit: crawlability, indexability, structured
+  data, meta tags, sitemap/robots.txt, mobile and internal links, ranked by
+  indexing impact. Use for "audit SEO", "kenapa website ini tidak muncul di
   Google", "cek meta tags", "structured data", "sitemap/robots.txt", "cek
-  SEO", "SEO check" — or when reviewing any public-facing web project.
-  Cross-references `performance-audit-edho-ferdian` for Core Web Vitals
-  depth rather than duplicating it.
+  SEO", including from pasted HTML.
 metadata:
   last_reviewed: "2026-10-08"
 ---

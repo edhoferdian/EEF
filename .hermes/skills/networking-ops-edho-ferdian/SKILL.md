@@ -1,16 +1,10 @@
 ---
 name: networking-ops-edho-ferdian
 description: >-
-  Networking skill covering five modes — config review, network design
-  (homelab or enterprise/multi-site), read-only OSI-layer diagnosis, device
-  operations/change windows (Cisco IOS-flavoured), and homelab build-out
-  (see the Mode detection table below for the full breakdown and which mode
-  fits). Use whenever the user pastes a config to review ("cek config Cisco
-  ini"), wants a network designed ("rancang jaringan homelab"), is
-  troubleshooting connectivity/DNS/routing symptoms ("kenapa internet
-  lambat"), needs to script a device change ("push this ACL via SSH"), or is
-  building a homelab. Consolidates config review, design, troubleshooting,
-  device automation, and homelab build-out into one skill.
+  Network config review, design (homelab or multi-site), read-only OSI-layer
+  troubleshooting, device changes (Cisco IOS-style) and homelab build-out.
+  Use for "cek config Cisco ini", "rancang jaringan homelab", "kenapa
+  internet lambat", DNS or routing problems, "push this ACL via SSH".
 metadata:
   last_reviewed: "2026-09-19"
 ---

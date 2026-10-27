@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Language- and framework-specific code review lenses layered on top of the general four-domain review in code-review-edho-ferdian — idioms, framework security misconfigurations, ORM/query correctness, performance traps, and testing conventions, auto-detected across ~20 stacks (React, Python, Go, Java/Spring, Ruby, and more — see the reference table below for the full list). Use whenever a review touches a specific language/framework and the generic checklist isn't enough — \"review kode Go/Python/React ini\", \"audit Django models\", \"cek FastAPI endpoint ini\", or when the user names a stack while asking for review. Load it for any review of code in a named framework, even one or two files: its per-stack lenses carry the framework misconfigurations and ORM query traps that a generic read of the code misses. Loads only the lens file(s) matching the detected stack. Inherits Reflection and Critique-Correction gates from code-review-edho-ferdian."
+description: "Stack-specific review lenses on top of code-review: idioms, framework misconfigurations, ORM query traps, performance and test conventions across ~20 stacks. Load it for any review of code in a named framework, even one or two files. Use for \"review kode Go/Python/React ini\", \"audit Django models\", \"cek FastAPI endpoint ini\"."
 ---
 
 # Language Code Review — Edho Ferdian Mode (Lens Layer)
@@ -164,5 +164,17 @@ a lens came from, not on a normal review.
 
 ## Language routing (inherited — see code-review-edho-ferdian, which points to skill-authoring-edho-ferdian's canonical contract)
 
+Inherited, not restated — this lens has no report format of its own (see
+"Relationship contract" above), so it follows whichever language routing
+`code-review-edho-ferdian` is running under (itself pointing to
+`skill-authoring-edho-ferdian` §7). Nothing to configure here.
+
+## Global rules
+
+1. **Lens, not a second review.** Always runs inside `code-review-edho-ferdian`'s
+   phases, never standalone.
+2. **No duplication.** Generic injection/secrets/nesting/magic-numbers/N+1
+   stay owned by the general checklist; a lens adds only stack-specific depth.
+3. **Detect by manifest, not extension**, and load every matching reference —
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/language-code-review-edho-ferdian/SKILL.md` for complete instructions.

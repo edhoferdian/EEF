@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "Design and setup guidance for the data layer — Postgres schema design, Prisma ORM patterns, Redis caching/queue patterns, and cross-ORM migration strategy (expand-contract). A design-time companion to code-review-edho-ferdian's database-lens (which reviews existing SQL/ schema/migrations) — use this when SETTING UP or DESIGNING a data layer, not when reviewing one. Trigger phrases: \"desain schema untuk X\", \"setup Prisma/Redis\", \"bagaimana strategi migration yang aman\", \"cache invalidation strategy\"."
+description: "Design and set up the data layer: Postgres schemas, Prisma, Redis caching and queues, and safe expand-contract migrations. Use for \"desain schema untuk X\", \"setup Prisma/Redis\", \"strategi migration yang aman\", \"cache invalidation strategy\"."
 ---
 
 # Data Layer Patterns — Edho Ferdian Mode (Skill Edition)

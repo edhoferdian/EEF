@@ -1,17 +1,11 @@
 ---
 name: legal-ops-edho-ferdian
 description: >-
-  Reproducible agreement paperwork for a solo operator or small team: build
-  review drafts of a master/framework agreement (NDA, referral or sourcing
-  fee, non-circumvention, master services) from one template plus a small
-  JSON spec per counterparty, add deals later by Schedule A notice within
-  the executed agreement's authority, and prepare e-signature envelopes by
-  browser automation with calibrated numeric field placement and a hard
-  save-as-draft gate. Not legal advice — output is always a DRAFT for
-  counsel review. Use when the user says "bikin perjanjian dari template",
-  "master agreement", "NDA untuk banyak partner", "siapkan envelope
-  e-sign", "tambah deal ke Schedule A", or "otomasi tanda tangan
-  elektronik".
+  Draft agreement paperwork from one template plus a JSON spec per
+  counterparty (NDA, referral fee, non-circumvention, master services), add
+  deals by Schedule A, and prepare e-sign envelopes as drafts. Not legal
+  advice. Use for "bikin perjanjian dari template", "master agreement", "NDA
+  untuk banyak partner", "siapkan envelope e-sign".
 metadata:
   last_reviewed: "2026-09-24"
 ---
