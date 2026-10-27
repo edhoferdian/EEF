@@ -2,6 +2,20 @@
 
 Generated from conventional commits by `scripts/generate_changelog.py` — do not edit by hand.
 
+## [v1.22.1](https://github.com/edhoferdian/EEF/releases/tag/v1.22.1) — 2026-10-28
+
+### Fixes
+
+- **release:** stop the release flow tripping over its own changelog (#9) ([6d045e5](https://github.com/edhoferdian/EEF/commit/6d045e5))
+
+### Documentation
+
+- regenerate CHANGELOG.md for v1.22.0 ([c8bd453](https://github.com/edhoferdian/EEF/commit/c8bd453))
+
+### Maintenance
+
+- bump version to 1.22.1 (release flow: changelog check on main pushes, wait for the right publish run) ([10c88bd](https://github.com/edhoferdian/EEF/commit/10c88bd))
+
 ## [v1.22.0](https://github.com/edhoferdian/EEF/releases/tag/v1.22.0) — 2026-10-28
 
 ### Features
