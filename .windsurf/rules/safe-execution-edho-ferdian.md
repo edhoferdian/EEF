@@ -56,6 +56,22 @@ Fact 4 looks like ceremony and is not: re-reading the literal instruction
 before acting is the cheapest defence against the drift where an agent, six
 tool calls deep, is solving an adjacent problem it invented.
 
+**Scale the facts to the change, not to the file.** Read the edit itself
+(old and new text) before choosing which facts it owes:
+
+| The edit… | Owes |
+|---|---|
+| changes only comments, whitespace or formatting — same code once those are stripped | nothing; proceed |
+| changes a body, but no declaration that other files can see | the call sites that rely on this behaviour (narrower than fact 1), plus fact 4 |
+| touches the public surface — an exported/`pub`/capitalised name, a signature, a module's export list, a whole-file Write | fact 1 and fact 2 in full |
+| touches data — a format, schema, query, date/time handling, file or network I/O | fact 3, whatever else it owes |
+| cannot be classified with confidence | every fact; uncertainty never earns a discount |
+
+Over-matching is fine (a body inside an exported object counts as surface);
+under-matching is the failure. This keeps the gate expensive exactly where
+the A/B bugs lived — data shape and public contracts — and nearly free for
+the edits that never carried them.
+
 Scope: **first touch per target, not every edit.** Once the facts are
 presented, further edits to that same file proceed freely. A gate that
 fires on every call gets disabled by lunchtime.
@@ -210,11 +226,5 @@ confirms it is registered. To do it by hand instead, copy the file and add:
 
 ## Growth path
 
-This skill is intentionally single-file — four gates read fine as one
-document because they share one voice (mechanical, fact-forcing) rather than
-four distinct lenses. If a fifth gate is added, or any single gate above
-grows enough to need its own worked examples/edge-case catalogue (the way
-`click-path-audit-edho-ferdian` split framework-specific tracing detail out),
-split that gate into `references/`, following the domain+lens pattern other
-skills in this ecosystem use — do not let this file creep past ~300 lines to
-avoid making that call.
+
+> **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/safe-execution-edho-ferdian/SKILL.md` for complete instructions.
