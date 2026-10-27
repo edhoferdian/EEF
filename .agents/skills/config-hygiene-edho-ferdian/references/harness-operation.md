@@ -249,12 +249,16 @@ read the trend:
 1. Install `hooks/log-subagent-run.js` from this skill with
    `npx eef-install --target claude-hooks --only telemetry` (or by hand:
    copy it to `~/.claude/hooks/` and register it under
-   `hooks.SubagentStop`, no matcher, with
+   `hooks.PostToolUse` with matcher `Agent` and
    `node "<home>/.claude/hooks/log-subagent-run.js"`); `npx eef-install
    doctor` confirms it is registered. It
-   appends agent, model actually used, duration and tokens to
+   appends agent, model actually used, duration, tool-call count and the
+   final request's tokens to
    `~/.claude/eef/subagent-runs.jsonl` — sizes only, never prompt or reply
-   content, and nothing leaves the machine.
+   content, and nothing leaves the machine. (Until 2026-10-27 it hung off
+   `SubagentStop`, which carries none of those fields: records from then
+   have them null and only count runs. A leftover `SubagentStop`
+   registration is now a no-op; remove it at leisure.)
 2. After a few weeks of real use, run
    `node <this skill>/scripts/subagent-report.js` (`--days 30`, `--json`).
    Per agent it shows how often the agent ran on a stronger model than its

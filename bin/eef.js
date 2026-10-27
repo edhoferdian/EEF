@@ -40,7 +40,10 @@ const HOOKS = {
   telemetry: {
     file: "log-subagent-run.js",
     src: path.join(SKILLS_DIR, "config-hygiene-edho-ferdian", "hooks", "log-subagent-run.js"),
-    event: "SubagentStop",
+    // SubagentStop carries no model/duration/usage; the Agent tool's
+    // PostToolUse response does. A leftover SubagentStop entry is a no-op.
+    event: "PostToolUse",
+    matcher: "Agent",
   },
   // Not a hook event: settings.statusLine is a single slot, so it is only
   // ever filled when empty — an existing status line is the user's.
@@ -944,7 +947,7 @@ Env vars:
 Hooks (--target claude-hooks):
   --only <name>       install one hook: fs-guard (PreToolUse, blocks recursive searches
                       from / ~ or a drive root and asks before destructive commands
-                      such as rm -rf or Remove-Item -Recurse) | telemetry (SubagentStop, logs each
+                      such as rm -rf or Remove-Item -Recurse) | telemetry (PostToolUse on Agent, logs each
                       subagent run to ~/.claude/eef/subagent-runs.jsonl) | statusline
                       (5h/7d quota, context, subagents, cost — set only when no
                       statusLine exists). Default: all three.

@@ -40,10 +40,12 @@ npx eef-install --list                      # list all skill names
 npx eef-install --help
 ```
 
-`--target claude-hooks` installs both ready-made hooks — `fs-guard`
-(`PreToolUse`, blocks recursive searches from `/`, `~` or a drive root) and
-`telemetry` (`SubagentStop`, logs each subagent run locally for re-tiering);
-`--only fs-guard` or `--only telemetry` picks one. It adds a registration to
+`--target claude-hooks` installs the ready-made hooks — `fs-guard`
+(`PreToolUse`, blocks recursive searches from `/`, `~` or a drive root and
+asks before destructive commands), `telemetry` (`PostToolUse` on `Agent`,
+logs each subagent run locally for re-tiering) and `statusline` (plan quota,
+context and subagent count, set only when no `statusLine` exists);
+`--only <name>` picks one. It adds a registration to
 `settings.json` and leaves every other key alone: a hook already registered
 (even by hand) is never added twice, an unparsable file is refused rather
 than rewritten, and the previous file is kept as `settings.json.eef-backup`.

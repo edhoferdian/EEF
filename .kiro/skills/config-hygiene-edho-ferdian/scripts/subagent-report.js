@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Summarize the SubagentStop telemetry written by hooks/log-subagent-run.js
+// Summarize the subagent telemetry written by hooks/log-subagent-run.js
 // into per-agent evidence for re-tiering (harness-operation.md §4.4).
 //
 // For each agent: runs, the models it actually ran on, median tokens and
