@@ -46,9 +46,9 @@ in the consistency checklist below).
 
 **For the dependency-graph half of the picture** (which module imports which,
 what else calls this function) — that is a separate, structural question from
-the semantic trace above, and it has a separate, better source: read it from
-Salak's `repo-graph.json` if Salak is installed, following the detect-defer
-pattern in `references/salak-integration.md`. **Never hand-roll a dependency
+the semantic trace above, and it has a separate, better source: ask Salak
+(`salak query imports|importers <file>`) if it is installed, following the
+detect-defer pattern in `references/salak-integration.md`. **Never hand-roll a dependency
 map with grep when Salak is available** — a grep-built map is exactly the
 kind of partial, easy-to-miss-an-edge picture Salak's ground-truth graph
 exists to replace. If Salak is absent, fall back to reading imports/call

@@ -57,9 +57,42 @@ const RECURSIVE = {
   where: (args) => args.some((a) => /^\/r$/i.test(a)),
 };
 
+// Splits into segments of tokens on separators and whitespace outside quotes,
+// so a quoted pattern such as `grep -rn "jq \|json.load" skills` stays one
+// argument instead of leaving a bare `\` (the Windows root) behind.
+function segmentsOf(command) {
+  const segments = [[]];
+  let token = null;
+  let quote = null;
+  const endToken = () => {
+    if (token !== null) segments[segments.length - 1].push(token);
+    token = null;
+  };
+  for (let i = 0; i < command.length; i++) {
+    const c = command[i];
+    if (quote) {
+      if (c === quote) quote = null;
+      token += c;
+    } else if (c === '"' || c === "'") {
+      quote = c;
+      token = (token || "") + c;
+    } else if (/\s/.test(c) && c !== "\n") {
+      endToken();
+    } else if (c === ";" || c === "|" || c === "\n" || (c === "&" && command[i + 1] === "&")) {
+      endToken();
+      segments.push([]);
+      if ((c === "|" || c === "&") && command[i + 1] === c) i++;
+    } else {
+      token = (token || "") + c;
+    }
+  }
+  endToken();
+  return segments;
+}
+
 function offendingSegment(command) {
-  for (const segment of command.split(/&&|\|\||[;|\n]/)) {
-    let tokens = segment.trim().split(/\s+/).filter(Boolean);
+  for (const segment of segmentsOf(command)) {
+    let tokens = segment;
     while (tokens.length && /^(sudo|env|command|time|nohup|[A-Za-z_]+=\S*)$/.test(tokens[0])) tokens.shift();
     if (!tokens.length) continue;
     const tool = tokens[0].replace(/^.*[\\/]/, "").toLowerCase().replace(/\.exe$/, "");
@@ -67,7 +100,7 @@ function offendingSegment(command) {
     const recursive = RECURSIVE[tool];
     if (!recursive || !recursive(args)) continue;
     // -Path / --search-path style values count as starting points too.
-    if (args.some((a) => isRoot(a.replace(/^-(path|literalpath)[:=]?/i, "")))) return segment.trim();
+    if (args.some((a) => isRoot(a.replace(/^-(path|literalpath)[:=]?/i, "")))) return tokens.join(" ");
   }
   return null;
 }

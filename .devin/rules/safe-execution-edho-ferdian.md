@@ -36,7 +36,11 @@ ALLOW — permit the retry once those facts are on the table
 ```
 
 **Before editing an existing file**, produce:
-1. Every file that imports or requires it (search the tree — Grep/Glob).
+1. Every file that imports or requires it (search the tree — Grep/Glob; if
+   `salak` is on PATH, `salak query importers <file>` and, for Go,
+   `salak query callers <node>` give the edges with provenance — exit 2
+   means not tracked, so Grep instead; see
+   `dev-kickoff-edho-ferdian/references/salak-integration.md`).
 2. The public functions or classes this change affects.
 3. If it reads or writes data files: the field names, structure, and date
    format — using redacted or synthetic values, never raw production data.
@@ -226,8 +230,5 @@ confirms it is registered. To do it by hand instead, copy the file and add:
 
 ## Growth path
 
-This skill is intentionally single-file — four gates read fine as one
-document because they share one voice (mechanical, fact-forcing) rather than
-four distinct lenses. If a fifth gate is added, or any single gate above
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/safe-execution-edho-ferdian/SKILL.md` for complete instructions.

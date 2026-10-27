@@ -186,21 +186,23 @@ run `salak version`; absent → proceed with call-chain inference only, say
 nothing. Present → continue below.
 
 **Freshness:** before trusting `repo-graph.json` for this capability's
-metadata, run `salak check` (per `salak-integration.md`'s exit-code
-contract: 0 = fresh, 2 = stale → refresh with `salak scan`, 1 = internal
-error → don't trust the graph this round, fall back to inference and say
+metadata, run `salak check .` (per `salak-integration.md`'s exit-code
+contract: 0 = fresh, 2 = stale → refresh with `salak scan . --update`,
+1 = internal error → don't trust the graph this round, fall back to inference and say
 so).
 
 **Reading the graph for `depends_on`/`triggers`:**
 
-1. Find the file/symbol node for the behavior's `enforced` location in
-   `repo-graph.json` (`nodes[].id`, format `{lang}:{path}#{qualified_name}`).
-2. Walk `edges[]` where `from`/`to` matches that node and `kind` is
-   `imports`, `depends_on`, `calls`, or `references` (whichever the relevant
-   language's `adapters[].emits` actually lists — **check `emits` before
-   trusting a zero count**; `calls` is void in every Salak build to date,
-   so a same-capability trigger relationship expressed only through a
-   runtime call will not show up there and must fall back to inference).
+1. Ask with `salak query`, not by reading `repo-graph.json`: `imports` and
+   `importers` on the file of the behavior's `enforced` location, `symbols`
+   for what it defines, and `callers <node-id>` (`{lang}:{path}#{name}`) for
+   a call relationship. `--json` returns the edges with their `kind` and
+   `provenance`. Questions and flags: `salak-integration.md` Step 3a.
+2. **Read the exit code before trusting an empty answer.** Exit 2 means the
+   edge kind isn't tracked for that language — `calls` is tracked for Go
+   only, so `callers` exits 2 on Python and TypeScript, and a
+   same-capability trigger expressed only through a runtime call there must
+   fall back to inference. Exit 1 means the file or node isn't in the graph.
 3. **Respect provenance.** Only treat an edge as ground truth if
    `provenance` is `extracted`. An `inferred` edge is "very likely,
    unconfirmed" — still usable, but label it accordingly (see below). An
@@ -212,11 +214,12 @@ so).
 
 **Labeling (mandatory, never blend unlabeled):**
 
-- Sourced from a Salak `repo-graph.json` edge (`extracted` or `inferred`
+- Sourced from a Salak edge via `salak query` (`extracted` or `inferred`
   provenance, same-capability, correct `emits` for that language) →
   `[Salak-verified]`.
 - No Salak graph available, or the specific relationship isn't representable
-  in Salak's edge kinds (e.g. it's runtime-only and `calls` is void) → fall
+  in Salak's edge kinds (e.g. it's runtime-only, or `callers` exits 2 for
+  that language) → fall
   back to manual call-chain tracing, labeled `[inferred, unverified]`.
 
 Example metadata block:

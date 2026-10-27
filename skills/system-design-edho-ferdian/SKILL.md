@@ -65,11 +65,11 @@ ground-truth-verification phase for the same principle applied to review).
 **Salak (optional, auto-detected).** If the `salak` CLI is installed and
 `project-memory/repo-graph.json` exists (or can be generated), a claim like
 "is this actually a bottleneck module" is a fan-in/fan-out question the
-graph answers directly — read the node's `depends_on`/`imports` edges (and
-who imports *it*, i.e. its reverse edges) instead of asserting from
-recollection or a manual grep. If `salak check` reports the graph stale,
-refresh with `salak scan` before trusting it for this decision; if Salak
-isn't installed, say the current-state claim is based on manual inspection
+graph answers directly — `salak query imports <file>` and
+`salak query importers <file>` (who imports *it*) instead of asserting from
+recollection or a manual grep. If `salak check .` reports the graph stale,
+refresh with `salak scan . --update` before trusting it for this decision;
+if Salak isn't installed, say the current-state claim is based on manual inspection
 and name what you actually checked (which files, which grep), not "the
 architecture." Detection and exit-code handling follow the same
 detect-defer-never-require pattern as `dev-kickoff-edho-ferdian`'s

@@ -152,8 +152,9 @@ User = apps.get_model('users', 'User')
 ```
 
 If Salak is installed (see `dev-kickoff-edho-ferdian`'s
-`salak-integration.md`), read the real cycle path from its
-`repo-graph.json` instead of reconstructing it by hand from grep output —
+`salak-integration.md`), walk the real cycle path with
+`salak query imports <file>` instead of reconstructing it by hand from grep
+output —
 faster and it won't miss an edge a manual grep skipped.
 
 ## Database connection failures

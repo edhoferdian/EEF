@@ -158,7 +158,7 @@ contract: `skill-authoring-edho-ferdian` §7.
 7. **Record the commit.** Every `Last verified` line carries the current git
    commit hash — the anchor for future freshness checks.
 8. **Salak metadata is clearly labeled.** `depends_on`/`triggers` sourced
-   from `repo-graph.json` are marked `[Salak-verified]`; anything from
+   from Salak's graph (via `salak query`) are marked `[Salak-verified]`; anything from
    call-chain inference is marked `[inferred, unverified]`. Never blend the
    two without the label — see `references/mining-protocol.md` §Salak
    integration for exactly how and when each applies.

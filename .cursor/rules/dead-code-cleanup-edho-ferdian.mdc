@@ -109,7 +109,8 @@ symbols that look unused syntactically but have an inbound edge the tool's
 AST walk didn't model.
 
 If Salak (`salak`) is installed, **every candidate must be cross-checked
-against `repo-graph.json`'s reverse-dependency data before it is deleted** —
+against Salak's reverse-dependency data (`salak query importers`) before it
+is deleted** —
 full procedure, exit-code contract, and the downgrade rule in
 **`references/salak-cross-check.md`**. In short:
 

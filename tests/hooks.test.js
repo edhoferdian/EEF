@@ -64,6 +64,13 @@ const GUARD_CASES = [
   ["allow", "Bash", "npm test"],
   ["allow", "Bash", "grep -r drop src"],
   ["allow", "PowerShell", "Get-ChildItem -Recurse .\\src"],
+  // A backslash inside a quoted pattern is not the Windows root `\`.
+  ["allow", "Bash", 'grep -rn -i "jq \\|json.load" skills'],
+  ["allow", "Bash", "grep -rn 'a \\| b' src"],
+  ["allow", "Bash", 'rg "foo \\ bar" src'],
+  ["deny", "Bash", 'grep -rn "jq \\|json.load" /'],
+  ["deny", "PowerShell", 'Get-ChildItem -Recurse "C:\\" -Filter x'],
+  ["deny", "Bash", "cd src && find ~ -name x"],
 ];
 
 for (const [want, tool, command] of GUARD_CASES) {

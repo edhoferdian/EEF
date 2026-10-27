@@ -34,15 +34,15 @@ This is not a blocker and not a gap to report to the user.
 
 ## Step 2 — Freshness
 
-Before trusting any graph-derived claim, run `salak check [PATH]`:
+Before trusting any graph-derived claim, run `salak check .`:
 
 - **Exit 0** — fresh. Trust the graph.
-- **Exit 2** — stale. Refresh with `salak scan` before relying on it for this
-  cleanup pass — a stale graph could show a since-deleted caller as still
+- **Exit 2** — stale. Refresh with `salak scan . --update` before relying on
+  it for this cleanup pass — a stale graph could show a since-deleted caller as still
   present, or miss a caller added since the last scan, either of which is
   exactly wrong for a deletion decision.
 - **Exit 1** — internal error (no graph yet, or it's invalid). Don't refresh;
-  run `salak scan` once if no graph exists at all, otherwise fall back to
+  run `salak scan .` once if no graph exists at all, otherwise fall back to
   Phase 1's static-tool classification unchanged for this run and say so.
 
 If the tree has a permanently-unparseable fixture file, `check` will report
@@ -57,15 +57,20 @@ For each SAFE or CAREFUL candidate from Phase 1 (both directions matter —
 SAFE items get demoted, CAREFUL items can occasionally be confirmed truly
 orphaned):
 
-1. Look up the candidate symbol/file's node in `repo-graph.json`.
-2. Read its **inbound edges** (`depends_on` / `imports`, whichever the
-   language adapter emits — check `adapters[].emits` for that language
-   before assuming an edge kind is tracked at all; an edge kind absent from
-   `emits` proves nothing about "no callers", it means Salak never tracked
-   that kind for this language).
+1. Ask Salak, don't open the graph: `salak query importers <file>` for a
+   file or module candidate; for a symbol, `salak query callers <node-id>`
+   (Go only) or `importers` on its file plus a scoped Grep for the name.
+   Never read `repo-graph.json` itself — `salak-integration.md` Step 3a has
+   the questions and flags.
+2. Read the exit code before the answer: **0** = answered, so an empty list
+   really means no inbound edge of that kind; **2** = that edge kind is not
+   tracked for this language, so the empty answer proves nothing and the
+   candidate keeps its Phase-1 classification with a scoped Grep as the only
+   evidence; **1** = the file or node is not in the graph (new, excluded,
+   misspelled) — not evidence of "unused" either.
 3. Apply the downgrade rule:
-   - **Zero inbound edges, and the edge kind is tracked for this language**
-     → candidate stays at its Phase-1 classification (SAFE stays SAFE).
+   - **Zero inbound edges with exit 0** (the edge kind is tracked for this
+     language) → candidate stays at its Phase-1 classification (SAFE stays SAFE).
    - **One or more inbound edges, provenance `extracted`** → this is a
      **confirmed false positive** from the static tool. Downgrade SAFE →
      CAREFUL at minimum, or skip the deletion outright if the caller is

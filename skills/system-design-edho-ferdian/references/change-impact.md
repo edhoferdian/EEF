@@ -22,7 +22,11 @@ Not for a change confined to one function body with no outside callers —
 Every row must come from something you ran or read — a grep, a reference
 search, the schema file, the deploy config — and say which. A row you could
 not check is written down as `unverified`, never quietly dropped and never
-guessed from a directory name.
+guessed from a directory name. When `salak` is installed, fill the Callers
+row from `salak query importers <file>` (and `callers` for Go) after
+`salak check .`, and name that command as the evidence; an exit 2 answer
+means the edge kind is untracked, so fall back to a grep
+(`dev-kickoff-edho-ferdian/references/salak-integration.md`).
 
 ```markdown
 | Area | What is affected | Evidence | Status |

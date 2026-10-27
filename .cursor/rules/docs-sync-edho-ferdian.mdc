@@ -89,12 +89,13 @@ version of it, so if that reference file's commands or exit codes ever
 change, treat that file as canonical and update this note to match, not the
 other way around.
 
-- **Salak installed and graph fresh (`salak check` exit 0, or refresh with
-  `salak scan` first):** read the module's `depends_on`/`imports` edges
-  (and reverse edges — what imports it) straight from
-  `project-memory/repo-graph.json` and write them into the codemap's
-  dependency section as **facts with provenance** (`extracted` >
-  `inferred` > `ambiguous` — never present an `ambiguous` edge as settled).
+- **Salak installed and graph fresh (`salak check .` exit 0, or refresh with
+  `salak scan . --update` first):** ask for the module's edges with
+  `salak query imports <file>` (and the reverse, `salak query importers
+  <file>` — what imports it) rather than reading `repo-graph.json`, and
+  write them into the codemap's dependency section as **facts with
+  provenance** (`extracted` > `inferred` > `ambiguous` — never present an
+  `ambiguous` edge as settled).
 - **Salak not installed, or its graph can't be trusted for this run:**
   **omit the dependency section entirely** and say so in the codemap
   (`## External Dependencies` / `## Related Areas` → "Deferred — Salak not

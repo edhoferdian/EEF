@@ -191,9 +191,9 @@ it's for.
 **Salak hook (optional, auto-detected, detect-defer-never-require).** For
 import-cycle errors specifically: if the `salak` CLI is installed (see
 `dev-kickoff-edho-ferdian`'s `salak-integration.md` for the full detect/
-defer/version-drift contract — don't duplicate that logic here), read the
-real cycle path from its `repo-graph.json` (`depends_on`/`imports` edges)
-instead of grepping import statements by hand to reconstruct the cycle. If
+defer/version-drift contract — don't duplicate that logic here), walk the
+real cycle with `salak query imports <file>` from each module in the error
+instead of grepping import statements by hand to reconstruct it. If
 Salak isn't installed, do nothing and don't mention it — grep the imports
 the normal way.
 

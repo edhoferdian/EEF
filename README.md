@@ -54,7 +54,9 @@ than rewritten, and the previous file is kept as `settings.json.eef-backup`.
 `eef-install doctor` reports which Claude Code targets (skills, agents,
 rules, hooks) are installed and where, which files differ from this package
 version, whether each hook is registered, and which model profile the
-installed agents match. It changes nothing, and exits non-zero only on real
+installed agents match, plus whether the optional Salak CLI is on PATH (and
+whether it predates 0.3, the version the skills' Salak contract was verified
+on). It changes nothing, and exits non-zero only on real
 breakage (an unparsable `settings.json`, or a registered hook whose file is
 gone). It reads the same `CLAUDE_*_DIR` overrides as the installs.
 

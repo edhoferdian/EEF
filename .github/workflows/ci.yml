@@ -250,6 +250,14 @@ jobs:
           echo "$out"
           echo "$out" | grep -q "model profile: maksimal"
           echo "$out" | grep -q "No breakage found."
+          echo "$out" | grep -q "Salak (optional.*not found"
+          mkdir -p $d/fakebin
+          printf '#!/bin/sh\necho "salak 0.2.4"\n' > $d/fakebin/salak && chmod +x $d/fakebin/salak
+          out=$(PATH="$d/fakebin:$PATH" node "$GITHUB_WORKSPACE/bin/eef.js" doctor)
+          echo "$out" | grep -q "salak 0.2.4 — older than 0.3"
+          echo "$out" | grep -q "No breakage found."
+          printf '#!/bin/sh\necho "salak 0.3.1"\n' > $d/fakebin/salak
+          PATH="$d/fakebin:$PATH" node "$GITHUB_WORKSPACE/bin/eef.js" doctor | grep -qx "Salak (optional dependency graph; skills use it when present) — salak 0.3.1"
           echo "local edit" >> $d/agents/code-reviewer-edho-ferdian.md
           node "$GITHUB_WORKSPACE/bin/eef.js" doctor | grep -q "differ (older EEF version, or edited locally): code-reviewer-edho-ferdian"
           rm $d/hooks/log-subagent-run.js
