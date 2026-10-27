@@ -11,6 +11,8 @@ description: >-
   component ini", "best practice React untuk X", "setup Vite untuk Y",
   "biar UI-nya gak keliatan AI banget", "kok hasil desainnya
   generic/template banget", or when starting a new frontend feature.
+metadata:
+  last_reviewed: "2026-09-19"
 ---
 
 # Frontend Engineering — Edho Ferdian Mode (Authoring Layer)

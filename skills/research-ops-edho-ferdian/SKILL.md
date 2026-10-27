@@ -12,6 +12,8 @@ description: >-
   this repo's own code. For competitor benchmarking and positioning
   research, use `marketing-edho-ferdian/references/market-and-competitor-research.md`
   instead — it consumes this skill's evidence method rather than repeating it.
+metadata:
+  last_reviewed: "2026-10-07"
 ---
 
 # Research Ops — Edho Ferdian Mode

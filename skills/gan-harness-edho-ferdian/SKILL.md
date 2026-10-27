@@ -12,6 +12,8 @@ description: >-
   improved automatically. Not a substitute for dev-kickoff-edho-ferdian's
   IMPLEMENT stage on production feature work — this is the faster/looser
   prototyping variant.
+metadata:
+  last_reviewed: "2026-10-07"
 ---
 
 # GAN Harness — Edho Ferdian Mode (Skill Edition) · v1.0

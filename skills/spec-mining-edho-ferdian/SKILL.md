@@ -13,6 +13,8 @@ description: >-
   spec", "buat spec dari kode", "reverse-engineer the spec", or "repo ini
   tidak ada dokumentasi". Never invents behavior: anything unclear is
   recorded as an explicit uncertainty, not a requirement.
+metadata:
+  last_reviewed: "2026-10-07"
 ---
 
 # Spec Mining — Edho Ferdian Mode (Skill Edition) · v1.0

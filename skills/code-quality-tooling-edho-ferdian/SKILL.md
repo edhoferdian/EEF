@@ -12,6 +12,8 @@ description: >-
   "pre-commit hook", "lint-staged", "kenapa commit ke-block linter",
   "format on save", "enforce lint sebelum push", "linter belum ada di
   project ini".
+metadata:
+  last_reviewed: "2026-09-16"
 ---
 
 # Code Quality Tooling — Edho Ferdian Mode

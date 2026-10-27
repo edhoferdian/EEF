@@ -11,6 +11,8 @@ description: >-
   skill in this ecosystem that touches security cross-references this
   skill instead of holding its own copy — this is the only place security
   criteria are defined, to remove drift risk from duplication.
+metadata:
+  last_reviewed: "2026-09-19"
 ---
 
 # Security Review — Edho Ferdian Mode (Skill Edition)

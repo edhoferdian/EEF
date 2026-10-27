@@ -12,6 +12,8 @@ description: >-
   "master agreement", "NDA untuk banyak partner", "siapkan envelope
   e-sign", "tambah deal ke Schedule A", or "otomasi tanda tangan
   elektronik".
+metadata:
+  last_reviewed: "2026-09-24"
 ---
 
 # Legal Ops — Edho Ferdian Mode
