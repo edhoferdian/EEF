@@ -16,6 +16,7 @@
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
+const { spawnSync } = require("child_process");
 
 const PKG_ROOT = path.resolve(__dirname, "..");
 const SKILLS_DIR = path.join(PKG_ROOT, "skills");
@@ -965,6 +966,8 @@ Usage:
   eef-install update [--dry-run]       Bring an existing Claude Code install up to this
                                        version: only what is installed and differs is
                                        replaced; agents keep their model/effort
+  eef-install stats [--days N] [--json] Summarize subagent telemetry (from the telemetry
+                                       hook) per agent, as evidence for re-tiering (read-only)
   eef-install --help                   Show this message
 
 Targets (--target):
@@ -1017,6 +1020,7 @@ Examples:
   eef-install --target claude-hooks --only fs-guard
   eef-install doctor
   eef-install update --dry-run
+  eef-install stats --days 30
 `);
 }
 
@@ -1040,6 +1044,15 @@ function main() {
 
   if (args[0] === "update") {
     update({ dryRun: args.includes("--dry-run") });
+    return;
+  }
+
+  if (args[0] === "stats") {
+    // The report ships inside config-hygiene's skill folder; run that copy
+    // so npx users get it without installing the skill.
+    const report = path.join(SKILLS_DIR, "config-hygiene-edho-ferdian", "scripts", "subagent-report.js");
+    const res = spawnSync(process.execPath, [report, ...args.slice(1)], { stdio: "inherit" });
+    process.exitCode = res.status ?? 1;
     return;
   }
 
