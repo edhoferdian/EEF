@@ -168,7 +168,7 @@ Phase 4  Report                             (Mode A only — Mode B reports via 
    §Containers, §Cloud, and §Agent-config sections are original additions to
    this skill, not migrated from an existing `code-review-edho-ferdian`
    lens.
-   Seven boundary-specific references sit beside it, each loaded only when
+   Eight boundary-specific references sit beside it, each loaded only when
    the scope crosses that boundary: a proxy/CDN config, custom HTTP
    handling, sessions, OAuth/OIDC/SAML, MFA, passkeys, account recovery,
    API keys or mTLS (→ `references/web-protocol-auth.md`); DOM rendering,
