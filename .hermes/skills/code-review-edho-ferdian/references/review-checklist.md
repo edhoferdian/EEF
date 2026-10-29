@@ -246,6 +246,10 @@ Impact   : [what happens if left]
 Fix      : [summary of the fix]
 ```
 
+Security leads that `security-review-edho-ferdian` marks **Needs validation**
+(blocked on a fact outside the repository) are listed after the Domain 2
+findings without a severity icon and are not counted in the table above.
+
 Then a **Top-5 Priority Fixes** block (id — title — why it's prioritized), a
 **Reflection Notes** block (what was dropped/downgraded/merged in Phase 3 and why),
 and a one-line **Critique-Correction outcome** (converged in N rounds; key

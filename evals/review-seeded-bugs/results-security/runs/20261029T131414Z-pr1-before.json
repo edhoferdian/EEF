@@ -1,0 +1,217 @@
+{
+  "record_version": 1,
+  "corpus": "security",
+  "label": "pr1-before",
+  "variant": "before",
+  "created_utc": "2026-10-29T13:14:14Z",
+  "git_sha": "c2d30808eef9ff4f3591dfb95121818df7b4026b",
+  "git_dirty": true,
+  "claude_version": "2.1.311 (Claude Code)",
+  "tolerance": 2,
+  "configs": {
+    "sonnet-high": {
+      "model": "sonnet",
+      "effort": "high"
+    }
+  },
+  "cases": [
+    "01-link_preview.py",
+    "02-session_cache.py",
+    "03-profile-update.js",
+    "04-login-redirect.ts",
+    "05-webhook_auth.py",
+    "06-thumbnail_job.py",
+    "07-merge-settings.js",
+    "08-api_keys.py",
+    "09-avatar_fetch.py",
+    "10-export_archive.py"
+  ],
+  "scores": {
+    "opus-high": {
+      "runs": 0,
+      "invalid_runs": 0,
+      "bug_cases": 0,
+      "caught": 0,
+      "caught_high": 0,
+      "control_cases": 0,
+      "control_strong_fp": 0,
+      "control_medium": 0,
+      "cost_usd": 0.0,
+      "cost_per_case_usd": null,
+      "wall_s": 0.0,
+      "missed": [],
+      "rows": []
+    },
+    "sonnet-high": {
+      "runs": 10,
+      "invalid_runs": 0,
+      "bug_cases": 8,
+      "caught": 8,
+      "caught_high": 7,
+      "control_cases": 2,
+      "control_strong_fp": 0,
+      "control_medium": 6,
+      "cost_usd": 1.9572,
+      "cost_per_case_usd": 0.1957,
+      "wall_s": 727.9,
+      "missed": [],
+      "rows": [
+        {
+          "case": "01-link_preview.py",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.222003,
+          "findings": 6,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "timeout=5 is per socket operation, not a total deadline; resp.read(65536) loops until 64KB or EOF, so a server dripping 1 byte every ~4s holds a worker for days (slow-drip DoS). No Content-Type check "
+          ],
+          "strong_findings": 1,
+          "medium_findings": 3
+        },
+        {
+          "case": "02-session_cache.py",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.1847654,
+          "findings": 6,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [],
+          "strong_findings": 1,
+          "medium_findings": 1
+        },
+        {
+          "case": "03-profile-update.js",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.2243789,
+          "findings": 7,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "The async handler has no try/catch around save() (assuming Express 4). A validation or unique-constraint error (e.g. {\"name\":null} or another user's email) becomes an unhandled rejection. The request ",
+            "Profile changes, including email changes, are not logged, so an account takeover cannot be investigated afterwards. Log the actor and the changed field names, not their values."
+          ],
+          "strong_findings": 1,
+          "medium_findings": 2
+        },
+        {
+          "case": "04-login-redirect.ts",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.200222,
+          "findings": 3,
+          "caught": true,
+          "caught_high": false,
+          "near_no_keyword": [],
+          "strong_findings": 0,
+          "medium_findings": 1
+        },
+        {
+          "case": "05-webhook_auth.py",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.22361419999999999,
+          "findings": 6,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "The HMAC covers only `body`, with no timestamp or tolerance window and no event-ID dedup in this file. A captured valid webhook can be replayed indefinitely and will always verify. Sign and check a ti",
+            "A failed verification returns a bare False with no logging or signal. Repeated failures indicate probing or a misconfigured or rotated secret. The caller should log failures with a request id and sour",
+            "Only the verifier is in the PR, so I could not check that the route enforces it fail-closed (401/403 on False) before acting, that it receives the raw request bytes rather than re-serialized JSON, or "
+          ],
+          "strong_findings": 1,
+          "medium_findings": 1
+        },
+        {
+          "case": "06-thumbnail_job.py",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.17881429999999998,
+          "findings": 8,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "ImageMagick picks the decoder from file content (magic bytes), not from the extension. An uploaded file renamed `.png` can really be SVG, MVG or MSL. Those formats have a history of SSRF, local file r",
+            "There is no `timeout=` on `subprocess.run`, and no ImageMagick limits (`-limit memory/map/disk/time`, or `-define` limits on pixel dimensions). A decompression-bomb or huge-dimension image, or a craft",
+            "`make_thumbnail` takes only a bare filename. It has no owner or user argument and does no ownership check. All uploads share the flat `/srv/uploads` namespace. Any caller who can trigger this job can ",
+            "The output path is deterministic: `with_suffix(\".thumb.jpg\")` replaces the extension. `a.png` and `a.gif` both map to `a.thumb.jpg`, so a later request silently overwrites an earlier thumbnail, possib",
+            "`check=True` raises `CalledProcessError`, whose message contains the full command line, including the internal path `/srv/uploads/...`. stderr is also not captured or logged in a controlled way. If th",
+            "The code relies on the system `convert` binary found through PATH, and the ImageMagick version and patch level are not pinned or checked. `convert` is the deprecated IM6 entry point (IM7 uses `magick`"
+          ],
+          "strong_findings": 3,
+          "medium_findings": 2
+        },
+        {
+          "case": "07-merge-settings.js",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.2122843,
+          "findings": 3,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "deepMerge recurses with no depth limit, and loadSettings (line 18) has no input size cap and no try/catch around JSON.parse. Malformed JSON throws SyntaxError, and extremely deep nesting can overflow "
+          ],
+          "strong_findings": 1,
+          "medium_findings": 0
+        },
+        {
+          "case": "08-api_keys.py",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.1496796,
+          "findings": 5,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "The module returns only a hexdigest and has no verification helper. Callers will probably compare digests with `==`, which is not constant-time. The impact is low for a salted hash. A verify function "
+          ],
+          "strong_findings": 1,
+          "medium_findings": 1
+        },
+        {
+          "case": "09-avatar_fetch.py",
+          "bug": false,
+          "valid": true,
+          "cost_usd": 0.19382300000000002,
+          "findings": 5,
+          "caught": false,
+          "caught_high": false,
+          "near_no_keyword": [],
+          "strong_findings": 0,
+          "medium_findings": 1
+        },
+        {
+          "case": "10-export_archive.py",
+          "bug": false,
+          "valid": true,
+          "cost_usd": 0.1676537,
+          "findings": 8,
+          "caught": false,
+          "caught_high": false,
+          "near_no_keyword": [],
+          "strong_findings": 0,
+          "medium_findings": 5
+        }
+      ]
+    },
+    "sonnet-medium": {
+      "runs": 0,
+      "invalid_runs": 0,
+      "bug_cases": 0,
+      "caught": 0,
+      "caught_high": 0,
+      "control_cases": 0,
+      "control_strong_fp": 0,
+      "control_medium": 0,
+      "cost_usd": 0.0,
+      "cost_per_case_usd": null,
+      "wall_s": 0.0,
+      "missed": [],
+      "rows": []
+    }
+  }
+}

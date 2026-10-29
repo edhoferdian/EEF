@@ -7,7 +7,7 @@ description: >-
   audit", "find vulnerabilities", "aman gak ini", "is it safe to ship
   security-wise".
 metadata:
-  last_reviewed: "2026-09-19"
+  last_reviewed: "2026-10-29"
 ---
 
 # Security Review — Edho Ferdian Mode (Skill Edition)
@@ -62,6 +62,17 @@ ecosystem serves many users, not one. See
 `project-memory/01-decision-register.md` for the original triage rationale
 that no longer holds.
 
+**Cloudflare security-audit update (2026-10-29):** four ideas were adapted
+from [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill)
+(MIT, commit `c1c8a8c`, fetched 2026-10-29) into this skill's own wording:
+the boundary-and-result gate, the Needs-validation verdict, the severity
+anchors with the HIGH-vs-MEDIUM test, and "defense in depth is not a
+vulnerability". Changed on purpose: they slot into this ecosystem's
+existing 5-level scale instead of Cloudflare's lowercase JSON scale, and
+⚪ INFO now means a confirmed minor observation — unverified suspicion is
+either `[Low confidence]` or Needs validation. The upstream skill was not
+installed as-is: its triggers overlap this skill's almost completely.
+
 ## Two invocation modes (state which one you're in)
 
 **Mode A — Standalone security-only pass.** Triggered directly: "cek
@@ -86,7 +97,8 @@ Domain 2 delegates to this skill's full checklist instead. In this mode:
   `language-code-review-edho-ferdian`).
 - Findings land back inside the host review's Domain 2 (SEC) using this
   skill's `SEC-##` / stack-note / domain-note codes — don't open a separate
-  report.
+  report. Needs-validation leads go in a short list under Domain 2, without
+  a severity icon and outside the severity counts.
 - Reflection (Phase 3) and Critique-Correction (Phase 4) are the host
   review's, run once over the *combined* finding set — this skill does not
   add a second reflection pass on top. See "Reflection gate" below.
@@ -145,7 +157,12 @@ Run the general checklist (`references/general-checklist.md`, SEC-01..13)
 against the full scope always. Layer on `references/language-specific.md`
 for the detected stack(s), and `references/domain-specific.md` for any active
 domain section. Every finding needs a concrete location — no location, no
-finding (see Phase 3).
+finding (see Phase 3) — and must pass the **Boundary-and-result gate** in
+`references/general-checklist.md`: who acts, through what input, past which
+control, against whose resource, with what concrete result. A candidate
+whose decisive fact lives outside the repository (proxy, provider, platform
+header, identity policy) is recorded as **Needs validation**, not guessed
+either way.
 
 ### Phase 2 — Ground-truth verification
 
@@ -170,7 +187,9 @@ trufflehog filesystem .
 confirmed by a tool or a directly readable line → **[High confidence]**;
 sound reasoning, not tool-verified → **[Medium confidence]**; plausible but
 uncertain → **[Low confidence] — needs verification.** Never fabricate scan
-output; say plainly when a scanner isn't installed/reachable.
+output; say plainly when a scanner isn't installed/reachable. Low confidence
+is doubt about your own reading of the source; **Needs validation** is a
+solid reading whose answer sits outside the source — keep them apart.
 
 ### Phase 3 — Reflection gate
 
@@ -211,7 +230,11 @@ Use the **same report format** as `code-review-edho-ferdian`
 (`references/review-checklist.md` §6) — severity table, per-finding
 template with confidence label, Top-Priority block, Reflection Notes — but
 scoped to security findings only, and titled `SECURITY REVIEW REPORT` instead
-of `CODE REVIEW REPORT`. Save the report file the same way
+of `CODE REVIEW REPORT`. After the findings, add two short sections:
+**Needs validation** (a table of title, source trace, blocker, validation
+plan — no severity, not counted in the severity table) and **Hardening
+notes** (defense-in-depth gaps that are not findings). Omit either when
+empty. Save the report file the same way
 (`./<file-or-module>-security-review.md`) and tell the user the path.
 
 If a CRITICAL finding is confirmed (not just suspected), follow **Emergency
@@ -229,8 +252,16 @@ one:
 - 🟠 **HIGH** — serious exploitable issue, narrower blast radius or requiring
   some precondition (e.g. admin access, specific timing).
 - 🟡 **MEDIUM** — real weakness, low likelihood or limited impact today.
-- 🔵 **LOW** — minor hardening opportunity, defense-in-depth.
-- ⚪ **INFO** — observation, no confirmed defect (e.g. "needs verification").
+- 🔵 **LOW** — confirmed but minor: non-secret internals disclosed, or an
+  effect that needs sustained effort for minimal gain.
+- ⚪ **INFO** — confirmed, minimal-impact observation (often a prerequisite
+  inside a larger finding).
+
+Two things sit **outside** this scale: **Needs validation** (a verdict for a
+source-grounded lead blocked on a fact outside the repository — no
+severity) and **Hardening notes** (a missing extra layer when another layer
+already stops the attack — not a finding). Anchors for each level and the
+HIGH-vs-MEDIUM test: `references/general-checklist.md` §Severity guidance.
 
 ## Emergency Response (confirmed CRITICAL only)
 

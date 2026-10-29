@@ -239,10 +239,15 @@ def load_key(corpus: dict) -> dict:
     return key
 
 
-def run_one(exe: str, corpus: dict, config: str, name: str, case: dict, budget: float) -> dict:
+def run_one(exe: str, corpus: dict, config: str, name: str, case: dict, budget: float,
+            skills_dir: Path | None = None) -> dict:
     model, effort = CONFIGS[config]
     src = corpus["cases_dir"] / name
     with tempfile.TemporaryDirectory(prefix="eef-review-bench-") as work:
+        if skills_dir:
+            # Test a skills tree other than the installed one: load it as
+            # project skills and leave the user's own skills out.
+            shutil.copytree(skills_dir, Path(work) / ".claude" / "skills")
         if "base" in case:
             shutil.copytree(corpus["cases_dir"] / "_bases" / case["base"], work, dirs_exist_ok=True)
         if src.is_dir():
@@ -261,6 +266,8 @@ def run_one(exe: str, corpus: dict, config: str, name: str, case: dict, budget: 
             "--no-session-persistence",
             "--max-budget-usd", str(budget),
         ]
+        if skills_dir:
+            cmd += ["--setting-sources", "project"]
         started = time.monotonic()
         proc = subprocess.run(cmd, cwd=work, capture_output=True, text=True, encoding="utf-8", timeout=1800)
         elapsed = time.monotonic() - started
@@ -306,9 +313,13 @@ def matches(finding: dict, case: dict, tol: int, with_file: bool) -> tuple[bool,
     return True, any(k.lower() in text for k in case["keywords"])
 
 
-def score(corpus: dict, key: dict) -> dict:
+def raw_root(corpus: dict, variant: str | None) -> Path:
+    return corpus["results"] / "raw" / variant if variant else corpus["results"] / "raw"
+
+
+def score(corpus: dict, key: dict, variant: str | None = None) -> dict:
     tol = key["tolerance"]
-    raw_dir = corpus["results"] / "raw"
+    raw_dir = raw_root(corpus, variant)
     report = {}
     for config in CONFIGS:
         rows, cost, wall = [], 0.0, 0.0
@@ -375,7 +386,8 @@ def claude_version() -> str | None:
     return proc.stdout.strip() or None
 
 
-def write_record(corpus_name: str, corpus: dict, key: dict, report: dict, label: str) -> Path:
+def write_record(corpus_name: str, corpus: dict, key: dict, report: dict, label: str,
+                 variant: str | None = None) -> Path:
     """Write this scoring pass as a new record and return its path. The
     file is created exclusively: an existing record is never replaced, a
     same-second name collision gets a numeric suffix."""
@@ -384,6 +396,7 @@ def write_record(corpus_name: str, corpus: dict, key: dict, report: dict, label:
         "record_version": 1,
         "corpus": corpus_name,
         "label": label,
+        "variant": variant,
         "created_utc": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "git_sha": git_out("rev-parse", "HEAD"),
         "git_dirty": bool(git_out("status", "--porcelain", "--untracked-files=no")),
@@ -457,7 +470,18 @@ def main() -> int:
     parser.add_argument("--check-records", nargs="?", const="", metavar="BASE",
                         help="fail if a committed record is modified or deleted: in the staged "
                              "changes, or in HEAD against BASE; nothing else runs")
+    parser.add_argument("--skills-dir", type=Path,
+                        help="review with this skills tree (loaded as project skills, user skills "
+                             "left out) instead of the installed one; requires --variant")
+    parser.add_argument("--variant", help="keep this pass's raw runs apart under results/raw/<variant>/, "
+                        "e.g. before or after (lowercase letters, digits, hyphens)")
     args = parser.parse_args()
+    if args.skills_dir and not args.variant:
+        parser.error("--skills-dir needs --variant, so its raw runs never mix with the installed skills' runs")
+    if args.variant and not LABEL.match(args.variant):
+        parser.error(f"--variant {args.variant!r}: use lowercase letters, digits and hyphens")
+    if args.skills_dir and not any(args.skills_dir.glob("*/SKILL.md")):
+        parser.error(f"--skills-dir {args.skills_dir}: not a skills tree (no <skill>/SKILL.md inside)")
 
     if args.check_records is not None:
         return check_records(args.check_records)
@@ -474,7 +498,7 @@ def main() -> int:
     unknown = set(cases) - set(key["cases"])
     if unknown:
         sys.exit(f"unknown case(s): {sorted(unknown)}")
-    raw_dir = corpus["results"] / "raw"
+    raw_dir = raw_root(corpus, args.variant)
 
     if not args.score_only:
         plan = [(c, n) for c in args.configs for n in cases if not (raw_dir / c / f"{n}.json").exists()]
@@ -488,7 +512,7 @@ def main() -> int:
         exe = claude_bin()
         for i, (config, name) in enumerate(plan, 1):
             print(f"[{i}/{len(plan)}] {config} {name} ...", end=" ", flush=True)
-            raw = run_one(exe, corpus, config, name, key["cases"][name], args.budget_per_run)
+            raw = run_one(exe, corpus, config, name, key["cases"][name], args.budget_per_run, args.skills_dir)
             if raw.get("is_error") or raw.get("parse_error"):
                 # Auth expiry, a rate limit or an unavailable model fails
                 # every remaining run the same way: stop, and save nothing,
@@ -503,12 +527,12 @@ def main() -> int:
             status = f"{len(found)} findings" if found is not None else "NO STRUCTURED OUTPUT"
             print(f"{status}, ${raw.get('total_cost_usd') or 0:.3f}, {raw['_meta']['wall_s']}s")
 
-    report = score(corpus, key)
+    report = score(corpus, key, args.variant)
     print_table(report)
     if not any(r["runs"] for r in report.values()):
         print(f"\nno saved runs under {raw_dir.relative_to(HERE).as_posix()}/ — no record written")
         return 1
-    path = write_record(args.corpus, corpus, key, report, args.label)
+    path = write_record(args.corpus, corpus, key, report, args.label, args.variant)
     print(f"\nrecord: {path.relative_to(HERE).as_posix()}")
     return 0
 

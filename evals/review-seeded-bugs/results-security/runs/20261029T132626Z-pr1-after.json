@@ -1,0 +1,215 @@
+{
+  "record_version": 1,
+  "corpus": "security",
+  "label": "pr1-after",
+  "variant": "after",
+  "created_utc": "2026-10-29T13:26:26Z",
+  "git_sha": "ff200941235ce7f31c56ad9046233394638a3821",
+  "git_dirty": true,
+  "claude_version": "2.1.311 (Claude Code)",
+  "tolerance": 2,
+  "configs": {
+    "sonnet-high": {
+      "model": "sonnet",
+      "effort": "high"
+    }
+  },
+  "cases": [
+    "01-link_preview.py",
+    "02-session_cache.py",
+    "03-profile-update.js",
+    "04-login-redirect.ts",
+    "05-webhook_auth.py",
+    "06-thumbnail_job.py",
+    "07-merge-settings.js",
+    "08-api_keys.py",
+    "09-avatar_fetch.py",
+    "10-export_archive.py"
+  ],
+  "scores": {
+    "opus-high": {
+      "runs": 0,
+      "invalid_runs": 0,
+      "bug_cases": 0,
+      "caught": 0,
+      "caught_high": 0,
+      "control_cases": 0,
+      "control_strong_fp": 0,
+      "control_medium": 0,
+      "cost_usd": 0.0,
+      "cost_per_case_usd": null,
+      "wall_s": 0.0,
+      "missed": [],
+      "rows": []
+    },
+    "sonnet-high": {
+      "runs": 10,
+      "invalid_runs": 0,
+      "bug_cases": 8,
+      "caught": 8,
+      "caught_high": 6,
+      "control_cases": 2,
+      "control_strong_fp": 0,
+      "control_medium": 4,
+      "cost_usd": 2.1689,
+      "cost_per_case_usd": 0.2169,
+      "wall_s": 725.4,
+      "missed": [],
+      "rows": [
+        {
+          "case": "01-link_preview.py",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.23911960000000002,
+          "findings": 4,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "timeout=5 applies per socket operation, not to the whole request. A server that drips one byte every few seconds keeps resp.read(65536) blocked for a very long time and ties up a worker. No visible ra"
+          ],
+          "strong_findings": 1,
+          "medium_findings": 2
+        },
+        {
+          "case": "02-session_cache.py",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.1629351,
+          "findings": 3,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [],
+          "strong_findings": 1,
+          "medium_findings": 1
+        },
+        {
+          "case": "03-profile-update.js",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.24763120000000002,
+          "findings": 4,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "email is writable with no current-password check and no confirmation of the new address. If email is the login or password-reset identifier, a hijacked session can permanently take over the account. B"
+          ],
+          "strong_findings": 1,
+          "medium_findings": 0
+        },
+        {
+          "case": "04-login-redirect.ts",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.2217228,
+          "findings": 3,
+          "caught": true,
+          "caught_high": false,
+          "near_no_keyword": [
+            "res.locals.userId is trusted without being checked in this file. Needs validation: is finishLogin reachable only after middleware has verified credentials (and MFA) and set it? If a route reaches it w",
+            "The error argument of req.session.regenerate is ignored. This is a reliability issue, not an exploitable boundary failure. Session regeneration before setting userId is correct, so there is no session"
+          ],
+          "strong_findings": 0,
+          "medium_findings": 1
+        },
+        {
+          "case": "05-webhook_auth.py",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.22528890000000001,
+          "findings": 5,
+          "caught": true,
+          "caught_high": false,
+          "near_no_keyword": [
+            "HMAC covers only the body, and is_valid takes no timestamp or event ID. A captured valid webhook verifies indefinitely, so an attacker can replay a payment-success event. Fix: verify a signed timestam",
+            "is_valid returns a bare bool and logs nothing on failure. Ensure the caller logs verification failures with context (source IP, event ID) and never logs the secret or expected signature. Not counted a"
+          ],
+          "strong_findings": 0,
+          "medium_findings": 2
+        },
+        {
+          "case": "06-thumbnail_job.py",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.25572649999999997,
+          "findings": 6,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "convert runs on untrusted image content with no -limit memory/map/disk/time flags, no subprocess timeout, and no frame selection (src[0]). Pixel-flood or many-frame images can pin or OOM the worker an",
+            "Not scored. ImageMagick picks the coder from file content, and the file is attacker-controlled, so ImageTragick-class attacks (SVG/MVG/MSL, label:@file, url:) are possible. Blocker: does the worker's ",
+            "Not scored. The thumbnail is written beside the upload as <stem>.thumb.jpg in the shared UPLOADS directory, and make_thumbnail does no ownership check on filename. If stored names are not unique per u",
+            "Path traversal (SEC-17) is adequately handled by Path(filename).name; no resolve()-and-prefix check is needed unless symlinks can appear in /srv/uploads.",
+            "'convert' is resolved via PATH; use an absolute path or `magick` on ImageMagick 7. check=True raises CalledProcessError containing the full command and paths, so the caller must not return it to clien"
+          ],
+          "strong_findings": 1,
+          "medium_findings": 1
+        },
+        {
+          "case": "07-merge-settings.js",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.2410698,
+          "findings": 3,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [],
+          "strong_findings": 1,
+          "medium_findings": 0
+        },
+        {
+          "case": "08-api_keys.py",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.16536189999999998,
+          "findings": 3,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "No constant-time verification function. If callers compare digests with ==, timing leaks. Use the KDF library's verify() or hmac.compare_digest. No caller is visible, so this is a hardening-level obse"
+          ],
+          "strong_findings": 1,
+          "medium_findings": 0
+        },
+        {
+          "case": "09-avatar_fetch.py",
+          "bug": false,
+          "valid": true,
+          "cost_usd": 0.2427041,
+          "findings": 5,
+          "caught": false,
+          "caught_high": false,
+          "near_no_keyword": [],
+          "strong_findings": 0,
+          "medium_findings": 1
+        },
+        {
+          "case": "10-export_archive.py",
+          "bug": false,
+          "valid": true,
+          "cost_usd": 0.1672995,
+          "findings": 7,
+          "caught": false,
+          "caught_high": false,
+          "near_no_keyword": [],
+          "strong_findings": 0,
+          "medium_findings": 3
+        }
+      ]
+    },
+    "sonnet-medium": {
+      "runs": 0,
+      "invalid_runs": 0,
+      "bug_cases": 0,
+      "caught": 0,
+      "caught_high": 0,
+      "control_cases": 0,
+      "control_strong_fp": 0,
+      "control_medium": 0,
+      "cost_usd": 0.0,
+      "cost_per_case_usd": null,
+      "wall_s": 0.0,
+      "missed": [],
+      "rows": []
+    }
+  }
+}

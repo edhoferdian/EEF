@@ -36,7 +36,7 @@ command injection, prototype pollution, SHA-1 password hashing), plus 2
 controls that do the risky thing safely (an allow-listed fetch with a
 private-address check, a `subprocess` call with an argument list). Each
 case has `keywords`, so a finding must name the vulnerability class, not
-just sit near the line. Not yet run.
+just sit near the line. First run: `RESULTS-security.md`.
 
 ## Method
 
@@ -66,6 +66,19 @@ python run.py --dry-run                                         # validate, show
 python run.py --configs sonnet-medium --cases 04-wallet.py --label spot-check   # one run
 python run.py --label full-run                                  # everything not yet run
 python run.py --score-only --label rescore                      # rescore saved runs
+```
+
+By default a run reviews with the skills installed in `~/.claude/skills`.
+To measure a change before it is installed, export each version's
+`skills/` tree and pass it with `--skills-dir <tree> --variant <name>`: the
+tree is copied into the run's temp directory as project skills, Claude Code
+loads only project settings (`--setting-sources project`, so the installed
+skills stay out), and raw output lands under `raw/<variant>/` so the two
+versions never mix:
+
+```bash
+python run.py --corpus security --configs sonnet-high --skills-dir /tmp/before/skills --variant before --label pr-before
+python run.py --corpus security --configs sonnet-high --skills-dir /tmp/after/skills --variant after --label pr-after
 ```
 
 Raw output is saved per run under `results/raw/` (git-ignored) and reused,

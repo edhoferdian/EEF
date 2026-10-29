@@ -55,6 +55,17 @@ ecosystem serves many users, not one. See
 `project-memory/01-decision-register.md` for the original triage rationale
 that no longer holds.
 
+**Cloudflare security-audit update (2026-10-29):** four ideas were adapted
+from [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill)
+(MIT, commit `c1c8a8c`, fetched 2026-10-29) into this skill's own wording:
+the boundary-and-result gate, the Needs-validation verdict, the severity
+anchors with the HIGH-vs-MEDIUM test, and "defense in depth is not a
+vulnerability". Changed on purpose: they slot into this ecosystem's
+existing 5-level scale instead of Cloudflare's lowercase JSON scale, and
+⚪ INFO now means a confirmed minor observation — unverified suspicion is
+either `[Low confidence]` or Needs validation. The upstream skill was not
+installed as-is: its triggers overlap this skill's almost completely.
+
 ## Two invocation modes (state which one you're in)
 
 **Mode A — Standalone security-only pass.** Triggered directly: "cek
@@ -79,7 +90,8 @@ Domain 2 delegates to this skill's full checklist instead. In this mode:
   `language-code-review-edho-ferdian`).
 - Findings land back inside the host review's Domain 2 (SEC) using this
   skill's `SEC-##` / stack-note / domain-note codes — don't open a separate
-  report.
+  report. Needs-validation leads go in a short list under Domain 2, without
+  a severity icon and outside the severity counts.
 - Reflection (Phase 3) and Critique-Correction (Phase 4) are the host
   review's, run once over the *combined* finding set — this skill does not
   add a second reflection pass on top. See "Reflection gate" below.
@@ -138,7 +150,12 @@ Run the general checklist (`references/general-checklist.md`, SEC-01..13)
 against the full scope always. Layer on `references/language-specific.md`
 for the detected stack(s), and `references/domain-specific.md` for any active
 domain section. Every finding needs a concrete location — no location, no
-finding (see Phase 3).
+finding (see Phase 3) — and must pass the **Boundary-and-result gate** in
+`references/general-checklist.md`: who acts, through what input, past which
+control, against whose resource, with what concrete result. A candidate
+whose decisive fact lives outside the repository (proxy, provider, platform
+header, identity policy) is recorded as **Needs validation**, not guessed
+either way.
 
 ### Phase 2 — Ground-truth verification
 
@@ -163,7 +180,9 @@ trufflehog filesystem .
 confirmed by a tool or a directly readable line → **[High confidence]**;
 sound reasoning, not tool-verified → **[Medium confidence]**; plausible but
 uncertain → **[Low confidence] — needs verification.** Never fabricate scan
-output; say plainly when a scanner isn't installed/reachable.
+output; say plainly when a scanner isn't installed/reachable. Low confidence
+is doubt about your own reading of the source; **Needs validation** is a
+solid reading whose answer sits outside the source — keep them apart.
 
 ### Phase 3 — Reflection gate
 
@@ -190,35 +209,5 @@ implying an adversarial pass happened.
 **Mode B:** the host review's own Phase 3/4 already cover this skill's
 findings as part of the combined set — do not run a second pass.
 
-Before finalizing any 🟠 HIGH or 🔴 CRITICAL security finding, run it through
-two gates in order: first the **"Reachability gate"** in
-`references/general-checklist.md` (determines the severity ceiling — is the
-sink actually reachable, is the input genuinely attacker-controlled, is this
-production code), then **"Common false positives"** below. Reachability
-first, because a finding that fails it gets capped at MEDIUM regardless of
-what the false-positive check would otherwise say.
-
-### Phase 4 — Report (Mode A only)
-
-Use the **same report format** as `code-review-edho-ferdian`
-(`references/review-checklist.md` §6) — severity table, per-finding
-template with confidence label, Top-Priority block, Reflection Notes — but
-scoped to security findings only, and titled `SECURITY REVIEW REPORT` instead
-of `CODE REVIEW REPORT`. Save the report file the same way
-(`./<file-or-module>-security-review.md`) and tell the user the path.
-
-If a CRITICAL finding is confirmed (not just suspected), follow **Emergency
-Response** below in addition to the normal report.
-
----
-
-## Severity system
-
-Same 5-level scale as the rest of the ecosystem — do not invent a parallel
-one:
-
-- 🔴 **CRITICAL** — direct security breach, data leak, or exploitable RCE/auth
-  bypass. Must fix before ship.
-- 🟠 **HIGH** — serious exploitable issue, narrower blast radius or requiring
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/security-review-edho-ferdian/SKILL.md` for complete instructions.

@@ -228,11 +228,86 @@ labeling High confidence per the ground-truth rule in `SKILL.md` Phase 2:
 | No rate limiting on an abusable endpoint | HIGH | Add rate limiting (SEC-08) |
 | Logging passwords/secrets/PII | MEDIUM–HIGH | Sanitize log output (SEC-06/SEC-13) |
 
+## Boundary-and-result gate (every finding, before severity)
+
+A security finding is a trust boundary that fails, not a pattern that looks
+risky. Before a candidate becomes a finding at any severity, name all six:
+
+1. **Lower-trust principal** — who acts (anonymous visitor, other tenant,
+   low-role user, uploaded file, webhook sender, model output, local user).
+2. **Accepted input or action** — the value, request, file, message, or
+   state change that principal controls.
+3. **Intended control** — the check that should reject, bind, isolate,
+   limit, or revoke it, and where it lives (or where it is missing).
+4. **Crossed boundary** — what the principal reaches that it should not.
+5. **Affected principal or resource** — whose data, account, process, or
+   spend is hit. Self-impact (a user harming only their own session or data)
+   is not a cross-boundary result.
+6. **Concrete result** — the wrong return value, unauthorised record, code
+   execution, or other effect, stated no stronger than the evidence shows. A
+   parser crash is not code execution; ordinary work is not a shared outage.
+
+If a slot cannot be filled from source, the candidate is either **dropped**
+(the source refutes it, or there is no affected principal) or becomes **Needs
+validation** (below) when the one missing fact lives outside the source. A
+missing best practice with no affected principal is a hardening note, never a
+finding.
+
+## Needs validation (a verdict, not a severity)
+
+Use it when the source path is real but one decisive fact is not visible in
+the repository: proxy or CDN behaviour, provider or cloud settings, response
+headers set by the platform, identity-provider policy, broker ACLs, runtime
+framework defaults the code does not pin. Do not assume the control is
+present, and do not assume it is absent.
+
+A Needs-validation item carries no severity and no fix. It carries:
+
+- the source trace (file:line from entry to the point where the trail goes
+  outside the repo);
+- the **blocker** — the exact unresolved fact, phrased as a question an owner
+  can answer ("Does the reverse proxy strip a client-supplied
+  `X-Forwarded-For` before it reaches `app.ts:41`?");
+- a **validation plan** — a bounded local check, an owner-observed
+  deployment check, or both. Never instruct anyone to probe a live system.
+
+It is not a parking place for a weak idea: if the source already refutes the
+claim, drop it; if the source fully establishes it, it is a finding.
+
+**Not the same as `[Low confidence]`.** Low confidence means your own reading
+of source is uncertain. Needs validation means your reading is solid and the
+answer sits outside the source.
+
 ## Severity guidance
 
 Use the shared 5-level scale defined in `SKILL.md` (`CRITICAL/HIGH/MEDIUM/
 LOW/INFO`) — the same scale `code-review-edho-ferdian` uses, so a delegated
 Mode B finding slots directly into the host report without translation.
+Severity is likelihood × demonstrated impact, never distance from a
+checklist, and **overall severity never exceeds the impact you can show**.
+Calibrate with these anchors:
+
+- **CRITICAL** — an unauthenticated actor gains code execution, full
+  data-store access, or takeover of arbitrary accounts.
+- **HIGH** — an actor fully defeats an explicit security control with real
+  consequences: authentication bypass, cross-tenant read or write, stored
+  script execution affecting other users, authenticated code execution, an
+  unauthenticated remote stop of a shared service.
+- **MEDIUM** — a real boundary violation with limited blast radius, uncommon
+  preconditions, or consequences confined to a narrow resource set.
+- **LOW** — disclosure of non-secret internals, or an effect that needs
+  sustained effort for minimal gain.
+- **INFO** — a confirmed but minimal-impact observation, mostly useful as a
+  prerequisite inside a larger finding.
+
+**HIGH vs MEDIUM:** does the result *fully defeat* an explicit control for an
+action with real consequences, or only *weaken* it? If you cannot state the
+concrete damage, the severity is lower than it feels.
+
+**Defense in depth is not a vulnerability.** If layer A already stops the
+attack, the absence of layer B is a **hardening note** — list it in the
+report's Hardening notes section, outside the findings and their severity
+counts.
 
 ## Reachability gate (before assigning HIGH/CRITICAL)
 
