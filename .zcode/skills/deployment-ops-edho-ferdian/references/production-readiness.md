@@ -27,6 +27,10 @@ notes, and E2E coverage of the launch-critical path.
 
 **Hard caps — these override the band:**
 
+- Cap at 49 (**Blocked**) if the latest full security audit
+  (`project-memory/audit/run-NNN/findings.json`, from
+  `security-review-edho-ferdian` Mode C) has any `confirmed` critical or
+  high finding that no later `RECHECK-*.md` in that run marks `resolved`.
 - Cap at 69 if any of: auth/authz missing on sensitive data; payment or
   fulfilment webhooks not idempotent; a migration that cannot be run safely;
   secrets in client bundles, logs, or committed files; **no rollback path for
@@ -45,12 +49,19 @@ change the number.
 
 | Risk lens | Delegate detail to |
 |---|---|
-| Auth, secrets, injection, rate limiting | `security-review-edho-ferdian` |
+| Auth, secrets, injection, rate limiting | `security-review-edho-ferdian` — Mode C full audit (`references/full-audit.md`) |
 | Migration reversibility, tenancy, idempotent writes | `data-layer-patterns-edho-ferdian` |
 | Launch-critical path coverage | `e2e-testing-edho-ferdian` |
 | Latency / budget breaches | `performance-audit-edho-ferdian` |
 
 This file owns only the aggregation, the caps, and the one-sentence verdict.
+
+**Security lens.** Reuse a Mode C run whose `source_ref` matches the
+release; otherwise run one. Its `NEEDS-VALIDATION.md` is a checklist of
+facts only the server can answer (proxy headers, platform config, IdP
+policy): put each unchecked item under **Next action** as a check to do on
+the server, and under **Evidence missing** until it is ticked. They do not
+cap the score on their own; an unresolved confirmed critical/high does.
 
 **On a harness with sub-agent delegation**, consult these four as parallel
 delegates — one per row, run at the same time, not read one after

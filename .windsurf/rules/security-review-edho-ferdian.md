@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "The single source of security review criteria: OWASP-style checklist (SEC-01..19) plus stack- and domain-specific items, standalone or as code-review's security depth. Use for \"cek keamanan kode ini\", \"security audit\", \"find vulnerabilities\", \"aman gak ini\", \"is it safe to ship security-wise\"."
+description: "The single source of security review criteria: OWASP-style checklist (SEC-01..19) plus stack- and domain-specific items, standalone, as code-review's security depth, or a lean full-repo audit before production. Use for \"cek keamanan kode ini\", \"security audit\", \"find vulnerabilities\", \"aman gak ini\", \"is it safe to ship security-wise\", \"audit menyeluruh sebelum production\"."
 ---
 
 # Security Review — Edho Ferdian Mode (Skill Edition)
@@ -65,8 +65,13 @@ existing 5-level scale instead of Cloudflare's lowercase JSON scale, and
 ⚪ INFO now means a confirmed minor observation — unverified suspicion is
 either `[Low confidence]` or Needs validation. The upstream skill was not
 installed as-is: its triggers overlap this skill's almost completely.
+Mode C (`references/full-audit.md`) is the lean port of its six-phase
+audit: same schema, validators and ledger contract, with inline
+reconnaissance, an agent ceiling, one batch verifier, no target-code
+execution, and output in a guarded `project-memory/audit/`. The full list
+of what was kept, changed and dropped closes that file.
 
-## Two invocation modes (state which one you're in)
+## Three invocation modes (state which one you're in)
 
 **Mode A — Standalone security-only pass.** Triggered directly: "cek
 keamanan kode ini", "security review", "security audit", "find security
@@ -91,14 +96,29 @@ Domain 2 delegates to this skill's full checklist instead. In this mode:
 - Findings land back inside the host review's Domain 2 (SEC) using this
   skill's `SEC-##` / stack-note / domain-note codes — don't open a separate
   report. Needs-validation leads go in a short list under Domain 2, without
-  a severity icon and outside the severity counts.
+  a severity icon and outside the severity counts. Whoever writes the host
+  report also appends the review-log line Phase 4 describes.
 - Reflection (Phase 3) and Critique-Correction (Phase 4) are the host
   review's, run once over the *combined* finding set — this skill does not
   add a second reflection pass on top. See "Reflection gate" below.
 
-If it's ambiguous which mode you're in, ask nothing — infer from context: a
-bare code paste with a security question is Mode A; an active
-code-review-edho-ferdian session is Mode B.
+**Mode C — Full audit before production.** Triggered by an explicit
+whole-repository ask ("audit menyeluruh", "full security audit", "audit
+sebelum production", "pen-test this codebase") or by
+`deployment-ops-edho-ferdian`'s production-readiness security lens. Follow
+`references/full-audit.md` instead of the Phase 0–4 pipeline below: a
+storage guard on `project-memory/audit/`, inline reconnaissance, a coverage
+ledger, the fewest agents that cover it (ceiling 5, stated with a reason
+before launch), one independent verifier, then `findings.json` checked by
+the vendored validators in `scripts/` and three reports. It reuses this
+skill's checklists, gates and severity scale; it never executes the
+target's code.
+
+If it's ambiguous which mode you're in, ask nothing between A and B — infer
+from context: a bare code paste with a security question is Mode A; an
+active code-review-edho-ferdian session is Mode B. Between A and C (a
+"security audit" of a repo with no scope given), ask one question first:
+Mode C writes files and may spend several agents.
 
 ---
 
@@ -185,29 +205,6 @@ is doubt about your own reading of the source; **Needs validation** is a
 solid reading whose answer sits outside the source — keep them apart.
 
 ### Phase 3 — Reflection gate
-
-**Mode A:** run the full Pre-Report Gate + six reflection gates defined in
-`code-review-edho-ferdian/references/reflection-critique.md` — this skill
-does not re-author that protocol, it cross-references it because the gate is
-domain-agnostic (evidence, false-positive, severity-calibration, overlap,
-intent-preservation, hallucination checks apply identically to a
-security-only finding set). Read that file now if you're running Mode A.
-Emit the same **Reflection Notes** block format it defines.
-
-Self-reflection alone is backwards for Mode A's own highest-stakes use case
-("is this safe to ship security-wise") — the same self-checking-its-own-work
-limitation `code-review-edho-ferdian` addresses with a second, adversarial
-role. On a harness with sub-agent delegation, after Reflection produces a
-draft, delegate to `code-critic-edho-ferdian` — the same Critic agent
-`code-review-edho-ferdian`'s Phase 4 uses, generalized to also serve this
-mode — passing it the code and the draft findings, never your own
-reasoning. Perform Correction yourself once its critique returns. On a
-harness with no delegation primitive, this step is skipped and Mode A relies
-on Reflection alone, same as before — say so in the report rather than
-implying an adversarial pass happened.
-
-**Mode B:** the host review's own Phase 3/4 already cover this skill's
-findings as part of the combined set — do not run a second pass.
 
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/security-review-edho-ferdian/SKILL.md` for complete instructions.

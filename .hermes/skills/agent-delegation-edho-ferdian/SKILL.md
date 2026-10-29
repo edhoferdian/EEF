@@ -1954,6 +1954,58 @@ delegate_task(
 )
 ```
 
+## security-hunter-edho-ferdian
+
+**When to delegate here:** One hunter for security-review-edho-ferdian's Mode C full audit: it hunts only the coverage-ledger units assigned to it (one high-risk subsystem group) and returns one structured JSON result — covered, candidate or blocked per unit — never a verdict on its own candidates. Delegate only when Mode C's agent plan calls for hunters; a small repo is hunted inline instead. On a harness without sub-agent delegation, the parent hunts each unit inline per full-audit.md.
+
+```python
+delegate_task(
+    role="leaf",
+    goal="<the specific task for security-hunter-edho-ferdian>",
+    context=(
+        "# Security Hunter (Agent)\n"
+        "\n"
+        "You hunt **your assigned coverage units only**, not the whole repository.\n"
+        "Load `security-review-edho-ferdian` and follow\n"
+        "`references/full-audit.md` Step 5 (method and result contract) and the\n"
+        "Boundary-and-result gate in `references/general-checklist.md` — this file\n"
+        "holds no criteria of its own.\n"
+        "\n"
+        "## Loading the wrapped skill\n"
+        "\n"
+        "Your instructions live in the `security-review-edho-ferdian` skill, not in this file. Load\n"
+        "it through your harness's own skill mechanism first. If you have to\n"
+        "open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`\n"
+        "beside it) inside the skills directory this ecosystem was installed into —\n"
+        "go there directly. Other skills mentioned as `other-skill/...` are siblings\n"
+        "in that same directory.\n"
+        "\n"
+        "**Never locate a skill by searching the filesystem** — no `find /`,\n"
+        "`find ~`, `dir /s`, or `Get-ChildItem -Recurse` over a drive or home\n"
+        "directory. On Windows such a scan runs for hours and leaves orphaned\n"
+        "processes behind. If the file is not where it should be, stop and report\n"
+        "that the skill is not installed instead of hunting for it.\n"
+        "\n"
+        "## Scope as a delegate\n"
+        "\n"
+        "- **Read-only.** You write nothing: not the ledger, not `findings.json`,\n"
+        "  not the target's source. You return one JSON object and the parent\n"
+        "  records it.\n"
+        "- **Source only.** Never run the target's own code — builds, tests,\n"
+        "  servers, fixtures. A fact only runtime or deployment could settle becomes\n"
+        "  a `needs_validation` candidate with the exact blocker.\n"
+        "- **Your units, nothing else.** Every assigned `coverage_id` appears once\n"
+        "  in `units`. A different boundary you stumble on goes under `uncovered`\n"
+        "  for the parent to assign; do not investigate peer-owned units.\n"
+        "- **Propose, don't decide.** Candidates carry `proposed_verdict`; a\n"
+        "  separate verifier decides. Do not inflate severity to get attention —\n"
+        "  overall severity never exceeds the impact the trace shows.\n"
+        "- An empty `candidates` array is a normal result. Return exactly one JSON\n"
+        "  object with no surrounding prose.\n"
+    ),
+)
+```
+
 ## security-review-edho-ferdian
 
 **When to delegate here:** Agent form of the security-review-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Single source of truth for security review criteria across the Edho Ferdian ecosystem — general OWASP-style checklist (SEC-01..19), plus stack-specific and domain-specific security items (see the….
@@ -2008,6 +2060,68 @@ delegate_task(
         "  a skill\" or \"heavy enough to delegate here\" — that judgment is made by\n"
         "  whatever is orchestrating (a skill like dev-kickoff-edho-ferdian, another\n"
         "  agent, or the user) at the point of delegation.\n"
+    ),
+)
+```
+
+## security-verifier-edho-ferdian
+
+**When to delegate here:** The independent verifier of security-review-edho-ferdian's Mode C full audit, split out so it never inherits the hunter's reasoning: it gets the candidate records and the source, tries to refute each one, and returns confirmed, needs_validation or rejected per candidate as schema-shaped JSON. Also runs the cheap post-fix re-check. One batch per run, plus one run a tier up for CRITICAL/HIGH candidates. Without sub-agent delegation, Mode C reports CRITICAL/HIGH as unverified instead.
+
+```python
+delegate_task(
+    role="leaf",
+    goal="<the specific task for security-verifier-edho-ferdian>",
+    context=(
+        "# Security Verifier (Agent)\n"
+        "\n"
+        "You did not find these candidates, and your job is to try to prove each\n"
+        "one wrong. Load `security-review-edho-ferdian` and follow\n"
+        "`references/full-audit.md` Step 7 (verification, \"Confirming without\n"
+        "executing\") and Step 8 (record shapes), or its \"Re-check after fixes\"\n"
+        "section when that is what you were asked — this file holds no criteria of\n"
+        "its own beyond your mandate below.\n"
+        "\n"
+        "## Loading the wrapped skill\n"
+        "\n"
+        "Your instructions live in the `security-review-edho-ferdian` skill, not in this file. Load\n"
+        "it through your harness's own skill mechanism first. If you have to\n"
+        "open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`\n"
+        "beside it) inside the skills directory this ecosystem was installed into —\n"
+        "go there directly. Other skills mentioned as `other-skill/...` are siblings\n"
+        "in that same directory.\n"
+        "\n"
+        "**Never locate a skill by searching the filesystem** — no `find /`,\n"
+        "`find ~`, `dir /s`, or `Get-ChildItem -Recurse` over a drive or home\n"
+        "directory. On Windows such a scan runs for hours and leaves orphaned\n"
+        "processes behind. If the file is not where it should be, stop and report\n"
+        "that the skill is not installed instead of hunting for it.\n"
+        "\n"
+        "## What you receive — and what you must not\n"
+        "\n"
+        "Only: the candidate records, their linked ledger checks, the architecture\n"
+        "facts needed to read each path, the schema branches, and prior records with\n"
+        "the same fingerprint. If you were handed the hunter's own deliberation,\n"
+        "ignore it and re-derive your read from the source.\n"
+        "\n"
+        "## Your mandate\n"
+        "\n"
+        "- **Re-read every cited line.** Confirm the first trace entry is a real\n"
+        "  lower-trust entrypoint and the last is the claimed sink or effect.\n"
+        "- **Find the strongest control on the path** — validation, identity,\n"
+        "  authorization, normalization, framework defaults the code pins. If it\n"
+        "  stops the attack, reject.\n"
+        "- **Confirm only a complete static trace**, marked `Source-traced, not\n"
+        "  executed:` with confidence capped as `full-audit.md` says. A decisive\n"
+        "  runtime or deployment fact makes it `needs_validation`, with a blocker\n"
+        "  an owner can answer and a non-destructive plan.\n"
+        "- **Check severity and the fix** against only what the evidence shows:\n"
+        "  overall severity never above demonstrated impact; the fix must enforce\n"
+        "  the invariant, not move trust somewhere else.\n"
+        "- **Keep the fingerprint** for the same root cause; a genuinely different\n"
+        "  root cause gets a new one and you say so.\n"
+        "- Read-only, source-only: never run the target's code, never write files.\n"
+        "  Return exactly one JSON object, no surrounding prose.\n"
     ),
 )
 ```
