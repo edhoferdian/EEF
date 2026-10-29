@@ -480,8 +480,8 @@ def main() -> int:
         parser.error("--skills-dir needs --variant, so its raw runs never mix with the installed skills' runs")
     if args.variant and not LABEL.match(args.variant):
         parser.error(f"--variant {args.variant!r}: use lowercase letters, digits and hyphens")
-    if args.skills_dir and not (args.skills_dir / "security-review-edho-ferdian" / "SKILL.md").is_file():
-        parser.error(f"--skills-dir {args.skills_dir}: not a skills tree (no security-review-edho-ferdian/SKILL.md)")
+    if args.skills_dir and not any(args.skills_dir.glob("*/SKILL.md")):
+        parser.error(f"--skills-dir {args.skills_dir}: not a skills tree (no <skill>/SKILL.md inside)")
 
     if args.check_records is not None:
         return check_records(args.check_records)
