@@ -1,0 +1,91 @@
+{
+  "record_version": 1,
+  "label": "first-run",
+  "created_utc": "2026-10-29T13:25:13Z",
+  "git_sha": "ff200941235ce7f31c56ad9046233394638a3821",
+  "git_dirty": true,
+  "claude_version": "2.1.311 (Claude Code)",
+  "config": {
+    "model": "sonnet",
+    "effort": "medium",
+    "budget_usd": 15.0
+  },
+  "session": {
+    "returncode": 0,
+    "is_error": false,
+    "terminal_reason": "completed",
+    "num_turns": 8,
+    "wall_s": 489.2,
+    "cost_usd": 1.7941883999999995,
+    "agents_spawned": 2,
+    "agents_by_type": {
+      "security-verifier-edho-ferdian": 2
+    },
+    "model_usage": {
+      "claude-sonnet-5-5": {
+        "inputTokens": 54,
+        "outputTokens": 50468,
+        "cacheReadInputTokens": 1705046,
+        "cacheCreationInputTokens": 159834,
+        "webSearchRequests": 0,
+        "costUSD": 1.2410956,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 13087,
+        "cacheCreationEphemeral5mInputTokens": 49022,
+        "cacheCreationEphemeral1hInputTokens": 110812,
+        "canonicalModel": "claude-sonnet-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      },
+      "claude-opus-5-5": {
+        "inputTokens": 12,
+        "outputTokens": 12885,
+        "cacheReadInputTokens": 188524,
+        "cacheCreationInputTokens": 51528,
+        "webSearchRequests": 0,
+        "costUSD": 0.5530927999999999,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 7472,
+        "cacheCreationEphemeral5mInputTokens": 51528,
+        "cacheCreationEphemeral1hInputTokens": 0,
+        "canonicalModel": "claude-opus-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    }
+  },
+  "run_dir": "run-001",
+  "agents_planned": {
+    "planned": 2,
+    "ceiling": 5,
+    "spent": 2,
+    "reason": "Small repo hunted inline by the parent; 1 standard verifier plus 1 escalated verifier for proposed CRITICAL candidates."
+  },
+  "run_status": "complete",
+  "validators": {
+    "findings": true,
+    "ledger": true
+  },
+  "verdicts": {
+    "confirmed": 8,
+    "needs_validation": 1,
+    "rejected": 0
+  },
+  "recall": {
+    "bug_cases": 8,
+    "caught": [
+      "01-link_preview.py",
+      "02-session_cache.py",
+      "03-profile-update.js",
+      "04-login-redirect.ts",
+      "05-webhook_auth.py",
+      "06-thumbnail_job.py",
+      "07-merge-settings.js",
+      "08-api_keys.py"
+    ],
+    "missed": [],
+    "confirmed_on_controls": []
+  }
+}
