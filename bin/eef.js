@@ -133,7 +133,7 @@ const TARGETS = {
       const destRoot = opts.global
         ? path.join(os.homedir(), ".hermes", "skills")
         : path.join(process.cwd(), ".hermes", "skills");
-      copyDirInto(path.join(PKG_ROOT, ".hermes", "skills"), destRoot);
+      copySkillsInto(path.join(PKG_ROOT, ".hermes", "skills"), destRoot);
     },
   },
 
@@ -144,7 +144,7 @@ const TARGETS = {
       const destRoot = opts.global
         ? path.join(os.homedir(), ".agents", "skills")
         : path.join(process.cwd(), ".agents", "skills");
-      copyDirInto(path.join(PKG_ROOT, ".agents", "skills"), destRoot);
+      copySkillsInto(path.join(PKG_ROOT, ".agents", "skills"), destRoot);
     },
   },
 
@@ -155,7 +155,7 @@ const TARGETS = {
       const destRoot = opts.global
         ? path.join(os.homedir(), ".kiro", "skills")
         : path.join(process.cwd(), ".kiro", "skills");
-      copyDirInto(path.join(PKG_ROOT, ".kiro", "skills"), destRoot);
+      copySkillsInto(path.join(PKG_ROOT, ".kiro", "skills"), destRoot);
     },
   },
 
@@ -166,7 +166,7 @@ const TARGETS = {
       const destRoot = opts.global
         ? path.join(os.homedir(), ".zcode", "skills")
         : path.join(process.cwd(), ".zcode", "skills");
-      copyDirInto(path.join(PKG_ROOT, ".zcode", "skills"), destRoot);
+      copySkillsInto(path.join(PKG_ROOT, ".zcode", "skills"), destRoot);
     },
   },
 
@@ -289,6 +289,27 @@ function copyDirInto(src, dest) {
   fs.cpSync(src, dest, { recursive: true });
   const count = fs.readdirSync(dest).length;
   console.log(`Installed: ${dest} (${count} file(s))`);
+}
+
+/**
+ * Install each shipped skill folder by replacing it whole, so a reference or
+ * script removed upstream does not linger from an earlier install. Only the
+ * folders EEF ships are touched; other skills in destRoot stay as they are.
+ */
+function copySkillsInto(src, destRoot) {
+  if (!fs.existsSync(src)) {
+    console.error(`Error: ${src} not found in this package — reinstall eef-install.`);
+    process.exitCode = 1;
+    return;
+  }
+  fs.mkdirSync(destRoot, { recursive: true });
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  for (const entry of entries) {
+    const dest = path.join(destRoot, entry.name);
+    if (entry.isDirectory()) fs.rmSync(dest, { recursive: true, force: true });
+    fs.cpSync(path.join(src, entry.name), dest, { recursive: true });
+  }
+  console.log(`Installed: ${destRoot} (${entries.length} item(s))`);
 }
 
 function copyFileInto(src, dest) {
@@ -720,6 +741,27 @@ function compareFiles(shippedPaths, destDir, compare) {
   return result;
 }
 
+/**
+ * Does every file a skill ships exist under the installed copy with the same
+ * text? A change to references/ or scripts/ alone must count, not only a
+ * changed SKILL.md. Extra installed files are ignored: they may be local
+ * additions, and `update` replaces the whole folder anyway.
+ */
+function sameSkillTree(srcDir, destDir) {
+  for (const entry of fs.readdirSync(srcDir, { withFileTypes: true })) {
+    const src = path.join(srcDir, entry.name);
+    const dest = path.join(destDir, entry.name);
+    if (entry.isDirectory()) {
+      if (!fs.existsSync(dest) || !sameSkillTree(src, dest)) return false;
+    } else if (!fs.existsSync(dest) || normalizeEol(fs.readFileSync(src, "utf8")) !== normalizeEol(fs.readFileSync(dest, "utf8"))) {
+      return false;
+    }
+  }
+  return true;
+}
+
+const shippedSkills = () => listSkillNames().map((n) => [n, path.join(SKILLS_DIR, n)]);
+
 // The salak release skills/dev-kickoff-edho-ferdian/references/salak-integration.md
 // was last verified against; older builds lack `salak query` and `salak init`.
 const SALAK_VERIFIED = [0, 3];
@@ -749,20 +791,16 @@ function doctor() {
   const shortList = (names) => (names.length > 5 ? `${names.slice(0, 5).join(", ")}, … (+${names.length - 5})` : names.join(", "));
   say(`eef-install doctor — package version ${PKG_VERSION}\n`);
 
-  // Skills: compare each SKILL.md (the rest of a skill's folder moves with it).
+  // Skills: compare every file each skill ships, not only its SKILL.md.
   const skillsDir = claudeSkillsDir();
-  const skills = compareFiles(
-    listSkillNames().map((n) => [path.join(n, "SKILL.md"), path.join(SKILLS_DIR, n, "SKILL.md")]),
-    skillsDir
-  );
-  const skillName = (p) => p.split(path.sep)[0];
+  const skills = compareFiles(shippedSkills(), skillsDir, sameSkillTree);
   say(`Skills (--target claude) — ${skillsDir}`);
   if (!skills.present.length) {
     say("  not installed");
   } else {
     say(`  ${skills.present.length}/${listSkillNames().length} installed, ${skills.same.length} match this version`);
-    if (skills.differs.length) say(`  differ (older EEF version, or edited locally): ${shortList(skills.differs.map(skillName))}`);
-    if (skills.missing.length) say(`  missing: ${shortList(skills.missing.map(skillName))}`);
+    if (skills.differs.length) say(`  differ (older EEF version, or edited locally): ${shortList(skills.differs)}`);
+    if (skills.missing.length) say(`  missing: ${shortList(skills.missing)}`);
   }
 
   // Agents: compare without model/effort (those are the profile's), then infer the profile.
@@ -872,11 +910,8 @@ function update(opts) {
 
   // Skills: whole folders, since a skill's references/ move with its SKILL.md.
   const skillsDir = claudeSkillsDir();
-  const skills = compareFiles(
-    listSkillNames().map((n) => [path.join(n, "SKILL.md"), path.join(SKILLS_DIR, n, "SKILL.md")]),
-    skillsDir
-  );
-  const skillNames = skills.present.length ? [...skills.differs, ...skills.missing].map((p) => p.split(path.sep)[0]) : [];
+  const skills = compareFiles(shippedSkills(), skillsDir, sameSkillTree);
+  const skillNames = skills.present.length ? [...skills.differs, ...skills.missing] : [];
   for (const name of skillNames) {
     console.log(`${act} skill: ${name}`);
     if (!dry) {

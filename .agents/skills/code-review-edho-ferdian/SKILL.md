@@ -7,7 +7,7 @@ description: >-
   this", "cek kode", "cek dulu sebelum merge", "ada yang salah gak", "review
   PR", "find bugs". Security-only asks go to security-review.
 metadata:
-  last_reviewed: "2026-10-08"
+  last_reviewed: "2026-10-29"
 ---
 
 # Code Review — Edho Ferdian Mode (Skill Edition)

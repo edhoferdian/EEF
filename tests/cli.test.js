@@ -83,6 +83,37 @@ test("doctor is clean after an install and fails once a registered hook file is 
   assert.notStrictEqual(eef(env, "doctor").status, 0);
 });
 
+test("doctor and update catch a skill whose only change is in references/", () => {
+  const { env } = sandbox();
+  assert.strictEqual(eef(env, "code-review-edho-ferdian").status, 0);
+  const ref = path.join(env.CLAUDE_SKILLS_DIR, "code-review-edho-ferdian", "references", "review-checklist.md");
+  const shipped = fs.readFileSync(ref, "utf8");
+  fs.writeFileSync(ref, shipped.replace("Domain 2", "Domain II"));
+
+  assert.match(eef(env, "doctor").stdout, /differ \(older EEF version, or edited locally\): code-review-edho-ferdian/);
+  assert.match(eef(env, "update", "--dry-run").stdout, /Would update skill: code-review-edho-ferdian/);
+  assert.strictEqual(eef(env, "update").status, 0);
+  assert.strictEqual(fs.readFileSync(ref, "utf8"), shipped);
+  assert.match(eef(env, "update").stdout, /Everything installed already matches this version\./);
+});
+
+test("a skill-tree target reinstall drops files removed upstream and keeps other skills", () => {
+  const { dir } = sandbox();
+  const skills = path.join(dir, ".kiro", "skills");
+  const stale = path.join(skills, "code-review-edho-ferdian", "references", "removed-upstream.md");
+  const own = path.join(skills, "my-own-skill", "SKILL.md");
+  fs.mkdirSync(path.dirname(stale), { recursive: true });
+  fs.mkdirSync(path.dirname(own), { recursive: true });
+  fs.writeFileSync(stale, "old");
+  fs.writeFileSync(own, "mine");
+
+  const out = spawnSync("node", [CLI, "--target", "kiro"], { cwd: dir, encoding: "utf8" });
+  assert.strictEqual(out.status, 0, out.stdout + out.stderr);
+  assert.ok(!fs.existsSync(stale), "stale reference should be gone");
+  assert.ok(fs.existsSync(path.join(skills, "code-review-edho-ferdian", "SKILL.md")));
+  assert.strictEqual(fs.readFileSync(own, "utf8"), "mine");
+});
+
 test("stats leaves SubagentStop-era records out and counts PostToolUse runs", () => {
   const { dir, env } = sandbox();
   const log = path.join(dir, "runs.jsonl");

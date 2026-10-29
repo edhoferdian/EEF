@@ -224,3 +224,25 @@ unnecessary whatever the description says. The in-repo variant fires
 description changes on two fixtures, the inline case looks like a
 limit of description-based triggering, not a wording problem. It stays
 as a known miss.
+
+## Run 8 (2026-10-29) — skills touched by v1.23.0 and the audit fixes, $1.85
+
+`claude plugin eval . --case <name> --runs 2 --ablation none --model sonnet
+--scaffold`, Claude Code 2.1.311, one invocation per case. It checks the
+skills whose descriptions or boundaries changed in v1.23.0
+(security-review's Mode C, deployment-ops' security lens, skill-audit,
+opensource-release) and adds one case.
+
+| Case | Expected skill (near-miss that must not fire) | Fired |
+|---|---|---|
+| **full-audit-in-repo** (new) | security-review (not opensource-release) | 2/2, near-miss held |
+| open-source-in-repo | opensource-release (not security-review — grader added) | 2/2, near-miss held |
+| security-only | security-review (not code-review) | 2/2, near-miss held |
+| review-before-merge | code-review (not language-code-review) | 2/2, near-miss held |
+| deploy-with-rollback | deployment-ops (not container-ops) | 2/2, near-miss held |
+| audit-my-skills | skill-audit (not config-hygiene) | 2/2, near-miss held |
+
+All 12 runs fired the right skill. Both `audit-my-skills` runs then hit the
+case's 6-turn cap while doing the audit itself; the trigger had already
+been recorded, so the score is unaffected. The "audit sebelum production"
+vs "audit sebelum rilis publik" pair now resolves in both directions.

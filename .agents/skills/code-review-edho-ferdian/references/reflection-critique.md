@@ -64,6 +64,9 @@ For **each finding**, pass it through these gates in order:
    variable) and the specific token/pattern that proves the issue? If I'm
    pattern-matching to "code that looks like X usually has problem Y" without a
    concrete locus → **drop it**, or demote to ⚪ Info phrased as a question.
+   A security lead whose source trail is concrete but whose decisive fact
+   lives outside the repo (proxy, platform config, IdP policy) is neither:
+   it goes to the Needs-validation list (`security-review-edho-ferdian`).
 
 2. **False-positive gate.** Could this be correct or intentional in context I
    can't see? Examples: a "hardcoded value" that is a legitimate documented

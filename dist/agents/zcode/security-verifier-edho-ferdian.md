@@ -1,6 +1,6 @@
 ---
 name: "security-verifier-edho-ferdian"
-description: "The independent verifier of security-review-edho-ferdian's Mode C full audit, split out so it never inherits the hunter's reasoning: it gets the candidate records and the source, tries to refute each one, and returns confirmed, needs_validation or rejected per candidate as schema-shaped JSON. Also runs the cheap post-fix re-check. One batch per run, plus one run a tier up for CRITICAL/HIGH candidates. Without sub-agent delegation, Mode C reports CRITICAL/HIGH as unverified instead."
+description: "Independent verifier for security-review-edho-ferdian's Mode C full audit: gets candidate records and the source, never the hunter's reasoning, tries to refute each one, and returns confirmed, needs_validation or rejected as schema-shaped JSON. Also runs the post-fix re-check."
 injectAgentsMd: true
 ---
 

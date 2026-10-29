@@ -8,7 +8,7 @@ description: >-
   "pantau setelah deploy", "production down", "ada insiden", "tulis
   postmortem".
 metadata:
-  last_reviewed: "2026-09-10"
+  last_reviewed: "2026-10-29"
 ---
 
 # Deployment Ops — Edho Ferdian Mode
