@@ -2,6 +2,22 @@
 
 Generated from conventional commits by `scripts/generate_changelog.py` — do not edit by hand.
 
+## [v1.23.0](https://github.com/edhoferdian/EEF/releases/tag/v1.23.0) — 2026-10-29
+
+### Features
+
+- **security-review:** boundary-and-result gate and a Needs-validation verdict (#12) ([cf182a7](https://github.com/edhoferdian/EEF/commit/cf182a7))
+- **security-review:** Mode C, a lean full-repo audit before production (#13) ([d784916](https://github.com/edhoferdian/EEF/commit/d784916))
+- **security-review:** eight boundary references from Cloudflare's domain companions (#14) ([88f411f](https://github.com/edhoferdian/EEF/commit/88f411f))
+
+### Documentation
+
+- regenerate CHANGELOG.md for v1.22.1 ([9fdec29](https://github.com/edhoferdian/EEF/commit/9fdec29))
+
+### Maintenance
+
+- bump version to 1.23.0 (security-review: boundary gate, Needs-validation verdict, Mode C full audit, eight boundary references) ([0f22898](https://github.com/edhoferdian/EEF/commit/0f22898))
+
 ## [v1.22.1](https://github.com/edhoferdian/EEF/releases/tag/v1.22.1) — 2026-10-28
 
 ### Fixes
