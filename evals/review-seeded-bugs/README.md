@@ -68,6 +68,19 @@ python run.py --label full-run                                  # everything not
 python run.py --score-only --label rescore                      # rescore saved runs
 ```
 
+By default a run reviews with the skills installed in `~/.claude/skills`.
+To measure a change before it is installed, export each version's
+`skills/` tree and pass it with `--skills-dir <tree> --variant <name>`: the
+tree is copied into the run's temp directory as project skills, Claude Code
+loads only project settings (`--setting-sources project`, so the installed
+skills stay out), and raw output lands under `raw/<variant>/` so the two
+versions never mix:
+
+```bash
+python run.py --corpus security --configs sonnet-high --skills-dir /tmp/before/skills --variant before --label pr-before
+python run.py --corpus security --configs sonnet-high --skills-dir /tmp/after/skills --variant after --label pr-after
+```
+
 Raw output is saved per run under `results/raw/` (git-ignored) and reused,
 so an interrupted run resumes. Every scoring pass, including `--score-only`,
 writes a new record, `results/runs/<UTC time>-<label>.json`, with the
