@@ -61,9 +61,16 @@ function runFallback(kind, validatorPath, file) {
     console.error(`Failed to read ${kind} JSON: ${printable(error.message)}`);
     return 1;
   }
-  const errors = kind === "findings"
-    ? validator.validateDocument(document, JSON.parse(fs.readFileSync(path.join(__dirname, "report-schema.json"), "utf8")))
-    : validator.validateDocument(document);
+  let errors;
+  try {
+    errors = kind === "findings"
+      ? validator.validateDocument(document, JSON.parse(fs.readFileSync(path.join(__dirname, "report-schema.json"), "utf8")))
+      : validator.validateDocument(document);
+  } catch {
+    // Same as the upstream CLI: report, never dump a stack trace.
+    console.error(`Failed to validate ${kind} JSON: unexpected validation error`);
+    return 1;
+  }
   for (const message of errors) console.error("ERROR:", printable(message));
   if (errors.length > 0) {
     console.error(`FAIL: ${errors.length} validation error(s)`);
