@@ -36,7 +36,7 @@ command injection, prototype pollution, SHA-1 password hashing), plus 2
 controls that do the risky thing safely (an allow-listed fetch with a
 private-address check, a `subprocess` call with an argument list). Each
 case has `keywords`, so a finding must name the vulnerability class, not
-just sit near the line. Not yet run.
+just sit near the line. First run: `RESULTS-security.md`.
 
 ## Method
 

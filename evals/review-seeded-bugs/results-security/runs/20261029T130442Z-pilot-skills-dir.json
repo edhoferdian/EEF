@@ -1,0 +1,84 @@
+{
+  "record_version": 1,
+  "corpus": "security",
+  "label": "pilot-skills-dir",
+  "variant": "before",
+  "created_utc": "2026-10-29T13:04:42Z",
+  "git_sha": "9fdec2991d1b3eb44342963020b53ef052275ca7",
+  "git_dirty": true,
+  "claude_version": "2.1.311 (Claude Code)",
+  "tolerance": 2,
+  "configs": {
+    "sonnet-high": {
+      "model": "sonnet",
+      "effort": "high"
+    }
+  },
+  "cases": [
+    "05-webhook_auth.py"
+  ],
+  "scores": {
+    "opus-high": {
+      "runs": 0,
+      "invalid_runs": 0,
+      "bug_cases": 0,
+      "caught": 0,
+      "caught_high": 0,
+      "control_cases": 0,
+      "control_strong_fp": 0,
+      "control_medium": 0,
+      "cost_usd": 0.0,
+      "cost_per_case_usd": null,
+      "wall_s": 0.0,
+      "missed": [],
+      "rows": []
+    },
+    "sonnet-high": {
+      "runs": 1,
+      "invalid_runs": 0,
+      "bug_cases": 1,
+      "caught": 1,
+      "caught_high": 1,
+      "control_cases": 0,
+      "control_strong_fp": 0,
+      "control_medium": 0,
+      "cost_usd": 0.2236,
+      "cost_per_case_usd": 0.2236,
+      "wall_s": 180.0,
+      "missed": [],
+      "rows": [
+        {
+          "case": "05-webhook_auth.py",
+          "bug": true,
+          "valid": true,
+          "cost_usd": 0.22361419999999999,
+          "findings": 6,
+          "caught": true,
+          "caught_high": true,
+          "near_no_keyword": [
+            "The HMAC covers only `body`, with no timestamp or tolerance window and no event-ID dedup in this file. A captured valid webhook can be replayed indefinitely and will always verify. Sign and check a ti",
+            "A failed verification returns a bare False with no logging or signal. Repeated failures indicate probing or a misconfigured or rotated secret. The caller should log failures with a request id and sour",
+            "Only the verifier is in the PR, so I could not check that the route enforces it fail-closed (401/403 on False) before acting, that it receives the raw request bytes rather than re-serialized JSON, or "
+          ],
+          "strong_findings": 1,
+          "medium_findings": 1
+        }
+      ]
+    },
+    "sonnet-medium": {
+      "runs": 0,
+      "invalid_runs": 0,
+      "bug_cases": 0,
+      "caught": 0,
+      "caught_high": 0,
+      "control_cases": 0,
+      "control_strong_fp": 0,
+      "control_medium": 0,
+      "cost_usd": 0.0,
+      "cost_per_case_usd": null,
+      "wall_s": 0.0,
+      "missed": [],
+      "rows": []
+    }
+  }
+}
