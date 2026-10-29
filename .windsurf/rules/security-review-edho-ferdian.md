@@ -111,7 +111,8 @@ Domain 2 delegates to this skill's full checklist instead. In this mode:
 **Mode C — Full audit before production.** Triggered by an explicit
 whole-repository ask ("audit menyeluruh", "full security audit", "audit
 sebelum production", "pen-test this codebase") or by
-`deployment-ops-edho-ferdian`'s production-readiness security lens. Follow
+`deployment-ops-edho-ferdian`'s production-readiness security lens (making
+a repo public is `opensource-release-edho-ferdian` instead). Follow
 `references/full-audit.md` instead of the Phase 0–4 pipeline below: a
 storage guard on `project-memory/audit/`, inline reconnaissance, a coverage
 ledger, the fewest agents that cover it (ceiling 5, stated with a reason
@@ -188,6 +189,5 @@ Phase 4  Report                             (Mode A only — Mode B reports via 
 
 Run the general checklist (`references/general-checklist.md`, SEC-01..13)
 against the full scope always. Layer on `references/language-specific.md`
-for the detected stack(s), and `references/domain-specific.md` for any active
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/security-review-edho-ferdian/SKILL.md` for complete instructions.

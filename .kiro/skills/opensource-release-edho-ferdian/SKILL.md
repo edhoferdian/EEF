@@ -7,7 +7,7 @@ description: >-
   "siapkan repo ini buat publik", "audit sebelum rilis publik", "cek apakah
   aman di-publish".
 metadata:
-  last_reviewed: "2026-09-10"
+  last_reviewed: "2026-10-29"
 ---
 
 # Open-Source Release — Edho Ferdian Mode
@@ -17,6 +17,13 @@ independent adversarial sanitization audit, then packaging. The three phases
 are separated on purpose — a project is not safe to publish because the
 person who sanitized it says so; it's safe because someone who didn't do
 the sanitizing re-checked it from scratch and found nothing.
+
+**Boundary with `security-review-edho-ferdian`.** This skill asks "can this
+repository be made public without leaking secrets, private context or
+internal names?" It does not hunt exploitable vulnerabilities in the code.
+"Audit sebelum production" or "is this safe to deploy" is that skill's
+Mode C full audit. A project going public *and* to production needs both:
+run Mode C on the source, then this pipeline on the fork.
 
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 

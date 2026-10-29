@@ -9,8 +9,11 @@ at the end. The vendored validators and schema live in `../scripts/`.
 **Use it for:** "audit menyeluruh", "full security audit", "audit sebelum
 production", "pen-test this codebase", or the security lens of
 `deployment-ops-edho-ferdian`'s production-readiness verdict. **Not for** a
-diff or a few files — that is Mode A (or Mode B inside a code review). If
-the ask could mean either, ask one question before writing anything.
+diff or a few files — that is Mode A (or Mode B inside a code review). Not
+for preparing a repo to go public (secret extraction, sanitization, licence
+files) — that is `opensource-release-edho-ferdian`, even when the user
+says "audit sebelum rilis publik". If the ask could mean either, ask one
+question before writing anything.
 
 Mode C reads source and runs the Phase 2 scanners. It **never executes the
 target's own code** (builds, tests, servers, fixtures): there is no

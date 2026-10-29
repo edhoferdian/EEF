@@ -6,7 +6,7 @@ description: >-
   config-hygiene). Use for "audit skill saya", "cek skill yang sudah
   dibuat", "ada yang redundan gak", "skill mana yang basi".
 metadata:
-  last_reviewed: "2026-09-12"
+  last_reviewed: "2026-10-29"
 ---
 
 # Skill Audit — Edho Ferdian Mode
@@ -18,7 +18,7 @@ periodic checks across the whole `skills/` tree.
 ## Scope reframe — read this first, it is the most important thing here
 
 **This skill audits this repo's own `skills/` directory (`ekosistem-edho-ferdian/skills/*`,
-24+ skills as of this porting effort and counting) — and nothing else.**
+every skill folder there, however many there are now) — and nothing else.**
 
 It does **not** audit:
 

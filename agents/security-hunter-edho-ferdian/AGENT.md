@@ -1,13 +1,10 @@
 ---
 name: security-hunter-edho-ferdian
 description: >-
-  One hunter for security-review-edho-ferdian's Mode C full audit: it
-  hunts only the coverage-ledger units assigned to it (one high-risk
-  subsystem group) and returns one structured JSON result — covered,
-  candidate or blocked per unit — never a verdict on its own candidates.
-  Delegate only when Mode C's agent plan calls for hunters; a small repo
-  is hunted inline instead. On a harness without sub-agent delegation, the
-  parent hunts each unit inline per full-audit.md.
+  Hunts only its assigned Mode C coverage-ledger units (one high-risk
+  subsystem group of security-review-edho-ferdian's full audit) and returns
+  one JSON result per unit; never judges its own candidates. Delegate only
+  when Mode C's agent plan calls for hunters.
 tools: Read, Grep, Glob, Bash
 skills: security-review-edho-ferdian
 tier: standard

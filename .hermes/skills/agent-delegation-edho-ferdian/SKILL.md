@@ -1956,7 +1956,7 @@ delegate_task(
 
 ## security-hunter-edho-ferdian
 
-**When to delegate here:** One hunter for security-review-edho-ferdian's Mode C full audit: it hunts only the coverage-ledger units assigned to it (one high-risk subsystem group) and returns one structured JSON result — covered, candidate or blocked per unit — never a verdict on its own candidates. Delegate only when Mode C's agent plan calls for hunters; a small repo is hunted inline instead. On a harness without sub-agent delegation, the parent hunts each unit inline per full-audit.md.
+**When to delegate here:** Hunts only its assigned Mode C coverage-ledger units (one high-risk subsystem group of security-review-edho-ferdian's full audit) and returns one JSON result per unit; never judges its own candidates. Delegate only when Mode C's agent plan calls for hunters.
 
 ```python
 delegate_task(
@@ -2066,7 +2066,7 @@ delegate_task(
 
 ## security-verifier-edho-ferdian
 
-**When to delegate here:** The independent verifier of security-review-edho-ferdian's Mode C full audit, split out so it never inherits the hunter's reasoning: it gets the candidate records and the source, tries to refute each one, and returns confirmed, needs_validation or rejected per candidate as schema-shaped JSON. Also runs the cheap post-fix re-check. One batch per run, plus one run a tier up for CRITICAL/HIGH candidates. Without sub-agent delegation, Mode C reports CRITICAL/HIGH as unverified instead.
+**When to delegate here:** Independent verifier for security-review-edho-ferdian's Mode C full audit: gets candidate records and the source, never the hunter's reasoning, tries to refute each one, and returns confirmed, needs_validation or rejected as schema-shaped JSON. Also runs the post-fix re-check.
 
 ```python
 delegate_task(
