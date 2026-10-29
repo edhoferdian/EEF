@@ -2,6 +2,20 @@
 
 Generated from conventional commits by `scripts/generate_changelog.py` — do not edit by hand.
 
+## [v1.23.1](https://github.com/edhoferdian/EEF/releases/tag/v1.23.1) — 2026-10-30
+
+### Fixes
+
+- catch reference-only skill changes in update/doctor, and tidy what the audit found (#17) ([7264fec](https://github.com/edhoferdian/EEF/commit/7264fec))
+
+### Documentation
+
+- regenerate CHANGELOG.md for v1.23.0 ([ed5fa38](https://github.com/edhoferdian/EEF/commit/ed5fa38))
+
+### Maintenance
+
+- bump version to 1.23.1 (eef-install update/doctor catch reference-only changes, skill-tree installs drop stale files) ([ee50a3e](https://github.com/edhoferdian/EEF/commit/ee50a3e))
+
 ## [v1.23.0](https://github.com/edhoferdian/EEF/releases/tag/v1.23.0) — 2026-10-29
 
 ### Features
