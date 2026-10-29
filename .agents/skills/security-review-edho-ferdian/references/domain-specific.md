@@ -229,6 +229,94 @@ apply; these are about the *action* side.
   *attempted*. Log every decision and every rejected attempt, not just the
   sends. Cross-reference general **SEC-13** and **AGENT-SEC-02** above.
 
+### Context, tools, MCP and output — AGT-05..12
+
+Added 2026-10-29 from the AI/LLM companion of
+[cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill)
+(MIT, `c1c8a8c`), in this file's own wording; AGT-01..04 above already
+covered prompt-only limits, missing dry-runs and circuit breakers.
+
+**Discipline for every AGT item.** Prompt injection alone is not a finding.
+Name the code-level failure: content reaches another principal's context,
+invokes authority the requester lacks, discloses data they cannot read, or
+drives a sink they cannot reach directly. Model output, memory, tool
+descriptions and MCP responses are untrusted input; a guardrail prompt is
+not a boundary. A user directly asking the model to use authority they
+already have is not a delegation defect.
+
+- **AGT-05 Context bleed across sessions or tenants** — conversation
+  history, embeddings, retrieval results or prompt caches keyed too
+  broadly. The tenant/ACL filter must sit in the query and in every cache
+  key; a tenant field on the object is not enforcement if a batch path, an
+  alternate query or a shared cache omits it. Applies **SEC-05** to model
+  context.
+- **AGT-06 Persistent memory poisoning** — attacker content or a model
+  summary written into memory that later shapes another user's task or a
+  privileged session. Check who can create, update, merge and delete
+  memory, its provenance and tenant scope, and whether low-trust
+  observations become durable instructions. Cite both the attacker's write
+  and the later cross-principal read; memory a user saved for their own
+  requests is not a finding.
+- **AGT-07 Role and provenance confusion** — prompt assembly that lets
+  untrusted text pose as a system message, earlier turn, tool result or
+  memory record (string concatenation, untyped history, caller-set role
+  fields, serialization that drops source labels). A finding only when the
+  forged provenance changes a deterministic decision or reaches a
+  capability.
+- **AGT-08 Tool arguments into a sink** — model-produced arguments reaching
+  SQL, shell, file, URL fetch or privileged APIs without handler-side
+  validation. A tool schema is input parsing: structured output narrows
+  shape, it does not authorize or make paths, URLs or queries safe. Then
+  apply **SEC-04 / SEC-01 / SEC-17** at the sink.
+- **AGT-09 Confused deputy** — the agent acts with a service identity while
+  the tool handler never re-checks the requesting user's permission on the
+  named resource. Prove the handler lacks requester-and-resource
+  authorization *and* that the attacker could not do the same thing through
+  the normal product. A shared credential with enforced per-user query
+  scope is fine.
+- **AGT-10 Approval not bound to the action** — the user approves one
+  described action but execution can use changed arguments, another
+  resource or principal, or a later turn; or attacker content triggers a
+  side effect under a victim's valid authority the victim never asked for.
+  Approval must bind the normalized tool name, full argument object,
+  requester, target, amount, expiry and batch membership, and must not
+  cover a retried, resumed or duplicated call. (AGT-03 asks whether a
+  confirmation exists; this asks whether it binds.)
+- **AGT-11 Schema and dispatcher disagree** — the schema accepts aliases,
+  extra or duplicate keys, coercions, nested free-form objects or
+  out-of-range values that the handler reads differently. Validate again
+  where a value becomes a resource selector or a security option.
+- **AGT-12 MCP and sub-agent trust** — a delegated task or MCP call gets the
+  whole session, credentials or memory instead of least authority;
+  delegated results are trusted on return; calls or results are routed by
+  attacker-influenced server names, tool names, request IDs or resource
+  URIs instead of the authenticated connection and outstanding request (two
+  servers claiming one tool, a reconnect changing the binding); or MCP-peer
+  descriptions, metadata and schemas are treated as policy. Metadata may
+  guide the model; only a deterministic allowlist, server identity check
+  and handler authorization grant capability. Cross-reference
+  **AGENT-SEC** for the harness-config side.
+
+**Output side.** Model output reaching an HTML, Markdown, template, URL or
+command sink without that sink's encoding is ordinary injection (**SEC-04**,
+and `client-side.md` for browser rendering — renderer behaviour outside the
+repo makes it Needs validation). Context that holds credentials, another
+user's data or access-granting policy values, exposed through
+user-influenced output, is **SEC-06**; leaking generic instructions that
+cross no data boundary is not a finding.
+
+**How to hunt it.** Draw four maps first — execution identities,
+capabilities, every writable context or memory source, every output
+destination — then connect the principal at the start to the authority at
+the end. Start from side-effecting tools and work back through dispatcher,
+schema, confirmation, context, retrieval and ingestion; start from memory
+reads and trace every writer. Compare direct, queued, retry, resume, batch
+and delegated paths to the same action: the strongest gate must run after
+arguments are final and before every side effect. A bounded request that
+can enqueue unbounded spend, sends or mutations without a per-request
+budget, per-action authorization or idempotency belongs to
+`resource-exhaustion.md`.
+
 ---
 
 ## Containers — Dockerfile / Compose hardening
@@ -289,6 +377,16 @@ common enough to need their own codes.
   references them by name explicitly. Check `.dockerignore` content against
   what the Dockerfile actually `COPY`s from the repo root; a bare `COPY . .`
   with a thin or missing `.dockerignore` is the highest-risk combination.
+- **Host or control-plane authority handed to the container** —
+  `privileged: true`, a mounted `/var/run/docker.sock` (or containerd/CRI
+  socket), host namespaces (`network_mode: host`, `pid: host`, `ipc:
+  host`), a broad `hostPath`/bind mount of `/`, `/etc` or the home
+  directory, device mounts, or an auto-mounted Kubernetes service-account
+  token the workload never uses. Each one turns a compromise of the
+  container into control of the host or cluster. Added 2026-10-29 from the
+  cloud companion of cloudflare/security-audit-skill (MIT, `c1c8a8c`).
+  🟠 HIGH on an internet-facing service; 🔴 CRITICAL for a mounted runtime
+  socket there.
 
 ### Severity guidance
 
@@ -300,7 +398,9 @@ common enough to need their own codes.
   security-sensitive production service.
 - 🟡 **MEDIUM** — missing `cap_drop: [ALL]`, missing `read_only: true`,
   missing `no-new-privileges`, or a `.dockerignore` gap not yet confirmed to
-  have leaked anything.
+  have leaked anything — when a reachable path (an RCE-class finding, an
+  upload that executes) would use the missing layer. With no such path they
+  are hardening notes, listed but not counted as findings.
 - 🔵 **LOW** — hardening opportunities on a non-production/dev-only compose
   file (e.g. `docker-compose.override.yml`), where the risk is lower by
   design.
@@ -379,8 +479,9 @@ the provider console's own effective-permissions view is verification.
   WAF/managed ruleset, no platform-level rate limiting or bot protection, and
   no TLS-strict mode, on a service that is publicly reachable. This is
   defense-in-depth, not a substitute for SEC-08 in the application — flag as
-  🟡 MEDIUM alongside the application-level finding, never as a replacement
-  for it. Include here the response-header set that belongs at the edge rather
+  🟡 MEDIUM alongside an application-level gap, never as a replacement for
+  it; when the application already enforces the control, it is a hardening
+  note (general-checklist §Severity guidance), not a finding. Include here the response-header set that belongs at the edge rather
   than in app code when a CDN/worker terminates the request:
   `X-Frame-Options`, `X-Content-Type-Options: nosniff`,
   `Referrer-Policy: strict-origin-when-cross-origin`,
@@ -398,6 +499,68 @@ the provider console's own effective-permissions view is verification.
   `terraform apply` or a compromised deploy credential then becomes
   unrecoverable data loss rather than an incident. This is the
   infrastructure-level counterpart of general **SEC-13**.
+
+**Reachability discipline (CLOUD-SEC-01..13).** Added 2026-10-29 with
+CLOUD-SEC-08..13 below, from the cloud companion of
+[cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill)
+(MIT, `c1c8a8c`). A manifest is intent, not live fact: establish which
+environment consumes it and what overlays or defaults change it, and
+render the final config per maintained environment, not just the base
+file. Broad policy is a finding when lower-trust input can reach the
+unauthorized action; otherwise it is hardening. A secret *reference* is
+not disclosure — name the lower-trust reader, log or artifact. Account
+policy, network attachment, admission and drift that only the owner can
+observe are **Needs validation**.
+
+- **CLOUD-SEC-08 Workload identity steered by input** — a workload, pod,
+  function or edge worker identity can act on tenants, accounts or
+  resources beyond its role *and* request or job input selects the target.
+  Also: role assumption, token exchange or OIDC federation whose trust
+  policy does not bind the source account, audience, repository, branch or
+  namespace (a GitHub OIDC trust on `repo:org/*` instead of one repo and
+  ref).
+- **CLOUD-SEC-09 App authorization taken from cloud metadata** — the app
+  trusts caller-supplied identity headers, tags, labels or account IDs
+  without proof they came from the control plane or a trusted proxy; or a
+  backend accepts forwarded identity / mTLS subject from peers outside the
+  intended ingress or sidecar, including through an alternate port or a
+  health/legacy path that skips the mesh. Check header stripping and
+  fail-open when the proxy is absent (overlaps **SEC-15**).
+- **CLOUD-SEC-10 Management plane reachable** — an ingress, listener,
+  port mapping, bind address or load-balancer annotation that exposes an
+  admin, debug, metrics, node or control-plane API to a lower-trust
+  network; an untrusted URL reaching instance metadata or a control-plane
+  socket with workload credentials (trace the URL handling under
+  **SEC-01**). A repo-defined public route to a sensitive handler can be
+  confirmed; a merely missing network control is Needs validation.
+- **CLOUD-SEC-11 Policy enforced on one path only** — admission, image,
+  namespace or privilege policy applied by the normal deploy but not by a
+  job, upgrade, restore or second controller; network, admission or secret
+  policy keyed on labels, annotations or namespaces a less-trusted
+  principal can set.
+- **CLOUD-SEC-12 Security control switched off by precedence** — a dev
+  value, chart default, env var, CLI flag, feature gate or regional overlay
+  that disables auth, TLS, tenant scoping or audit in a deployed
+  environment; a credential that fails to mount, refresh or revoke and
+  leaves a stale credential active or drops the app into a weaker identity
+  mode; secrets reaching logs, crash reports, process arguments, shared
+  env, broad volumes or another workload's read path.
+- **CLOUD-SEC-13 Storage, event and edge binding** — bucket policies,
+  object keys, CDN origins or signed URLs that do not bind principal,
+  operation, object prefix, audience and expiry (check list and version
+  operations, not only reads); a function trusting event-body fields as
+  source identity without the provider-signed envelope, topic, account and
+  replay check (compare push, pull, retry and dead-letter paths); an edge
+  runtime assuming a secret, isolation or tenant policy the origin does not
+  share, so fallback to origin changes authority or cache behaviour.
+
+**How to hunt it.** Build a matrix per maintained environment: external
+port, workload identity, network peers, mounted secrets, cloud resources;
+every difference needs an owner explanation. Follow one lower-trust
+request, object, label or event into cloud policy and name the credential
+that performs the final operation. Diff normal deploy against migration,
+restore, failover and local-emulator paths, and against what happens when
+the mesh, admission, identity or secret service is down.
 
 ### Severity guidance
 
