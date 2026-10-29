@@ -1,5 +1,5 @@
 ---
-description: "The single source of security review criteria: OWASP-style checklist (SEC-01..19) plus stack- and domain-specific items, standalone or as code-review's security depth. Use for \"cek keamanan kode ini\", \"security audit\", \"find vulnerabilities\", \"aman gak ini\", \"is it safe to ship security-wise\"."
+description: "The single source of security review criteria: OWASP-style checklist (SEC-01..19) plus stack- and domain-specific items, standalone, as code-review's security depth, or a lean full-repo audit before production. Use for \"cek keamanan kode ini\", \"security audit\", \"find vulnerabilities\", \"aman gak ini\", \"is it safe to ship security-wise\", \"audit menyeluruh sebelum production\"."
 globs:
 alwaysApply: false
 ---
@@ -66,8 +66,13 @@ existing 5-level scale instead of Cloudflare's lowercase JSON scale, and
 ⚪ INFO now means a confirmed minor observation — unverified suspicion is
 either `[Low confidence]` or Needs validation. The upstream skill was not
 installed as-is: its triggers overlap this skill's almost completely.
+Mode C (`references/full-audit.md`) is the lean port of its six-phase
+audit: same schema, validators and ledger contract, with inline
+reconnaissance, an agent ceiling, one batch verifier, no target-code
+execution, and output in a guarded `project-memory/audit/`. The full list
+of what was kept, changed and dropped closes that file.
 
-## Two invocation modes (state which one you're in)
+## Three invocation modes (state which one you're in)
 
 **Mode A — Standalone security-only pass.** Triggered directly: "cek
 keamanan kode ini", "security review", "security audit", "find security
@@ -92,14 +97,29 @@ Domain 2 delegates to this skill's full checklist instead. In this mode:
 - Findings land back inside the host review's Domain 2 (SEC) using this
   skill's `SEC-##` / stack-note / domain-note codes — don't open a separate
   report. Needs-validation leads go in a short list under Domain 2, without
-  a severity icon and outside the severity counts.
+  a severity icon and outside the severity counts. Whoever writes the host
+  report also appends the review-log line Phase 4 describes.
 - Reflection (Phase 3) and Critique-Correction (Phase 4) are the host
   review's, run once over the *combined* finding set — this skill does not
   add a second reflection pass on top. See "Reflection gate" below.
 
-If it's ambiguous which mode you're in, ask nothing — infer from context: a
-bare code paste with a security question is Mode A; an active
-code-review-edho-ferdian session is Mode B.
+**Mode C — Full audit before production.** Triggered by an explicit
+whole-repository ask ("audit menyeluruh", "full security audit", "audit
+sebelum production", "pen-test this codebase") or by
+`deployment-ops-edho-ferdian`'s production-readiness security lens. Follow
+`references/full-audit.md` instead of the Phase 0–4 pipeline below: a
+storage guard on `project-memory/audit/`, inline reconnaissance, a coverage
+ledger, the fewest agents that cover it (ceiling 5, stated with a reason
+before launch), one independent verifier, then `findings.json` checked by
+the vendored validators in `scripts/` and three reports. It reuses this
+skill's checklists, gates and severity scale; it never executes the
+target's code.
+
+If it's ambiguous which mode you're in, ask nothing between A and B — infer
+from context: a bare code paste with a security question is Mode A; an
+active code-review-edho-ferdian session is Mode B. Between A and C (a
+"security audit" of a repo with no scope given), ask one question first:
+Mode C writes files and may spend several agents.
 
 ---
 
@@ -229,7 +249,10 @@ of `CODE REVIEW REPORT`. After the findings, add two short sections:
 plan — no severity, not counted in the severity table) and **Hardening
 notes** (defense-in-depth gaps that are not findings). Omit either when
 empty. Save the report file the same way
-(`./<file-or-module>-security-review.md`) and tell the user the path.
+(`./<file-or-module>-security-review.md`) and tell the user the path. If
+`project-memory/audit/` already exists, append one line to its
+`review-log.md` (`references/full-audit.md` §Review log) so the next full
+audit knows what was reviewed; never create the folder for it.
 
 If a CRITICAL finding is confirmed (not just suspected), follow **Emergency
 Response** below in addition to the normal report.
@@ -332,3 +355,12 @@ This skill keeps `SKILL.md` lean and pushes the checklists into
   (PHI), LLM & agent pipelines, ML, containers (Dockerfile/Compose
   hardening), cloud/IaC/CI-CD, and agent-harness configuration security
   items.
+- `references/full-audit.md` — Mode C: storage guard, inline recon,
+  coverage ledger, agent plan, hunt, independent verification,
+  `findings.json`, reports, post-fix re-check, production-readiness
+  hand-off, and the review log.
+- `references/full-audit-attack-classes.md` — the class blocks Mode C
+  assigns to ledger units, mapped to SEC codes, plus domain routing.
+- `scripts/` — `validate-audit.cjs` (run this), the vendored Cloudflare
+  `validate-findings.cjs`, `validate-coverage-ledger.cjs` and
+  `report-schema.json`, and their MIT licence (`LICENSE-cloudflare`).

@@ -26,7 +26,9 @@ Phase 2.
 
 1. **Fan out** (parallel) — delegate to all four risk-lens agents at once:
    `security-review-edho-ferdian` (auth, secrets, injection, rate
-   limiting), `data-layer-patterns-edho-ferdian` (migration reversibility,
+   limiting — in Mode C, its full audit, which may itself launch a few
+   hunters and a verifier within its own agent ceiling; on Claude Code
+   that nesting is supported), `data-layer-patterns-edho-ferdian` (migration reversibility,
    tenancy, idempotent writes), `e2e-testing-edho-ferdian` (launch-critical
    path coverage), `performance-audit-edho-ferdian` (latency/budget
    breaches). Scope each delegation to "assess risk in your domain for
