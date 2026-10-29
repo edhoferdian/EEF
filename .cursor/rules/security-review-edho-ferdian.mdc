@@ -70,7 +70,13 @@ Mode C (`references/full-audit.md`) is the lean port of its six-phase
 audit: same schema, validators and ledger contract, with inline
 reconnaissance, an agent ceiling, one batch verifier, no target-code
 execution, and output in a guarded `project-memory/audit/`. The full list
-of what was kept, changed and dropped closes that file.
+of what was kept, changed and dropped closes that file. Its ten domain
+companions were compared one by one against this skill's own sections:
+AI/LLM and cloud folded into `domain-specific.md` (AGT-05..12,
+CLOUD-SEC-08..13, the container host-authority item), and the other eight
+became the boundary references listed at the end of this file. Container
+and edge hardening items now follow the defense-in-depth rule: a finding
+only when a reachable path would use the missing layer.
 
 ## Three invocation modes (state which one you're in)
 
@@ -163,6 +169,20 @@ Phase 4  Report                             (Mode A only — Mode B reports via 
    §Containers, §Cloud, and §Agent-config sections are original additions to
    this skill, not migrated from an existing `code-review-edho-ferdian`
    lens.
+   Seven boundary-specific references sit beside it, each loaded only when
+   the scope crosses that boundary: a proxy/CDN config, custom HTTP
+   handling, sessions, OAuth/OIDC/SAML, MFA, passkeys, account recovery,
+   API keys or mTLS (→ `references/web-protocol-auth.md`); DOM rendering,
+   `postMessage`, service workers or browser storage
+   (→ `client-side.md`); multi-tenant data, derived copies, export/restore,
+   deletion (→ `data-isolation-lifecycle.md`); dependency resolution, CI
+   handoffs, release signing, updaters, plugins
+   (→ `supply-chain-release.md`); gRPC, GraphQL transport, queues,
+   brokers, webhooks (→ `protocols-messaging.md`); untrusted work against
+   shared capacity or paid spend (→ `resource-exhaustion.md`); a desktop
+   or mobile app, webview bridge, helper or local IPC
+   (→ `desktop-mobile-ipc.md`); C/C++/Rust `unsafe`/FFI, drivers, loaders
+   (→ `memory-safety-native.md`).
 4. State detected stack + active domain sections in one line before Phase 1.
 
 ### Phase 1 — Checklist pass
@@ -355,6 +375,12 @@ This skill keeps `SKILL.md` lean and pushes the checklists into
   (PHI), LLM & agent pipelines, ML, containers (Dockerfile/Compose
   hardening), cloud/IaC/CI-CD, and agent-harness configuration security
   items.
+- Boundary references, loaded only when Phase 0 (or Mode C recon) finds
+  the boundary: `references/web-protocol-auth.md` (WEB-SEC),
+  `client-side.md` (CS-SEC), `data-isolation-lifecycle.md` (ISO-SEC),
+  `supply-chain-release.md` (SUP-SEC), `protocols-messaging.md`
+  (MSG-SEC), `resource-exhaustion.md` (RES-SEC), `desktop-mobile-ipc.md`
+  (IPC-SEC), `memory-safety-native.md` (MEM-SEC).
 - `references/full-audit.md` — Mode C: storage guard, inline recon,
   coverage ledger, agent plan, hunt, independent verification,
   `findings.json`, reports, post-fix re-check, production-readiness

@@ -23,6 +23,18 @@ it describes:
 | `CLAUDE.md`, harness settings, hooks, MCP config | `domain-specific.md` §Agent & AI-harness configuration |
 | Clinical / PHI data | `domain-specific.md` §Healthcare |
 | A named framework | `language-specific.md` section for it |
+| Proxy/CDN config, sessions, OAuth/OIDC/SAML, MFA, passkeys, recovery, API keys, mTLS | `web-protocol-auth.md` |
+| DOM rendering, `postMessage`, service workers, browser storage, extensions | `client-side.md` |
+| Multi-tenant data, search/cache/analytics copies, export/restore, deletion | `data-isolation-lifecycle.md` |
+| Dependency resolution, CI handoffs, release signing, updaters, plugins | `supply-chain-release.md` |
+| gRPC, GraphQL transport, queues, brokers, webhooks, streaming | `protocols-messaging.md` |
+| Untrusted work against shared capacity, quotas or paid spend | `resource-exhaustion.md` |
+| Desktop/mobile app, webview bridge, deep links, helper, local IPC | `desktop-mobile-ipc.md` |
+| C/C++/Rust `unsafe`/FFI, drivers, parsers, loaders, JIT | `memory-safety-native.md` |
+
+A boundary reference's heading (for example `client-side.md#CS-SEC-04`)
+is a valid `selected_companion_blocks` entry; copy the file's Discipline
+paragraph along with the chosen items, since its items assume it.
 
 ## Core classes
 

@@ -69,7 +69,13 @@ Mode C (`references/full-audit.md`) is the lean port of its six-phase
 audit: same schema, validators and ledger contract, with inline
 reconnaissance, an agent ceiling, one batch verifier, no target-code
 execution, and output in a guarded `project-memory/audit/`. The full list
-of what was kept, changed and dropped closes that file.
+of what was kept, changed and dropped closes that file. Its ten domain
+companions were compared one by one against this skill's own sections:
+AI/LLM and cloud folded into `domain-specific.md` (AGT-05..12,
+CLOUD-SEC-08..13, the container host-authority item), and the other eight
+became the boundary references listed at the end of this file. Container
+and edge hardening items now follow the defense-in-depth rule: a finding
+only when a reachable path would use the missing layer.
 
 ## Three invocation modes (state which one you're in)
 
@@ -162,6 +168,20 @@ Phase 4  Report                             (Mode A only — Mode B reports via 
    §Containers, §Cloud, and §Agent-config sections are original additions to
    this skill, not migrated from an existing `code-review-edho-ferdian`
    lens.
+   Seven boundary-specific references sit beside it, each loaded only when
+   the scope crosses that boundary: a proxy/CDN config, custom HTTP
+   handling, sessions, OAuth/OIDC/SAML, MFA, passkeys, account recovery,
+   API keys or mTLS (→ `references/web-protocol-auth.md`); DOM rendering,
+   `postMessage`, service workers or browser storage
+   (→ `client-side.md`); multi-tenant data, derived copies, export/restore,
+   deletion (→ `data-isolation-lifecycle.md`); dependency resolution, CI
+   handoffs, release signing, updaters, plugins
+   (→ `supply-chain-release.md`); gRPC, GraphQL transport, queues,
+   brokers, webhooks (→ `protocols-messaging.md`); untrusted work against
+   shared capacity or paid spend (→ `resource-exhaustion.md`); a desktop
+   or mobile app, webview bridge, helper or local IPC
+   (→ `desktop-mobile-ipc.md`); C/C++/Rust `unsafe`/FFI, drivers, loaders
+   (→ `memory-safety-native.md`).
 4. State detected stack + active domain sections in one line before Phase 1.
 
 ### Phase 1 — Checklist pass
@@ -169,42 +189,5 @@ Phase 4  Report                             (Mode A only — Mode B reports via 
 Run the general checklist (`references/general-checklist.md`, SEC-01..13)
 against the full scope always. Layer on `references/language-specific.md`
 for the detected stack(s), and `references/domain-specific.md` for any active
-domain section. Every finding needs a concrete location — no location, no
-finding (see Phase 3) — and must pass the **Boundary-and-result gate** in
-`references/general-checklist.md`: who acts, through what input, past which
-control, against whose resource, with what concrete result. A candidate
-whose decisive fact lives outside the repository (proxy, provider, platform
-header, identity policy) is recorded as **Needs validation**, not guessed
-either way.
-
-### Phase 2 — Ground-truth verification
-
-Prefer real tool output over reasoning, exactly like the general skill's
-Phase 2 rule:
-
-```bash
-# JS/TS
-npm audit --audit-level=high
-npx eslint . --plugin security
-
-# Python
-bandit -r .
-pip-audit
-
-# Secrets (any stack)
-gitleaks detect --no-banner
-trufflehog filesystem .
-```
-
-**Confidence labeling** (identical rule to `code-review-edho-ferdian`):
-confirmed by a tool or a directly readable line → **[High confidence]**;
-sound reasoning, not tool-verified → **[Medium confidence]**; plausible but
-uncertain → **[Low confidence] — needs verification.** Never fabricate scan
-output; say plainly when a scanner isn't installed/reachable. Low confidence
-is doubt about your own reading of the source; **Needs validation** is a
-solid reading whose answer sits outside the source — keep them apart.
-
-### Phase 3 — Reflection gate
-
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/security-review-edho-ferdian/SKILL.md` for complete instructions.
