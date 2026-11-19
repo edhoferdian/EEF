@@ -1,6 +1,6 @@
 {
   "name": "eef-install",
-  "version": "1.23.1",
+  "version": "1.24.0",
   "description": "Install Ekosistem Edho Ferdian's 40 skills and 49 sub-agents into Claude Code, Codex, OpenCode, Cursor, Windsurf, Devin, Cline, GitHub Copilot, Kiro, Hermes Agent, OpenClaw, or ZCode — no git clone required.",
   "license": "MIT",
   "author": {
