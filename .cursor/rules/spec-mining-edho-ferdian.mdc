@@ -122,6 +122,10 @@ If `/project-memory/` does not exist yet in this repo, create just the
 `mined-specs/` subdirectory — do not scaffold the rest of
 `dev-kickoff-edho-ferdian`'s memory structure; that's its own skill's job.
 
+## Worked examples
+
+`references/worked-mining.md` — one capability mined into anchored WHEN/THEN requirements, invariants and uncertainties, plus a characterisation test. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

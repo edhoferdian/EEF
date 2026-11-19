@@ -146,6 +146,9 @@ function destructiveSegment(command) {
   return null;
 }
 
+module.exports = { offendingSegment, destructiveSegment };
+
+if (require.main === module) {
 let raw = "";
 process.stdin.on("data", (c) => (raw += c));
 process.stdin.on("end", () => {
@@ -183,3 +186,4 @@ process.stdin.on("end", () => {
   }
   process.exit(0);
 });
+}

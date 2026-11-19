@@ -70,6 +70,10 @@ drift.
    as the rest of this skill ecosystem's review skills, applied to
    containers instead of code.
 
+## Worked examples
+
+`references/worked-stacks.md` — production Dockerfiles for Next.js, Python (uv) and Go, a .dockerignore, a dev compose stack, and build checks. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

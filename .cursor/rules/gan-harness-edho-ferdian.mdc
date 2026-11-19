@@ -180,6 +180,10 @@ format, and the iteration/stop-condition rules: **`references/evaluate-phase.md`
 3. **Detect the driver, don't hardcode it.** Same rule as
    `e2e-testing-edho-ferdian`.
 
+## Worked examples
+
+`references/worked-loop.md` — a landing page through spec, rubric, two generate/evaluate rounds with scored feedback, stop conditions and the final report. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

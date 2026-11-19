@@ -76,6 +76,10 @@ service, error path, or job, change only what the task requires — don't
 relayer or restructure adjacent, already-working code as a side effect. Full
 contract: `skill-authoring-edho-ferdian` §10.
 
+## Worked examples
+
+`references/worked-integration.md` — a WhatsApp notifier with a port, adapter, typed errors, retry with jitter, circuit breaker, job runner, wiring and tests with fakes. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

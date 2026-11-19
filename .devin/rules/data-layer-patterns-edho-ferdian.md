@@ -86,6 +86,10 @@ explicit statement of what's different and why.
    missing FK indexes — `postgres.md` and `database-lens.md` agree on these
    defaults).
 
+## Worked examples
+
+`references/worked-migration.md` — a column split done expand-contract with Prisma: dual write, batched backfill, read switch, contract, cache key versioning, rollback per phase. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

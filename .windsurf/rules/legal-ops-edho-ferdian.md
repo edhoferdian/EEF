@@ -73,6 +73,10 @@ names and rebuild; never reflow or "tidy" counsel-approved wording as a side
 effect — a cosmetic diff in legal text still needs review. Full contract:
 `skill-authoring-edho-ferdian` §10.
 
+## Worked examples
+
+`references/worked-agreement.md` — JSON spec per counterparty, a renderer that refuses missing values, Schedule A amendments, and an e-sign envelope kept as a draft. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

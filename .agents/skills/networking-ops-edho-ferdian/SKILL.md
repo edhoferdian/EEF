@@ -107,6 +107,10 @@ apply regardless of which reference file is active:
   requires an explicit operator flag, and persisting to startup config is
   always a separate, later, approved step.
 
+## Worked examples
+
+`references/worked-troubleshoot.md` — "internet lambat" diagnosed layer by layer (link, loss, bufferbloat, DNS) with commands, then one change with rollback. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

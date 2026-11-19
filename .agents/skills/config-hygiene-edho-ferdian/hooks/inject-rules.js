@@ -39,6 +39,9 @@ function rulesText() {
   return text.length > MAX_CHARS ? text.slice(0, MAX_CHARS) : text;
 }
 
+module.exports = { rulesText };
+
+if (require.main === module) {
 let raw = "";
 process.stdin.setEncoding("utf8");
 process.stdin.on("data", (chunk) => (raw += chunk));
@@ -60,3 +63,4 @@ process.stdin.on("end", () => {
     // fail open
   }
 });
+}

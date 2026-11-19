@@ -19,6 +19,10 @@ internal names?" It does not hunt exploitable vulnerabilities in the code.
 Mode C full audit. A project going public *and* to production needs both:
 run Mode C on the source, then this pipeline on the fork.
 
+## Worked examples
+
+`references/worked-release.md` — a private repo made public: secret sweeps and history purge, the independent audit verdict, and the packaged community files. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

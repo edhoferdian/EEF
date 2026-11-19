@@ -97,6 +97,10 @@ handoff at any stage follows the same rule: skip only with a stated reason
 (e.g. the touched surface has no matching specialist skill yet), never
 silently.
 
+## Worked examples
+
+`references/worked-kickoff.md` — a short PRD to intake questions, decision register, context pack, derived plan, and one task through PLAN→IMPROVE with real tests and commands. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool
@@ -207,11 +211,5 @@ the intake matrix format, and the consistency checklist:
 
 Mode C's brownfield trace in that file answers *what the code does*. Before
 Phase 3 writes new code into that area, also align *how it is written*
-(meta-architecture, naming, infra placement, error-handling shape):
-**`references/style-inheritance.md`** — its scope-boundary section splits
-this from the trace and from `spec-mining-edho-ferdian`.
-
-## Phase 1 — Project Decision Register
-
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/dev-kickoff-edho-ferdian/SKILL.md` for complete instructions.

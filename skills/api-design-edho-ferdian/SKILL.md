@@ -107,6 +107,10 @@ Any FAIL → fix before presenting, or state explicitly why (e.g. "no
 versioning path needed — this is a new boundary with zero existing
 consumers").
 
+## Worked examples
+
+`references/worked-api.md` — an orders API: resources, payloads, problem+json errors, cursor pagination, idempotent create, OpenAPI as source of truth, a non-breaking evolution. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

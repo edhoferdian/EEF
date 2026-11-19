@@ -79,6 +79,9 @@ const HOOKS = {
 };
 const isStatusLine = (hook) => hook.event === "statusLine";
 
+/** Claude Code targets the EEF plugin provides itself (claude-hooks is handled per hook). */
+const PLUGIN_COVERED = ["claude", "claude-agents", "claude-rules"];
+
 const claudeDir = () => path.join(os.homedir(), ".claude");
 const claudeSkillsDir = () => process.env.CLAUDE_SKILLS_DIR || path.join(claudeDir(), "skills");
 const claudeAgentsDir = () => process.env.CLAUDE_AGENTS_DIR || path.join(claudeDir(), "agents");
@@ -185,6 +188,18 @@ const TARGETS = {
     },
   },
 
+  // Antigravity runs hooks too, with its own protocol (hooks.json keyed by
+  // hook name; SessionStart / PreInvocation / PreToolUse; injectSteps
+  // output). antigravity-adapter.js translates, reusing the Claude Code
+  // hook logic. antigravity.google/docs/hooks, checked 2026-11-19.
+  "antigravity-hooks": {
+    label: "Antigravity hooks (always-on rules, skill router, skill-guard, fs-guard via an adapter) — merged into hooks.json under the key \"eef-edho-ferdian\", other keys untouched",
+    scope: "project (.agents/hooks.json) by default, --global for ~/.gemini/config/hooks.json",
+    install(_skillNames, opts) {
+      installAntigravityHooks(opts.global);
+    },
+  },
+
   kiro: {
     label: "Kiro",
     scope: "project by default, --global for ~/.kiro",
@@ -247,12 +262,18 @@ const TARGETS = {
     label: "Claude Code hooks (fs-guard: blocks root-wide searches, asks before destructive commands; telemetry: logs subagent runs; skill-router: names the matching EEF skill for each prompt; skill-guard: names the skill that owns a file before it is edited; skill-telemetry: logs skill loads; statusline: quota/context/agents, only if no statusLine is set) — registered in settings.json, other keys untouched; --only picks one",
     scope: "global (or $CLAUDE_HOOKS_DIR + $CLAUDE_SETTINGS_FILE)",
     install(_skillNames, opts) {
-      const names = opts.only ? [opts.only] : Object.keys(HOOKS);
+      let names = opts.only ? [opts.only] : Object.keys(HOOKS);
       const unknown = names.filter((n) => !HOOKS[n]);
       if (unknown.length) {
         console.error(`Unknown hook '${unknown[0]}'. Valid --only values: ${Object.keys(HOOKS).join(", ")}`);
         process.exitCode = 2;
         return;
+      }
+      if (opts.pluginHooks) {
+        const skipped = names.filter((n) => !isStatusLine(HOOKS[n]));
+        names = names.filter((n) => isStatusLine(HOOKS[n]));
+        if (skipped.length) console.log(`Skipped ${skipped.join(", ")}: the EEF plugin runs these hooks itself (--force to install anyway).`);
+        if (!names.length) return;
       }
       mergeClaudeHooks(names, claudeHooksDir(), claudeSettingsFile());
     },
@@ -668,6 +689,68 @@ function findHookRegistrations(settings, hook) {
   return found;
 }
 
+const AG_HOOK_KEY = "eef-edho-ferdian";
+const AG_HOOK_FILES = [
+  ["config-hygiene-edho-ferdian", "antigravity-adapter.js"],
+  ["config-hygiene-edho-ferdian", "inject-rules.js"],
+  ["config-hygiene-edho-ferdian", "suggest-skill.js"],
+  ["config-hygiene-edho-ferdian", "skill-guard.js"],
+  ["safe-execution-edho-ferdian", "block-fs-wide-search.js"],
+];
+
+/**
+ * Copy the adapter and the hook modules it reuses next to a hooks.json, and
+ * register them under one top-level key. Other keys in hooks.json are left
+ * alone; an unparsable file is refused, never rewritten.
+ */
+function installAntigravityHooks(global) {
+  const configDir = process.env.ANTIGRAVITY_CONFIG_DIR
+    || (global ? path.join(os.homedir(), ".gemini", "config") : path.join(process.cwd(), ".agents"));
+  const hooksDir = path.join(configDir, "eef-hooks");
+  const hooksJson = path.join(configDir, "hooks.json");
+
+  let config = {};
+  if (fs.existsSync(hooksJson)) {
+    try {
+      config = JSON.parse(fs.readFileSync(hooksJson, "utf8"));
+    } catch (err) {
+      console.error(`Error: ${hooksJson} is not valid JSON — refusing to touch it. Fix or remove it, then re-run. (${err.message})`);
+      process.exitCode = 1;
+      return;
+    }
+    if (!config || typeof config !== "object" || Array.isArray(config)) {
+      console.error(`Error: ${hooksJson} is not a JSON object — refusing to touch it.`);
+      process.exitCode = 1;
+      return;
+    }
+    fs.copyFileSync(hooksJson, `${hooksJson}.eef-backup`);
+  }
+
+  fs.mkdirSync(path.join(hooksDir, "rules"), { recursive: true });
+  for (const [skill, file] of AG_HOOK_FILES) {
+    fs.copyFileSync(path.join(SKILLS_DIR, skill, "hooks", file), path.join(hooksDir, file));
+  }
+  for (const f of fs.readdirSync(path.join(PKG_ROOT, "rules")).filter((f) => f.endsWith(".md"))) {
+    fs.copyFileSync(path.join(PKG_ROOT, "rules", f), path.join(hooksDir, "rules", f));
+  }
+
+  const cmd = (mode) => `node "${path.join(hooksDir, "antigravity-adapter.js").replace(/\\/g, "/")}" ${mode}`;
+  config[AG_HOOK_KEY] = {
+    enabled: true,
+    SessionStart: [{ hooks: [{ type: "command", command: cmd("session-start"), timeout: 10 }] }],
+    PreInvocation: [{ hooks: [{ type: "command", command: cmd("prompt"), timeout: 5 }] }],
+    PreToolUse: [
+      { matcher: "run_command", hooks: [{ type: "command", command: cmd("shell"), timeout: 10 }] },
+      { matcher: "write_to_file|replace_file_content|multi_replace_file_content", hooks: [{ type: "command", command: cmd("edit"), timeout: 5 }] },
+    ],
+  };
+  fs.mkdirSync(configDir, { recursive: true });
+  fs.writeFileSync(hooksJson, JSON.stringify(config, null, 2) + "\n");
+  console.log(`Installed EEF hooks for Antigravity: ${hooksDir}`);
+  console.log(`Registered under "${AG_HOOK_KEY}" in ${hooksJson} (other keys untouched).`);
+  console.log("Skills for the router: eef-install --target antigravity --global. Check with /hooks in agy; trust the workspace if hooks don't fire.");
+}
+
 /**
  * Copy the selected hooks into hooksDir and register each in settingsPath,
  * touching nothing else in that file (same posture as mergeOpencodeAgents:
@@ -839,13 +922,15 @@ function doctor() {
   const say = (line) => console.log(line);
   const shortList = (names) => (names.length > 5 ? `${names.slice(0, 5).join(", ")}, … (+${names.length - 5})` : names.join(", "));
   say(`eef-install doctor — package version ${PKG_VERSION}\n`);
+  const plugin = eefPluginInstall();
+  const notInstalled = plugin ? `  not installed here — provided by the EEF plugin (${plugin})` : "  not installed";
 
   // Skills: compare every file each skill ships, not only its SKILL.md.
   const skillsDir = claudeSkillsDir();
   const skills = compareFiles(shippedSkills(), skillsDir, sameSkillTree);
   say(`Skills (--target claude) — ${skillsDir}`);
   if (!skills.present.length) {
-    say("  not installed");
+    say(notInstalled);
   } else {
     say(`  ${skills.present.length}/${listSkillNames().length} installed, ${skills.same.length} match this version`);
     if (skills.differs.length) say(`  differ (older EEF version, or edited locally): ${shortList(skills.differs)}`);
@@ -863,7 +948,7 @@ function doctor() {
   );
   say(`\nAgents (--target claude-agents) — ${agentsDir}`);
   if (!agents.present.length) {
-    say("  not installed");
+    say(notInstalled);
   } else {
     const lean = !agents.present.some((f) => isWrapperAgent(fs.readFileSync(path.join(agentsDir, f), "utf8")));
     const missing = agents.missing.filter((f) => !(lean && isWrapperAgent(fs.readFileSync(path.join(agentsSrc, f), "utf8"))));
@@ -896,7 +981,7 @@ function doctor() {
   );
   say(`\nRules (--target claude-rules) — ${rulesDir}`);
   if (!rules.present.length) {
-    say("  not installed");
+    say(notInstalled);
   } else {
     say(`  ${rules.present.length}/${rules.present.length + rules.missing.length} installed, ${rules.same.length} match this version`);
     if (rules.differs.length) say(`  differ: ${rules.differs.join(", ")}`);
@@ -920,7 +1005,7 @@ function doctor() {
     if (settings !== null) {
       const regs = findHookRegistrations(settings, hook);
       if (!regs.length) {
-        regState = "not registered";
+        regState = plugin && !isStatusLine(hook) && !fs.existsSync(dest) ? "provided by the EEF plugin" : "not registered";
       } else {
         const missingTargets = regs.filter((r) => !hookTargetExists(r.command, hook.file));
         regState = `registered under ${hook.event}`;
@@ -936,7 +1021,6 @@ function doctor() {
   // Plugin: installing EEF both as the Claude Code plugin and through
   // eef-install lists every skill twice (once namespaced). Warn, don't count
   // it as breakage: the hooks already keep the plugin copies quiet.
-  const plugin = eefPluginInstall();
   say(`\nPlugin (ekosistem-edho-ferdian@eef-marketplace) — ${plugin ? `installed (${plugin})` : "not installed"}`);
   if (plugin && skills.present.length) {
     say("  WARNING: EEF is installed both as the plugin and in ~/.claude/skills — every skill is listed twice.");
@@ -1071,7 +1155,7 @@ function printHelp() {
   console.log(`eef-install — install Ekosistem Edho Ferdian's skills
 
 Usage:
-  eef-install                          Install all 39 skills for Claude Code
+  eef-install                          Install all 40 skills for Claude Code
   eef-install <skill> [<skill> ...]    Install only these skills for Claude Code
   eef-install --list                   List all installable skill names
   eef-install --target <name>          Install for a different harness (see below)
@@ -1219,6 +1303,19 @@ function main() {
   if (opts.only && targetName !== "claude-hooks") {
     console.warn(`Note: --only only applies to claude-hooks; ignored for '${targetName}'.`);
   }
+
+  // The EEF plugin already provides skills, the isolation agents, the rules
+  // and every hook except the status line in Claude Code. Installing them
+  // again lists every skill twice, so those targets step aside for the
+  // plugin unless --force is given. Everything else (other harnesses,
+  // statusline, doctor, stats) keeps working alongside the plugin.
+  const plugin = eefPluginInstall();
+  if (plugin && PLUGIN_COVERED.includes(targetName) && !args.includes("--force")) {
+    console.log(`Skipped --target ${targetName}: the EEF plugin (${plugin}) already provides it in Claude Code.`);
+    console.log("Installing both lists every skill twice. Use --force to install anyway, or update the plugin: claude plugin update ekosistem-edho-ferdian@eef-marketplace");
+    return;
+  }
+  if (plugin && targetName === "claude-hooks" && !args.includes("--force")) opts.pluginHooks = true;
 
   target.install(skillNames, opts);
 }

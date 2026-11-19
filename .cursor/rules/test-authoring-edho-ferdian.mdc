@@ -108,6 +108,10 @@ stack-agnostic checklist above by hand, and note in your response that
 stack-specific guidance for that language isn't written yet — don't
 silently fall back to React-flavored advice for a non-React stack.
 
+## Worked examples
+
+`references/worked-tests.md` — choosing cases (classes, boundaries), table tests in TS/pytest/Go, controlling time and network, hooks, property-based tests, regression tests. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

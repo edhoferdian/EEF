@@ -7,6 +7,8 @@
   page, komponen, animasi) loads `frontend-engineering-edho-ferdian` and
   `design-engineering-edho-ferdian` first, even when it looks small; the
   full list is in each skill's description.
+  When no skill is obviously right at the start of a task, load `ask-eef`
+  first; it picks the skill or sequence and hands over.
 - **Load skills through the harness** (the Skill tool, or an agent's
   preloaded `skills:`). Installed skills live at
   `~/.claude/skills/<name>/` or `.claude/skills/<name>/` in the project,

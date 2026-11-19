@@ -45,7 +45,8 @@ AGENTS_DIR = SKILLS_DIR.parent / "agents"
 # agent code-reviewer-edho-ferdian (an actor-noun name predating this
 # generator's same-name convention) — skip it here so this script doesn't
 # create a second, redundant agent for the same skill under a different name.
-SKIP_SKILLS = {"code-review-edho-ferdian"}
+# ask-eef only routes to other skills; there is no work to delegate to an agent.
+SKIP_SKILLS = {"code-review-edho-ferdian", "ask-eef"}
 
 READ_ONLY_SKILLS = {
     "code-review-edho-ferdian",

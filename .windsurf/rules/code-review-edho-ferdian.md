@@ -24,6 +24,10 @@ prompts skip — **ground-truth verification** (run real tools, don't eyeball)
 and a **Reflection + Critique-Correction pass** (catch your own false positives
 before the user sees them).
 
+## Worked examples
+
+`references/worked-review.md` — one refund-endpoint diff through all five phases: scope commands, draft findings, ground-truth checks, the Critic dropping a finding, the saved report. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool
@@ -200,10 +204,5 @@ tool would say — run it.** Using whatever exists in the repo (see Phase 0 prob
 - Dependency & secret scanners (e.g. `npm/pnpm audit`, `pip-audit`, gitleaks) —
   confirm SEC-02 and SEC-07 with real output, not memory.
 - Blast radius of a changed public surface — if `salak` is installed, cite
-  `salak query importers <file>` (or `callers` for Go) after `salak check .`
-  instead of a guess at who depends on it; an exit 2 answer proves nothing
-  (`dev-kickoff-edho-ferdian/references/salak-integration.md`).
-
-**Confidence labeling rule (applies to every finding):**
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/code-review-edho-ferdian/SKILL.md` for complete instructions.

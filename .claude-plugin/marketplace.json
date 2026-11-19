@@ -12,8 +12,8 @@
       "name": "ekosistem-edho-ferdian",
       "displayName": "Ekosistem Edho Ferdian",
       "source": ".",
-      "description": "39 native skills for engineering, operations, and cross-cutting development practices — see README for the full list.",
-      "version": "1.6.1",
+      "description": "40 native skills for engineering, operations, and cross-cutting development practices — see README for the full list.",
+      "version": "1.7.0",
       "author": {
         "name": "Edho Ferdian",
         "email": "edhoferdian31@gmail.com"

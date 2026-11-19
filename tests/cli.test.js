@@ -23,6 +23,7 @@ function sandbox() {
       CLAUDE_RULES_DIR: path.join(d, "rules"),
       CLAUDE_HOOKS_DIR: path.join(d, "hooks"),
       CLAUDE_SETTINGS_FILE: path.join(d, "settings.json"),
+      CLAUDE_PLUGINS_FILE: path.join(d, "installed_plugins.json"), // no plugin unless a test writes one
     },
   };
 }
@@ -131,4 +132,40 @@ test("stats leaves SubagentStop-era records out and counts PostToolUse runs", ()
   const [row] = JSON.parse(out.stdout);
   assert.strictEqual(row.runs, 2);
   assert.strictEqual(row.median_tokens, 200);
+});
+
+test("with the EEF plugin installed, Claude Code targets step aside unless --force", () => {
+  const { dir, env } = sandbox();
+  fs.writeFileSync(env.CLAUDE_PLUGINS_FILE, JSON.stringify({ version: 2, plugins: { "ekosistem-edho-ferdian@eef-marketplace": [{ scope: "user" }] } }));
+  const skipped = eef(env, "--target", "claude");
+  assert.strictEqual(skipped.status, 0);
+  assert.match(skipped.stdout.toString(), /already provides it/);
+  assert.ok(!fs.existsSync(path.join(dir, "skills", "code-review-edho-ferdian")));
+
+  assert.strictEqual(eef(env, "--target", "claude-hooks").status, 0);
+  const c = readJson(path.join(dir, "settings.json"));
+  assert.strictEqual(c.hooks, undefined);                       // plugin runs the hooks
+  assert.match(c.statusLine.command, /statusline-usage\.js/);   // status line still installed
+
+  assert.strictEqual(eef(env, "--target", "claude", "--force").status, 0);
+  assert.ok(fs.existsSync(path.join(dir, "skills", "code-review-edho-ferdian", "SKILL.md")));
+  assert.match(eef(env, "doctor").stdout.toString(), /WARNING: EEF is installed both/);
+});
+
+test("antigravity-hooks merges one key into hooks.json and keeps the rest", () => {
+  const { dir, env } = sandbox();
+  const cfg = path.join(dir, "ag");
+  fs.mkdirSync(cfg);
+  fs.writeFileSync(path.join(cfg, "hooks.json"), JSON.stringify({ mine: { enabled: true } }));
+  const e = { ...env, ANTIGRAVITY_CONFIG_DIR: cfg };
+  assert.strictEqual(eef(e, "--target", "antigravity-hooks").status, 0);
+  assert.strictEqual(eef(e, "--target", "antigravity-hooks").status, 0);   // idempotent
+  const c = readJson(path.join(cfg, "hooks.json"));
+  assert.deepStrictEqual(Object.keys(c), ["mine", "eef-edho-ferdian"]);
+  assert.deepStrictEqual(Object.keys(c["eef-edho-ferdian"]), ["enabled", "SessionStart", "PreInvocation", "PreToolUse"]);
+  assert.ok(fs.existsSync(path.join(cfg, "eef-hooks", "antigravity-adapter.js")));
+  assert.ok(fs.existsSync(path.join(cfg, "eef-hooks", "rules", "skills.md")));
+  fs.writeFileSync(path.join(cfg, "hooks.json"), "{ broken");
+  assert.notStrictEqual(eef(e, "--target", "antigravity-hooks").status, 0);
+  assert.strictEqual(fs.readFileSync(path.join(cfg, "hooks.json"), "utf8"), "{ broken");
 });

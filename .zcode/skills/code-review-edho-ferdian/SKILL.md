@@ -31,6 +31,10 @@ prompts skip — **ground-truth verification** (run real tools, don't eyeball)
 and a **Reflection + Critique-Correction pass** (catch your own false positives
 before the user sees them).
 
+## Worked examples
+
+`references/worked-review.md` — one refund-endpoint diff through all five phases: scope commands, draft findings, ground-truth checks, the Critic dropping a finding, the saved report. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool
