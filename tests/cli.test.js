@@ -1,5 +1,5 @@
 // The npm CLI's settings.json merge and doctor, run the way a user runs
-// them: a real `node bin/eef.js` process against throwaway directories.
+// them: a real `node cli/eef.js` process against throwaway directories.
 // Unlike the shell smoke test in ci.yml, this runs the same on Windows.
 // Run: node --test tests/*.test.js
 const { test } = require("node:test");
@@ -10,7 +10,7 @@ const os = require("node:os");
 const path = require("node:path");
 
 const ROOT = path.join(__dirname, "..");
-const CLI = path.join(ROOT, "bin", "eef.js");
+const CLI = path.join(ROOT, "cli", "eef.js");
 
 function sandbox() {
   const d = fs.mkdtempSync(path.join(os.tmpdir(), "eef-cli-"));

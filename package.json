@@ -14,10 +14,10 @@
     "url": "git+https://github.com/edhoferdian/EEF.git"
   },
   "bin": {
-    "eef-install": "bin/eef.js"
+    "eef-install": "cli/eef.js"
   },
   "files": [
-    "bin/",
+    "cli/",
     "skills/",
     "rules/",
     "AGENTS.md",

@@ -49,8 +49,8 @@ or style words turn into objects ("teal" becomes a teal prop).
 
 ## Tooling
 
-No code ships with this skill; the references specify the method precisely
-enough to implement per project. Typical stack: `ffmpeg` (decode, cut,
+The references specify the method; `references/code-recipes.md` gives
+starting code to adapt per project. Typical stack: `ffmpeg` (decode, cut,
 composite, re-encode), OpenCV + NumPy (Lab statistics, masks, plates),
 PySceneDetect (shot boundaries), a LUT writer (`.cube`), optionally Blender
 (3D props) and a VLM for the text spec. Resolve current library and provider
@@ -79,6 +79,10 @@ provider's model page) — never from memory. Full contract:
 When adjusting an existing pipeline, change only the stage the task names;
 do not re-measure a cached pack or re-render untouched shots as a side
 effect. Full contract: `skill-authoring-edho-ferdian` §10.
+
+## Worked examples
+
+`references/code-recipes.md` — PySceneDetect, OpenCV Lab statistics, baking a .cube LUT, ffmpeg grading/cutting/overlays, numeric verification, OTIO handoff. Read it when doing the work, not before routing.
 
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 

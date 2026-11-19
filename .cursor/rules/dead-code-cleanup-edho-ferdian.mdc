@@ -32,6 +32,10 @@ the deletion moment specifically: touch only the categories being cleaned
 in this pass, never fold in an unrelated fix or improvement spotted along
 the way. Full contract: `skill-authoring-edho-ferdian` §10.
 
+## Worked examples
+
+`references/worked-example.md` — a knip run classified by risk and removed in three verified commits; vulture and jscpd equivalents. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

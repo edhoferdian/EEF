@@ -53,7 +53,7 @@ jobs:
             python "scripts/$s.py" --check
           done
       - name: Installer runs
-        run: node bin/eef.js --help > /dev/null
+        run: node cli/eef.js --help > /dev/null
       - name: npm publish
         run: npm publish --provenance --access public
         env:

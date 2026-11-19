@@ -59,6 +59,10 @@ isolatable, revertable unit of work** never mixed with an unrelated feature
 change or bug fix (Global rules 1 and 5). Full contract:
 `skill-authoring-edho-ferdian` §10.
 
+## Worked examples
+
+`references/before-after.md` — every Phase 2 pattern as before/after code in TypeScript, Python and Go, and a report row. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

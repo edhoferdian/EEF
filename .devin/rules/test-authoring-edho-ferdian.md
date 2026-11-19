@@ -116,6 +116,7 @@ and follow it — don't write its part from memory.
 - Windows desktop UI tests → `desktop-e2e-edho-ferdian`
 - Tests failing because the build broke → `build-fix-edho-ferdian`
 - Reviewing test quality → `code-review-edho-ferdian`
+- UI behaviour under worst-case data → `design-engineering-edho-ferdian`
 
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 

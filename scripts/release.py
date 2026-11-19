@@ -13,7 +13,7 @@ step that fails:
  2. checks — validate_skills.py, every `run_check` script listed in
     .husky/pre-commit (so the two lists cannot drift apart), the
     benchmark-record check, the per-session context budget, and
-    `node --check bin/eef.js`;
+    `node --check cli/eef.js`;
  3. bump on branch release/vX.Y.Z — package.json/package-lock.json (npm
     version) and the Claude Code plugin version in .claude-plugin/ by the
     same kind of bump (major, minor or patch) — re-run the checks, push,
@@ -105,7 +105,7 @@ def run_checks() -> None:
     run("python", "evals/review-seeded-bugs/run.py", "--check-records")
     run("python", "evals/build-fix/run.py", "--check-records")
     run("python", "scripts/measure_context.py", *CONTEXT_BUDGET)
-    run("node", "--check", "bin/eef.js")
+    run("node", "--check", "cli/eef.js")
 
 
 def wait_for_run(workflow: str, *, commit: str | None = None, timeout_s: int = 1800) -> str:

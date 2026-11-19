@@ -302,6 +302,10 @@ and follow it — don't write its part from memory.
 - Checking existing skills for overlap or staleness → `skill-audit-edho-ferdian`
 - Updating README and catalog docs → `docs-sync-edho-ferdian`
 
+## Worked examples
+
+`references/skill-template.md` — a copy-ready SKILL.md, a weak vs good description, a worked-example skeleton, the wiring steps (router, guard, handoffs, dev-kickoff) and the pre-PR checks.
+
 ## §11 — Skill handoffs (canonical contract — every skill's "Hands off to" points here)
 
 EEF skills complement each other: each SKILL.md ends with a short

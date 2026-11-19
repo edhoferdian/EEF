@@ -24,6 +24,10 @@ yang bisa dibuktikan: `robots.txt` memblokir halaman penting, `noindex` tidak
 sengaja terpasang, canonical menunjuk ke URL yang salah, atau structured data
 rusak. Skill ini mengaudit itu secara sistematis, bukan menebak-nebak.
 
+## Worked examples
+
+`references/fix-recipes.md` — curl checks that prove a finding, and Next.js/HTML fixes for metadata, sitemap, robots, JSON-LD, hreflang, redirects. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool
@@ -32,6 +36,7 @@ and follow it — don't write its part from memory.
 - Fixing markup, rendering or routing → `frontend-engineering-edho-ferdian`
 - Page speed findings → `performance-audit-edho-ferdian`
 - Content and positioning → `marketing-edho-ferdian`
+- Layout shift or late UI from motion → `design-engineering-edho-ferdian`
 
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 

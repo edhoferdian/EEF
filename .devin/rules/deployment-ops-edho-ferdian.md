@@ -49,6 +49,10 @@ Actions workflow with parallel gates and a branch/event-guarded deploy job,
 lockfile-hash-keyed caching, and the fail-fast-vs-fail-informatively
 distinction.
 
+## Worked examples
+
+`references/pipeline-examples.md` — GitHub Actions with a manual gate, smoke script, health/readiness endpoints, Kubernetes probes, rollback per platform, flags. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

@@ -240,6 +240,10 @@ split that gate into `references/`, following the domain+lens pattern other
 skills in this ecosystem use — do not let this file creep past ~300 lines to
 avoid making that call.
 
+## Worked examples
+
+`references/gate-recipes.md` — blast radius, rollback and safer alternative per destructive command; freeze via permissions, a hook and worktrees. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

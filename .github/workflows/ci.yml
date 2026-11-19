@@ -127,83 +127,83 @@ jobs:
         run: node --test tests/*.test.js
       - name: --list returns one line per skill folder
         run: |
-          count=$(node bin/eef.js --list | wc -l)
+          count=$(node cli/eef.js --list | wc -l)
           expected=$(ls skills | wc -l)
           test "$count" -eq "$expected"
       - name: --help runs without error
-        run: node bin/eef.js --help
+        run: node cli/eef.js --help
       - name: install target=cursor into a throwaway directory
         run: |
           mkdir -p /tmp/eef-cli-test
           cd /tmp/eef-cli-test
-          node "$GITHUB_WORKSPACE/bin/eef.js" --target cursor
+          node "$GITHUB_WORKSPACE/cli/eef.js" --target cursor
           test -d .cursor/rules
           test "$(ls .cursor/rules | wc -l)" -eq "$(ls "$GITHUB_WORKSPACE/skills" | wc -l)"
       - name: install target=zcode into a throwaway directory
         run: |
           mkdir -p /tmp/eef-cli-test-zcode
           cd /tmp/eef-cli-test-zcode
-          node "$GITHUB_WORKSPACE/bin/eef.js" --target zcode
+          node "$GITHUB_WORKSPACE/cli/eef.js" --target zcode
           test -d .zcode/skills
           test "$(ls .zcode/skills | wc -l)" -eq "$(ls "$GITHUB_WORKSPACE/skills" | wc -l)"
       - name: install target=claude-agents into a throwaway directory
         run: |
           mkdir -p /tmp/eef-cli-test-claude-agents
-          CLAUDE_AGENTS_DIR=/tmp/eef-cli-test-claude-agents node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents
+          CLAUDE_AGENTS_DIR=/tmp/eef-cli-test-claude-agents node "$GITHUB_WORKSPACE/cli/eef.js" --target claude-agents
           test -f /tmp/eef-cli-test-claude-agents/code-reviewer-edho-ferdian.md
       - name: install target=claude-agents --profile rewrites model/effort (D-060)
         run: |
           d=/tmp/eef-cli-test-claude-profile
-          CLAUDE_AGENTS_DIR=$d node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents --profile hemat
+          CLAUDE_AGENTS_DIR=$d node "$GITHUB_WORKSPACE/cli/eef.js" --target claude-agents --profile hemat
           grep -qx "model: sonnet" $d/code-reviewer-edho-ferdian.md
           test "$(grep -c '^effort:' $d/dev-kickoff-edho-ferdian.md)" -eq 1
           grep -qx "effort: medium" $d/dev-kickoff-edho-ferdian.md
-          if node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents --profile no-such-profile; then exit 1; fi
+          if node "$GITHUB_WORKSPACE/cli/eef.js" --target claude-agents --profile no-such-profile; then exit 1; fi
       - name: install target=claude-agents --roster inti keeps only isolation agents, and update keeps it lean
         run: |
           d=/tmp/eef-cli-test-roster
           export CLAUDE_AGENTS_DIR=$d CLAUDE_SKILLS_DIR=$d-skills CLAUDE_RULES_DIR=$d-rules CLAUDE_HOOKS_DIR=$d-hooks
-          node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents
+          node "$GITHUB_WORKSPACE/cli/eef.js" --target claude-agents
           echo "mine" > $d/my-own-agent.md
-          node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents --roster inti
+          node "$GITHUB_WORKSPACE/cli/eef.js" --target claude-agents --roster inti
           test -f $d/code-critic-edho-ferdian.md
           test ! -e $d/build-fix-edho-ferdian.md
           test -f $d/my-own-agent.md
           test "$(ls $d | grep -c edho-ferdian)" -eq "$(grep -L 'Agent form of the' $GITHUB_WORKSPACE/dist/agents/claude/*.md | wc -l)"
-          node "$GITHUB_WORKSPACE/bin/eef.js" update
+          node "$GITHUB_WORKSPACE/cli/eef.js" update
           test ! -e $d/build-fix-edho-ferdian.md
-          if node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents --roster no-such-roster; then exit 1; fi
+          if node "$GITHUB_WORKSPACE/cli/eef.js" --target claude-agents --roster no-such-roster; then exit 1; fi
       - name: update replaces only stale items and keeps each agent's model
         run: |
           d=/tmp/eef-cli-test-update
           export CLAUDE_AGENTS_DIR=$d/agents CLAUDE_SKILLS_DIR=$d/skills CLAUDE_RULES_DIR=$d/rules CLAUDE_HOOKS_DIR=$d/hooks
-          node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents --profile hemat
+          node "$GITHUB_WORKSPACE/cli/eef.js" --target claude-agents --profile hemat
           echo "stale" >> $d/agents/build-fix-edho-ferdian.md
           rm $d/agents/video-style-edho-ferdian.md
-          node "$GITHUB_WORKSPACE/bin/eef.js" update
+          node "$GITHUB_WORKSPACE/cli/eef.js" update
           ! grep -q stale $d/agents/build-fix-edho-ferdian.md
           grep -qx "effort: low" $d/agents/video-style-edho-ferdian.md
           test ! -e $d/skills
-          node "$GITHUB_WORKSPACE/bin/eef.js" update | grep -q "already matches"
+          node "$GITHUB_WORKSPACE/cli/eef.js" update | grep -q "already matches"
       - name: install target=codex-agents writes parseable TOML with the profile's models
         run: |
           d=/tmp/eef-cli-test-codex-agents
-          CODEX_AGENTS_DIR=$d node "$GITHUB_WORKSPACE/bin/eef.js" --target codex-agents --profile maksimal
+          CODEX_AGENTS_DIR=$d node "$GITHUB_WORKSPACE/cli/eef.js" --target codex-agents --profile maksimal
           python3 -c "import tomllib,glob,sys; fs=glob.glob('$d/*.toml'); assert len(fs)==len(glob.glob('$GITHUB_WORKSPACE/agents/*/AGENT.md')); d=tomllib.load(open('$d/code-reviewer-edho-ferdian.toml','rb')); assert d['model_reasoning_effort']=='xhigh', d"
       - name: install target=opencode-agents merges without clobbering existing config
         run: |
           mkdir -p /tmp/eef-cli-test-opencode-agents
           cd /tmp/eef-cli-test-opencode-agents
           echo '{"$schema":"https://opencode.ai/config.json","mcp":{"my-own-server":{"type":"http","url":"https://example.com"}},"agent":{"my-own-agent":{"mode":"subagent"}}}' > opencode.json
-          node "$GITHUB_WORKSPACE/bin/eef.js" --target opencode-agents
+          node "$GITHUB_WORKSPACE/cli/eef.js" --target opencode-agents
           node -e "const c=require('./opencode.json'); if(!c.mcp['my-own-server']) throw new Error('clobbered mcp'); if(!c.agent['my-own-agent']) throw new Error('clobbered existing agent'); if(!c.agent['code-reviewer-edho-ferdian']) throw new Error('missing merged agent');"
           test -f prompts/agents/code-reviewer-edho-ferdian.txt
       - name: install target=zcode-agents twice is idempotent and additive-only
         run: |
           mkdir -p /tmp/eef-cli-test-zcode-agents
           echo "existing content" > /tmp/eef-cli-test-zcode-agents/my-own-agent.md
-          ZCODE_AGENTS_DIR=/tmp/eef-cli-test-zcode-agents node "$GITHUB_WORKSPACE/bin/eef.js" --target zcode-agents
-          ZCODE_AGENTS_DIR=/tmp/eef-cli-test-zcode-agents node "$GITHUB_WORKSPACE/bin/eef.js" --target zcode-agents
+          ZCODE_AGENTS_DIR=/tmp/eef-cli-test-zcode-agents node "$GITHUB_WORKSPACE/cli/eef.js" --target zcode-agents
+          ZCODE_AGENTS_DIR=/tmp/eef-cli-test-zcode-agents node "$GITHUB_WORKSPACE/cli/eef.js" --target zcode-agents
           test -f /tmp/eef-cli-test-zcode-agents/code-reviewer-edho-ferdian.md
           test -f /tmp/eef-cli-test-zcode-agents/my-own-agent.md
       - name: install target=claude-hooks merges into settings.json without clobbering or duplicating
@@ -212,10 +212,10 @@ jobs:
           mkdir -p $d
           export CLAUDE_HOOKS_DIR=$d/hooks CLAUDE_SETTINGS_FILE=$d/settings.json
           echo '{"model":"opus","permissions":{"allow":["Bash(ls:*)"]},"hooks":{"PreToolUse":[{"matcher":"Edit","hooks":[{"type":"command","command":"echo mine"}]}]}}' > $d/settings.json
-          node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks --only fs-guard
+          node "$GITHUB_WORKSPACE/cli/eef.js" --target claude-hooks --only fs-guard
           node -e "const c=require('$d/settings.json'); if(c.hooks.PostToolUse||c.statusLine) throw new Error('--only fs-guard also added another hook');"
-          node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks
-          node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks
+          node "$GITHUB_WORKSPACE/cli/eef.js" --target claude-hooks
+          node "$GITHUB_WORKSPACE/cli/eef.js" --target claude-hooks
           node -e "
             const c=require('$d/settings.json');
             if(c.model!=='opus'||c.permissions.allow[0]!=='Bash(ls:*)') throw new Error('clobbered other keys');
@@ -230,7 +230,7 @@ jobs:
           "
           test -f $d/hooks/statusline-usage.js
           echo '{"statusLine":{"type":"command","command":"mine"}}' > $d/own.json
-          CLAUDE_SETTINGS_FILE=$d/own.json node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks --only statusline
+          CLAUDE_SETTINGS_FILE=$d/own.json node "$GITHUB_WORKSPACE/cli/eef.js" --target claude-hooks --only statusline
           node -e "if(require('$d/own.json').statusLine.command!=='mine') throw new Error('clobbered an existing statusLine');"
           echo '{"rate_limits":{"five_hour":{"used_percentage":12}}}' | NO_COLOR=1 node $d/hooks/statusline-usage.js | grep -q '^5h 12%'
           test -f $d/hooks/block-fs-wide-search.js
@@ -240,35 +240,35 @@ jobs:
           echo '{"tool_name":"PowerShell","tool_input":{"command":"Remove-Item dist -Recurse -Force"}}' | bash -c "$cmd" | grep -q '"permissionDecision":"ask"'
           echo '{"tool_name":"Bash","tool_input":{"command":"git reset --hard"}}' | bash -c "$cmd" | grep -q '"permissionDecision":"ask"'
           test -z "$(echo '{"tool_name":"PowerShell","tool_input":{"command":"Remove-Item a.txt -Force"}}' | bash -c "$cmd")"
-          if node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks --only no-such-hook; then exit 1; fi
+          if node "$GITHUB_WORKSPACE/cli/eef.js" --target claude-hooks --only no-such-hook; then exit 1; fi
           echo '{ not json' > $d/settings.json
-          if node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks; then exit 1; fi
+          if node "$GITHUB_WORKSPACE/cli/eef.js" --target claude-hooks; then exit 1; fi
           test "$(cat $d/settings.json)" = '{ not json'
       - name: doctor reports installed targets, model profile, and fails only on breakage
         run: |
           d=/tmp/eef-cli-test-doctor
           export CLAUDE_SKILLS_DIR=$d/skills CLAUDE_AGENTS_DIR=$d/agents CLAUDE_RULES_DIR=$d/rules CLAUDE_HOOKS_DIR=$d/hooks CLAUDE_SETTINGS_FILE=$d/settings.json
-          node "$GITHUB_WORKSPACE/bin/eef.js" doctor | grep -q "not installed"
-          node "$GITHUB_WORKSPACE/bin/eef.js" > /dev/null
-          node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-agents --profile maksimal > /dev/null
-          node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-rules > /dev/null
-          node "$GITHUB_WORKSPACE/bin/eef.js" --target claude-hooks > /dev/null
-          out=$(node "$GITHUB_WORKSPACE/bin/eef.js" doctor)
+          node "$GITHUB_WORKSPACE/cli/eef.js" doctor | grep -q "not installed"
+          node "$GITHUB_WORKSPACE/cli/eef.js" > /dev/null
+          node "$GITHUB_WORKSPACE/cli/eef.js" --target claude-agents --profile maksimal > /dev/null
+          node "$GITHUB_WORKSPACE/cli/eef.js" --target claude-rules > /dev/null
+          node "$GITHUB_WORKSPACE/cli/eef.js" --target claude-hooks > /dev/null
+          out=$(node "$GITHUB_WORKSPACE/cli/eef.js" doctor)
           echo "$out"
           echo "$out" | grep -q "model profile: maksimal"
           echo "$out" | grep -q "No breakage found."
           echo "$out" | grep -q "Salak (optional.*not found"
           mkdir -p $d/fakebin
           printf '#!/bin/sh\necho "salak 0.2.4"\n' > $d/fakebin/salak && chmod +x $d/fakebin/salak
-          out=$(PATH="$d/fakebin:$PATH" node "$GITHUB_WORKSPACE/bin/eef.js" doctor)
+          out=$(PATH="$d/fakebin:$PATH" node "$GITHUB_WORKSPACE/cli/eef.js" doctor)
           echo "$out" | grep -q "salak 0.2.4 — older than 0.3"
           echo "$out" | grep -q "No breakage found."
           printf '#!/bin/sh\necho "salak 0.3.1"\n' > $d/fakebin/salak
-          PATH="$d/fakebin:$PATH" node "$GITHUB_WORKSPACE/bin/eef.js" doctor | grep -qx "Salak (optional dependency graph; skills use it when present) — salak 0.3.1"
+          PATH="$d/fakebin:$PATH" node "$GITHUB_WORKSPACE/cli/eef.js" doctor | grep -qx "Salak (optional dependency graph; skills use it when present) — salak 0.3.1"
           echo "local edit" >> $d/agents/code-reviewer-edho-ferdian.md
-          node "$GITHUB_WORKSPACE/bin/eef.js" doctor | grep -q "differ (older EEF version, or edited locally): code-reviewer-edho-ferdian"
+          node "$GITHUB_WORKSPACE/cli/eef.js" doctor | grep -q "differ (older EEF version, or edited locally): code-reviewer-edho-ferdian"
           rm $d/hooks/log-subagent-run.js
-          if node "$GITHUB_WORKSPACE/bin/eef.js" doctor; then exit 1; fi
+          if node "$GITHUB_WORKSPACE/cli/eef.js" doctor; then exit 1; fi
 
   plugin-validate:
     name: Claude Code plugin manifest

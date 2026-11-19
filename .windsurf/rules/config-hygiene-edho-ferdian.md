@@ -204,16 +204,14 @@ breaks before its replacement exists:
 - ECC-managed paths are in scope only inside the decommissioning track,
   and only ever to remove them.
 
+## Worked examples
+
+`references/inventory-scripts.md` — read-only scripts for skills, duplicates, settings, MCP, memory and disk, plus the change log and before/after proof. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool
 and follow it — don't write its part from memory.
 
-- The skills in this repo (not ~/.claude) → `skill-audit-edho-ferdian`
-- A destructive cleanup step → `safe-execution-edho-ferdian`
-
-## Provenance
-
-Adapted from ECC `config-gc`, `context-budget`, `workspace-surface-audit`,
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/config-hygiene-edho-ferdian/SKILL.md` for complete instructions.

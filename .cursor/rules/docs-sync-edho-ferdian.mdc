@@ -113,6 +113,10 @@ why), and which dependency sections were populated vs. deferred. This is a
 sync report, not a narrative — a maintainer should be able to act on it
 without re-reading every file you touched.
 
+## Worked examples
+
+`references/automated-checks.md` — scripts that check paths, links, compiling snippets and CLI-help drift; a README skeleton. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

@@ -171,6 +171,20 @@ const TARGETS = {
     },
   },
 
+  // Antigravity reads <workspace>/.agents/skills and, globally,
+  // ~/.gemini/config/skills (antigravity.google/docs/skills, checked
+  // 2026-11-19). Same SKILL.md tree as the OpenClaw export.
+  antigravity: {
+    label: "Antigravity",
+    scope: "project (.agents/skills) by default, --global for ~/.gemini/config/skills",
+    install(_skillNames, opts) {
+      const destRoot = opts.global
+        ? path.join(os.homedir(), ".gemini", "config", "skills")
+        : path.join(process.cwd(), ".agents", "skills");
+      copySkillsInto(path.join(PKG_ROOT, ".agents", "skills"), destRoot);
+    },
+  },
+
   kiro: {
     label: "Kiro",
     scope: "project by default, --global for ~/.kiro",
