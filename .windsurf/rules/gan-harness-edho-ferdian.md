@@ -179,6 +179,15 @@ format, and the iteration/stop-condition rules: **`references/evaluate-phase.md`
 3. **Detect the driver, don't hardcode it.** Same rule as
    `e2e-testing-edho-ferdian`.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Structure of the generated app → `frontend-engineering-edho-ferdian`
+- Motion and polish in the rubric → `design-engineering-edho-ferdian`
+- Journey tests the evaluator drives → `e2e-testing-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user (Plan/Generate/Evaluate narration, feedback to the

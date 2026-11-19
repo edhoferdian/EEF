@@ -171,6 +171,17 @@ Any FAIL → fix before presenting, or state explicitly why it's being
 presented anyway (e.g. "no real alternative exists — this is a constrained
 choice, not a preference, because <reason>").
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- The API surface → `api-design-edho-ferdian`
+- The data model and storage → `data-layer-patterns-edho-ferdian`
+- Service implementation → `backend-engineering-edho-ferdian`
+- Rollout, environments, scaling → `deployment-ops-edho-ferdian`
+- The frontend architecture → `frontend-engineering-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 - Communication with the user → Bahasa Indonesia.

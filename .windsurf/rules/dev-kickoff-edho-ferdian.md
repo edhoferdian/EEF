@@ -52,11 +52,23 @@ PLAN → TEST → IMPLEMENT → REVIEW → VERIFY → REMEMBER → IMPROVE
   stack in scope. Escape hatches and the rule for untestable tasks:
   `references/execution-loop.md`.
 - **IMPLEMENT** — real code until the test passes (GREEN). No placeholders.
-  Detect the surface being touched and invoke the matching specialist skill
-  for its idioms (`frontend-engineering-edho-ferdian`,
-  `backend-engineering-edho-ferdian`, `api-design-edho-ferdian`,
-  `data-layer-patterns-edho-ferdian`) the moment the touched files say so,
-  rather than writing from general knowledge alone.
+  Detect the surface being touched and **load** the matching specialist
+  skill with the Skill tool the moment the touched files say so, rather
+  than writing from general knowledge alone:
+
+  | Touched files | Load |
+  |---|---|
+  | `.tsx` `.jsx` `.vue` `.svelte` `.css` `.html`, Tailwind config | `frontend-engineering-edho-ferdian` + `design-engineering-edho-ferdian` |
+  | Animations, gestures, sheets, Expo/React Native screens, `.swift` | `design-engineering-edho-ferdian` |
+  | routes, controllers, services, jobs, workers | `backend-engineering-edho-ferdian` |
+  | OpenAPI/GraphQL schema, new endpoints | `api-design-edho-ferdian` |
+  | `schema.prisma`, migrations, `.sql`, cache keys | `data-layer-patterns-edho-ferdian` |
+  | `Dockerfile`, compose files | `container-ops-edho-ferdian` |
+  | CI workflows, k8s/helm, deploy scripts | `deployment-ops-edho-ferdian` |
+  | Auth, payments, secrets, file upload | add `security-review-edho-ferdian` at REVIEW |
+
+  The `skill-guard` hook names the owner skill on the first edit of such
+  a file when it isn't loaded yet; treat that note as this rule firing.
 - **REVIEW** — the reviewer must not reuse the implementer's reasoning:
   delegate to the `code-reviewer-edho-ferdian` agent where the harness can
   delegate, else run `code-review-edho-ferdian` directly; add
@@ -84,6 +96,13 @@ Reflection block. "It's a small change" is not a reason. A sibling-skill
 handoff at any stage follows the same rule: skip only with a stated reason
 (e.g. the touched surface has no matching specialist skill yet), never
 silently.
+
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- A stage's specialist work — see the stage and file maps in this skill → the matching skill
 
 ## Language routing (fixed base rule — see skill-authoring-edho-ferdian §7; this skill extends it below, v2.0 inherited-not-hardcoded)
 
@@ -194,24 +213,5 @@ this from the trace and from `spec-mining-edho-ferdian`.
 
 ## Phase 1 — Project Decision Register
 
-Extract every binding decision into one execution-ready document
-(8 sections: binding decisions with source + reversal cost, stack with exact
-versions, conventions, non-goals, domain rules, open questions, risk register,
-and the language contract). **A decision without a traceable source is not a
-decision — it goes to OPEN QUESTIONS.** Format and rules:
-`references/intake-validation.md`.
-
-## Phase 2 — Context Pack, agent roster & project-memory files
-
-Build the portable pack (sections A–G) and write it in the variants the target
-needs: `CLAUDE.md`, `AGENTS.md`/`.cursorrules`,
-`.github/copilot-instructions.md`, and/or universal `context-pack.md`.
-
-Also produce a **project-fit agent roster** — a small set of
-scoped agent definitions (planner, test-author, implementer, reviewer,
-verifier, plus stack-specific reviewers the project actually needs) written
-into the layout the detected harness reads. If a comparable agent harness is
-already installed, **detect and defer to it** rather than shipping a
-competing set of instructions. Roster design, harness detection, delegation
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/dev-kickoff-edho-ferdian/SKILL.md` for complete instructions.

@@ -34,6 +34,16 @@ the native replacement.
   applications (which may legitimately use date/build versioning instead of
   strict SemVer).
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Reviewing before merge → `code-review-edho-ferdian`
+- CI failing on a build step → `build-fix-edho-ferdian`
+- Shipping the release → `deployment-ops-edho-ferdian`
+- README or docs the release changes → `docs-sync-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user (branch/PR/CI discussion) in Bahasa Indonesia;

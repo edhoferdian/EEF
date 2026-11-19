@@ -9,5 +9,18 @@
   },
   "homepage": "https://github.com/edhoferdian/EEF#readme",
   "repository": "https://github.com/edhoferdian/EEF",
-  "license": "MIT"
+  "license": "MIT",
+  "agents": [
+    "./dist/agents/claude/click-path-tracer-edho-ferdian.md",
+    "./dist/agents/claude/code-critic-edho-ferdian.md",
+    "./dist/agents/claude/code-reviewer-edho-ferdian.md",
+    "./dist/agents/claude/gan-evaluator-edho-ferdian.md",
+    "./dist/agents/claude/gan-generator-edho-ferdian.md",
+    "./dist/agents/claude/opensource-sanitizer-edho-ferdian.md",
+    "./dist/agents/claude/research-fact-checker-edho-ferdian.md",
+    "./dist/agents/claude/research-worker-edho-ferdian.md",
+    "./dist/agents/claude/security-hunter-edho-ferdian.md",
+    "./dist/agents/claude/security-verifier-edho-ferdian.md",
+    "./dist/agents/claude/spec-mining-worker-edho-ferdian.md"
+  ]
 }

@@ -110,6 +110,19 @@ request requires — don't refactor adjacent, already-working code as a side
 effect of adding a feature. Full contract: `skill-authoring-edho-ferdian`
 §10.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Motion, gestures, polish, mobile feel, worst-case data → `design-engineering-edho-ferdian`
+- The API the screen calls → `api-design-edho-ferdian`
+- Component tests → `test-authoring-edho-ferdian`
+- A user-journey test → `e2e-testing-edho-ferdian`
+- Page speed, bundle size or Core Web Vitals → `performance-audit-edho-ferdian`
+- Meta tags, indexing, structured data → `seo-audit-edho-ferdian`
+- Reviewing the finished change → `code-review-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user in Bahasa Indonesia; component code, comments, and

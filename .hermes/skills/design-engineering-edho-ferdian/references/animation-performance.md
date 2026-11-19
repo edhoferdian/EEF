@@ -89,3 +89,111 @@ writes; or use FLIP (measure first/last, animate the transform between).
 | Random properties animate | No `transition: all`; list properties |
 | Re-renders every frame | Write to a ref / CSS variable |
 | 1 px shift when motion starts | `will-change: transform` on that element only |
+
+## Measuring in Chrome DevTools
+
+1. **Performance panel**, CPU throttling 4× (6× for low-end phones),
+   record the interaction. Look at the frames track: red/yellow frames are
+   dropped/partial.
+2. In the main thread flame chart, find what runs during the animation:
+   long tasks (> 50 ms), "Recalculate Style", "Layout", "Paint".
+   Layout or paint every frame → wrong property.
+3. **Rendering drawer** → Paint flashing (green = repaint each frame),
+   Layer borders, Frame rendering stats (FPS meter).
+4. **Layers panel**: count and memory of composited layers; hundreds of
+   layers = `will-change` overuse.
+5. On a real phone: remote debugging (`chrome://inspect`, Safari Web
+   Inspector). Desktop numbers flatter mobile.
+6. Fix one thing, record again, compare. Report before/after numbers.
+
+## Patterns
+
+### Animate size with transform (FLIP)
+
+```ts
+function flip(el: HTMLElement, mutate: () => void) {
+  const first = el.getBoundingClientRect();
+  mutate();                                   // apply the layout change
+  const last = el.getBoundingClientRect();
+  const dx = first.left - last.left, dy = first.top - last.top;
+  const sx = first.width / last.width, sy = first.height / last.height;
+  el.animate(
+    [{ transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})` }, { transform: "none" }],
+    { duration: 240, easing: "cubic-bezier(0.22, 1, 0.36, 1)" }
+  );
+}
+```
+
+Motion's `layout` prop does this for you, including scale correction of
+children and border radius.
+
+### Pointer- or scroll-linked values without React re-renders
+
+```tsx
+const x = useMotionValue(0);
+const rotate = useTransform(x, [-200, 200], [-8, 8]);
+// Updates styles directly; the component renders once.
+<motion.div style={{ x, rotate }} onPointerMove={(e) => x.set(e.clientX - center)} />
+```
+
+```ts
+// Vanilla: write a CSS variable, let CSS compute the transform
+el.addEventListener("pointermove", (e) => el.style.setProperty("--mx", String(e.clientX)));
+```
+
+```css
+.card { transform: translateX(calc((var(--mx, 0) - 400) * 0.02px)); }
+```
+
+### Scroll-driven animation off the main thread
+
+```css
+@supports (animation-timeline: scroll()) {
+  .progress { transform-origin: left; animation: grow linear; animation-timeline: scroll(root); }
+}
+@keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+```
+
+Prefer this over `scroll` event listeners for progress bars, parallax and
+reveals.
+
+### Cheap shadow animation
+
+```css
+.card { position: relative; }
+.card::after { content: ""; position: absolute; inset: 0; border-radius: inherit;
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.18); opacity: 0; transition: opacity 200ms var(--ease-out); }
+.card:hover::after { opacity: 1; }        /* opacity, not box-shadow, animates */
+```
+
+### Content-visibility for long pages
+
+```css
+.section { content-visibility: auto; contain-intrinsic-size: auto 800px; }
+```
+
+Off-screen sections skip layout and paint; animations elsewhere get the
+frame budget.
+
+## Motion (motion/react) specifics
+
+- Independent transforms (`x`, `y`, `scale`) are convenient; check the
+  installed version's docs for whether they run hardware-accelerated or on
+  the main thread, and use a `transform` string when it matters.
+- `layout` animations measure the DOM; many simultaneous layout animations
+  on a big list are expensive — scope them with `LayoutGroup` and avoid
+  `layout` on every row of a long list.
+- `AnimatePresence` with hundreds of children is costly; animate the
+  container instead.
+- `useScroll` + `useTransform` are scroll-linked on the main thread;
+  prefer CSS scroll timelines for simple effects.
+
+## Low-end and battery
+
+- Respect `prefers-reduced-motion`; also consider
+  `navigator.hardwareConcurrency <= 4` or `navigator.deviceMemory <= 4`
+  (where available) to simplify heavy effects.
+- Pause offscreen and background-tab animations (`IntersectionObserver`,
+  `document.visibilityState`).
+- Canvas/WebGL backgrounds: cap the frame rate, pause when hidden, and
+  provide a static fallback.

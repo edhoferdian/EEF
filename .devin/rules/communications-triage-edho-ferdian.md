@@ -101,6 +101,14 @@ For every `action_required` message:
    this is non-negotiable regardless of how obviously correct the draft
    seems.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- A reply to a customer, supplier or partner → `counterparty-comms-edho-ferdian`
+- Polishing the wording → `humanize-edho-ferdian` (when installed — it ships separately)
+
 ## Language routing (fixed base rule — see skill-authoring-edho-ferdian §7; this skill extends it below)
 
 Triage summaries and discussion with the user → Bahasa Indonesia (base
@@ -210,10 +218,5 @@ it:
   untrusted data, cleanup rules) and message/DM-surface handling (resolving
   the exact thread, one-time-code retrieval discipline, reporting shape),
   plus how blockers on a live surface should be handled and reported. Load
-  this file once an actual mail or message surface is named, not while
-  operating purely on pasted content in chat.
-- **`references/workspace-ops.md`** — Google Workspace surface handling
-  (Drive/Docs/Sheets/Slides find-review-edit-maintain workflow, the
-  read-only vs. explicit-approval table for sharing/deleting, and this
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/communications-triage-edho-ferdian/SKILL.md` for complete instructions.

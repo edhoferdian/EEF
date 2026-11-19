@@ -30,6 +30,14 @@ penting membawa label asal-usulnya, dan memaksa memilih jalur bukti termurah
 yang benar-benar menjawab pertanyaan — bukan otomatis menjalankan riset
 berat untuk pertanyaan yang jawabannya ada di repo sendiri.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Turning findings into an architecture decision → `system-design-edho-ferdian`
+- Turning findings into positioning or copy → `marketing-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 - Discussion, recommendation, and framing to the user → **Bahasa Indonesia**.

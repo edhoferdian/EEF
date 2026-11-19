@@ -54,6 +54,15 @@ const HOOKS = {
     event: "UserPromptSubmit",
     timeout: 5,
   },
+  // Names the EEF skill that owns a file about to be edited (a .tsx, a
+  // migration, a Dockerfile) when this session hasn't loaded it. Never blocks.
+  "skill-guard": {
+    file: "skill-guard.js",
+    src: path.join(SKILLS_DIR, "config-hygiene-edho-ferdian", "hooks", "skill-guard.js"),
+    event: "PreToolUse",
+    matcher: "Edit|Write|MultiEdit|NotebookEdit",
+    timeout: 5,
+  },
   "skill-telemetry": {
     file: "log-skill-use.js",
     src: path.join(SKILLS_DIR, "config-hygiene-edho-ferdian", "hooks", "log-skill-use.js"),
@@ -221,7 +230,7 @@ const TARGETS = {
   },
 
   "claude-hooks": {
-    label: "Claude Code hooks (fs-guard: blocks root-wide searches, asks before destructive commands; telemetry: logs subagent runs; skill-router: names the matching EEF skill for each prompt; skill-telemetry: logs skill loads; statusline: quota/context/agents, only if no statusLine is set) — registered in settings.json, other keys untouched; --only picks one",
+    label: "Claude Code hooks (fs-guard: blocks root-wide searches, asks before destructive commands; telemetry: logs subagent runs; skill-router: names the matching EEF skill for each prompt; skill-guard: names the skill that owns a file before it is edited; skill-telemetry: logs skill loads; statusline: quota/context/agents, only if no statusLine is set) — registered in settings.json, other keys untouched; --only picks one",
     scope: "global (or $CLAUDE_HOOKS_DIR + $CLAUDE_SETTINGS_FILE)",
     install(_skillNames, opts) {
       const names = opts.only ? [opts.only] : Object.keys(HOOKS);
@@ -799,6 +808,18 @@ function salakStatus() {
  * on clear breakage (an unparsable settings.json, a registered hook whose
  * file is gone); stale or partial installs are reported, not failed.
  */
+/** The EEF plugin's key in ~/.claude/plugins/installed_plugins.json, if installed. */
+function eefPluginInstall() {
+  const file = process.env.CLAUDE_PLUGINS_FILE || path.join(claudeDir(), "plugins", "installed_plugins.json");
+  try {
+    const data = JSON.parse(fs.readFileSync(file, "utf8"));
+    const keys = Object.keys((data && data.plugins) || data || {});
+    return keys.find((k) => k.split("@")[0] === "ekosistem-edho-ferdian") || null;
+  } catch {
+    return null;
+  }
+}
+
 function doctor() {
   let broken = 0;
   const say = (line) => console.log(line);
@@ -896,6 +917,16 @@ function doctor() {
       }
     }
     say(`  ${name} (${hook.file}): ${fileState}; ${regState}`);
+  }
+
+  // Plugin: installing EEF both as the Claude Code plugin and through
+  // eef-install lists every skill twice (once namespaced). Warn, don't count
+  // it as breakage: the hooks already keep the plugin copies quiet.
+  const plugin = eefPluginInstall();
+  say(`\nPlugin (ekosistem-edho-ferdian@eef-marketplace) — ${plugin ? `installed (${plugin})` : "not installed"}`);
+  if (plugin && skills.present.length) {
+    say("  WARNING: EEF is installed both as the plugin and in ~/.claude/skills — every skill is listed twice.");
+    say("  Keep one: `/plugin uninstall ekosistem-edho-ferdian@eef-marketplace`, or remove the eef-install copies.");
   }
 
   // Salak: optional, so absence or a failed probe is reported, never counted as breakage.
@@ -1064,9 +1095,11 @@ Hooks (--target claude-hooks):
                       subagent run to ~/.claude/eef/subagent-runs.jsonl) | statusline
                       (5h/7d quota, context, subagents, cost — set only when no
                       statusLine exists) | skill-router (UserPromptSubmit, names the
-                      installed EEF skill a prompt matches) | skill-telemetry
+                      installed EEF skill a prompt matches) | skill-guard
+                      (PreToolUse on Edit/Write, names the skill that owns the
+                      file when this session hasn't loaded it) | skill-telemetry
                       (PostToolUse on Skill, logs skill loads to
-                      ~/.claude/eef/skill-runs.jsonl). Default: all five.
+                      ~/.claude/eef/skill-runs.jsonl). Default: all six.
                       Existing settings.json keys are kept; a hook already registered
                       (even by hand) is never added twice; an unparsable file is refused.
 

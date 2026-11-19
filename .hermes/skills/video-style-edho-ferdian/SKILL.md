@@ -87,6 +87,13 @@ When adjusting an existing pipeline, change only the stage the task names;
 do not re-measure a cached pack or re-render untouched shots as a side
 effect. Full contract: `skill-authoring-edho-ferdian` §10.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Captions or copy for the video → `marketing-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user in Bahasa Indonesia; code, comments, prompts to

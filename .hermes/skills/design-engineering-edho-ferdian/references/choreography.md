@@ -76,3 +76,115 @@ acknowledgement (scale pulse). Keep it under ~500 ms total.
   "too much going on".
 - Opening takes over half a second because animations wait on each other.
 - The same entrance replays every time state changes.
+
+## Recipes
+
+### Staggered list entrance (first appearance only)
+
+```tsx
+const list = { show: { transition: { staggerChildren: 0.03, delayChildren: 0.02 } } };
+const item = {
+  hidden: { opacity: 0, y: 6 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.24, ease: [0.22, 1, 0.36, 1] } },
+};
+
+<motion.ul variants={list} initial="hidden" animate="show">
+  {items.slice(0, 8).map((i) => <motion.li key={i.id} variants={item} />)}
+  {items.slice(8).map((i) => <li key={i.id} />)}   {/* beyond the cap: no stagger */}
+</motion.ul>
+```
+
+### Hero entrance with overlap
+
+```tsx
+const [scope, animate] = useAnimate();
+useEffect(() => {
+  animate([
+    ["h1", { opacity: [0, 1], y: [12, 0] }, { duration: 0.4, ease: [0.22, 1, 0.36, 1] }],
+    ["p", { opacity: [0, 1], y: [8, 0] }, { duration: 0.35, at: "-0.3" }],      // starts while h1 finishes
+    [".cta", { opacity: [0, 1], scale: [0.97, 1] }, { duration: 0.3, at: "-0.25" }],
+  ]);
+}, []);
+```
+
+Total ≈ 0.55 s. Background and imagery stay still or fade once.
+
+### View swap inside a container that resizes
+
+```tsx
+const [ref, bounds] = useMeasure();      // e.g. react-use-measure
+<motion.div animate={{ height: bounds.height }} transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+  style={{ overflow: "hidden" }}>
+  <div ref={ref}>
+    <AnimatePresence mode="popLayout" initial={false}>
+      <motion.div key={view}
+        initial={{ opacity: 0, x: dir * 16, filter: "blur(2px)" }}
+        animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+        exit={{ opacity: 0, x: dir * -16, filter: "blur(2px)" }}
+        transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}>
+        {render(view)}
+      </motion.div>
+    </AnimatePresence>
+  </div>
+</motion.div>
+```
+
+`dir` is +1 for forward, −1 for back, so direction stays spatially
+consistent.
+
+### Morph a button into a panel
+
+```tsx
+<AnimatePresence>
+  {!open ? (
+    <motion.button layoutId="composer" style={{ borderRadius: 999 }} onClick={() => setOpen(true)}>
+      <motion.span layoutId="composer-label">New note</motion.span>
+    </motion.button>
+  ) : (
+    <motion.div layoutId="composer" style={{ borderRadius: 16 }} className="panel">
+      <motion.span layoutId="composer-label">New note</motion.span>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { delay: 0.1 } }}>
+        <Editor />
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
+```
+
+The shared shape and label lead; new content fades in after the shape
+has mostly arrived. Set `borderRadius` in `style` so Motion corrects it
+during the scale.
+
+### Item flying into a target (add to cart)
+
+```ts
+async function flyToCart(source: HTMLElement, target: HTMLElement) {
+  const a = source.getBoundingClientRect(), b = target.getBoundingClientRect();
+  const clone = source.cloneNode(true) as HTMLElement;
+  Object.assign(clone.style, { position: "fixed", left: `${a.left}px`, top: `${a.top}px`, width: `${a.width}px`, pointerEvents: "none", zIndex: "1000" });
+  document.body.append(clone);
+  const dx = b.left + b.width / 2 - (a.left + a.width / 2);
+  const dy = b.top + b.height / 2 - (a.top + a.height / 2);
+  await clone.animate(
+    [{ transform: "translate(0,0) scale(1)", opacity: 1 },
+     { transform: `translate(${dx * 0.6}px, ${dy * 0.3 - 40}px) scale(0.6)`, opacity: 1, offset: 0.6 }, // arc
+     { transform: `translate(${dx}px, ${dy}px) scale(0.2)`, opacity: 0.4 }],
+    { duration: 450, easing: "cubic-bezier(0.65, 0, 0.35, 1)" }
+  ).finished;
+  clone.remove();
+  target.animate([{ transform: "scale(1)" }, { transform: "scale(1.12)" }, { transform: "scale(1)" }], { duration: 220 });
+}
+```
+
+Skip the flight under reduced motion; keep the target's count update.
+
+## Timing table
+
+| Group | Lead | Followers start | Stagger | Settles by |
+|---|---|---|---|---|
+| Menu with items | Panel (150 ms) | With the panel | None or ≤ 15 ms | 200 ms |
+| List first load | First item | Immediately | 25–40 ms, cap 8 | ≤ 450 ms |
+| Hero | Headline (400 ms) | 30–50 % into the lead | 60–100 ms between blocks | ≤ 700 ms |
+| View swap | Outgoing exit (120 ms) | Incoming overlaps | — | ≤ 300 ms |
+| Item removed | Item exit (150 ms) | Siblings at ~60 % of exit | — | ≤ 350 ms |
+| Morph | Shared shape (250–300 ms) | Content at ~100 ms | — | ≤ 400 ms |

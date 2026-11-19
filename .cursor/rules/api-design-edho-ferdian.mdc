@@ -101,6 +101,17 @@ Any FAIL → fix before presenting, or state explicitly why (e.g. "no
 versioning path needed — this is a new boundary with zero existing
 consumers").
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Implementing the endpoints → `backend-engineering-edho-ferdian`
+- The schema or storage behind them → `data-layer-patterns-edho-ferdian`
+- Auth, rate limits or input validation → `security-review-edho-ferdian`
+- Contract or integration tests → `test-authoring-edho-ferdian`
+- Publishing the API docs → `docs-sync-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 - Communication with the user → Bahasa Indonesia.

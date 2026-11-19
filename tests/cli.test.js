@@ -49,7 +49,7 @@ test("claude-hooks keeps other keys and existing hooks, and never registers twic
 
   const c = readJson(settings);
   assert.strictEqual(c.model, "opus");
-  assert.strictEqual(c.hooks.PreToolUse.length, 2);
+  assert.deepStrictEqual(c.hooks.PreToolUse.map((g) => g.matcher), ["Edit", "Bash|PowerShell", "Edit|Write|MultiEdit|NotebookEdit"]);
   assert.strictEqual(c.hooks.PreToolUse[0].hooks[0].command, "echo mine");
   assert.deepStrictEqual(c.hooks.PostToolUse.map((g) => g.matcher), ["Agent", "Skill"]);
   assert.strictEqual(c.hooks.UserPromptSubmit.length, 1);

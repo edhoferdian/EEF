@@ -21,6 +21,18 @@ const path = require("path");
 
 const LOG_PATH = process.env.EEF_SKILL_LOG || path.join(os.homedir(), ".claude", "eef", "skill-runs.jsonl");
 
+// Plugin copy stays silent when eef-install registered its own copy, so a
+// skill load is never logged twice.
+function pluginCopyShadowed() {
+  const root = process.env.CLAUDE_PLUGIN_ROOT;
+  if (!root || !path.resolve(__dirname).startsWith(path.resolve(root))) return false;
+  try {
+    return fs.readFileSync(path.join(os.homedir(), ".claude", "settings.json"), "utf8").includes(path.basename(__filename));
+  } catch {
+    return false;
+  }
+}
+
 let raw = "";
 process.stdin.setEncoding("utf8");
 process.stdin.on("data", (chunk) => (raw += chunk));
@@ -28,6 +40,7 @@ process.stdin.on("end", () => {
   try {
     const input = JSON.parse(raw);
     if (input.hook_event_name !== "PostToolUse" || input.tool_name !== "Skill") return;
+    if (pluginCopyShadowed()) return;
     const skill = input.tool_input && typeof input.tool_input.skill === "string" ? input.tool_input.skill : null;
     if (!skill) return;
     const record = {

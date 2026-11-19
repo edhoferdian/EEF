@@ -127,6 +127,28 @@ than `~/.claude/skills`.
 This tracks the repo directly — updates land when the plugin/marketplace
 `version` fields are bumped in [`.claude-plugin/`](.claude-plugin/).
 
+The plugin is the whole Claude Code setup in one install:
+
+- **all skills**, namespaced `ekosistem-edho-ferdian:<skill>`;
+- **the isolation agents** (critics, evaluators, workers — the `inti`
+  roster; wrapper agents stay out because every agent description costs
+  context each session);
+- **hooks** from [`hooks/hooks.json`](hooks/hooks.json): the always-on
+  rules (a plugin can't ship `CLAUDE.md`, so a `SessionStart` hook loads
+  `rules/*.md`), `skill-router`, `skill-guard`, `fs-guard` and the local
+  telemetry.
+
+Use **either** the plugin **or** `eef-install` for Claude Code, not both —
+otherwise every skill is listed twice. `eef-install doctor` warns when it
+finds both. The hooks themselves stay quiet in the plugin when the same
+hook is registered by `eef-install`. The status line is not part of the
+plugin (a plugin can't set it); add it with
+`npx eef-install --target claude-hooks --only statusline`.
+
+claude.ai and Cowork don't install plugins that contain a top-level
+`bin/` directory, and this repo needs one for the npm CLI — so on claude.ai
+upload the `dist/*.skill` files instead.
+
 > **Note:** this GitHub repo is public, and `eef-install` is published on
 > npm — all four install options above work for anyone, no special access
 > needed.

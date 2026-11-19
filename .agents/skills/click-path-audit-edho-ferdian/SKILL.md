@@ -152,6 +152,14 @@ PLAN → TEST → IMPLEMENT loop: the failing test asserts the *final* state aft
 the handler runs, not that each individual function was called. A test that
 asserts `setComposeMode` was called would have passed against the original bug.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Fixing the UI handler or state → `frontend-engineering-edho-ferdian`
+- A regression test for the click path → `e2e-testing-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user in Bahasa Indonesia; the trace report and call

@@ -52,6 +52,15 @@ isolatable, revertable unit of work** never mixed with an unrelated feature
 change or bug fix (Global rules 1 and 5). Full contract:
 `skill-authoring-edho-ferdian` §10.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Tests to pin behaviour before refactoring → `test-authoring-edho-ferdian`
+- Code that is unused rather than complex → `dead-code-cleanup-edho-ferdian`
+- Reviewing the result → `code-review-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Narration to the user in Bahasa Indonesia; code, diffs, and commit messages

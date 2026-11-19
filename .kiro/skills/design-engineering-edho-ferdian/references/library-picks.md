@@ -85,3 +85,102 @@ toast("Saved");
 
 Check the installed version's API (Context7) for multiple toasters and
 newer options before using them.
+
+### Toaster props worth knowing
+
+| Prop | Use |
+|---|---|
+| `position` | `top-left`, `top-center`, `top-right`, `bottom-left`, `bottom-center`, `bottom-right` |
+| `expand` | Show all toasts expanded instead of stacked |
+| `visibleToasts` | How many show at once (default 3) |
+| `richColors` | Coloured success/error/warning/info |
+| `closeButton` | Show a close button on every toast |
+| `duration` | Default lifetime in ms |
+| `gap` | Space between expanded toasts |
+| `offset` / `mobileOffset` | Distance from the viewport edges |
+| `theme` | `light`, `dark`, `system` |
+| `dir` | `ltr`, `rtl`, `auto` |
+| `hotkey` | Keys that expand and focus the toasts (default Alt+T: `['altKey', 'KeyT']`); `[]` disables |
+| `swipeDirections` | Allowed swipe-to-dismiss directions (default from `position`) |
+| `id` | Name a second toaster; toasts reach it with `toast("…", { toasterId: "…" })` |
+| `toastOptions` | Defaults for every toast: `className`, `classNames`, `style`, `duration`, `unstyled` |
+| `icons` | Replace the default success/error/warning/info/loading icons |
+
+### Per-toast options
+
+`description`, `duration`, `id`, `icon`, `action` / `cancel`
+(`{ label, onClick }`), `onDismiss`, `onAutoClose`, `dismissible`,
+`important`, `className` / `classNames`, `position` (per toast).
+
+### Patterns
+
+```tsx
+// Undo instead of "are you sure?"
+toast("Note archived", {
+  action: { label: "Undo", onClick: () => restore(note.id) },
+});
+
+// Async with loading → result, keeping one toast
+toast.promise(saveSettings(values), {
+  loading: "Saving…",
+  success: "Settings saved",
+  error: (err) => `Couldn't save: ${err.message}`,
+});
+
+// Progress that updates in place
+const id = toast.loading("Uploading 0%");
+upload.on("progress", (p) => toast.loading(`Uploading ${p}%`, { id }));
+upload.on("done", () => toast.success("Uploaded", { id }));
+
+// Fully custom, still positioned and dismissed by Sonner
+toast.custom((t) => (
+  <div className="rounded-lg border bg-background p-4 shadow">
+    <p>New comment from Sari</p>
+    <button onClick={() => toast.dismiss(t)}>Close</button>
+  </div>
+));
+```
+
+### Tailwind + shadcn/ui
+
+shadcn/ui ships a `Sonner` wrapper component that wires `theme` from
+`next-themes` and token classes; use it instead of a raw `<Toaster />` in
+shadcn projects. For a fully custom look:
+
+```tsx
+<Toaster
+  toastOptions={{
+    unstyled: true,
+    classNames: {
+      toast: "flex items-start gap-3 rounded-xl border bg-popover p-4 text-popover-foreground shadow-lg",
+      title: "text-sm font-medium",
+      description: "text-sm text-muted-foreground",
+      actionButton: "rounded-md bg-primary px-2 py-1 text-xs text-primary-foreground",
+      error: "border-destructive/50",
+    },
+  }}
+/>
+```
+
+### Accessibility
+
+Sonner renders a live region; keep messages short, don't put critical
+information only in a toast that disappears, and give important toasts a
+longer `duration` or `Infinity` with a close button.
+
+---
+
+## Choosing a library — how to decide when the table doesn't cover it
+
+1. Does the project already have something that does this? Use it.
+2. Is it accessible out of the box (keyboard, screen reader, focus)?
+3. Is it maintained (recent releases, issues answered) and does it
+   support the project's React/framework version?
+4. Bundle cost relative to the feature (check with bundlephobia or the
+   build analyser).
+5. Headless vs styled: headless when the project has its own design
+   system; styled when speed matters more than look.
+6. Can it be themed with the project's tokens?
+
+Recommend one with a one-line reason; mention one alternative only when
+the trade-off is real.

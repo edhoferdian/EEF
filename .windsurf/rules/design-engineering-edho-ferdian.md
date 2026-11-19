@@ -22,7 +22,8 @@ whole folder.
 | One animation or transition, "animasikan ini" | `references/motion-foundations.md` (+ `motion-recipes.md`) | auto |
 | Several elements move together: stagger, hero entrance, view swap | `references/choreography.md` | auto |
 | Drag, swipe, sheets, snap points, "gak ngikutin jari" | `references/gestures.md` | auto |
-| Any of the above in React Native / Expo, haptics | `references/expo-motion.md` | auto |
+| Any of the above in React Native / Expo, haptics | `references/expo-motion.md` (+ `expo-recipes.md` for code) | auto |
+| Apple-style feel: fluid physical motion, materials, typography | `references/apple-design.md` | auto |
 | Janky, stutters, drops frames | `references/animation-performance.md` | auto |
 | Polish, interaction states, typography, depth, "rapikan UI" | `references/interface-polish.md` | auto |
 | Web app feels wrong on a phone (100vh, hover, zoom, notch) | `references/mobile-web-native.md` | auto |
@@ -67,6 +68,17 @@ after you route. For a vague "the motion feels off", ask whether it is
 - **Surgical changes**: `skill-authoring-edho-ferdian` §10.
 - **Extend the project's tokens** (curves, durations, spacing). A second,
   parallel set is a defect.
+
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Component structure, state or data fetching → `frontend-engineering-edho-ferdian`
+- Measuring a frame-rate problem → `performance-audit-edho-ferdian`
+- Tests for the UI behaviour → `test-authoring-edho-ferdian`
+- A user-journey test of the flow → `e2e-testing-edho-ferdian`
+- A full review of the diff → `code-review-edho-ferdian`
 
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 

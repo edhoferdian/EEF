@@ -89,3 +89,105 @@ how a component or screen holds up under hostile data. Not for visual critique
 Survived: <scenarios that rendered fine>
 Which should I fix?
 ```
+
+## Ready-made worst-case data
+
+Copy into a fixture file next to the component (`Component.worstcase.ts`)
+and pick only the fields that exist.
+
+```ts
+export const worstCase = {
+  names: {
+    long: "Maximilianus Bartholomew Montgomery-Wolfeschlegelsteinhausen",
+    unbroken: "Supercalifragilisticexpialidocious_Administrator_Account",
+    single: "Q",
+    empty: "",
+    spaces: "   ",
+    rtl: "محمد عبد الرحمن",
+    mixedDirection: "Order #4521 — طلب جديد",
+    cjk: "李小龍工作室有限公司",
+    thai: "สมชาย ใจดีมากที่สุด",
+    devanagari: "श्रीनिवास रामानुजन्",
+    emoji: "Ana 👩🏽‍💻🚀",
+    familyEmoji: "👨‍👩‍👧‍👦 Family",
+    accents: "Zoë Þórðardóttir-Ångström",
+    allCaps: "WWWWWWWWWWWWWWWWWWWW",
+  },
+  emails: {
+    long: "firstname.middlename.lastname.department@subdomain.example-company.co.uk",
+    plus: "user+newsletter+2026@example.com",
+  },
+  urls: {
+    long: "https://example.com/workspaces/acme/projects/q3-launch/documents/0f4c8e2a9b7d?tab=comments&filter=unresolved&sort=newest",
+  },
+  text: {
+    paragraphInLabel: "This label was supposed to be two words but someone pasted the whole product description into it instead.",
+    longWord: "Donaudampfschifffahrtsgesellschaftskapitän",
+    newlines: "Line one\nLine two\n\n\nLine five",
+    html: "<b>not bold</b> & \"quotes\" 'apostrophes'",
+  },
+  numbers: {
+    zero: 0, one: 1, negative: -1250, decimal: 0.3333333, huge: 1234567890123,
+    percentOver: 142.5, currencyLong: { amount: 98765432.1, currency: "IDR" },
+  },
+  counts: [0, 1, 2, 9, 10, 99, 100, 999, 1000, 10000, 1_000_000],
+  dates: {
+    now: new Date(),
+    oneMinuteAgo: new Date(Date.now() - 60_000),
+    farPast: new Date("1970-01-01T00:00:00Z"),
+    farFuture: new Date("2099-12-31T23:59:59Z"),
+    leapDay: new Date("2028-02-29T12:00:00Z"),
+  },
+  images: {
+    broken: "https://example.invalid/missing.png",
+    panorama: "https://picsum.photos/2400/300",
+    tall: "https://picsum.photos/300/2400",
+  },
+  lists: {
+    empty: [] as unknown[],
+    one: (x: unknown) => [x],
+    many: (x: unknown, n = 500) => Array.from({ length: n }, () => x),
+  },
+};
+```
+
+Locale and environment scenarios to flip as well: browser text zoom 200 %,
+OS large text, right-to-left `dir="rtl"`, a narrow 320 px viewport, dark
+mode, slow 3G (skeleton duration), and a failed request (error state).
+
+## Toggle component (dev-only)
+
+```tsx
+const scenarios = ["demo", "long", "empty", "huge", "rtl", "missing"] as const;
+
+export function WorstCaseToggle({ value, onChange }: { value: string; onChange: (s: string) => void }) {
+  if (process.env.NODE_ENV === "production") return null;
+  return (
+    <div style={{ position: "fixed", bottom: 12, left: 12, zIndex: 9999, display: "flex", gap: 4,
+      padding: 4, borderRadius: 8, background: "rgb(0 0 0 / 0.75)", font: "12px system-ui" }}>
+      {scenarios.map((s) => (
+        <button key={s} onClick={() => onChange(s)}
+          style={{ padding: "4px 8px", borderRadius: 6, color: "white",
+            background: s === value ? "rgb(255 255 255 / 0.2)" : "transparent" }}>
+          {s}
+        </button>
+      ))}
+    </div>
+  );
+}
+```
+
+## What to look for in each scenario
+
+| Scenario | Look for |
+|---|---|
+| Long / unbroken text | Overflow, pushed-off buttons, overlapped icons, broken grid columns |
+| Empty / missing | "undefined", "null", "NaN", empty boxes with borders, collapsed layout |
+| Counts 9 → 10 → 1000 | Width jumps, badges overflowing, "1 items" |
+| RTL / mixed | Mirrored icons that shouldn't be (logos, play), alignment, punctuation order |
+| CJK / Thai | Line breaking, missing glyphs, vertical clipping of tall scripts |
+| Emoji | Width miscounted, truncation splitting a sequence, avatar initials from an emoji |
+| Many items | Scroll performance, sticky headers, pagination, "select all" |
+| Dates | "in -3 days", wrong relative wording, time zone shifts |
+| Broken image | Alt text layout, fallback, aspect ratio collapse |
+| 200 % text | Clipped labels, overlapping elements, horizontal scroll |

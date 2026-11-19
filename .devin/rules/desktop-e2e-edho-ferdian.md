@@ -96,6 +96,14 @@ is cheaper than the flakiness it prevents — say so when the app owner resists.
   dialogs as top-level windows, table cells, self-drawn widgets) and the
   screenshot-matching fallback with its DPI rules.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Unit tests behind the UI → `test-authoring-edho-ferdian`
+- The app failing to build or start → `build-fix-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user in Bahasa Indonesia; test code, page-object names,

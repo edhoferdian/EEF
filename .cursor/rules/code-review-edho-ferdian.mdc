@@ -25,6 +25,18 @@ prompts skip — **ground-truth verification** (run real tools, don't eyeball)
 and a **Reflection + Critique-Correction pass** (catch your own false positives
 before the user sees them).
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- A stack-specific lens (Go, Django, React…) → `language-code-review-edho-ferdian`
+- Security depth on a risky change → `security-review-edho-ferdian`
+- Missing or weak tests → `test-authoring-edho-ferdian`
+- Motion or animation findings → `design-engineering-edho-ferdian`
+- A performance claim to verify → `performance-audit-edho-ferdian`
+- An accepted simplification to apply → `code-simplification-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 - Communication / explanation to the user → **Bahasa Indonesia**.

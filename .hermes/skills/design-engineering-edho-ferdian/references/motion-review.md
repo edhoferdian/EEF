@@ -101,3 +101,82 @@ Verdict: CHANGES REQUESTED | APPROVED
 ```
 
 APPROVED only when there are no Must-fix or Should-fix findings.
+
+## Standards — target values to cite
+
+Cite these exact values in findings (or the project's own tokens when
+they exist). Never "make it faster" without a number.
+
+### Duration by element
+
+| Element | Enter | Exit | Notes |
+|---|---|---|---|
+| Button press / hover | 100–150 ms | instant–120 ms | press feedback appears on pointer-down |
+| Tooltip | 100–150 ms after a 400–700 ms delay | ≤ 100 ms | neighbours instant |
+| Dropdown / select / popover | 150–200 ms | 100–150 ms | from trigger origin |
+| Context menu | ≤ 120 ms or none | ≤ 100 ms | very frequent |
+| Toast | 200–300 ms | 150–200 ms | from its stack edge |
+| Dialog | 200–250 ms | 150 ms | centred scale 0.95–0.97 → 1 |
+| Drawer / sheet | 300–450 ms | 200–300 ms | drawer curve |
+| Accordion | 200–250 ms | 150–200 ms | |
+| Page transition | ≤ 300 ms | — | never blocks navigation |
+| Skeleton → content | 150–200 ms crossfade | — | |
+| Hero / marketing entrance | ≤ 700 ms total | — | once per load |
+
+### Curves
+
+| Use | Curve |
+|---|---|
+| Entering, responding to input | ease-out — e.g. `cubic-bezier(0.22, 1, 0.36, 1)` |
+| Moving on screen, A → B | ease-in-out — e.g. `cubic-bezier(0.65, 0, 0.35, 1)` |
+| Sheets, drawers | `cubic-bezier(0.32, 0.72, 0, 1)` |
+| Continuous / time-based (spinner, progress, marquee, hold-to-confirm fill) | linear |
+| Interruptible, gesture-driven | spring, bounce 0 (damping ratio ≈ 1) |
+| Never on UI entrances | ease-in |
+
+### Distances and scales
+
+| Property | Range |
+|---|---|
+| Enter translate for small elements | 4–8 px |
+| Enter translate for panels | 8–16 px (or from the edge for sheets) |
+| Enter scale | 0.95–0.98 → 1 |
+| Press scale | 0.96–0.98 |
+| Lift on drag | 1.02–1.05 |
+| Blur during crossfade | 2–4 px |
+| Stagger between siblings | 20–50 ms, max ~8 items |
+
+### Frequency → maximum budget
+
+| Seen | Max motion |
+|---|---|
+| Keyboard-triggered result, typing, list navigation | none |
+| Hundreds of times/day | ≤ 120 ms, opacity only |
+| Many times/session | ≤ 200 ms, small transform |
+| Few times/session | ≤ 300 ms |
+| Rare (onboarding, celebration) | room for personality, still interruptible |
+
+### Accessibility
+
+| Check | Pass condition |
+|---|---|
+| `prefers-reduced-motion` | Movement (translate/scale/parallax/autoplay) replaced by fade or none; meaning kept |
+| Autoplaying or looping motion > 5 s | Can be paused (WCAG 2.2.2) |
+| Flashing | Never more than 3 flashes per second |
+| Hover-only affordances | Also available on focus and touch |
+| Focus during transitions | Focus moves to new content and returns on close |
+
+## Review heuristics — what to grep for
+
+| Pattern | Usually means |
+|---|---|
+| `transition: all`, `transition-all` | Unlisted properties animating |
+| `ease-in` (not `ease-in-out`) | Wrong curve on an entrance |
+| `animate={{ width` / `height` / `top` / `left` | Layout animation that may jank |
+| `duration: 0.5`+ or `500ms`+ on UI | Too slow |
+| `scale: 0` / `scale(0)` | Appearing from a point |
+| `setState` inside `onDrag`, `requestAnimationFrame`, scroll handlers | Per-frame re-renders |
+| `will-change` in global CSS | Layer explosion |
+| `@keyframes` on hover/toggle states | Not interruptible |
+| No `prefers-reduced-motion` / `useReducedMotion` anywhere | Reduced motion ignored |
+| `onAnimationComplete` gating logic | UI waits on motion |

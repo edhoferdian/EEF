@@ -26,6 +26,15 @@ off to `code-review-edho-ferdian`. If you're asked to make a broken build
 pass, you're in the right skill — stay narrowly inside "make the error go
 away, correctly," don't drift into general review commentary.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- A regression test for the fix → `test-authoring-edho-ferdian`
+- A stack-specific idiom behind the error → `language-code-review-edho-ferdian`
+- A red CI pipeline rather than a local build → `git-and-release-ops-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 - Narration/explanation to the user → **Bahasa Indonesia**.
@@ -212,12 +221,5 @@ di gejala terukur dan terdokumentasi):
 2. **Fix-mu setara "lebih hati-hati lain kali".** Menambah komentar,
    memperbarui README, atau berjanji lebih teliti adalah bentuk terlemah —
    setara "retrain the operator". Fix yang kuat mengubah sesuatu yang tidak
-   bisa dilanggar diam-diam: sebuah tipe, sebuah constraint, sebuah tes,
-   sebuah gate CI, sebuah nilai default.
-3. **Akar masalahmu adalah pernyataan masalah yang ditulis ulang.** "Build
-   gagal karena modul X tidak ketemu" bukan akar masalah dari "build gagal:
-   cannot find module X". Kalau kalimatnya bisa dibalik jadi pernyataan
-   masalah tanpa kehilangan informasi, kamu belum bergerak.
-
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/build-fix-edho-ferdian/SKILL.md` for complete instructions.

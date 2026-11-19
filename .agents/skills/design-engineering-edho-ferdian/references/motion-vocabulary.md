@@ -61,5 +61,77 @@ is for naming, not building — to build it, go to `motion-foundations.md`.
 | Content behind looks frosted | **Backdrop blur / glass material** |
 | Stack of cards fanned behind the front one | **Stacked / deck layout** |
 
+## Timing and curves
+
+| Description | Term |
+|---|---|
+| How long a motion lasts | **Duration** |
+| Wait before it starts | **Delay** |
+| Shape of the speed over time | **Easing curve** (cubic-bezier) |
+| Custom curve defined by four numbers | **Cubic bézier** |
+| Same speed throughout | **Linear** |
+| Fast in the middle, slow at both ends | **Ease-in-out** |
+| Ends slightly past the target, then returns | **Overshoot / back easing** |
+| Moves in discrete jumps | **Stepped / steps()** |
+| A spring's "how fast it gets there" | **Response / stiffness** |
+| A spring's "how much it wobbles" | **Damping (ratio)** |
+| No wobble at all | **Critically damped** |
+| Motion that keeps going until friction stops it | **Decay / inertia** |
+
+## Transitions between views
+
+| Description | Term |
+|---|---|
+| New screen slides over the old one | **Push / slide-over** |
+| Old screen moves aside as the new one arrives | **Parallax push** |
+| A card grows into a full screen | **Container transform / zoom transition** |
+| Element animates between two pages | **Shared element / View Transition** |
+| One view flips to show its back | **Flip** |
+| Screens fade through a neutral midpoint | **Fade-through** |
+| Views slide sideways in a sequence | **Carousel / pager** |
+| Page behind recedes as a sheet comes up | **Sheet with background scale-down / depth push** |
+
+## Text and content
+
+| Description | Term |
+|---|---|
+| Letters appear one after another | **Typewriter** |
+| Words or lines rise into place in sequence | **Text reveal / staggered text** |
+| Text scrambles before settling | **Scramble / decode effect** |
+| A word cycles through alternatives | **Rotating text / word swap** |
+| Content fades in as you scroll to it | **Scroll reveal** |
+| Highlight sweeps across text | **Text shimmer / gradient sweep** |
+| Height grows smoothly to fit content | **Auto-height / expand animation** |
+
+## Interaction patterns
+
+| Description | Term |
+|---|---|
+| Pull down to reload | **Pull-to-refresh** |
+| Swipe a row to reveal actions | **Swipe actions / swipe-to-reveal** |
+| Swipe something away | **Swipe-to-dismiss** |
+| Press and hold until something fills | **Hold-to-confirm / long-press progress** |
+| Drag items to change their order | **Drag-to-reorder / sortable** |
+| Item lifts when you start dragging it | **Lift / pick-up state** |
+| Menu items light up as you move across | **Hover tracking / magnetic highlight** |
+| Element nudges toward the cursor | **Magnetic hover** |
+| Card tilts toward the pointer | **Tilt / 3D hover** |
+| Indicator glides between selected tabs | **Sliding indicator / shared layout** |
+| Button stretches into a panel | **Morph** |
+| Item arcs into a cart or folder | **Fly-to / add-to-cart animation** |
+
+## Ambient
+
+| Description | Term |
+|---|---|
+| Slow continuous movement in the background | **Ambient / idle animation** |
+| Soft breathing scale on a button | **Breathing / pulse** |
+| Gradient colours slowly drifting | **Gradient animation / mesh gradient** |
+| Moving noise texture | **Grain / film noise** |
+| Infinite horizontal scroll of logos | **Marquee / ticker** |
+| Things float gently up and down | **Floating / bobbing** |
+
 When the user's description fits two terms, give both and the difference
-in one line.
+in one line. Then give a ready-to-paste prompt line, e.g. *"Add a
+scale-in pop (0.96 → 1, 180 ms ease-out, from the trigger's side) to the
+dropdown."*
