@@ -83,7 +83,7 @@ or tokens, so they are left out unless you pass `--include-legacy`.
 The package bundles the actual skill content (see
 [`package.json`](package.json)'s `files` list) — no separate git clone, no
 network access after the initial `npx` download. Source:
-[`bin/eef.js`](bin/eef.js), zero runtime dependencies.
+[`cli/eef.js`](cli/eef.js), zero runtime dependencies.
 
 ### Option B — Manual `.skill` upload
 
@@ -145,9 +145,23 @@ hook is registered by `eef-install`. The status line is not part of the
 plugin (a plugin can't set it); add it with
 `npx eef-install --target claude-hooks --only statusline`.
 
-claude.ai and Cowork don't install plugins that contain a top-level
-`bin/` directory, and this repo needs one for the npm CLI — so on claude.ai
-upload the `dist/*.skill` files instead.
+**claude.ai, the Claude desktop app and Cowork.** Open
+[Customize → Plugins](https://claude.ai/customize/plugins) → **Add → Add
+marketplace**, enter `edhoferdian/EEF`, then add
+`ekosistem-edho-ferdian`. The plugin is saved to your account: its skills
+work in chat, its skills, agents and hooks in Cowork, and it syncs into
+Claude Code as `ekosistem-edho-ferdian@synced` — so on a machine that gets
+it this way, don't also run `/plugin install` there. (The npm CLI lives in
+`cli/`, not `bin/`: claude.ai and Cowork refuse plugins with a top-level
+`bin/` directory.)
+
+**Antigravity** doesn't run Claude Code plugins or hooks, but it reads the
+same `SKILL.md` format and picks skills by description, like Claude Code:
+
+```bash
+npx eef-install --target antigravity --global   # ~/.gemini/config/skills (every workspace)
+npx eef-install --target antigravity            # .agents/skills in this workspace
+```
 
 > **Note:** this GitHub repo is public, and `eef-install` is published on
 > npm — all four install options above work for anyone, no special access
@@ -613,7 +627,7 @@ skills/              source of truth — 38 skill folders
 rules/               always-on baseline rules for Claude Code (claude-rules target)
 agents/, workflows/  canonical sub-agent + multi-agent-workflow definitions (experimental)
 dist/                packaged .skill archives (Option B), one per skill; also dist/agents/opencode/
-bin/eef.js           npm CLI entry point (Option A)
+cli/eef.js           npm CLI entry point (Option A)
 scripts/             packaging + validation + cross-harness export scripts
 install.sh           installer (macOS/Linux/Git Bash, Option C)
 install.ps1          installer (Windows PowerShell, Option C)
@@ -646,7 +660,7 @@ need to do one by hand:
 1. Bump `version` in `package.json` (SemVer — MINOR for a new skill/feature,
    PATCH for a fix, per this ecosystem's own bump rules).
 2. `python scripts/sync_metadata.py` — rewrites the skill/agent count
-   wherever it's quoted in `package.json`, `bin/eef.js`, and both
+   wherever it's quoted in `package.json`, `cli/eef.js`, and both
    `.claude-plugin/*.json` manifests, so a version bump can't leave one of
    them stale (a real bug found and fixed 2026-09-16).
 3. Commit on a branch (`release/vX.Y.Z`), open a PR to `main`, let CI go

@@ -203,7 +203,7 @@ test("skill-guard names the owner skill once per session, and not when it is loa
   fs.writeFileSync(log, JSON.stringify({ session_id: "s3", skill: "ekosistem-edho-ferdian:data-layer-patterns-edho-ferdian" }) + "\n");
   assert.strictEqual(guardRun("/app/prisma/schema.prisma", { session: "s3", log, state }), null); // loaded (plugin name)
   assert.match(guardRun("/app/prisma/schema.prisma", { session: "s4", log, state }).additionalContext, /data-layer-patterns/);
-  assert.strictEqual(guardRun("/app/README.md", { session: "s5", log, state }), null);           // no owner
+  assert.strictEqual(guardRun("/app/notes.txt", { session: "s5", log, state }), null);           // no owner
   assert.strictEqual(run(GUARD_HOOK, "{ not json"), "");
 });
 
@@ -230,6 +230,31 @@ test("inject-rules loads the rules only when eef-install hasn't", () => {
   assert.ok(out.additionalContext.length < 10000);
   fs.writeFileSync(path.join(empty, "skills.md"), "x");
   assert.strictEqual(run(RULES_HOOK, JSON.stringify({ hook_event_name: "SessionStart" }), { CLAUDE_RULES_DIR: empty, EEF_RULES_SRC: src }), "");
+});
+
+test("skill-router has a route to every skill in the repo", () => {
+  const { ROUTES } = require(ROUTER);
+  const routed = new Set(ROUTES.flatMap((r) => r.skills));
+  const missing = ALL_SKILLS.filter((s) => !routed.has(s));
+  assert.deepStrictEqual(missing, []);
+});
+
+test("skill-router reaches the less obvious skills from everyday Indonesian", () => {
+  const cases = [
+    ["pelanggan minta refund karena kena tagih dua kali", "billing-ops-edho-ferdian"],
+    ["tombolnya gak jalan pas diklik", "click-path-audit-edho-ferdian"],
+    ["setup eslint sama prettier dong", "code-quality-tooling-edho-ferdian"],
+    ["tolong review kode Django ini", "language-code-review-edho-ferdian"],
+    ["bikin NDA untuk partner baru", "legal-ops-edho-ferdian"],
+    ["riset dulu bandingkan Supabase vs Firebase", "research-ops-edho-ferdian"],
+    ["repo ini gak ada dokumentasi, ekstrak spec dari kode", "spec-mining-edho-ferdian"],
+    ["samakan grading video ini", "video-style-edho-ferdian"],
+    ["kenapa internet lambat di homelab", "networking-ops-edho-ferdian"],
+  ];
+  for (const [prompt, want] of cases) {
+    const out = routerFor(prompt, ALL_SKILLS);
+    assert.ok(out && out.additionalContext.includes(want), `${prompt} -> ${want}: ${out && out.additionalContext}`);
+  }
 });
 
 test("plugin hooks.json points only at hook files that exist", () => {

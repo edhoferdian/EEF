@@ -157,6 +157,10 @@ PRODUCT GAP
 - Jumping straight from diagnosis to a financial action without separating
   customer impact from the broader product-truth question.
 
+## Worked examples
+
+`references/verification-recipes.md` — read-only Stripe CLI and SQL checks, duplicate-vs-multi-seat table, a correct webhook handler, Midtrans/Xendit notes, the handoff block. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

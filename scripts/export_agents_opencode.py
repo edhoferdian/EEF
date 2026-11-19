@@ -11,7 +11,7 @@ mistake this ecosystem's own ECC-decommissioning pass had to route around.
 
 Instead this script writes two per-agent artifacts, merged into a
 consumer's own opencode.json by `eef-install --target opencode-agents`
-(see bin/eef.js) rather than overwritten in one shot:
+(see cli/eef.js) rather than overwritten in one shot:
   - dist/agents/opencode/prompts/<name>.txt   the system prompt body
   - dist/agents/opencode/<name>.agent.json    the `agent.<name>` block,
     referencing the prompt file by its OpenCode-relative path

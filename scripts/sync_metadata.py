@@ -3,7 +3,7 @@
 generated-file templates that don't already compute it live.
 
 This exists because of a real, repeated bug class found 2026-09-16: three
-export_*.py scripts, package.json's description, bin/eef.js's --help text,
+export_*.py scripts, package.json's description, cli/eef.js's --help text,
 and both .claude-plugin manifests all had the skill count hard-coded as a
 literal number that drifted the moment a skill was added or removed —
 some as stale as "33" while the repo was already at 35. Rather than fix
@@ -23,7 +23,7 @@ from lib_agents import load_agents
 from lib_skills import REPO_ROOT, load_skills
 
 PACKAGE_JSON = REPO_ROOT / "package.json"
-EEF_JS = REPO_ROOT / "bin" / "eef.js"
+EEF_JS = REPO_ROOT / "cli" / "eef.js"
 PLUGIN_JSON = REPO_ROOT / ".claude-plugin" / "plugin.json"
 MARKETPLACE_JSON = REPO_ROOT / ".claude-plugin" / "marketplace.json"
 README = REPO_ROOT / "README.md"
@@ -95,7 +95,7 @@ def rewrite(path, text, pattern, make_replacement, skills_count, agents_count):
 
 
 CLAUDE_AGENTS_DIST = REPO_ROOT / "dist" / "agents" / "claude"
-WRAPPER_AGENT_RE = re.compile(r"Agent form of the [a-z0-9-]+-edho-ferdian skill")  # same test as bin/eef.js isWrapperAgent
+WRAPPER_AGENT_RE = re.compile(r"Agent form of the [a-z0-9-]+-edho-ferdian skill")  # same test as cli/eef.js isWrapperAgent
 
 
 def plugin_agents() -> list[str]:

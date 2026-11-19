@@ -133,6 +133,10 @@ A skill with zero findings across all four categories goes in **Clean**,
 not into an empty row of the findings section — don't pad the report with
 "no issues found" boilerplate per skill.
 
+## Worked examples
+
+`references/audit-scripts.md` — inventory, description quality, trigger overlap, broken references, reachability and staleness scripts. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

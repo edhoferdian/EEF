@@ -3,7 +3,7 @@
 resolved model/effort under every profile in agents/model-profiles.json,
 for every harness (D-060).
 
-bin/eef.js reads this file to apply `eef-install --profile <name>`. The
+cli/eef.js reads this file to apply `eef-install --profile <name>`. The
 resolution logic (effort_shift, clamping, per-model effort ceilings) lives
 only in lib_agents.resolve_model(); the installer just looks values up
 here, so the Python exporters and the Node installer can never disagree

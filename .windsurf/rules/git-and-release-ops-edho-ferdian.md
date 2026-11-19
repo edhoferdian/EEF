@@ -34,6 +34,10 @@ the native replacement.
   applications (which may legitimately use date/build versioning instead of
   strict SemVer).
 
+## Worked examples
+
+`references/command-cookbook.md` — exact non-interactive commands for commits, rebases, conflicts, undo, bisect, PRs, CI triage and releases. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

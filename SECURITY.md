@@ -23,7 +23,7 @@ codebase, and reports are welcome in any of these categories:
 - **Accidentally committed secrets** — an API key, token, or credential
   that ended up in this repo's history.
 - **Anything in the install scripts** (`install.sh`, `install.ps1`,
-  `bin/eef.js`, `scripts/*.py`) that writes outside its documented target
+  `cli/eef.js`, `scripts/*.py`) that writes outside its documented target
   directory, or executes something it shouldn't.
 
 Ordinary bugs, typos, or a skill giving bad advice belong in a normal

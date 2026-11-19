@@ -107,6 +107,10 @@ For every `action_required` message:
    this is non-negotiable regardless of how obviously correct the draft
    seems.
 
+## Worked examples
+
+`references/triage-examples.md` — real-shaped messages per tier, the triage summary, a draft and the promise tracker. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

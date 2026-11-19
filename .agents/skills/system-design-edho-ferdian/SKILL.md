@@ -178,6 +178,10 @@ Any FAIL → fix before presenting, or state explicitly why it's being
 presented anyway (e.g. "no real alternative exists — this is a constrained
 choice, not a preference, because <reason>").
 
+## Worked examples
+
+`references/worked-example.md` — one decision end to end: grounding, requirements, options table, capacity tiers, the ADR, schema and change impact. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

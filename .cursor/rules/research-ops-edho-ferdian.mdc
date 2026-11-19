@@ -23,6 +23,10 @@ penting membawa label asal-usulnya, dan memaksa memilih jalur bukti termurah
 yang benar-benar menjawab pertanyaan — bukan otomatis menjalankan riset
 berat untuk pertanyaan yang jawabannya ada di repo sendiri.
 
+## Worked examples
+
+`references/research-playbook.md` — path choice, query patterns, source tiers, claim labels, a comparison matrix and a worked example. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

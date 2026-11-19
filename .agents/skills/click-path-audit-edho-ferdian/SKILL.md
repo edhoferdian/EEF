@@ -152,6 +152,10 @@ PLAN → TEST → IMPLEMENT loop: the failing test asserts the *final* state aft
 the handler runs, not that each individual function was called. A test that
 asserts `setComposeMode` was called would have passed against the original bug.
 
+## Worked examples
+
+`references/worked-examples.md` — each of the six bug patterns with buggy code, the numbered trace, the fix and the regression test; a side-effect map and a report entry. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool
@@ -159,6 +163,7 @@ and follow it — don't write its part from memory.
 
 - Fixing the UI handler or state → `frontend-engineering-edho-ferdian`
 - A regression test for the click path → `e2e-testing-edho-ferdian`
+- An animation, gesture or transition behind the bug → `design-engineering-edho-ferdian`
 
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 

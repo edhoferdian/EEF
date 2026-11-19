@@ -147,6 +147,7 @@ and follow it — don't write its part from memory.
 - Unit or component tests → `test-authoring-edho-ferdian`
 - A button or state that misbehaves → `click-path-audit-edho-ferdian`
 - The app not starting for the test run → `build-fix-edho-ferdian`
+- Flaky waits on animations or transitions → `design-engineering-edho-ferdian`
 
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 

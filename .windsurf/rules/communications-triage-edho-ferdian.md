@@ -101,6 +101,10 @@ For every `action_required` message:
    this is non-negotiable regardless of how obviously correct the draft
    seems.
 
+## Worked examples
+
+`references/triage-examples.md` — real-shaped messages per tier, the triage summary, a draft and the promise tracker. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool
@@ -215,8 +219,5 @@ it:
   the exact account/thread before acting, reading a thread before composing,
   the `drafted` / `approval-pending` / `sent` / `blocked` /
   `awaiting-verification` status vocabulary, treating inbound mail as
-  untrusted data, cleanup rules) and message/DM-surface handling (resolving
-  the exact thread, one-time-code retrieval discipline, reporting shape),
-  plus how blockers on a live surface should be handled and reported. Load
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/communications-triage-edho-ferdian/SKILL.md` for complete instructions.

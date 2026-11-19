@@ -89,7 +89,29 @@ const ROUTES = [
   { skills: ["git-and-release-ops-edho-ferdian"], re: /\b(commit message|strategi branch|rebase|merge conflict|konflik merge|bikin release|changelog|ci merah)\b/i },
   { skills: ["docs-sync-edho-ferdian"], re: /\b(readme|dokumentasi|documentation|codemap)\b/i },
   { skills: ["dead-code-cleanup-edho-ferdian"], re: /\b(kode mati|dead code|unused code|tidak dipakai|bersihkan kode)\b/i },
-  { skills: ["code-simplification-edho-ferdian"], re: /\b(sederhanakan|simplify|refactor biar rapi|terlalu rumit|over-?engineered)\b/i },
+  { skills: ["code-simplification-edho-ferdian"], re: /\b(sederhanakan|simplify|refactor biar rapi|terlalu rumit|over-?engineered|nesting)\b/i },
+  {
+    skills: ["language-code-review-edho-ferdian"],
+    re: /\b(review|cek|audit)\b.*\b(go|golang|python|django|fastapi|flask|react|next\.?js|vue|rust|java|kotlin|swift|php|laravel|rails|ruby|typescript|node|nestjs|c#|\.net|flutter|dart)\b/i,
+  },
+  { skills: ["billing-ops-edho-ferdian"], re: /\b(refund|subscription|langganan ganda|tagih(an)? dua kali|double charge|checkout gagal|billing|invoice|stripe|midtrans|xendit)\b/i },
+  { skills: ["click-path-audit-edho-ferdian"], re: /\b(tombol(nya)? (gak|tidak|nggak) (jalan|berfungsi)|diklik (tapi )?(gak|tidak) (ada|terjadi)|button does nothing|state(-nya)? balik lagi|onclick)\b/i },
+  { skills: ["code-quality-tooling-edho-ferdian"], re: /\b(eslint|biome|prettier|husky|lint-staged|pre-commit|ruff|linter|format on save)\b/i },
+  { skills: ["communications-triage-edho-ferdian"], re: /\b(triase pesan|atur inbox|inbox|pesan masuk|balas email|bantu balas|draft balasan)\b/i },
+  { skills: ["counterparty-comms-edho-ferdian"], re: /\b(customer|pelanggan|klien|client|supplier|partner|vendor)\b.*\b(balas|kirim|bot|agent|pesan|reply|message)\b/i },
+  { skills: ["config-hygiene-edho-ferdian"], re: /\b(bersihin config|~\/\.claude|settings\.json|kebanyakan skill|context cepat penuh|sesi lambat|mcp server|config hygiene)\b/i },
+  { skills: ["desktop-e2e-edho-ferdian"], re: /\b(pywinauto|wpf|winforms|win32|aplikasi desktop|desktop app|\.exe)\b/i },
+  { skills: ["gan-harness-edho-ferdian"], re: /\b(gan-?harness|generate-evaluate|iterate sampai bagus|iterasi sampai bagus|loop evaluasi)\b/i },
+  { skills: ["legal-ops-edho-ferdian"], re: /\b(perjanjian|kontrak|agreement|nda|non-circumvention|referral fee|e-?sign|docusign|master services)\b/i },
+  { skills: ["marketing-edho-ferdian"], re: /\b(marketing|pemasaran|positioning|brand voice|copywriting|landing page copy|email sequence|kampanye|cara jual|launch plan)\b/i },
+  { skills: ["networking-ops-edho-ferdian"], re: /\b(cisco|vlan|acl|firewall|dns|dhcp|subnet|homelab|jaringan|internet lambat|routing table|mikrotik|wifi|wi-fi)\b/i },
+  { skills: ["opensource-release-edho-ferdian"], re: /\b(open-?source|open source-kan|publikasikan repo|repo publik|aman di-?publish|license|lisensi)\b/i },
+  { skills: ["research-ops-edho-ferdian"], re: /\b(riset|cari tahu|cek fakta|bandingkan|research|deep dive|apa yang terbaru|perbandingan)\b/i },
+  { skills: ["safe-execution-edho-ferdian"], re: /\b(rm -rf|hapus semua|jangan sampai kehapus|force push|drop table|reset --hard|production database|autonomous|tanpa pengawasan)\b/i },
+  { skills: ["skill-audit-edho-ferdian"], re: /\b(audit skill|skill (yang )?basi|skill redundan|cek skill)\b/i },
+  { skills: ["skill-authoring-edho-ferdian"], re: /\b(bikin skill|buat skill|skill baru|skill\.md|fork skill|package skill|\.skill)\b/i },
+  { skills: ["spec-mining-edho-ferdian"], re: /\b(ekstrak spec|spec dari kode|reverse-?engineer|tidak ada dokumentasi|gak ada dokumentasi|behaviou?r spec)\b/i },
+  { skills: ["video-style-edho-ferdian"], re: /\b(video|grading|color grade|lut|cut rhythm|footage|editing video|reels?|tiktok)\b/i },
 ];
 
 function qualified(skill) {
@@ -139,4 +161,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { suggestions };
+module.exports = { suggestions, ROUTES };

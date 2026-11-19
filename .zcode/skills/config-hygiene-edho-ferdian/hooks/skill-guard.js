@@ -44,6 +44,13 @@ const RULES = [
   { re: /(^|\/)\.github\/workflows\/|(^|\/)(\.gitlab-ci\.yml|Jenkinsfile)$|(^|\/)(k8s|kubernetes|helm|deploy)\//i, skills: ["deployment-ops-edho-ferdian"], what: "CI/CD or deployment config" },
   { re: /(^|\/)(e2e|playwright|cypress)\/|\.e2e\.\w+$/i, skills: ["e2e-testing-edho-ferdian"], what: "an end-to-end test" },
   { re: /\.(test|spec)\.\w+$|_test\.(go|py)$|(^|\/)test_[^/]+\.py$|(^|\/)__tests__\//i, skills: ["test-authoring-edho-ferdian"], what: "a test" },
+  { re: /(^|\/)(\.eslintrc[^/]*|eslint\.config\.\w+|biome\.jsonc?|\.prettierrc[^/]*|prettier\.config\.\w+|\.lintstagedrc[^/]*|\.pre-commit-config\.ya?ml|ruff\.toml|\.husky\/[^/]+)$/i, skills: ["code-quality-tooling-edho-ferdian"], what: "lint/format tooling" },
+  { re: /(^|\/)(README|CHANGELOG|ARCHITECTURE|CODEMAP)\.md$|(^|\/)docs\/[^/]+\.mdx?$/i, skills: ["docs-sync-edho-ferdian"], what: "user-facing docs" },
+  { re: /(^|\/)(LICENSE(\.\w+)?|CONTRIBUTING\.md|CODE_OF_CONDUCT\.md|SECURITY\.md|\.env\.example)$/i, skills: ["opensource-release-edho-ferdian"], what: "open-source release files" },
+  { re: /(^|\/)\.claude\/(settings(\.local)?\.json|hooks\/[^/]+)$|(^|\/)\.mcp\.json$/i, skills: ["config-hygiene-edho-ferdian"], what: "Claude Code configuration" },
+  { re: /(^|\/)(nginx[^/]*\.conf|Caddyfile|haproxy\.cfg|netplan\/[^/]+\.ya?ml)$/i, skills: ["networking-ops-edho-ferdian"], what: "network configuration" },
+  { re: /(^|\/)(webhooks?|billing|payments?|checkout|subscriptions?)\/[^/]+\.(ts|js|py|go|rb|php)$/i, skills: ["billing-ops-edho-ferdian", "security-review-edho-ferdian"], what: "billing or payment code" },
+  { re: /(^|\/)(auth|security|crypto)\/[^/]+\.(ts|js|py|go|rb|php|java|kt|rs|cs)$|(^|\/)middleware\.(ts|js)$/i, skills: ["security-review-edho-ferdian"], what: "security-sensitive code" },
 ];
 
 function owners(filePath) {
