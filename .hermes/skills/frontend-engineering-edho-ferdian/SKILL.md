@@ -1,11 +1,12 @@
 ---
 name: frontend-engineering-edho-ferdian
 description: >-
-  Build React/Next.js frontends well from the start: component composition,
-  UX recipes, Vite, HeroUI, and avoiding generic AI-looking UI. Use for
-  "struktur component ini", "best practice React untuk X", "setup Vite",
-  "biar UI-nya gak keliatan AI banget", "desainnya generic banget", or a new
-  frontend feature.
+  Build web frontends well from the start: React/Next.js structure, state,
+  data fetching, Vite, HeroUI, design direction, avoiding generic AI-looking
+  UI. Use for any new or changed tampilan, halaman, landing page, dashboard
+  or komponen: "buatkan halaman", "bikin landing page", "ubah tampilan",
+  "struktur component ini", "setup Vite", "biar UI-nya gak keliatan AI
+  banget", "desainnya generic banget".
 metadata:
   last_reviewed: "2026-09-19"
 ---
@@ -94,6 +95,12 @@ enter/exit animation, `composition-and-ux.md` for its focus trap, and
   `build-fix-edho-ferdian`.
 - **Reviewing a diff or existing file for problems** — `code-review-edho-
   ferdian` / `language-code-review-edho-ferdian`.
+- **Deep motion and polish craft** (choreography, gestures and sheets, Expo
+  motion, motion audits, removing animation, worst-case UI data, design
+  variants) —
+  `design-engineering-edho-ferdian`. `motion-system.md` and `ui-polish.md`
+  here stay the short guides; where a curve, duration or spring value
+  differs, that skill's references win.
 
 ## External docs (fixed — see skill-authoring-edho-ferdian's canonical contract)
 

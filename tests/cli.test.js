@@ -51,7 +51,10 @@ test("claude-hooks keeps other keys and existing hooks, and never registers twic
   assert.strictEqual(c.model, "opus");
   assert.strictEqual(c.hooks.PreToolUse.length, 2);
   assert.strictEqual(c.hooks.PreToolUse[0].hooks[0].command, "echo mine");
-  assert.strictEqual(c.hooks.PostToolUse.length, 1);
+  assert.deepStrictEqual(c.hooks.PostToolUse.map((g) => g.matcher), ["Agent", "Skill"]);
+  assert.strictEqual(c.hooks.UserPromptSubmit.length, 1);
+  assert.strictEqual(c.hooks.UserPromptSubmit[0].matcher, undefined);
+  assert.match(c.hooks.UserPromptSubmit[0].hooks[0].command, /suggest-skill\.js/);
   assert.match(c.statusLine.command, /statusline-usage\.js/);
   assert.ok(fs.existsSync(`${settings}.eef-backup`));
 });

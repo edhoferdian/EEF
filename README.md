@@ -1,6 +1,6 @@
 # Ekosistem Edho Ferdian (EEF)
 
-A native Claude Code skill ecosystem — 38 skills covering engineering
+A native Claude Code skill ecosystem — 39 skills covering engineering
 (backend, frontend, API design, data layer, security, performance, testing),
 operations (deployment, containers, networking, git/release), and
 cross-cutting practices (code review, spec mining, marketing, research,
@@ -21,7 +21,7 @@ Four ways to get these skills, pick whichever fits:
 ### Option A — npm (works for every harness this repo supports, no git needed)
 
 ```bash
-npx eef-install                            # Claude Code, all 38 skills
+npx eef-install                            # Claude Code, all 39 skills
 npx eef-install code-review-edho-ferdian    # Claude Code, specific skills only
 npx eef-install --target cursor             # Cursor, into ./.cursor/rules/
 npx eef-install --target windsurf           # Windsurf + Devin
@@ -43,8 +43,12 @@ npx eef-install --help
 `--target claude-hooks` installs the ready-made hooks — `fs-guard`
 (`PreToolUse`, blocks recursive searches from `/`, `~` or a drive root and
 asks before destructive commands), `telemetry` (`PostToolUse` on `Agent`,
-logs each subagent run locally for re-tiering) and `statusline` (plan quota,
-context and subagent count, set only when no `statusLine` exists);
+logs each subagent run locally for re-tiering), `skill-router`
+(`UserPromptSubmit`, names the installed EEF skill a prompt matches — e.g.
+"rapikan tampilan" → the design skills — so it gets loaded instead of
+skipped), `skill-telemetry` (`PostToolUse` on `Skill`, logs skill loads;
+`eef-install stats --skills` lists skills that never fire) and `statusline`
+(plan quota, context and subagent count, set only when no `statusLine` exists);
 `--only <name>` picks one. It adds a registration to
 `settings.json` and leaves every other key alone: a hook already registered
 (even by hand) is never added twice, an unparsable file is refused rather
@@ -96,7 +100,7 @@ Clone this repo, then run the installer for your platform:
 # macOS / Linux / Git Bash
 git clone https://github.com/edhoferdian/EEF.git
 cd EEF
-./install.sh                 # installs all 38 skills
+./install.sh                 # installs all 39 skills
 ./install.sh code-review-edho-ferdian dev-kickoff-edho-ferdian   # only specific ones
 ./install.sh --list          # see all installable skill names
 ```
@@ -105,7 +109,7 @@ cd EEF
 # Windows PowerShell
 git clone https://github.com/edhoferdian/EEF.git
 cd EEF
-.\install.ps1                                    # installs all 38 skills
+.\install.ps1                                    # installs all 39 skills
 .\install.ps1 -Only code-review-edho-ferdian,dev-kickoff-edho-ferdian
 .\install.ps1 -ListOnly
 ```

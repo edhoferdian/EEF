@@ -120,3 +120,45 @@ test("telemetry ignores a leftover SubagentStop registration", () => {
   run(TELEMETRY, JSON.stringify({ hook_event_name: "SubagentStop", session_id: "s1", agent_id: "x" }), { EEF_SUBAGENT_LOG: log });
   assert.strictEqual(fs.existsSync(log), false);
 });
+
+const ROUTER = path.join(SKILLS, "config-hygiene-edho-ferdian", "hooks", "suggest-skill.js");
+const SKILL_LOG = path.join(SKILLS, "config-hygiene-edho-ferdian", "hooks", "log-skill-use.js");
+
+function routerFor(prompt, installed = ["design-engineering-edho-ferdian", "frontend-engineering-edho-ferdian", "build-fix-edho-ferdian"]) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "eef-router-"));
+  for (const name of installed) {
+    fs.mkdirSync(path.join(dir, name));
+    fs.writeFileSync(path.join(dir, name, "SKILL.md"), "---\nname: x\n---\n");
+  }
+  const out = run(ROUTER, JSON.stringify({ hook_event_name: "UserPromptSubmit", prompt }), { CLAUDE_SKILLS_DIR: dir });
+  return out ? JSON.parse(out).hookSpecificOutput : null;
+}
+
+test("skill-router names installed design skills for a UI prompt", () => {
+  const out = routerFor("tolong rapikan tampilan chat-nya ya");
+  assert.strictEqual(out.hookEventName, "UserPromptSubmit");
+  assert.match(out.additionalContext, /design-engineering-edho-ferdian, frontend-engineering-edho-ferdian/);
+});
+
+test("skill-router stays silent when nothing matches, on slash commands, and for uninstalled skills", () => {
+  assert.strictEqual(routerFor("berapa jumlah commit minggu ini?"), null);
+  assert.strictEqual(routerFor("/design-engineering-edho-ferdian animasikan ini"), null);
+  assert.strictEqual(routerFor("buat landing page", []), null);
+  assert.strictEqual(run(ROUTER, "{ not json"), "");
+});
+
+test("skill-router skips a skill the prompt already names", () => {
+  const out = routerFor("pakai design-engineering-edho-ferdian buat animasi tombol");
+  assert.match(out.additionalContext, /frontend-engineering-edho-ferdian/);
+  assert.doesNotMatch(out.additionalContext, /design-engineering-edho-ferdian,/);
+});
+
+test("skill-telemetry logs the skill name and nothing for other tools", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "eef-skl-"));
+  const log = path.join(dir, "skills.jsonl");
+  run(SKILL_LOG, JSON.stringify({ hook_event_name: "PostToolUse", tool_name: "Skill", session_id: "s1", cwd: "/x/demo", tool_input: { skill: "design-engineering-edho-ferdian" } }), { EEF_SKILL_LOG: log });
+  run(SKILL_LOG, JSON.stringify({ hook_event_name: "PostToolUse", tool_name: "Bash", tool_input: { command: "ls" } }), { EEF_SKILL_LOG: log });
+  const lines = fs.readFileSync(log, "utf8").trim().split("\n").map((l) => JSON.parse(l));
+  assert.strictEqual(lines.length, 1);
+  assert.deepStrictEqual({ ...lines[0], ts: undefined }, { ts: undefined, session_id: "s1", skill: "design-engineering-edho-ferdian", project: "demo" });
+});

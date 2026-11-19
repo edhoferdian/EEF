@@ -46,6 +46,20 @@ const HOOKS = {
     event: "PostToolUse",
     matcher: "Agent",
   },
+  // UserPromptSubmit takes no matcher: it fires on every prompt and stays
+  // silent unless the prompt matches an installed EEF skill.
+  "skill-router": {
+    file: "suggest-skill.js",
+    src: path.join(SKILLS_DIR, "config-hygiene-edho-ferdian", "hooks", "suggest-skill.js"),
+    event: "UserPromptSubmit",
+    timeout: 5,
+  },
+  "skill-telemetry": {
+    file: "log-skill-use.js",
+    src: path.join(SKILLS_DIR, "config-hygiene-edho-ferdian", "hooks", "log-skill-use.js"),
+    event: "PostToolUse",
+    matcher: "Skill",
+  },
   // Not a hook event: settings.statusLine is a single slot, so it is only
   // ever filled when empty — an existing status line is the user's.
   statusline: {
@@ -207,7 +221,7 @@ const TARGETS = {
   },
 
   "claude-hooks": {
-    label: "Claude Code hooks (fs-guard: blocks root-wide searches, asks before destructive commands; telemetry: logs subagent runs; statusline: quota/context/agents, only if no statusLine is set) — registered in settings.json, other keys untouched; --only picks one",
+    label: "Claude Code hooks (fs-guard: blocks root-wide searches, asks before destructive commands; telemetry: logs subagent runs; skill-router: names the matching EEF skill for each prompt; skill-telemetry: logs skill loads; statusline: quota/context/agents, only if no statusLine is set) — registered in settings.json, other keys untouched; --only picks one",
     scope: "global (or $CLAUDE_HOOKS_DIR + $CLAUDE_SETTINGS_FILE)",
     install(_skillNames, opts) {
       const names = opts.only ? [opts.only] : Object.keys(HOOKS);
@@ -1012,7 +1026,7 @@ function printHelp() {
   console.log(`eef-install — install Ekosistem Edho Ferdian's skills
 
 Usage:
-  eef-install                          Install all 38 skills for Claude Code
+  eef-install                          Install all 39 skills for Claude Code
   eef-install <skill> [<skill> ...]    Install only these skills for Claude Code
   eef-install --list                   List all installable skill names
   eef-install --target <name>          Install for a different harness (see below)
@@ -1021,6 +1035,8 @@ Usage:
   eef-install update [--dry-run]       Bring an existing Claude Code install up to this
                                        version: only what is installed and differs is
                                        replaced; agents keep their model/effort
+  eef-install stats --skills [--days N] Which installed EEF skills loaded and which never
+                                       did (from the skill-telemetry hook; read-only)
   eef-install stats [--days N] [--json] Summarize subagent telemetry (from the telemetry
                                        hook) per agent, as evidence for re-tiering (read-only)
   eef-install --help                   Show this message
@@ -1047,7 +1063,10 @@ Hooks (--target claude-hooks):
                       such as rm -rf or Remove-Item -Recurse) | telemetry (PostToolUse on Agent, logs each
                       subagent run to ~/.claude/eef/subagent-runs.jsonl) | statusline
                       (5h/7d quota, context, subagents, cost — set only when no
-                      statusLine exists). Default: all three.
+                      statusLine exists) | skill-router (UserPromptSubmit, names the
+                      installed EEF skill a prompt matches) | skill-telemetry
+                      (PostToolUse on Skill, logs skill loads to
+                      ~/.claude/eef/skill-runs.jsonl). Default: all five.
                       Existing settings.json keys are kept; a hook already registered
                       (even by hand) is never added twice; an unparsable file is refused.
 
@@ -1105,8 +1124,11 @@ function main() {
   if (args[0] === "stats") {
     // The report ships inside config-hygiene's skill folder; run that copy
     // so npx users get it without installing the skill.
-    const report = path.join(SKILLS_DIR, "config-hygiene-edho-ferdian", "scripts", "subagent-report.js");
-    const res = spawnSync(process.execPath, [report, ...args.slice(1)], { stdio: "inherit" });
+    const skillsMode = args.includes("--skills");
+    const script = skillsMode ? "skill-report.js" : "subagent-report.js";
+    const report = path.join(SKILLS_DIR, "config-hygiene-edho-ferdian", "scripts", script);
+    const rest = args.slice(1).filter((a) => a !== "--skills");
+    const res = spawnSync(process.execPath, [report, ...rest], { stdio: "inherit" });
     process.exitCode = res.status ?? 1;
     return;
   }

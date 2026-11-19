@@ -1,6 +1,6 @@
 # AGENTS.md — Ekosistem Edho Ferdian (EEF)
 
-This project ships 38 skills under `skills/*/SKILL.md` — each one a focused
+This project ships 39 skills under `skills/*/SKILL.md` — each one a focused
 playbook for a specific engineering task (code review, API design, test
 authoring, deployment, and more). This file is a router, not a full copy:
 skim the table below, and when a request matches a row, **read that skill's
@@ -30,11 +30,12 @@ method from its one-line description here — read the file.
 | `data-layer-patterns-edho-ferdian` | Design and set up the data layer: Postgres schemas, Prisma, Redis caching and queues, and safe expand-contract migrations. Use for "desain… | `skills/data-layer-patterns-edho-ferdian/SKILL.md` |
 | `dead-code-cleanup-edho-ferdian` | Remove dead code safely: detect with stack tooling (knip, vulture, cargo-udeps...), rank by risk, then delete deps, exports, files and… | `skills/dead-code-cleanup-edho-ferdian/SKILL.md` |
 | `deployment-ops-edho-ferdian` | Ship a build and keep it healthy: release strategy, CI/CD gates, health checks and Kubernetes, rollback, readiness verdict, dashboards,… | `skills/deployment-ops-edho-ferdian/SKILL.md` |
+| `design-engineering-edho-ferdian` | Make UI feel right: animation and transitions, gestures and sheets, Expo motion, interaction polish, mobile-web feel, worst-case data… | `skills/design-engineering-edho-ferdian/SKILL.md` |
 | `desktop-e2e-edho-ferdian` | End-to-end tests for Windows desktop apps (WPF, WinForms, Win32, Qt) with pywinauto over UI Automation. Use for "test aplikasi desktop",… | `skills/desktop-e2e-edho-ferdian/SKILL.md` |
 | `dev-kickoff-edho-ferdian` | Start and run a project from specs (PRD, SRS, WBS, RFC, ADRs): decision register, context pack, then a… | `skills/dev-kickoff-edho-ferdian/SKILL.md` |
 | `docs-sync-edho-ferdian` | Keep user-facing docs true to the code: README, codemaps, architecture and API docs; every path, link and snippet checked. Use for "update… | `skills/docs-sync-edho-ferdian/SKILL.md` |
 | `e2e-testing-edho-ferdian` | End-to-end tests for critical user journeys: map flows first, use whichever browser driver is available, Page Object Model, quarantine… | `skills/e2e-testing-edho-ferdian/SKILL.md` |
-| `frontend-engineering-edho-ferdian` | Build React/Next.js frontends well from the start: component composition, UX recipes, Vite, HeroUI, and avoiding generic AI-looking UI. Use… | `skills/frontend-engineering-edho-ferdian/SKILL.md` |
+| `frontend-engineering-edho-ferdian` | Build web frontends well from the start: React/Next.js structure, state, data fetching, Vite, HeroUI, design direction, avoiding generic… | `skills/frontend-engineering-edho-ferdian/SKILL.md` |
 | `gan-harness-edho-ferdian` | Fast prototype iteration: a generator builds a live app and an evaluator drives it in a browser, scores it on a design rubric and feeds… | `skills/gan-harness-edho-ferdian/SKILL.md` |
 | `git-and-release-ops-edho-ferdian` | Git and release workflow with this ecosystem's binding conventions: branching, conventional commits, merge vs rebase, conflicts, PR… | `skills/git-and-release-ops-edho-ferdian/SKILL.md` |
 | `language-code-review-edho-ferdian` | Stack-specific review lenses on top of code-review: idioms, framework misconfigurations, ORM query traps, performance and test conventions… | `skills/language-code-review-edho-ferdian/SKILL.md` |
