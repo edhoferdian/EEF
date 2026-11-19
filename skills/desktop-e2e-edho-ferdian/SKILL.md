@@ -102,6 +102,10 @@ is cheaper than the flakiness it prevents — say so when the app owner resists.
   dialogs as top-level windows, table cells, self-drawn widgets) and the
   screenshot-matching fallback with its DPI rules.
 
+## Worked examples
+
+`references/worked-suite.md` — a WPF invoice app: isolated launch fixture, page objects over UIA, one journey test, failure artifacts, CI job. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

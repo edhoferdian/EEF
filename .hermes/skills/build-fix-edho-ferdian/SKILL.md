@@ -33,6 +33,10 @@ off to `code-review-edho-ferdian`. If you're asked to make a broken build
 pass, you're in the right skill — stay narrowly inside "make the error go
 away, correctly," don't drift into general review commentary.
 
+## Worked examples
+
+`references/worked-fixes.md` — six real errors (TS, Next.js SSR, Python circular import, lockfile, Prisma generate, Go rename) each with root cause, minimal diff and the verifying command. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

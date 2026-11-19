@@ -162,6 +162,10 @@ stack-specific criteria. Per-stack history, status, and provenance live in
 `references/lens-status.md` — open it when adding a stack or auditing where
 a lens came from, not on a normal review.
 
+## Worked examples
+
+`references/worked-lens-review.md` — Django, FastAPI, React and Go snippets showing what each stack lens finds that a general review misses. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool
@@ -173,8 +177,5 @@ and follow it — don't write its part from memory.
 
 ## Language routing (inherited — see code-review-edho-ferdian, which points to skill-authoring-edho-ferdian's canonical contract)
 
-Inherited, not restated — this lens has no report format of its own (see
-"Relationship contract" above), so it follows whichever language routing
-`code-review-edho-ferdian` is running under (itself pointing to
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/language-code-review-edho-ferdian/SKILL.md` for complete instructions.

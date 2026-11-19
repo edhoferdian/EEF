@@ -350,6 +350,10 @@ do not manufacture findings on code that is genuinely fine.
 
 ---
 
+## Worked examples
+
+`references/worked-findings.md` — IDOR, SQLi, SSRF, JWT, path traversal, XSS, leaked secret, mass assignment: vulnerable code, proof, fix, test, and sweep commands. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

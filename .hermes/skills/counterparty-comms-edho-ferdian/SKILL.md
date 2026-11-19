@@ -112,6 +112,10 @@ When retrofitting these rules into an existing bot, change only the gates
 the task names; do not rewrite its transport or conversation logic as a side
 effect. Full contract: `skill-authoring-edho-ferdian` §10.
 
+## Worked examples
+
+`references/worked-exchange.md` — a supplier price thread: classify, acknowledge, escalate with internal context, leak-checked draft, hashed approval in the ledger. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

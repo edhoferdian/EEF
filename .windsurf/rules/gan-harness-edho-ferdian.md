@@ -179,6 +179,10 @@ format, and the iteration/stop-condition rules: **`references/evaluate-phase.md`
 3. **Detect the driver, don't hardcode it.** Same rule as
    `e2e-testing-edho-ferdian`.
 
+## Worked examples
+
+`references/worked-loop.md` — a landing page through spec, rubric, two generate/evaluate rounds with scored feedback, stop conditions and the final report. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool
@@ -207,8 +211,5 @@ evaluator reports in English — fixed, never ask. Full contract:
    **`references/loop-design-review.md`** — the iteration cap alone bounds
    cost, it doesn't catch a badly-designed loop.
 
-**Done criteria for a full run:** scope sourced and labeled per the priority
-order (never invented) · Generate produces a live, running app with commits
-per iteration · Evaluate reports the mode actually achieved every round ·
-loop stops at threshold (≥7.0) or max-iteration cap, whichever comes first,
-with an honest final report either way.
+
+> **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/gan-harness-edho-ferdian/SKILL.md` for complete instructions.

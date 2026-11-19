@@ -140,6 +140,10 @@ assertions and does not belong in the test suite. See
 
 ---
 
+## Worked examples
+
+`references/worked-journey.md` — a checkout journey from map to Playwright: page objects, seeded fixtures, a signed webhook stub, auth reuse, stability fixes, artifacts. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

@@ -110,6 +110,10 @@ request requires — don't refactor adjacent, already-working code as a side
 effect of adding a feature. Full contract: `skill-authoring-edho-ferdian`
 §10.
 
+## Worked examples
+
+`references/feature-walkthrough.md` — an orders page in Next.js App Router: server data, URL filters, Suspense, server action with optimistic UI, error/empty states, tests. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

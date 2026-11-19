@@ -31,6 +31,10 @@ and saying "this looks like an N+1" is PERF-01 in the review skill. Actually
 running it against realistic data volume, capturing the query count and
 latency, and confirming (or refuting) the N+1 with numbers is this skill.
 
+## Worked examples
+
+`references/worked-audit.md` — three measured cases (Lighthouse LCP, Postgres EXPLAIN + index, Node event-loop profile) with before/after numbers, plus a leak check. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool
@@ -234,14 +238,5 @@ as `code-review-edho-ferdian`'s saved report.
    improvement.
 3. **Preserve intent.** Fix the measured characteristic, not the surrounding
    design, unless asked.
-4. **Say when a tool isn't available** rather than inventing a plausible
-   number; mark confidence accordingly.
-5. **Language routing** as defined above.
-6. **Save the report file** at the end, same as the review skill.
-
----
-
-## Additional references
-
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/performance-audit-edho-ferdian/SKILL.md` for complete instructions.

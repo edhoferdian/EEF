@@ -163,6 +163,10 @@ stack-specific criteria. Per-stack history, status, and provenance live in
 `references/lens-status.md` — open it when adding a stack or auditing where
 a lens came from, not on a normal review.
 
+## Worked examples
+
+`references/worked-lens-review.md` — Django, FastAPI, React and Go snippets showing what each stack lens finds that a general review misses. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

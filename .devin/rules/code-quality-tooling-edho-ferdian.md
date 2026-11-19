@@ -77,6 +77,10 @@ habit); a gate that's too weak lets broken code land. Split by cost:
 Full rationale and the cross-stack equivalents (Python, Go, Rust) are in
 `references/other-stacks.md`.
 
+## Worked examples
+
+`references/worked-setup.md` — Biome + Husky + lint-staged from zero, the rollout commit, CI, ESLint/Prettier and Ruff/pre-commit alternatives, verifying the gate. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool

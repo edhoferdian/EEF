@@ -26,6 +26,10 @@ off to `code-review-edho-ferdian`. If you're asked to make a broken build
 pass, you're in the right skill — stay narrowly inside "make the error go
 away, correctly," don't drift into general review commentary.
 
+## Worked examples
+
+`references/worked-fixes.md` — six real errors (TS, Next.js SSR, Python circular import, lockfile, Prisma generate, Go rename) each with root cause, minimal diff and the verifying command. Read it when doing the work, not before routing.
+
 ## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
 
 When the work reaches one of these, load that skill with the Skill tool
@@ -217,9 +221,5 @@ di gejala terukur dan terdokumentasi):
    Kesalahan manusia bukan akar masalah — pertanyaannya adalah kenapa sistem
    mengizinkan kesalahan itu lolos sampai ke build/produksi. "Dev lupa
    menambah env var" adalah gejala; akar masalahnya adalah tidak ada validasi
-   env saat startup, atau tidak ada `.env.example` yang di-cek CI.
-2. **Fix-mu setara "lebih hati-hati lain kali".** Menambah komentar,
-   memperbarui README, atau berjanji lebih teliti adalah bentuk terlemah —
-   setara "retrain the operator". Fix yang kuat mengubah sesuatu yang tidak
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/build-fix-edho-ferdian/SKILL.md` for complete instructions.
