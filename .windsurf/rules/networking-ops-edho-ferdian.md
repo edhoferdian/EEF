@@ -101,6 +101,15 @@ apply regardless of which reference file is active:
   requires an explicit operator flag, and persisting to startup config is
   always a separate, later, approved step.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Containers on the network → `container-ops-edho-ferdian`
+- Deploying services behind it → `deployment-ops-edho-ferdian`
+- Firewall rules and exposure → `security-review-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user in Bahasa Indonesia; device configs, commands,

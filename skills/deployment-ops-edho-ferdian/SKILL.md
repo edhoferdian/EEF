@@ -57,6 +57,16 @@ Actions workflow with parallel gates and a branch/event-guarded deploy job,
 lockfile-hash-keyed caching, and the fail-fast-vs-fail-informatively
 distinction.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- The container image itself → `container-ops-edho-ferdian`
+- Branching, tagging or changelog → `git-and-release-ops-edho-ferdian`
+- Post-deploy slowness → `performance-audit-edho-ferdian`
+- Secrets and production hardening → `security-review-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user in Bahasa Indonesia; deploy/rollback commands,

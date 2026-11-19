@@ -31,6 +31,16 @@ and saying "this looks like an N+1" is PERF-01 in the review skill. Actually
 running it against realistic data volume, capturing the query count and
 latency, and confirming (or refuting) the N+1 with numbers is this skill.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Animation jank → `design-engineering-edho-ferdian`
+- React rendering and bundle structure → `frontend-engineering-edho-ferdian`
+- Slow queries and indexes → `data-layer-patterns-edho-ferdian`
+- Slow services, retries, queues → `backend-engineering-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 - Communication / explanation to the user → **Bahasa Indonesia**.
@@ -233,13 +243,5 @@ as `code-review-edho-ferdian`'s saved report.
 
 ## Additional references
 
-This skill's ported content is JS/React/Next-biased (matches Edho's current
-stack — `references/web-frontend.md`). Backend/API latency and throughput
-(endpoint p50/p95/p99, bulk data movement) is covered by
-`references/backend-latency-and-throughput.md`.
-
-- `references/database-query-profiling.md` — the dynamic half of database
-  performance work (cross-reference `database-lens.md` in
-  `code-review-edho-ferdian` for the static/schema half): reading
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/performance-audit-edho-ferdian/SKILL.md` for complete instructions.

@@ -1,0 +1,47 @@
+{
+  "description": "EEF plugin hooks: always-on rules, skill routing and handoffs, safety gate, local telemetry. Each script stays silent when the same hook is already installed by eef-install.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          { "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/skills/config-hygiene-edho-ferdian/hooks/inject-rules.js\"", "timeout": 10 }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          { "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/skills/config-hygiene-edho-ferdian/hooks/suggest-skill.js\"", "timeout": 5 }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          { "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/skills/safe-execution-edho-ferdian/hooks/block-fs-wide-search.js\"", "timeout": 10 }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          { "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/skills/config-hygiene-edho-ferdian/hooks/skill-guard.js\"", "timeout": 5 }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Agent",
+        "hooks": [
+          { "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/skills/config-hygiene-edho-ferdian/hooks/log-subagent-run.js\"" }
+        ]
+      },
+      {
+        "matcher": "Skill",
+        "hooks": [
+          { "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/skills/config-hygiene-edho-ferdian/hooks/log-skill-use.js\"" }
+        ]
+      }
+    ]
+  }
+}

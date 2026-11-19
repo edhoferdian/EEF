@@ -139,6 +139,15 @@ assertions and does not belong in the test suite. See
 
 ---
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Unit or component tests → `test-authoring-edho-ferdian`
+- A button or state that misbehaves → `click-path-audit-edho-ferdian`
+- The app not starting for the test run → `build-fix-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user in Bahasa Indonesia; test code, Page Object names,

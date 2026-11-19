@@ -343,6 +343,15 @@ do not manufacture findings on code that is genuinely fine.
 
 ---
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- The general review around the security findings → `code-review-edho-ferdian`
+- Fixing server-side code → `backend-engineering-edho-ferdian`
+- Hardening the deployment → `deployment-ops-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user in Bahasa Indonesia; report, findings, and code in

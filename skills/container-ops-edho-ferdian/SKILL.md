@@ -76,6 +76,15 @@ drift.
    as the rest of this skill ecosystem's review skills, applied to
    containers instead of code.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Shipping the image to an environment → `deployment-ops-edho-ferdian`
+- Secrets, base images or exposed ports → `security-review-edho-ferdian`
+- An image that won't build → `build-fix-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user in Bahasa Indonesia; Dockerfile/compose content,

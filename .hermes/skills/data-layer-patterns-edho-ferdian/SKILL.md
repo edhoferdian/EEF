@@ -92,6 +92,16 @@ explicit statement of what's different and why.
    missing FK indexes — `postgres.md` and `database-lens.md` agree on these
    defaults).
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- The service code using the data → `backend-engineering-edho-ferdian`
+- Slow queries to measure → `performance-audit-edho-ferdian`
+- Access control and injection risks → `security-review-edho-ferdian`
+- Running the migration in production → `deployment-ops-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user in Bahasa Indonesia; schema names, code, comments,

@@ -53,11 +53,23 @@ PLAN → TEST → IMPLEMENT → REVIEW → VERIFY → REMEMBER → IMPROVE
   stack in scope. Escape hatches and the rule for untestable tasks:
   `references/execution-loop.md`.
 - **IMPLEMENT** — real code until the test passes (GREEN). No placeholders.
-  Detect the surface being touched and invoke the matching specialist skill
-  for its idioms (`frontend-engineering-edho-ferdian`,
-  `backend-engineering-edho-ferdian`, `api-design-edho-ferdian`,
-  `data-layer-patterns-edho-ferdian`) the moment the touched files say so,
-  rather than writing from general knowledge alone.
+  Detect the surface being touched and **load** the matching specialist
+  skill with the Skill tool the moment the touched files say so, rather
+  than writing from general knowledge alone:
+
+  | Touched files | Load |
+  |---|---|
+  | `.tsx` `.jsx` `.vue` `.svelte` `.css` `.html`, Tailwind config | `frontend-engineering-edho-ferdian` + `design-engineering-edho-ferdian` |
+  | Animations, gestures, sheets, Expo/React Native screens, `.swift` | `design-engineering-edho-ferdian` |
+  | routes, controllers, services, jobs, workers | `backend-engineering-edho-ferdian` |
+  | OpenAPI/GraphQL schema, new endpoints | `api-design-edho-ferdian` |
+  | `schema.prisma`, migrations, `.sql`, cache keys | `data-layer-patterns-edho-ferdian` |
+  | `Dockerfile`, compose files | `container-ops-edho-ferdian` |
+  | CI workflows, k8s/helm, deploy scripts | `deployment-ops-edho-ferdian` |
+  | Auth, payments, secrets, file upload | add `security-review-edho-ferdian` at REVIEW |
+
+  The `skill-guard` hook names the owner skill on the first edit of such
+  a file when it isn't loaded yet; treat that note as this rule firing.
 - **REVIEW** — the reviewer must not reuse the implementer's reasoning:
   delegate to the `code-reviewer-edho-ferdian` agent where the harness can
   delegate, else run `code-review-edho-ferdian` directly; add
@@ -85,6 +97,13 @@ Reflection block. "It's a small change" is not a reason. A sibling-skill
 handoff at any stage follows the same rule: skip only with a stated reason
 (e.g. the touched surface has no matching specialist skill yet), never
 silently.
+
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- A stage's specialist work — see the stage and file maps in this skill → the matching skill
 
 ## Language routing (fixed base rule — see skill-authoring-edho-ferdian §7; this skill extends it below, v2.0 inherited-not-hardcoded)
 

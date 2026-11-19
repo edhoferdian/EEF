@@ -105,6 +105,14 @@ When retrofitting these rules into an existing bot, change only the gates
 the task names; do not rewrite its transport or conversation logic as a side
 effect. Full contract: `skill-authoring-edho-ferdian` §10.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Sorting the incoming messages first → `communications-triage-edho-ferdian`
+- Making the draft read naturally → `humanize-edho-ferdian` (when installed — it ships separately)
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user in Bahasa Indonesia; code, comments, and any

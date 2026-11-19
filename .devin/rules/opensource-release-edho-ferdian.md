@@ -18,6 +18,15 @@ internal names?" It does not hunt exploitable vulnerabilities in the code.
 Mode C full audit. A project going public *and* to production needs both:
 run Mode C on the source, then this pipeline on the fork.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- The security audit before publishing → `security-review-edho-ferdian`
+- README and contributor docs → `docs-sync-edho-ferdian`
+- Tagging the first release → `git-and-release-ops-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 - Communication to the user → **Bahasa Indonesia**.

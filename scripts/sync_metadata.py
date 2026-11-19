@@ -15,6 +15,7 @@ Usage:
     python scripts/sync_metadata.py --check     # exit 1 if any target is stale
 """
 import argparse
+import json
 import re
 import sys
 
@@ -93,6 +94,27 @@ def rewrite(path, text, pattern, make_replacement, skills_count, agents_count):
     return new_text
 
 
+CLAUDE_AGENTS_DIST = REPO_ROOT / "dist" / "agents" / "claude"
+WRAPPER_AGENT_RE = re.compile(r"Agent form of the [a-z0-9-]+-edho-ferdian skill")  # same test as bin/eef.js isWrapperAgent
+
+
+def plugin_agents() -> list[str]:
+    """The plugin ships the `inti` roster: isolation agents only. Wrapper
+    agents just restate a skill, and every agent's description is read each
+    session, so they stay out (same rule as `eef-install --roster inti`)."""
+    return [
+        f"./{path.relative_to(REPO_ROOT).as_posix()}"
+        for path in sorted(CLAUDE_AGENTS_DIST.glob("*.md"))
+        if not WRAPPER_AGENT_RE.search(path.read_text(encoding="utf-8"))
+    ]
+
+
+def with_plugin_agents(text: str) -> str:
+    manifest = json.loads(text)
+    manifest["agents"] = plugin_agents()
+    return json.dumps(manifest, indent=2, ensure_ascii=False) + "\n"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="exit 1 if any target file is stale instead of writing it")
@@ -105,6 +127,7 @@ def main() -> int:
     for path, pattern, make_replacement in TARGETS:
         current = texts.get(path) or path.read_text(encoding="utf-8")
         texts[path] = rewrite(path, current, pattern, make_replacement, skills_count, agents_count)
+    texts[PLUGIN_JSON] = with_plugin_agents(texts[PLUGIN_JSON])
     stale = [(path, text) for path, text in texts.items() if text != path.read_text(encoding="utf-8")]
 
     if not stale:

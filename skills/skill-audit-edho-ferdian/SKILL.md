@@ -133,6 +133,14 @@ A skill with zero findings across all four categories goes in **Clean**,
 not into an empty row of the findings section — don't pad the report with
 "no issues found" boilerplate per skill.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Writing or fixing a skill → `skill-authoring-edho-ferdian`
+- The ~/.claude setup rather than this repo → `config-hygiene-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user in Bahasa Indonesia; the findings/recommendation

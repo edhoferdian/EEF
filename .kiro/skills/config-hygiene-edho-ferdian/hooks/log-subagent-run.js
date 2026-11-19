@@ -35,6 +35,18 @@ const path = require("path");
 
 const LOG_PATH = process.env.EEF_SUBAGENT_LOG || path.join(os.homedir(), ".claude", "eef", "subagent-runs.jsonl");
 
+// Plugin copy stays silent when eef-install registered its own copy, so a
+// run is never logged twice.
+function pluginCopyShadowed() {
+  const root = process.env.CLAUDE_PLUGIN_ROOT;
+  if (!root || !path.resolve(__dirname).startsWith(path.resolve(root))) return false;
+  try {
+    return fs.readFileSync(path.join(os.homedir(), ".claude", "settings.json"), "utf8").includes(path.basename(__filename));
+  } catch {
+    return false;
+  }
+}
+
 const num = (v) => (typeof v === "number" && Number.isFinite(v) ? v : null);
 
 function replyChars(content) {
@@ -68,6 +80,7 @@ process.stdin.on("end", () => {
   try {
     const input = JSON.parse(raw);
     if (input.hook_event_name !== "PostToolUse" || !/^(Agent|Task)$/.test(input.tool_name || "")) return;
+    if (pluginCopyShadowed()) return;
     fs.mkdirSync(path.dirname(LOG_PATH), { recursive: true });
     fs.appendFileSync(LOG_PATH, JSON.stringify(toRecord(input)) + "\n", "utf8");
   } catch {

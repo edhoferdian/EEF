@@ -77,6 +77,14 @@ habit); a gate that's too weak lets broken code land. Split by cost:
 Full rationale and the cross-stack equivalents (Python, Go, Rust) are in
 `references/other-stacks.md`.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Pre-commit hooks and commit conventions → `git-and-release-ops-edho-ferdian`
+- The build breaking after a lint change → `build-fix-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user in Bahasa Indonesia; config files, hook scripts,

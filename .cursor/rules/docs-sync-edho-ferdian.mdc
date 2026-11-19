@@ -113,6 +113,13 @@ why), and which dependency sections were populated vs. deferred. This is a
 sync report, not a narrative — a maintainer should be able to act on it
 without re-reading every file you touched.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- A release note or changelog → `git-and-release-ops-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract, extended below)
 
 - Communication with the user → Bahasa Indonesia (base rule, never ask).

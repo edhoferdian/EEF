@@ -128,6 +128,15 @@ If `/project-memory/` does not exist yet in this repo, create just the
 `mined-specs/` subdirectory — do not scaffold the rest of
 `dev-kickoff-edho-ferdian`'s memory structure; that's its own skill's job.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Starting work from the mined spec → `dev-kickoff-edho-ferdian`
+- Tests that pin the mined behaviour → `test-authoring-edho-ferdian`
+- Architecture questions the spec raises → `system-design-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Presenting the mined capability list to the user (Phase 1) → Bahasa

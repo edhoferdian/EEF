@@ -24,6 +24,18 @@ prompts skip — **ground-truth verification** (run real tools, don't eyeball)
 and a **Reflection + Critique-Correction pass** (catch your own false positives
 before the user sees them).
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- A stack-specific lens (Go, Django, React…) → `language-code-review-edho-ferdian`
+- Security depth on a risky change → `security-review-edho-ferdian`
+- Missing or weak tests → `test-authoring-edho-ferdian`
+- Motion or animation findings → `design-engineering-edho-ferdian`
+- A performance claim to verify → `performance-audit-edho-ferdian`
+- An accepted simplification to apply → `code-simplification-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 - Communication / explanation to the user → **Bahasa Indonesia**.
@@ -193,17 +205,5 @@ tool would say — run it.** Using whatever exists in the repo (see Phase 0 prob
   (`dev-kickoff-edho-ferdian/references/salak-integration.md`).
 
 **Confidence labeling rule (applies to every finding):**
-- Confirmed by a tool or by a directly readable line → **[High confidence]**.
-- Sound reasoning but not tool-verified → **[Medium confidence]** + a short note
-  on what would confirm it.
-- Plausible but uncertain (e.g. depends on runtime data you can't see, or on an
-  external API's current behavior) → **[Low confidence] — needs verification.**
-
-Never fabricate tool output. If a tool isn't installed or can't run, say so and
-label affected findings accordingly. If a claim depends on a library/API version
-or on time-sensitive behavior, flag it as needing live verification rather than
-asserting it.
-
----
 
 > **Truncated for Windsurf's 12,000-character workspace rule limit.** Read the full skill at `skills/code-review-edho-ferdian/SKILL.md` for complete instructions.

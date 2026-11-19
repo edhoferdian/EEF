@@ -107,6 +107,16 @@ stack-agnostic checklist above by hand, and note in your response that
 stack-specific guidance for that language isn't written yet — don't
 silently fall back to React-flavored advice for a non-React stack.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Full user-journey tests → `e2e-testing-edho-ferdian`
+- Windows desktop UI tests → `desktop-e2e-edho-ferdian`
+- Tests failing because the build broke → `build-fix-edho-ferdian`
+- Reviewing test quality → `code-review-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user in Bahasa Indonesia; test code, test names, and

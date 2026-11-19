@@ -1,0 +1,20 @@
+{
+  "agent": {
+    "design-engineering-edho-ferdian": {
+      "description": "Agent form of the design-engineering-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Make UI feel right: animation and transitions, gestures and sheets, Expo motion, interaction polish, mobile-web feel, worst-case data tests, design variants, library picks, Swift.",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/design-engineering-edho-ferdian.txt}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
+      "permission": {
+        "task": {
+          "*": "deny"
+        }
+      }
+    }
+  }
+}

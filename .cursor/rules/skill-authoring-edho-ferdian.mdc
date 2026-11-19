@@ -288,6 +288,43 @@ contract)` followed by a sentence naming how this skill's own scope
 discipline relates to the default (inherits it as-is, or sharpens it for
 this skill's specific moment, per the build-fix example above).
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Checking existing skills for overlap or staleness → `skill-audit-edho-ferdian`
+- Updating README and catalog docs → `docs-sync-edho-ferdian`
+
+## §11 — Skill handoffs (canonical contract — every skill's "Hands off to" points here)
+
+EEF skills complement each other: each SKILL.md ends with a short
+**Hands off to** list — the situations where another skill owns the next
+part of the work. The contract:
+
+1. **Load, don't paraphrase.** When the work reaches a listed situation,
+   load the target with the Skill tool (on Claude Code) or read its
+   `SKILL.md` (other harnesses) and follow it. Writing that skill's part
+   from general knowledge is the failure this section exists to prevent.
+2. **Plugin names.** Installed as the Claude Code plugin, every skill is
+   namespaced: `ekosistem-edho-ferdian:<skill-name>`.
+3. **One owner per step.** The current skill keeps ownership of its own
+   output; the target owns only its part. Return to the current skill's
+   process afterwards (e.g. dev-kickoff's loop continues at its next
+   stage).
+4. **Skip only with a reason**, stated in the response — e.g. the target
+   isn't installed, or the step is trivial for that stack.
+5. **Keep lists short** (2–7 rows), situations not topics, and point only
+   at skills that exist. Optional skills that ship separately say so.
+6. **Mechanical backstops** on Claude Code: the `skill-router` hook names
+   skills from the prompt; the `skill-guard` hook names the owner skill on
+   the first edit of its kind of file. Both only add context; neither
+   blocks.
+
+`dev-kickoff-edho-ferdian` is the orchestrator for whole projects: its
+stage map (PLAN → … → IMPROVE) and touched-file map decide which skill
+loads when.
+
 ## Provenance
 
 Consolidated into one skill per D-009; install-specific paths were replaced

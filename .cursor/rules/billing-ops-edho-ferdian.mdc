@@ -158,6 +158,15 @@ PRODUCT GAP
 - Jumping straight from diagnosis to a financial action without separating
   customer impact from the broader product-truth question.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- A code fix in the billing flow → `backend-engineering-edho-ferdian`
+- Payment security or webhook verification → `security-review-edho-ferdian`
+- A reply to the customer → `counterparty-comms-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user in Bahasa Indonesia; the structured handoff report

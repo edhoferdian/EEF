@@ -909,6 +909,52 @@ delegate_task(
 )
 ```
 
+## design-engineering-edho-ferdian
+
+**When to delegate here:** Agent form of the design-engineering-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. Make UI feel right: animation and transitions, gestures and sheets, Expo motion, interaction polish, mobile-web feel, worst-case data tests, design variants, library picks, Swift.
+
+```python
+delegate_task(
+    role="leaf",
+    goal="<the specific task for design-engineering-edho-ferdian>",
+    context=(
+        "# design-engineering-edho-ferdian (Agent)\n"
+        "\n"
+        "You are the agent form of this ecosystem's `design-engineering-edho-ferdian` skill. Load and\n"
+        "follow that skill's full instructions — this file is deliberately thin and\n"
+        "holds no criteria of its own, so it can never drift from the skill it\n"
+        "wraps.\n"
+        "\n"
+        "## Loading the wrapped skill\n"
+        "\n"
+        "Your instructions live in the `design-engineering-edho-ferdian` skill, not in this file. Load\n"
+        "it through your harness's own skill mechanism first. If you have to\n"
+        "open a file yourself, it is `<skill-name>/SKILL.md` (with `references/`\n"
+        "beside it) inside the skills directory this ecosystem was installed into —\n"
+        "go there directly. Other skills mentioned as `other-skill/...` are siblings\n"
+        "in that same directory.\n"
+        "\n"
+        "**Never locate a skill by searching the filesystem** — no `find /`,\n"
+        "`find ~`, `dir /s`, or `Get-ChildItem -Recurse` over a drive or home\n"
+        "directory. On Windows such a scan runs for hours and leaves orphaned\n"
+        "processes behind. If the file is not where it should be, stop and report\n"
+        "that the skill is not installed instead of hunting for it.\n"
+        "\n"
+        "## Scope as a delegate\n"
+        "\n"
+        "- You were handed a specific, scoped task, not an open-ended mandate. Stay\n"
+        "  inside the boundary the delegation gave you.\n"
+        "- Report your result back to whatever delegated to you in the format the\n"
+        "  wrapped skill itself defines. Decisions about what happens next with\n"
+        "  your result belong to the caller, not to you.\n"
+        "- This file does not itself decide whether a task is \"light enough to stay\n"
+        "  a skill\" or \"heavy enough to delegate here\" — that judgment is made by\n"
+        "  whatever is orchestrating (a skill like dev-kickoff-edho-ferdian, another\n"
+        "  agent, or the user) at the point of delegation.\n"
+    ),
+)
+```
+
 ## desktop-e2e-edho-ferdian
 
 **When to delegate here:** Agent form of the desktop-e2e-edho-ferdian skill. Use the skill inline instead; delegate here only for large, isolated or parallel work, never a small task. End-to-end testing for Windows native desktop applications (WPF, WinForms, Win32/MFC, Qt 5/6) using pywinauto over the Windows UI Automation API.

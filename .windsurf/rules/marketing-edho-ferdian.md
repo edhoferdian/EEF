@@ -22,6 +22,16 @@ ringan untuk kapan pun Edho (atau proyek open-source-nya) butuh
 positioning, copy, atau strategi kompetitif yang jelas, tanpa over-invest
 di riset yang tidak akan pernah dipakai.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Making the copy sound like Ed → `humanize-edho-ferdian` (when installed — it ships separately)
+- Search visibility of the page → `seo-audit-edho-ferdian`
+- Building the landing page → `frontend-engineering-edho-ferdian`
+- Motion and polish on the page → `design-engineering-edho-ferdian`
+
 ## Language routing (fixed base rule — see skill-authoring-edho-ferdian §7; this skill extends it below)
 
 - Strategy discussion, positioning rationale, recommendations to the user →

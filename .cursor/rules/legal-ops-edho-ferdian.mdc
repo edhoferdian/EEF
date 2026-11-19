@@ -74,6 +74,13 @@ names and rebuild; never reflow or "tidy" counsel-approved wording as a side
 effect — a cosmetic diff in legal text still needs review. Full contract:
 `skill-authoring-edho-ferdian` §10.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Sending the agreement to the counterparty → `counterparty-comms-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user in Bahasa Indonesia; code, comments, and generated

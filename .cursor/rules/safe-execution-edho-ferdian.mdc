@@ -239,3 +239,11 @@ grows enough to need its own worked examples/edge-case catalogue (the way
 split that gate into `references/`, following the domain+lens pattern other
 skills in this ecosystem use — do not let this file creep past ~300 lines to
 avoid making that call.
+
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Git history rewrites or force pushes → `git-and-release-ops-edho-ferdian`
+- Production deploys and rollbacks → `deployment-ops-edho-ferdian`

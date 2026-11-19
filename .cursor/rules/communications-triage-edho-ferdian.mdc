@@ -102,6 +102,14 @@ For every `action_required` message:
    this is non-negotiable regardless of how obviously correct the draft
    seems.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- A reply to a customer, supplier or partner → `counterparty-comms-edho-ferdian`
+- Polishing the wording → `humanize-edho-ferdian` (when installed — it ships separately)
+
 ## Language routing (fixed base rule — see skill-authoring-edho-ferdian §7; this skill extends it below)
 
 Triage summaries and discussion with the user → Bahasa Indonesia (base

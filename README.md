@@ -1,6 +1,6 @@
 # Ekosistem Edho Ferdian (EEF)
 
-A native Claude Code skill ecosystem — 38 skills covering engineering
+A native Claude Code skill ecosystem — 39 skills covering engineering
 (backend, frontend, API design, data layer, security, performance, testing),
 operations (deployment, containers, networking, git/release), and
 cross-cutting practices (code review, spec mining, marketing, research,
@@ -21,7 +21,7 @@ Four ways to get these skills, pick whichever fits:
 ### Option A — npm (works for every harness this repo supports, no git needed)
 
 ```bash
-npx eef-install                            # Claude Code, all 38 skills
+npx eef-install                            # Claude Code, all 39 skills
 npx eef-install code-review-edho-ferdian    # Claude Code, specific skills only
 npx eef-install --target cursor             # Cursor, into ./.cursor/rules/
 npx eef-install --target windsurf           # Windsurf + Devin
@@ -43,8 +43,12 @@ npx eef-install --help
 `--target claude-hooks` installs the ready-made hooks — `fs-guard`
 (`PreToolUse`, blocks recursive searches from `/`, `~` or a drive root and
 asks before destructive commands), `telemetry` (`PostToolUse` on `Agent`,
-logs each subagent run locally for re-tiering) and `statusline` (plan quota,
-context and subagent count, set only when no `statusLine` exists);
+logs each subagent run locally for re-tiering), `skill-router`
+(`UserPromptSubmit`, names the installed EEF skill a prompt matches — e.g.
+"rapikan tampilan" → the design skills — so it gets loaded instead of
+skipped), `skill-telemetry` (`PostToolUse` on `Skill`, logs skill loads;
+`eef-install stats --skills` lists skills that never fire) and `statusline`
+(plan quota, context and subagent count, set only when no `statusLine` exists);
 `--only <name>` picks one. It adds a registration to
 `settings.json` and leaves every other key alone: a hook already registered
 (even by hand) is never added twice, an unparsable file is refused rather
@@ -96,7 +100,7 @@ Clone this repo, then run the installer for your platform:
 # macOS / Linux / Git Bash
 git clone https://github.com/edhoferdian/EEF.git
 cd EEF
-./install.sh                 # installs all 38 skills
+./install.sh                 # installs all 39 skills
 ./install.sh code-review-edho-ferdian dev-kickoff-edho-ferdian   # only specific ones
 ./install.sh --list          # see all installable skill names
 ```
@@ -105,7 +109,7 @@ cd EEF
 # Windows PowerShell
 git clone https://github.com/edhoferdian/EEF.git
 cd EEF
-.\install.ps1                                    # installs all 38 skills
+.\install.ps1                                    # installs all 39 skills
 .\install.ps1 -Only code-review-edho-ferdian,dev-kickoff-edho-ferdian
 .\install.ps1 -ListOnly
 ```
@@ -122,6 +126,28 @@ than `~/.claude/skills`.
 
 This tracks the repo directly — updates land when the plugin/marketplace
 `version` fields are bumped in [`.claude-plugin/`](.claude-plugin/).
+
+The plugin is the whole Claude Code setup in one install:
+
+- **all skills**, namespaced `ekosistem-edho-ferdian:<skill>`;
+- **the isolation agents** (critics, evaluators, workers — the `inti`
+  roster; wrapper agents stay out because every agent description costs
+  context each session);
+- **hooks** from [`hooks/hooks.json`](hooks/hooks.json): the always-on
+  rules (a plugin can't ship `CLAUDE.md`, so a `SessionStart` hook loads
+  `rules/*.md`), `skill-router`, `skill-guard`, `fs-guard` and the local
+  telemetry.
+
+Use **either** the plugin **or** `eef-install` for Claude Code, not both —
+otherwise every skill is listed twice. `eef-install doctor` warns when it
+finds both. The hooks themselves stay quiet in the plugin when the same
+hook is registered by `eef-install`. The status line is not part of the
+plugin (a plugin can't set it); add it with
+`npx eef-install --target claude-hooks --only statusline`.
+
+claude.ai and Cowork don't install plugins that contain a top-level
+`bin/` directory, and this repo needs one for the npm CLI — so on claude.ai
+upload the `dist/*.skill` files instead.
 
 > **Note:** this GitHub repo is public, and `eef-install` is published on
 > npm — all four install options above work for anyone, no special access

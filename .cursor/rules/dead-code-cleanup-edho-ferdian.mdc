@@ -32,6 +32,15 @@ the deletion moment specifically: touch only the categories being cleaned
 in this pass, never fold in an unrelated fix or improvement spotted along
 the way. Full contract: `skill-authoring-edho-ferdian` §10.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- Tests before deleting → `test-authoring-edho-ferdian`
+- The build failing after removal → `build-fix-edho-ferdian`
+- Reviewing the removal → `code-review-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 - Communication / explanation to the user → **Bahasa Indonesia**.

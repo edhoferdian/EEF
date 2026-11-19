@@ -211,6 +211,14 @@ breaks before its replacement exists:
 - ECC-managed paths are in scope only inside the decommissioning track,
   and only ever to remove them.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- The skills in this repo (not ~/.claude) → `skill-audit-edho-ferdian`
+- A destructive cleanup step → `safe-execution-edho-ferdian`
+
 ## Provenance
 
 Adapted from ECC `config-gc`, `context-budget`, `workspace-surface-audit`,

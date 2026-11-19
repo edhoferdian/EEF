@@ -221,9 +221,11 @@ jobs:
             if(c.model!=='opus'||c.permissions.allow[0]!=='Bash(ls:*)') throw new Error('clobbered other keys');
             const pre=c.hooks.PreToolUse;
             if(pre[0].hooks[0].command!=='echo mine') throw new Error('clobbered existing hook');
-            if(pre.length!==2||pre[1].matcher!=='Bash|PowerShell') throw new Error('fs-guard missing or duplicated: '+JSON.stringify(pre));
+            if(pre.length!==3||pre[1].matcher!=='Bash|PowerShell'||pre[2].matcher!=='Edit|Write|MultiEdit|NotebookEdit') throw new Error('fs-guard or skill-guard missing or duplicated: '+JSON.stringify(pre));
             const post=c.hooks.PostToolUse;
-            if(post.length!==1||post[0].matcher!=='Agent') throw new Error('telemetry missing or duplicated: '+JSON.stringify(post));
+            if(post.length!==2||post[0].matcher!=='Agent'||post[1].matcher!=='Skill') throw new Error('telemetry or skill-telemetry missing or duplicated: '+JSON.stringify(post));
+            const ups=c.hooks.UserPromptSubmit;
+            if(!ups||ups.length!==1||!ups[0].hooks[0].command.includes('suggest-skill.js')) throw new Error('skill-router missing or duplicated: '+JSON.stringify(ups));
             if(!c.statusLine||!c.statusLine.command.includes('statusline-usage.js')) throw new Error('statusline not set');
           "
           test -f $d/hooks/statusline-usage.js

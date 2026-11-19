@@ -637,6 +637,42 @@
         }
       }
     },
+    "design-engineering-edho-ferdian": {
+      "tier": "standard",
+      "effort": "medium",
+      "profiles": {
+        "hemat": {
+          "claude": {
+            "model": "sonnet",
+            "effort": "low"
+          },
+          "codex": {
+            "model": "gpt-6.1-sol",
+            "effort": "low"
+          }
+        },
+        "seimbang": {
+          "claude": {
+            "model": "sonnet",
+            "effort": "medium"
+          },
+          "codex": {
+            "model": "gpt-6.1-sol",
+            "effort": "medium"
+          }
+        },
+        "maksimal": {
+          "claude": {
+            "model": "sonnet",
+            "effort": "high"
+          },
+          "codex": {
+            "model": "gpt-6.1-sol",
+            "effort": "high"
+          }
+        }
+      }
+    },
     "desktop-e2e-edho-ferdian": {
       "tier": "standard",
       "effort": "medium",

@@ -69,6 +69,18 @@ service, error path, or job, change only what the task requires — don't
 relayer or restructure adjacent, already-working code as a side effect. Full
 contract: `skill-authoring-edho-ferdian` §10.
 
+## Hands off to (fixed — see skill-authoring-edho-ferdian §11)
+
+When the work reaches one of these, load that skill with the Skill tool
+and follow it — don't write its part from memory.
+
+- The endpoint contract → `api-design-edho-ferdian`
+- Schema, queries, caching or migrations → `data-layer-patterns-edho-ferdian`
+- Tests for the service → `test-authoring-edho-ferdian`
+- Auth, secrets or untrusted input → `security-review-edho-ferdian`
+- Dockerfile or compose setup → `container-ops-edho-ferdian`
+- A slow path that needs measuring → `performance-audit-edho-ferdian`
+
 ## Language routing (fixed — see skill-authoring-edho-ferdian's canonical contract)
 
 Communication to the user in Bahasa Indonesia; code, comments, and any
