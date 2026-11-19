@@ -60,6 +60,7 @@ function globalCopyActive() {
 // `unless` drops a route when a more specific meaning is present.
 const UI_WORDS = /\b(tampilan|ui|ux|landing ?page|halaman|komponen|component|animasi|animation|css|tailwind)\b/i;
 const ROUTES = [
+  { skills: ["ask-eef"], re: /\b(ask-eef|pakai skill apa|skill apa|mulai dari mana|harus mulai dari mana)\b/i },
   {
     skills: ["dev-kickoff-edho-ferdian"],
     re: /\b(mulai proyek|mulai project|proyek baru|project baru|kickoff|kick-off|lanjutkan proyek|lanjut proyek|resume proyek|context pack|start (a |the )?project)\b/i,
@@ -114,6 +115,8 @@ const ROUTES = [
   { skills: ["video-style-edho-ferdian"], re: /\b(video|grading|color grade|lut|cut rhythm|footage|editing video|reels?|tiktok)\b/i },
 ];
 
+const TASK_LIKE = /\b(buat|buatkan|bikin|bikinin|tolong|bantu|perbaiki|benerin|tambah|tambahkan|ubah|ganti|implement\w*|create|build|make|add|fix|refactor|setup|set up|pasang|mau|ingin)\b/i;
+
 function qualified(skill) {
   return IN_PLUGIN ? `${PLUGIN_NAME}:${skill}` : skill;
 }
@@ -130,6 +133,11 @@ function suggestions(prompt) {
       if (found.includes(skill) || lower.includes(skill)) continue;
       if (fs.existsSync(path.join(SKILLS_DIR, skill, "SKILL.md"))) found.push(skill);
     }
+  }
+  // Nothing specific matched but it reads like a task: send it to the front door.
+  if (!found.length && TASK_LIKE.test(text) && text.trim().split(/\s+/).length >= 4
+      && fs.existsSync(path.join(SKILLS_DIR, "ask-eef", "SKILL.md"))) {
+    found.push("ask-eef");
   }
   return found.slice(0, 4);
 }

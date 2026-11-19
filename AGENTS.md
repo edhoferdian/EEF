@@ -1,6 +1,6 @@
 # AGENTS.md — Ekosistem Edho Ferdian (EEF)
 
-This project ships 39 skills under `skills/*/SKILL.md` — each one a focused
+This project ships 40 skills under `skills/*/SKILL.md` — each one a focused
 playbook for a specific engineering task (code review, API design, test
 authoring, deployment, and more). This file is a router, not a full copy:
 skim the table below, and when a request matches a row, **read that skill's
@@ -16,6 +16,7 @@ method from its one-line description here — read the file.
 | Skill | Use when | Path |
 |---|---|---|
 | `api-design-edho-ferdian` | Design and evolve API contracts: REST resource naming, status codes, pagination, versioning, and one authoritative OpenAPI/schema so client… | `skills/api-design-edho-ferdian/SKILL.md` |
+| `ask-eef` | Entry point to the EEF skills: reads the request and the project, then loads the right skill or sequence (dev-kickoff, design-engineering,… | `skills/ask-eef/SKILL.md` |
 | `backend-engineering-edho-ferdian` | Write server-side code well: service layering and ports/adapters, typed errors, retry with backoff and circuit breakers, background jobs… | `skills/backend-engineering-edho-ferdian/SKILL.md` |
 | `billing-ops-edho-ferdian` | Diagnose billing and subscription incidents (duplicate subscriptions, failed checkout, double charges, broken billing portal) and verify… | `skills/billing-ops-edho-ferdian/SKILL.md` |
 | `build-fix-edho-ferdian` | Fix build, compile, dependency and startup failures with a minimal verified diff, never a cast, ts-ignore or disabled check that hides the… | `skills/build-fix-edho-ferdian/SKILL.md` |

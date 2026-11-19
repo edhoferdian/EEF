@@ -12,7 +12,7 @@ invocation, the skill/agent relationship, harness support), see
 [README.md](README.md) first — this file is the reference table it points
 to, not a replacement for it.
 
-39 skills, 49 agents.
+40 skills, 49 agents.
 
 ## Skills
 
@@ -25,6 +25,7 @@ naming convention.
 | Skill | Use when | Agent form |
 |---|---|---|
 | [`api-design-edho-ferdian`](skills/api-design-edho-ferdian/SKILL.md) | Design and evolve API contracts: REST resource naming, status codes, pagination, versioning, and one authoritative OpenAPI/schema so client and server never drift. Use for "desain API untuk fitur ini", "struktur endpoint yang baik", "API contract berubah",… | [`api-design-edho-ferdian`](agents/api-design-edho-ferdian/AGENT.md) |
+| [`ask-eef`](skills/ask-eef/SKILL.md) | Entry point to the EEF skills: reads the request and the project, then loads the right skill or sequence (dev-kickoff, design-engineering, build-fix, code-review...). Use at the start of a task when no skill is obviously right, or for "ask-eef", "pakai skill… | — |
 | [`backend-engineering-edho-ferdian`](skills/backend-engineering-edho-ferdian/SKILL.md) | Write server-side code well: service layering and ports/adapters, typed errors, retry with backoff and circuit breakers, background jobs and queues, structured logging, new integrations; NestJS and Rails guides. Use for "struktur service layer", "error… | [`backend-engineering-edho-ferdian`](agents/backend-engineering-edho-ferdian/AGENT.md) |
 | [`billing-ops-edho-ferdian`](skills/billing-ops-edho-ferdian/SKILL.md) | Diagnose billing and subscription incidents (duplicate subscriptions, failed checkout, double charges, broken billing portal) and verify pricing/entitlement claims against the code. Refunds, credits and cancellations need an explicit go-ahead. Use for… | [`billing-ops-edho-ferdian`](agents/billing-ops-edho-ferdian/AGENT.md) |
 | [`build-fix-edho-ferdian`](skills/build-fix-edho-ferdian/SKILL.md) | Fix build, compile, dependency and startup failures with a minimal verified diff, never a cast, ts-ignore or disabled check that hides the error; lenses for ~20 stacks. Load it even for one pasted error. Use for "build error", "gagal build", "compile error",… | [`build-fix-edho-ferdian`](agents/build-fix-edho-ferdian/AGENT.md) |

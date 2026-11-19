@@ -266,3 +266,27 @@ test("plugin hooks.json points only at hook files that exist", () => {
     }
   }
 });
+
+const AG = path.join(SKILLS, "config-hygiene-edho-ferdian", "hooks", "antigravity-adapter.js");
+
+test("antigravity adapter: router once per prompt, fs-guard decision, edit handoff delivered next turn", () => {
+  const state = fs.mkdtempSync(path.join(os.tmpdir(), "eef-ag-"));
+  const env = { EEF_AG_STATE: state, EEF_AG_SKILLS: SKILLS, EEF_AG_RULES: path.join(__dirname, "..", "rules") };
+  const ag = (mode, input) => {
+    const o = execFileSync("node", [AG, mode], { input: JSON.stringify(input), env: { ...process.env, ...env } }).toString();
+    return o ? JSON.parse(o) : null;
+  };
+
+  const p = { conversationId: "c1", lastUserInput: "bikin landing page toko kopi" };
+  assert.match(ag("prompt", p).injectSteps[0].ephemeralMessage, /design-engineering-edho-ferdian/);
+  assert.strictEqual(ag("prompt", p), null);                                   // same input, next model call
+
+  assert.strictEqual(ag("shell", { toolCall: { name: "run_command", args: { CommandLine: "find / -name x" } } }).decision, "deny");
+  assert.strictEqual(ag("shell", { toolCall: { name: "run_command", args: { CommandLine: "git push --force" } } }).decision, "ask");
+  assert.strictEqual(ag("shell", { toolCall: { name: "run_command", args: { CommandLine: "npm test" } } }), null);
+
+  assert.strictEqual(ag("edit", { conversationId: "c1", toolCall: { name: "write_to_file", args: { TargetFile: "/p/db/migrations/001.sql" } } }), null);
+  assert.match(ag("prompt", p).injectSteps[0].ephemeralMessage, /data-layer-patterns-edho-ferdian/);
+
+  assert.match(ag("session-start", {}).injectSteps[0].systemMessage, /EEF always-on rules/);
+});
