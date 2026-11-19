@@ -2,6 +2,22 @@
 
 Generated from conventional commits by `scripts/generate_changelog.py` — do not edit by hand.
 
+## [v1.24.0](https://github.com/edhoferdian/EEF/releases/tag/v1.24.0) — 2026-11-19
+
+### Features
+
+- design-engineering skill, skill handoffs, complete plugin, routing hooks (#20) ([c5901e7](https://github.com/edhoferdian/EEF/commit/c5901e7))
+- plugin for claude.ai/Cowork and Antigravity, routing to every skill, deeper references (#21) ([489a2fd](https://github.com/edhoferdian/EEF/commit/489a2fd))
+- ask-eef, plugin + eef-install side by side, Antigravity hooks, worked examples for every skill (#22) ([0219718](https://github.com/edhoferdian/EEF/commit/0219718))
+
+### Documentation
+
+- regenerate CHANGELOG.md for v1.23.1 ([533d32a](https://github.com/edhoferdian/EEF/commit/533d32a))
+
+### Maintenance
+
+- bump version to 1.24.0 (ask-eef entry skill, plugin and eef-install side by side, Antigravity skills and hooks, worked examples for every skill) ([168eaad](https://github.com/edhoferdian/EEF/commit/168eaad))
+
 ## [v1.23.1](https://github.com/edhoferdian/EEF/releases/tag/v1.23.1) — 2026-10-30
 
 ### Fixes
